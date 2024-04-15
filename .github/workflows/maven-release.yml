@@ -14,26 +14,33 @@ jobs:
         distribution: adopt
         java-version: '21'
         cache: maven
+        server-id: ossrh
+        server-username: ${{ secrets.OPENAPI_OSSRH_USERNAME }}
+        server-password: ${{ secrets.OPENAPI_OSSRH_TOKEN }}
+        gpg-private-key: ${{ secrets.OPENAPI_OSSRH_GPG_SECRET_KEY }}
+        gpg-passphrase: ${{ secrets.OPENAPI_OSSRH_GPG_SECRET_KEY_PASSWORD }}
     - name: Login to registry.redhat.io
       uses: docker/login-action@v3.1.0
       with:
         username: ${{ secrets.REDHAT_REGISTRY_USER }}
         password: ${{ secrets.REDHAT_REGISTRY_TOKEN }}
         registry: registry.redhat.io
-    - name: Set VERSION
-      run: echo "VERSION=${GITHUB_REF:11}" >> $GITHUB_ENV
     - name: Build with Maven
-      run: mvn -B verify -Drevision=${VERSION}
+      run: mvn -B deploy -Drevision=${GITHUB_REF_NAME:1} -Prelease
     - name: Publish doc
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./target/site
-        destination_dir: v${{ env.VERSION }}
+        destination_dir: ${{ github.ref_name }}
         user_name: 'github-actions[bot]'
         user_email: 'github-actions[bot]@users.noreply.github.com'
-        full_commit_message: Publish v${{ env.VERSION }} doc
+        full_commit_message: Publish ${{ github.ref_name }} doc
     - name: Create release
-      run: gh release create ${GITHUB_REF} --draft
+      run: |
+        gh release create ${GITHUB_REF} --draft --title "Release ${GITHUB_REF_NAME}" --notes "Changes:
+        - [placeholder]
+
+        [Documentation](https://belgif.github.io/rest-problem-java/${GITHUB_REF_NAME}/) | [Javadoc](https://belgif.github.io/rest-problem-java/${GITHUB_REF_NAME}/apidocs/)"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
