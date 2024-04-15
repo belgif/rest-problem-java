@@ -1,0 +1,123 @@
+package io.github.belgif.rest.problem.api;
+
+import java.net.URI;
+
+import javax.ejb.ApplicationException;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+
+import io.github.belgif.rest.problem.DefaultProblem;
+
+/**
+ * Abstract base class for problems (RFC 9457).
+ *
+ * Maps to Problem in belgif/problem/v1/problem-v1.yaml.
+ */
+@ApplicationException
+// This @ApplicationException annotation is required for EJB integration (prevents wrapping in javax.ejb.EJBException).
+// Given that annotations that are not found on the classpath are ignored,
+// no EJB-api runtime dependency is required (e.g. for Spring Boot).
+@JsonTypeInfo(
+        // this configures the existing "type" property as discriminator for polymorphic deserialization
+        use = Id.NAME, include = As.EXISTING_PROPERTY, property = "type", visible = true,
+        // when no problem type was mapped, fall back to the DefaultProblem class when deserializing
+        defaultImpl = DefaultProblem.class)
+@JsonIgnoreProperties(
+        // we don't want to serialize these properties from the WebApplicationException superclass
+        value = { "cause", "stackTrace", "response", "message", "localizedMessage", "suppressed" },
+        // but we DO want to deserialize them, so we don't lose any info e.g. when a problem contains a "message" field
+        allowSetters = true,
+        // we also want to ignore unknown properties when deserializing:
+        // - for extensibility purposes, don't fail on new unknown JSON properties
+        // - "status" is also an unknown property, because we don't have a setStatus()
+        ignoreUnknown = true)
+@JsonPropertyOrder(value = { "type", "href", "title", "status", "detail", "instance" })
+@JsonInclude(Include.NON_EMPTY)
+public abstract class Problem extends RuntimeException {
+
+    private static final long serialVersionUID = 1L;
+
+    private final URI type;
+    private URI href;
+    private final String title;
+    private final int status;
+    private String detail;
+    private URI instance;
+
+    protected Problem(URI type, String title, int status) {
+        this(type, null, title, status, null);
+    }
+
+    protected Problem(URI type, URI href, String title, int status) {
+        this(type, href, title, status, null);
+    }
+
+    protected Problem(URI type, String title, int status, Throwable cause) {
+        this(type, null, title, status, cause);
+    }
+
+    protected Problem(URI type, URI href, String title, int status, Throwable cause) {
+        super(title, cause);
+        this.type = type;
+        this.href = href;
+        this.title = title;
+        this.status = status;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public URI getType() {
+        return type;
+    }
+
+    public URI getHref() {
+        return href;
+    }
+
+    public void setHref(URI href) {
+        this.href = href;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public URI getInstance() {
+        return instance;
+    }
+
+    public void setInstance(URI instance) {
+        this.instance = instance;
+    }
+
+    /**
+     * Returns the problem message, consisting of the problem title, followed by the detail message (if present).
+     *
+     * @return the problem message
+     */
+    @Override
+    public String getMessage() {
+        if (detail != null) {
+            return title + ": " + detail;
+        } else {
+            return title;
+        }
+    }
+
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.github.belgif.rest.problem</groupId>
+    <artifactId>belgif-rest-problem-parent</artifactId>
+    <version>${revision}</version>
+  </parent>
+
+  <artifactId>belgif-rest-problem</artifactId>
+  <packaging>jar</packaging>
+  <description>Support classes for generating standardized problem types
+    (https://www.belgif.be/specification/rest/api-guide/#standardized-problem-types).
+  </description>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.enterprise</groupId>
+      <artifactId>jakarta.enterprise.cdi-api</artifactId>
+      <version>2.0.2</version>
+      <scope>provided</scope>
+      <!--
+        Used for @javax.enterprise.inject.Stereotype annotation on ProblemType.
+        Dependency is not required in non-CDI environments (e.g. Spring Boot).
+      -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.ejb</groupId>
+      <artifactId>jakarta.ejb-api</artifactId>
+      <version>3.2.6</version>
+      <scope>provided</scope>
+      <!--
+        Used for @javax.ejb.ApplicationException annotation on Problem.
+        Dependency is not required in non-EJB environments (e.g. Spring Boot).
+      -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>

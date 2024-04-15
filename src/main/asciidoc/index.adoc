@@ -1,0 +1,289 @@
+:data-uri:
+:caption:
+:sectanchors:
+:toc: left
+:toclevels: 3
+:numbered:
+:icons: font
+:imagesdir: images
+:last-update-label!:
+:revnumber: {version}
+
+= belgif-rest-problem
+
+== Release notes
+
+=== Version 0.1
+
+Initial release under Belgif organization.
+
+== Context
+
+Java library for working with https://www.belgif.be/specification/rest/api-guide/#error-handling[RFC 9457 standardized Belgif problems].
+
+The library consists of these modules:
+
+* <<belgif-rest-problem>>: library for RFC 9457 standardized Belgif problems
+* <<belgif-rest-problem-java-ee>>: Java EE integration for belgif-rest-problem
+* <<belgif-rest-problem-spring>>: Spring Boot integration for belgif-rest-problem
+
+[[belgif-rest-problem]]
+== belgif-rest-problem
+
+The https://www.belgif.be/specification/rest/api-guide/#error-handling[Belgif REST Guidelines] define a standard error handling approach, based on https://www.rfc-editor.org/rfc/rfc9457[RFC 9457 "Problem Details for HTTP APIs"].
+
+The `belgif-rest-problem` library implements these standardized problem types as an exception hierarchy, with an abstract
+link:apidocs/io/github/belgif/rest/problem/api/Problem.html[`io.github.belgif.rest.problem.api.Problem`] base class (containing the standardized "type", "href", "title", "status", "detail" and "instance" properties).
+
+[subs="quotes"]
+----
+_Problem_
+├── _ClientProblem_ (4xx)
+|   └── _InputValidationProblem_ 1..* InputValidationIssue
+├── _ServerProblem_ (5xx)
+└── DefaultProblem (fallback)
+----
+
+=== Belgif problem types
+
+The package `io.github.belgif.rest.problem`
+contains all problem types defined in the https://www.belgif.be/specification/rest/api-guide/#standardized-problem-types[Belgif REST Guidelines].
+
+[subs="quotes"]
+----
+_Problem_
+├── _ClientProblem_ (4xx)
+|   ├── _InputValidationProblem_ 1..* InputValidationIssue
+|   |   ├── *BadRequestProblem* (400)
+|   |   ├── *MissingPermissionProblem* (403)
+|   |   └── *ResourceNotFoundProblem* (404)
+|   ├── *ExpiredAccessTokenProblem* (401)
+|   ├── *InvalidAccessTokenProblem* (401)
+|   ├── *NoAccessTokenProblem* (401)
+|   ├── *MissingScopeProblem* (403)
+|   ├── *PayloadTooLargeProblem* (413)
+|   ├── *TooManyRequestsProblem* (429)
+|   └── *TooManyFailedRequestsProblem* (429)
+└── _ServerProblem_ (5xx)
+    ├── *InternalServerErrorProblem* (500)
+    ├── *BadGatewayProblem* (502)
+    └── *ServiceUnavailableProblem* (503)
+----
+
+[NOTE]
+====
+* The `BadRequestProblem` is backwards compatible with the deprecated `InvalidParamProblem` _(with invalidParams[] instead of issues[])_ of openapi-problem 1.1.
+* Besides the standard in/name/value properties for referencing a single input, the `InputValidationIssue` class also supports an inputs[] array for referencing multiple in/name/value inputs.
+This is https://github.com/belgif/rest-guide/issues/108[not standardized].
+* `MissingPermissionProblem` extending InputValidationProblem is https://github.com/belgif/rest-guide/issues/114[not standardized].
+====
+
+=== Custom problem types
+
+Besides the standardized Belgif problem types, custom problem types can also be defined.
+
+The https://www.belgif.be/specification/rest/api-guide/#rule-prb-type[naming convention] should be respected for custom problem type URIs:
+
+* `urn:problem-type:<org>:<type>` for organization-wide problem types
+* `urn:problem-type:<org>:<api>:<type>` for API-local problem types
+
+[source,java,indent=0]
+.Implementing an API-local custom problem type
+----
+include::../../../belgif-rest-problem-java-ee/src/test/java/adoc/CodeSamples.java[tag=api-local-problem]
+----
+
+Your custom problem type can define additional properties if necessary.
+For problem types related to input parameters, you can extend from `InputValidationProblem` instead of `Problem`.
+
+IMPORTANT: Don't forget to add the `@ProblemType` annotation.
+
+=== @ProblemType and ProblemTypeRegistry
+
+We make use of Jackson's polymorphic deserialization feature, so the Jackson ObjectMapper knows which problem type to instantiate when deserializing a problem.
+The problem subclasses have their problem type URI configured in the
+link:apidocs/io/github/belgif/rest/problem/api/ProblemType.html[`@ProblemType`] annotation.
+
+These are discovered automagically by a link:apidocs/io/github/belgif/rest/problem/registry/ProblemTypeRegistry.html[`ProblemTypeRegistry`] implementation.
+
+* in a Java EE container, this is done by the link:apidocs/io/github/belgif/rest/problem/registry/CdiProblemTypeRegistry.html[`CdiProblemTypeRegistry`] CDI extension, integrated with the Jackson ObjectMapper by the CdiProblemModule.
+* in a Spring Boot container, this is done by the link:apidocs/io/github/belgif/rest/problem/registry/SpringProblemTypeRegistry.html[`SpringProblemTypeRegistry`], integrated with the Jackson ObjectMapper by the SpringProblemModule.
+
+=== RequestValidator
+
+The `io.github.belgif.rest.problem.validation.RequestValidator` can be used to perform validations on the input parameters of an API request.
+This validation does not stop on the first invalid input.
+It performs all configured validations and if any of them failed, a `BadRequestProblem` is thrown, containing each encountered `InputValidationIssue`.
+
+[source,java,indent=0]
+.RequestValidator
+----
+include::../../../belgif-rest-problem-java-ee/src/test/java/adoc/CodeSamples.java[tag=request-validator]
+----
+
+<1> validate SSIN structure
+<2> validate enterprise number structure
+<3> validate endDate >= startDate
+<4> cross-parameter validation: either ssin or enterprise number should be present, but not both
+<5> custom validations are also supported
+<6> perform the configured validations, throws `BadRequestProblem` if any validations failed
+
+.*Example BadRequestProblem* for invalid request `/resource?ssin=00000000000&enterpriseNumber=1111111111&startDate=2023-12-31&endDate=2023-01-01&password=oops`
+[%collapsible]
+====
+[source,json]
+----
+{
+  "type": "urn:problem-type:belgif:badRequest",
+  "href": "https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "The input message is incorrect",
+  "issues": [
+    {
+      "type": "urn:problem-type:cbss:input-validation:invalidStructure",
+      "title": "Input value has invalid structure",
+      "detail": "SSIN 11111111111 is invalid",
+      "in": "query",
+      "name": "ssin",
+      "value": "11111111111"
+    },
+    {
+      "type": "urn:problem-type:cbss:input-validation:invalidStructure",
+      "title": "Input value has invalid structure",
+      "detail": "Enterprise number 2222222222 is invalid",
+      "in": "query",
+      "name": "enterpriseNumber",
+      "value": "2222222222"
+    },
+    {
+      "type": "urn:problem-type:cbss:input-validation:invalidPeriod",
+      "title": "Period is invalid",
+      "detail": "endDate should not preceed startDate",
+      "inputs": [
+        {
+          "in": "query",
+          "name": "startDate",
+          "value": "2023-12-31"
+        },
+        {
+          "in": "query",
+          "name": "endDate",
+          "value": "2023-01-01"
+        }
+      ]
+    },
+    {
+      "type": "urn:problem-type:cbss:input-validation:exactlyOneOfExpected",
+      "title": "Exactly one of these inputs must be present",
+      "detail": "Exactly one of these inputs must be present: ssin, enterpriseNumber",
+      "inputs": [
+        {
+          "in": "query",
+          "name": "ssin",
+          "value": "11111111111"
+        },
+        {
+          "in": "query",
+          "name": "enterpriseNumber",
+          "value": "2222222222"
+        }
+      ]
+    },
+    {
+      "type": "urn:problem-type:cbss:input-validation:example:invalidPassword",
+      "title": "Invalid password",
+      "in": "query",
+      "name": "password",
+      "value": "oops"
+    }
+  ]
+}
+----
+====
+
+[[belgif-rest-problem-java-ee]]
+== belgif-rest-problem-java-ee
+
+This module provides components that handle Java EE integration with the belgif-rest-problem library:
+
+* *CdiProblemTypeRegistry:* ProblemTypeRegistry implementation that uses CDI component scanning to detect @ProblemType annotations.
+* *CdiProblemModule:* a Jackson Module that registers the CdiProblemTypeRegistry.
+* *ProblemObjectMapperContextResolver:* a JAX-RS ContextResolver for a Jackson ObjectMapper with the CdiProblemModule registered.
+Its priority of "Priorities.USER + 200" allows it to be overridden if needed by the client application.
+* *ConstraintViolationExceptionMapper:* a JAX-RS ExceptionMapper that converts ConstraintViolationException to an HTTP 400 BadRequestProblem.
+* *ProblemExceptionMapper:* a JAX-RS ExceptionMapper that converts Problem exceptions to a proper application/problem+json response.
+* *WebApplicationExceptionMapper:* a JAX-RS ExceptionMapper that handles WebApplicationExceptions thrown by the JAX-RS runtime itself, to prevent them from being handled by the DefaultExceptionMapper.
+* *DefaultExceptionMapper:* a JAX-RS ExceptionMapper that converts any other uncaught exception to an HTTP 500 InternalServerErrorProblem.
+
+* *JAX-RS Client integration:*
+** *ProblemClientResponseFilter:* JAX-RS ClientResponseFilter that converts problem response to a ProblemWrapper exception.
++
+WARNING: In accordance with the spec, any exception thrown by a JAX-RS ClientResponseFilter gets wrapped in a ResponseProcessingException, unless the exception itself is a ResponseProcessingException.
+For that reason, the ProblemClientResponseFilter wraps the Problem exception in a "ProblemWrapper" class that extends ProblemClientResponseFilter.
+
+** *ProblemSupport:* for programmatically enabling unwrapping of ProblemWrapper to Problem exceptions on a JAX-RS Client (also works for RESTEasy Proxy Framework clients).
++
+[source,java]
+----
+private Client client = ProblemSupport.enable(ClientBuilder.newClient());
+----
+
+** *ProblemClientBuilderProducer:* makes ProblemSupport-enabled ClientBuilder and Client beans available for CDI @Inject
++
+[source,java]
+----
+@Inject
+public void setClient(Client client) {
+    this.client = client;
+}
+----
+
+* *MicroProfile REST Client integration:*
+** *ProblemResponseExceptionMapper:* a ResponseExceptionMapper that converts problem responses to Problem exceptions.
+** *ProblemRestClientListener:* a RestClientListener that registers the ProblemObjectMapperContextResolver and ProblemResponseExceptionMapper.
+
+=== Using rest-problem library for implementing REST services
+
+When implementing a REST service with JAX-RS, returning a problem is as simple as throwing the problem exception from your code:
+
+[source,java,indent=0]
+.Throwing a problem in a JAX-RS application
+----
+include::../../../belgif-rest-problem-java-ee/src/test/java/adoc/CodeSamples.java[tag=throw-problem]
+----
+
+=== Using rest-problem library for consuming REST services
+
+When using the MicroProfile REST Client API, handling a problem is as simple as catching the problem exception in your code:
+
+[source,java,indent=0]
+.Handling a problem on the client
+----
+include::../../../belgif-rest-problem-java-ee/src/test/java/adoc/CodeSamples.java[tag=catch-problem]
+----
+
+NOTE: If the service returns a problem type for which you do not have a corresponding `@ProblemType` on your classpath, a link:apidocs/io/github/belgif/rest/problem/DefaultProblem.html[DefaultProblem] is used instead.
+
+[[belgif-rest-problem-spring]]
+== belgif-rest-problem-spring
+
+This module provides auto-configuration for components that handle Spring Boot integration with the belgif-rest-problem library:
+
+* *SpringProblemTypeRegistry:* ProblemTypeRegistry implementation that uses classpath scanning to detect @ProblemType annotations.
+By default, only package `io.github.belgif.rest.problem` and `be.fgov.kszbcss` are scanned for @ProblemType annotations.
+Additional packages to scan can be configured in your application.properties:
+
+[source,properties]
+----
+io.github.belgif.rest.problem.spring.scan-additional-problem-packages=com.acme.custom
+----
+
+* *SpringProblemModule:* a Jackson Module that registers the SpringProblemTypeRegistry.
+* *ProblemExceptionHandler:* an exception handler for RestControllers that handles the response serialization for Problem exceptions, and converts all other uncaught exceptions to an InternalServerErrorProblem.
+* *ProblemResponseErrorHandler:* a RestTemplate error handler that converts problem responses to Problem exceptions.
+* *ProblemRestTemplateCustomizer:* a RestTemplateCustomizer that registers the ProblemResponseErrorHandler
+* *ProblemWebClientCustomizer:* a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
+This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
+
+In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.
