@@ -1,6 +1,22 @@
 version: 2
 updates:
-  - package-ecosystem: "github-actions" 
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "jakarta.enterprise:jakarta.enterprise.cdi-api"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "jakarta.ejb:jakarta.ejb-api"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "org.springframework.boot:spring-boot-dependencies"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "io.rest-assured:rest-assured"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "org.jboss.resteasy:resteasy-client-microprofile"
+      - dependency-name: "org.jboss.weld:weld-junit5"
+      - dependency-name: "com.fasterxml.jackson.core:jackson-databind"
+  - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
