@@ -15,8 +15,8 @@ jobs:
         java-version: '21'
         cache: maven
         server-id: ossrh
-        server-username: OPENAPI_OSSRH_USERNAME
-        server-password: OPENAPI_OSSRH_TOKEN
+        server-username: MAVEN_CENTRAL_USER
+        server-password: MAVEN_CENTRAL_TOKEN
     - name: Login to registry.redhat.io
       uses: docker/login-action@v3.1.0
       with:
@@ -28,6 +28,8 @@ jobs:
       env:
         MAVEN_GPG_KEY: ${{ secrets.OPENAPI_OSSRH_GPG_SECRET_KEY }}
         MAVEN_GPG_PASSPHRASE: ${{ secrets.OPENAPI_OSSRH_GPG_SECRET_KEY_PASSWORD }}
+        MAVEN_CENTRAL_USER: ${{ secrets.OPENAPI_OSSRH_USERNAME }}
+        MAVEN_CENTRAL_TOKEN: ${{ secrets.OPENAPI_OSSRH_TOKEN }}
     - name: Publish doc
       uses: peaceiris/actions-gh-pages@v4
       with:
