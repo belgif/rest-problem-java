@@ -228,7 +228,6 @@
                 </goals>
                 <configuration>
                   <signer>bc</signer>
-                  <skip>true</skip>
                 </configuration>
               </execution>
             </executions>
