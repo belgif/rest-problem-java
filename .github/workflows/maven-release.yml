@@ -17,8 +17,6 @@ jobs:
         server-id: ossrh
         server-username: OPENAPI_OSSRH_USERNAME
         server-password: OPENAPI_OSSRH_TOKEN
-        gpg-private-key: ${{ secrets.OPENAPI_OSSRH_GPG_SECRET_KEY }}
-        gpg-passphrase: OPENAPI_OSSRH_GPG_SECRET_KEY_PASSWORD
     - name: Login to registry.redhat.io
       uses: docker/login-action@v3.1.0
       with:
@@ -26,7 +24,10 @@ jobs:
         password: ${{ secrets.REDHAT_REGISTRY_TOKEN }}
         registry: registry.redhat.io
     - name: Build with Maven
-      run: mvn -X -B deploy -Drevision=${GITHUB_REF_NAME:1} -Prelease
+      run: mvn -B deploy -Drevision=${GITHUB_REF_NAME:1} -Prelease
+      env:
+        MAVEN_GPG_KEY: ${{ secrets.OPENAPI_OSSRH_GPG_SECRET_KEY }}
+        MAVEN_GPG_PASSPHRASE: ${{ secrets.OPENAPI_OSSRH_GPG_SECRET_KEY_PASSWORD }}
     - name: Publish doc
       uses: peaceiris/actions-gh-pages@v4
       with:
