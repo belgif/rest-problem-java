@@ -7,10 +7,12 @@
   <artifactId>belgif-rest-problem-parent</artifactId>
   <version>${revision}</version>
   <packaging>pom</packaging>
+  <name>${project.groupId}:${project.artifactId}</name>
   <description>
     Java library for RFC 9457 Problems with support for standard problem types of the Belgif REST guide
     (https://www.belgif.be/specification/rest/api-guide/#error-handling).
   </description>
+  <url>https://github.com/belgif/rest-problem-java</url>
 
   <properties>
     <revision>latest</revision>
@@ -100,6 +102,11 @@
           <version>3.2.3</version>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.3.1</version>
+        </plugin>
+        <plugin>
           <groupId>org.asciidoctor</groupId>
           <artifactId>asciidoctor-maven-plugin</artifactId>
           <version>3.0.0</version>
@@ -174,6 +181,13 @@
     </plugins>
   </build>
 
+  <developers>
+    <developer>
+      <name>KSZ-BCSS REST tools team</name>
+      <email>RestToolsTeam@ksz-bcss.fgov.be</email>
+    </developer>
+  </developers>
+
   <licenses>
     <license>
       <name>The Apache License, Version 2.0</name>
@@ -214,6 +228,35 @@
                 </goals>
                 <configuration>
                   <signer>bc</signer>
+                  <skip>true</skip>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadoc</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <configuration>
+                  <doclint>all,-missing</doclint>
+                  <excludePackageNames>*.internal</excludePackageNames>
                 </configuration>
               </execution>
             </executions>
