@@ -26,7 +26,7 @@ jobs:
         password: ${{ secrets.REDHAT_REGISTRY_TOKEN }}
         registry: registry.redhat.io
     - name: Build with Maven
-      run: mvn -B deploy -Drevision=${GITHUB_REF_NAME:1} -Prelease
+      run: mvn -X -B deploy -Drevision=${GITHUB_REF_NAME:1} -Prelease
     - name: Publish doc
       uses: peaceiris/actions-gh-pages@v4
       with:
