@@ -6,6 +6,14 @@ This project is built with maven.
 
 `mvn package`
 
+## Spotless
+
+The source code formatting is kept clean and consistent using [spotless-maven-plugin](https://github.com/diffplug/spotless/tree/main/plugin-maven).
+
+The build enforces correct source code formatting. To automatically apply the correct formatting, run
+
+`mvn spotless:apply`
+
 ## Integration tests
 
 This project also contains integration tests for Java EE and Spring Boot.
