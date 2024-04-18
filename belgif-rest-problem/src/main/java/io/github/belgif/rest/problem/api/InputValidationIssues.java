@@ -25,6 +25,8 @@ public class InputValidationIssues {
 
     public static final URI ISSUE_TYPE_INVALID_STRUCTURE =
             URI.create("urn:problem-type:cbss:input-validation:invalidStructure");
+    public static final URI ISSUE_TYPE_OUT_OF_RANGE =
+            URI.create("urn:problem-type:cbss:input-validation:outOfRange");
     public static final URI ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND =
             URI.create("urn:problem-type:cbss:input-validation:referencedResourceNotFound");
     public static final URI ISSUE_TYPE_REJECTED_INPUT =
@@ -70,6 +72,28 @@ public class InputValidationIssues {
                 "Input value has invalid structure")
                         .detail(detail)
                         .in(in, name, value);
+    }
+
+    public static <T extends Comparable<T>> InputValidationIssue outOfRange(InEnum in, String name, T value, T min,
+            T max) {
+        if (min == null && max == null) {
+            throw new IllegalArgumentException("At least one of min, max must be non-null");
+        }
+        InputValidationIssue issue =
+                new InputValidationIssue(ISSUE_TYPE_INVALID_STRUCTURE, "Input value is out of range")
+                        .in(in, name, value);
+        if (min != null && max != null) {
+            issue.detail(String.format("Input value %s = %s is out of range [%s, %s]", name, value, min, max))
+                    .additionalProperty("minimum", min.toString())
+                    .additionalProperty("maximum", max.toString());
+        } else if (min != null) {
+            issue.detail(String.format("Input value %s = %s should be at least %s", name, value, min))
+                    .additionalProperty("minimum", min.toString());
+        } else {
+            issue.detail(String.format("Input value %s = %s should not exceed %s", name, value, max))
+                    .additionalProperty("maximum", max.toString());
+        }
+        return issue;
     }
 
     public static InputValidationIssue referencedResourceNotFound(InEnum in, String name, Object value) {

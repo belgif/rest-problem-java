@@ -229,6 +229,7 @@
               </includes>
               <excludes>
                 <exclude>**/target/**</exclude>
+                <exclude>**/.idea/**</exclude>
               </excludes>
               <eclipseWtp>
                 <type>XML</type>
