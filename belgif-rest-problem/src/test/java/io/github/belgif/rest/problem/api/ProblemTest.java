@@ -1,7 +1,6 @@
 package io.github.belgif.rest.problem.api;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.URI;
 
@@ -37,7 +36,7 @@ class ProblemTest {
         String json = mapper.writeValueAsString(problem);
         print(json);
         Problem result = mapper.readValue(json, Problem.class);
-        assertEquals(BadRequestProblem.class, result.getClass());
+        assertThat(result).isInstanceOf(BadRequestProblem.class);
         print(mapper.writeValueAsString(result));
     }
 
@@ -48,9 +47,9 @@ class ProblemTest {
         String json = mapper.writeValueAsString(problem);
         print(json);
         Problem result = mapper.readValue(json, Problem.class);
-        assertEquals(BadRequestProblem.class, result.getClass());
-        assertEquals("23456789012",
-                ((BadRequestProblem) result).getIssues().get(0).getAdditionalProperties().get("replacedBy"));
+        assertThat(result).isInstanceOf(BadRequestProblem.class);
+        assertThat(((BadRequestProblem) result).getIssues().get(0).getAdditionalProperties())
+                .containsEntry("replacedBy", "23456789012");
         print(mapper.writeValueAsString(result));
     }
 
@@ -68,7 +67,7 @@ class ProblemTest {
         String json = mapper.writeValueAsString(problem);
         print(json);
         Problem result = mapper.readValue(json, Problem.class);
-        assertEquals(BadRequestProblem.class, result.getClass());
+        assertThat(result).isInstanceOf(BadRequestProblem.class);
         assertThat(((BadRequestProblem) result).getIssues().get(0).getInputs()).hasSize(2);
         print(mapper.writeValueAsString(result));
     }
@@ -97,7 +96,7 @@ class ProblemTest {
                 + "  ]\n"
                 + "}";
         Problem result = mapper.readValue(json, Problem.class);
-        assertEquals(BadRequestProblem.class, result.getClass());
+        assertThat(result).isInstanceOf(BadRequestProblem.class);
         InputValidationIssue issue = ((BadRequestProblem) result).getIssues().get(0);
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getInputs().get(0).getName()).isEqualTo("test");
@@ -114,7 +113,7 @@ class ProblemTest {
         String json = mapper.writeValueAsString(problem);
         print(json);
         Problem result = mapper.readValue(json, Problem.class);
-        assertEquals(DefaultProblem.class, result.getClass());
+        assertThat(result).isInstanceOf(DefaultProblem.class);
         print(mapper.writeValueAsString(result));
     }
 
@@ -135,7 +134,7 @@ class ProblemTest {
                 + "   }]\n"
                 + "}";
         Problem problem = mapper.readValue(json, Problem.class);
-        assertEquals(BadRequestProblem.class, problem.getClass());
+        assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
         InvalidParam invalidParam = badRequestProblem.getInvalidParams().get(0);
     }
@@ -149,7 +148,7 @@ class ProblemTest {
                 + "  \"details\" : [ ]\n"
                 + "}";
         Problem problem = mapper.readValue(json, Problem.class);
-        assertEquals(DefaultProblem.class, problem.getClass());
+        assertThat(problem).isInstanceOf(DefaultProblem.class);
         DefaultProblem defaultProblem = (DefaultProblem) problem;
         assertThat(defaultProblem.getAdditionalProperties()).containsEntry("message", "552-Id Value is invalid");
     }
