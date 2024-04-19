@@ -80,7 +80,7 @@ public class InputValidationIssues {
             throw new IllegalArgumentException("At least one of min, max must be non-null");
         }
         InputValidationIssue issue =
-                new InputValidationIssue(ISSUE_TYPE_INVALID_STRUCTURE, "Input value is out of range")
+                new InputValidationIssue(ISSUE_TYPE_OUT_OF_RANGE, "Input value is out of range")
                         .in(in, name, value);
         if (min != null && max != null) {
             issue.detail(String.format("Input value %s = %s is out of range [%s, %s]", name, value, min, max))
