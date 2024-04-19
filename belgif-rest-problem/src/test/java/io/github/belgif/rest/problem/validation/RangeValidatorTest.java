@@ -16,15 +16,15 @@ class RangeValidatorTest {
 
     @Test
     void validateOk() {
-        tested = new RangeValidator<>(Input.query("page", 3), 0, 5);
+        tested = new RangeValidator<>(Input.query("page", 3), 1, 5);
         assertThat(tested.validate()).isEmpty();
-        tested = new RangeValidator<>(Input.query("page", 5), 0, 5);
+        tested = new RangeValidator<>(Input.query("page", 5), 1, 5);
         assertThat(tested.validate()).isEmpty();
-        tested = new RangeValidator<>(Input.query("page", 0), 0, 5);
+        tested = new RangeValidator<>(Input.query("page", 1), 1, 5);
         assertThat(tested.validate()).isEmpty();
-        tested = new RangeValidator<>(Input.query("page", 3), 0, null);
+        tested = new RangeValidator<>(Input.query("page", 3), 1, null);
         assertThat(tested.validate()).isEmpty();
-        tested = new RangeValidator<>(Input.query("page", 0), 0, null);
+        tested = new RangeValidator<>(Input.query("page", 1), 1, null);
         assertThat(tested.validate()).isEmpty();
         tested = new RangeValidator<>(Input.query("page", 3), null, 5);
         assertThat(tested.validate()).isEmpty();
@@ -40,45 +40,45 @@ class RangeValidatorTest {
 
     @Test
     void validateNullInput() {
-        assertThrows(NullPointerException.class, () -> new RangeValidator<>(null, 0, 5),
+        assertThrows(NullPointerException.class, () -> new RangeValidator<>(null, 1, 5),
                 "Should have thrown exception");
     }
 
     @Test
     void validateNullIn() {
         assertThrows(NullPointerException.class,
-                () -> new RangeValidator<>(new Input<>(null, "page", 3), 0, 5),
+                () -> new RangeValidator<>(new Input<>(null, "page", 3), 1, 5),
                 "Should have thrown exception");
     }
 
     @Test
     void validateNullName() {
         assertThrows(NullPointerException.class,
-                () -> new RangeValidator<>(new Input<>(QUERY, null, 3), 0, 5),
+                () -> new RangeValidator<>(new Input<>(QUERY, null, 3), 1, 5),
                 "Should have thrown exception");
     }
 
     @Test
     void validateOutOfRangeTooSmall() {
-        tested = new RangeValidator<>(Input.query("page", -1), 0, 5);
+        tested = new RangeValidator<>(Input.query("page", 0), 1, 5);
         InputValidationIssue expected =
-                InputValidationIssues.outOfRange(QUERY, "page", -1, 0, 5);
+                InputValidationIssues.outOfRange(QUERY, "page", 0, 1, 5);
         assertThat(tested.validate()).contains(expected);
     }
 
     @Test
     void validateOutOfRangeTooSmallMinOnly() {
-        tested = new RangeValidator<>(Input.query("page", -1), 0, null);
+        tested = new RangeValidator<>(Input.query("page", 0), 1, null);
         InputValidationIssue expected =
-                InputValidationIssues.outOfRange(QUERY, "page", -1, 0, null);
+                InputValidationIssues.outOfRange(QUERY, "page", 0, 1, null);
         assertThat(tested.validate()).contains(expected);
     }
 
     @Test
     void validateOutOfRangeTooLarge() {
-        tested = new RangeValidator<>(Input.query("page", 6), 0, 5);
+        tested = new RangeValidator<>(Input.query("page", 6), 1, 5);
         InputValidationIssue expected =
-                InputValidationIssues.outOfRange(QUERY, "page", 6, 0, 5);
+                InputValidationIssues.outOfRange(QUERY, "page", 6, 1, 5);
         assertThat(tested.validate()).contains(expected);
     }
 
