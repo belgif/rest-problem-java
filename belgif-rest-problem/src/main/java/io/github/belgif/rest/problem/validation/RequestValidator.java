@@ -372,6 +372,46 @@ public class RequestValidator {
     }
 
     /**
+     * Validate that the given input value is in the given [min, max] range.
+     *
+     * @param input the input to validate
+     * @param min the minimum (inclusive)
+     * @param max the maximum (inclusive)
+     * @param <T> the input type
+     * @return this RequestValidator
+     */
+    public <T extends Comparable<T>> RequestValidator range(Input<T> input, T min, T max) {
+        if (input != null && input.getValue() != null) {
+            validators.add(new RangeValidator<>(input, min, max));
+        }
+        return this;
+    }
+
+    /**
+     * Validate that the given input value is not less than the given minimum.
+     *
+     * @param input the input to validate
+     * @param min the minimum (inclusive)
+     * @param <T> the input type
+     * @return this RequestValidator
+     */
+    public <T extends Comparable<T>> RequestValidator minimum(Input<T> input, T min) {
+        return range(input, min, null);
+    }
+
+    /**
+     * Validate that the given input value does not exceed the given maximum.
+     *
+     * @param input the input to validate
+     * @param max the maximum (inclusive)
+     * @param <T> the input type
+     * @return this RequestValidator
+     */
+    public <T extends Comparable<T>> RequestValidator maximum(Input<T> input, T max) {
+        return range(input, null, max);
+    }
+
+    /**
      * Register a custom {@link InputValidator}.
      *
      * @param validator the custom validator
