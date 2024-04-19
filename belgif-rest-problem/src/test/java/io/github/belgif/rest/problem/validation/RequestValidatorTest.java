@@ -60,6 +60,10 @@ class RequestValidatorTest {
         tested.reject(Input.body("reject", null));
         tested.require(Input.body("required", "ok"));
 
+        tested.range(Input.query("page", 3), 1, 5);
+        tested.minimum(Input.query("page", 3), 1);
+        tested.maximum(Input.query("page", 3), 5);
+
         assertDoesNotThrow(() -> tested.validate());
     }
 
@@ -265,6 +269,27 @@ class RequestValidatorTest {
         tested.when(true, validator -> validator.reject(Input.body("reject", "bad")));
         verifyValidateWithError(new BadRequestProblem(
                 InputValidationIssues.rejectedInput(BODY, "reject", "bad")));
+    }
+
+    @Test
+    void validateRangeNOk() {
+        tested.range(Input.query("page", 6), 1, 5);
+        verifyValidateWithError(new BadRequestProblem(
+                InputValidationIssues.outOfRange(QUERY, "page", 6, 1, 5)));
+    }
+
+    @Test
+    void validateMinimumNOk() {
+        tested.minimum(Input.query("page", 0), 1);
+        verifyValidateWithError(new BadRequestProblem(
+                InputValidationIssues.outOfRange(QUERY, "page", 0, 1, null)));
+    }
+
+    @Test
+    void validateMaximumNOk() {
+        tested.maximum(Input.query("page", 6), 5);
+        verifyValidateWithError(new BadRequestProblem(
+                InputValidationIssues.outOfRange(QUERY, "page", 6, null, 5)));
     }
 
     @Test
