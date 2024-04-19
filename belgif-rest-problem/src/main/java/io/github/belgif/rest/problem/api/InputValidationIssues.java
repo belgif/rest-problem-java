@@ -108,10 +108,10 @@ public class InputValidationIssues {
                 .in(in, name, value);
     }
 
-    public static InputValidationIssue requiredInput(InEnum in, String name, Object value) {
+    public static InputValidationIssue requiredInput(InEnum in, String name) {
         return new InputValidationIssue(ISSUE_TYPE_REQUIRED_INPUT, "Input is required in this context")
                 .detail(String.format("Input %s is required in this context", name))
-                .in(in, name, value);
+                .in(in, name, null);
     }
 
     public static InputValidationIssue replacedSsin(InEnum in, String name, String ssin, String newSsin) {
@@ -167,7 +167,7 @@ public class InputValidationIssues {
     public static InputValidationIssue invalidEstablishmentUnitNumber(InEnum in, String name,
             String establishmentUnitNumber) {
         return invalidStructure(in, name, establishmentUnitNumber,
-                String.format("Establishment number %s is invalid", establishmentUnitNumber));
+                String.format("Establishment unit number %s is invalid", establishmentUnitNumber));
     }
 
     public static InputValidationIssue exactlyOneOfExpected(List<Input<?>> inputs) {

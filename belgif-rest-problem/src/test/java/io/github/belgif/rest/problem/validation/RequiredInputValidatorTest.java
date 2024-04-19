@@ -21,7 +21,7 @@ class RequiredInputValidatorTest {
     @Test
     void validateNOk() {
         RequiredInputValidator<String> validator = new RequiredInputValidator<>(Input.body("required", null));
-        InputValidationIssue expected = InputValidationIssues.requiredInput(BODY, "required", null);
+        InputValidationIssue expected = InputValidationIssues.requiredInput(BODY, "required");
         InputValidationIssue result = validator.validate().get();
         assertThat(result).usingRecursiveComparison().isEqualTo(expected);
     }

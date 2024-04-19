@@ -255,7 +255,7 @@ class RequestValidatorTest {
     void validateRequiredInput() {
         tested.require(Input.body("required", null));
         verifyValidateWithError(new BadRequestProblem(
-                InputValidationIssues.requiredInput(BODY, "required", null)));
+                InputValidationIssues.requiredInput(BODY, "required")));
     }
 
     @Test
