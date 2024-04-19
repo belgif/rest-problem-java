@@ -661,6 +661,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="io/github/belgif/rest/problem/api/InputValidationIssues.html#ISSUE_TYPE_INVALID_STRUCTURE" class="member-name-link">ISSUE_TYPE_INVALID_STRUCTURE</a> - Static variable in class io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/InputValidationIssues.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssues</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/github/belgif/rest/problem/api/InputValidationIssues.html#ISSUE_TYPE_OUT_OF_RANGE" class="member-name-link">ISSUE_TYPE_OUT_OF_RANGE</a> - Static variable in class io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/InputValidationIssues.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssues</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/github/belgif/rest/problem/api/InputValidationIssues.html#ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND" class="member-name-link">ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND</a> - Static variable in class io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/InputValidationIssues.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssues</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/github/belgif/rest/problem/api/InputValidationIssues.html#ISSUE_TYPE_REJECTED_INPUT" class="member-name-link">ISSUE_TYPE_REJECTED_INPUT</a> - Static variable in class io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/InputValidationIssues.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssues</a></dt>
@@ -693,6 +695,14 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:M">M</h2>
 <dl class="index">
+<dt><a href="io/github/belgif/rest/problem/validation/RequestValidator.html#maximum(io.github.belgif.rest.problem.api.Input,T)" class="member-name-link">maximum(Input&lt;T&gt;, T)</a> - Method in class io.github.belgif.rest.problem.validation.<a href="io/github/belgif/rest/problem/validation/RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></dt>
+<dd>
+<div class="block">Validate that the given input value does not exceed the given maximum.</div>
+</dd>
+<dt><a href="io/github/belgif/rest/problem/validation/RequestValidator.html#minimum(io.github.belgif.rest.problem.api.Input,T)" class="member-name-link">minimum(Input&lt;T&gt;, T)</a> - Method in class io.github.belgif.rest.problem.validation.<a href="io/github/belgif/rest/problem/validation/RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></dt>
+<dd>
+<div class="block">Validate that the given input value is not less than the given minimum.</div>
+</dd>
 <dt><a href="io/github/belgif/rest/problem/MissingPermissionProblem.html" class="type-name-link" title="class in io.github.belgif.rest.problem">MissingPermissionProblem</a> - Exception Class in <a href="io/github/belgif/rest/problem/package-summary.html">io.github.belgif.rest.problem</a></dt>
 <dd>
 <div class="block">HTTP 403: Missing Permission (https://www.belgif.be/specification/rest/api-guide/problems/missingPermission.html)</div>
@@ -728,6 +738,8 @@ loadScripts(document, 'script');</script>
 <h2 class="title" id="I:O">O</h2>
 <dl class="index">
 <dt><a href="io/github/belgif/rest/problem/jaxrs/client/ProblemRestClientListener.html#onNewClient(java.lang.Class,org.eclipse.microprofile.rest.client.RestClientBuilder)" class="member-name-link">onNewClient(Class&lt;?&gt;, RestClientBuilder)</a> - Method in class io.github.belgif.rest.problem.jaxrs.client.<a href="io/github/belgif/rest/problem/jaxrs/client/ProblemRestClientListener.html" title="class in io.github.belgif.rest.problem.jaxrs.client">ProblemRestClientListener</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/github/belgif/rest/problem/api/InputValidationIssues.html#outOfRange(io.github.belgif.rest.problem.api.InEnum,java.lang.String,T,T,T)" class="member-name-link">outOfRange(InEnum, String, T, T, T)</a> - Static method in class io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/InputValidationIssues.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssues</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:P">P</h2>
@@ -891,6 +903,10 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:R">R</h2>
 <dl class="index">
+<dt><a href="io/github/belgif/rest/problem/validation/RequestValidator.html#range(io.github.belgif.rest.problem.api.Input,T,T)" class="member-name-link">range(Input&lt;T&gt;, T, T)</a> - Method in class io.github.belgif.rest.problem.validation.<a href="io/github/belgif/rest/problem/validation/RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></dt>
+<dd>
+<div class="block">Validate that the given input value is in the given [min, max] range.</div>
+</dd>
 <dt><a href="io/github/belgif/rest/problem/jaxrs/client/ProblemClientBuilder.html#readTimeout(long,java.util.concurrent.TimeUnit)" class="member-name-link">readTimeout(long, TimeUnit)</a> - Method in class io.github.belgif.rest.problem.jaxrs.client.<a href="io/github/belgif/rest/problem/jaxrs/client/ProblemClientBuilder.html" title="class in io.github.belgif.rest.problem.jaxrs.client">ProblemClientBuilder</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/github/belgif/rest/problem/validation/RequestValidator.html#refData(io.github.belgif.rest.problem.api.Input,java.util.Collection)" class="member-name-link">refData(Input&lt;T&gt;, Collection&lt;T&gt;)</a> - Method in class io.github.belgif.rest.problem.validation.<a href="io/github/belgif/rest/problem/validation/RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></dt>
