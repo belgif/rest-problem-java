@@ -76,6 +76,15 @@ public class Input<V> {
         return Objects.hash(in, name, value);
     }
 
+    @Override
+    public String toString() {
+        return "Input{" +
+                "in=" + in +
+                ", name='" + name + '\'' +
+                ", value=" + value +
+                '}';
+    }
+
     public static <V> Input<V> body(String name, V value) {
         return new Input<>(InEnum.BODY, name, value);
     }
@@ -91,4 +100,5 @@ public class Input<V> {
     public static <V> Input<V> header(String name, V value) {
         return new Input<>(InEnum.HEADER, name, value);
     }
+
 }

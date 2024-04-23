@@ -49,20 +49,27 @@ class TimeReflectionUtilTest {
                 "Should have thrown exception");
     }
 
-    class InputPeriodInvalidName {
-        private LocalDate beginDate;
-        private LocalDate endingDate;
+    static class InputPeriodInvalidName {
+        private final LocalDate beginDate;
+        private final LocalDate endingDate;
 
         InputPeriodInvalidName(LocalDate beginDate, LocalDate endingDate) {
             this.beginDate = beginDate;
             this.endingDate = endingDate;
         }
 
+        public LocalDate getBeginDate() {
+            return beginDate;
+        }
+
+        public LocalDate getEndingDate() {
+            return endingDate;
+        }
     }
 
-    class InputPeriodInvalidType {
-        private Calendar startDate;
-        private Calendar endDate;
+    static class InputPeriodInvalidType {
+        private final Calendar startDate;
+        private final Calendar endDate;
 
         InputPeriodInvalidType(Calendar startDate, Calendar endDate) {
             this.startDate = startDate;
@@ -77,4 +84,5 @@ class TimeReflectionUtilTest {
             return endDate;
         }
     }
+
 }

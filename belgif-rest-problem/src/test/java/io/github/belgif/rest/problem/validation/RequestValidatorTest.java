@@ -2,15 +2,13 @@ package io.github.belgif.rest.problem.validation;
 
 import static io.github.belgif.rest.problem.api.InEnum.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
@@ -19,302 +17,432 @@ import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 
 class RequestValidatorTest {
-    private RequestValidator tested;
 
-    @BeforeEach
-    void init() {
-        tested = new RequestValidator();
+    @Test
+    void ssinValid() {
+        assertValid(new RequestValidator().ssin(Input.body("ssin", "00000000196")));
     }
 
     @Test
-    void validateAllOk() {
-        tested.ssin(Input.body("criteria.ssin", "23292805780"));
-
-        tested.enterpriseNumber(Input.body("criteria.enterpriseNumber", "0694965804"));
-
-        tested.establishmentUnitNumber(Input.body("criteria.establishmentUnitNumber", "2275037604"));
-
-        tested.period(Input.body("criteria.periods.period", new InputPeriod(null, LocalDate.of(2023, 10, 12))));
-        tested.period(Input.body("criteria.periods.start", null),
-                Input.body("criteria.periods.end", LocalDate.of(2023, 10, 12)));
-
-        tested.incompleteDate(Input.body("criteria.date", "2024-01-00"));
-        tested.yearMonth(Input.body("criteria.month", "2024-01"));
-
-        tested.exactlyOneOf(Input.body("cbeNumber", null), Input.body("sector", "25"));
-
-        tested.equal(Input.header("id", "25"), Input.body("id", "25"));
-
-        tested.nullOrEqual(Input.header("id", "25"), Input.body("id", "25"));
-        tested.nullOrEqual(Input.header("id", null), Input.body("id", "25"));
-
-        tested.anyOf(Input.header("id", "25"), Input.body("id1", null));
-
-        tested.zeroOrAllOf(Input.body("cbeNumber", null), Input.body("sector", null));
-
-        tested.zeroOrExactlyOneOf(Input.body("cbeNumber", null), Input.body("sector", null));
-
-        tested.refData(Input.query("refData", "a"), Arrays.asList("a", "b", "c"));
-        tested.refData(Input.query("refData", "a"), "A"::equalsIgnoreCase);
-
-        tested.reject(Input.body("reject", null));
-        tested.require(Input.body("required", "ok"));
-
-        tested.range(Input.query("page", 3), 1, 5);
-        tested.minimum(Input.query("page", 3), 1);
-        tested.maximum(Input.query("page", 3), 5);
-
-        assertDoesNotThrow(() -> tested.validate());
+    void ssinNull() {
+        assertValid(new RequestValidator().ssin(null));
+        assertValid(new RequestValidator().ssin(Input.body("ssin", null)));
     }
 
     @Test
-    void validateNullOk() {
-        tested.ssin(Input.body("criteria.ssin", null));
-        tested.enterpriseNumber(Input.body("criteria.enterpriseNumber", null));
-        tested.establishmentUnitNumber(Input.body("criteria.establishmentUnitNumber", null));
-        tested.period(Input.body("criteria.periods.period", null));
-        tested.incompleteDate(Input.body("criteria.date", null));
-        tested.yearMonth(Input.body("criteria.month", null));
-        tested.refData(Input.body("criteria.refData", null), Arrays.asList("A", "B"));
-        tested.refData(Input.body("criteria.refData", null), "A"::equals);
-        assertDoesNotThrow(() -> tested.validate());
+    void ssinInvalid() {
+        assertInvalid(
+                new RequestValidator().ssin(Input.body("ssin", "22222222222")),
+                InputValidationIssues.invalidSsin(BODY, "ssin", "22222222222"));
     }
 
     @Test
-    void validateSsinNok() {
-        tested.ssin(Input.body("criteria.ssin", "22222222222"));
-        verifyValidateWithError(
-                new BadRequestProblem(InputValidationIssues.invalidSsin(BODY, "criteria.ssin", "22222222222")));
+    void ssinsInvalid() {
+        assertInvalid(
+                new RequestValidator().ssins(Input.body("ssins",
+                        Arrays.asList("00000000196", "11111111111", "00000000295", "22222222222"))),
+                InputValidationIssues.invalidSsin(BODY, "ssins[1]", "11111111111"),
+                InputValidationIssues.invalidSsin(BODY, "ssins[3]", "22222222222"));
     }
 
     @Test
-    void validateSsinsNok() {
-        tested.ssins(Input.body("criteria.ssins",
-                Arrays.asList("00000000196", "11111111111", "00000000295", "22222222222")));
-        verifyValidateWithError(new BadRequestProblem(Arrays.asList(
-                InputValidationIssues.invalidSsin(BODY, "criteria.ssins[1]", "11111111111"),
-                InputValidationIssues.invalidSsin(BODY, "criteria.ssins[3]", "22222222222"))));
+    void enterpriseNumberValid() {
+        assertValid(new RequestValidator().enterpriseNumber(Input.body("enterpriseNumber", "0884303369")));
     }
 
     @Test
-    void validateEnterpriseNumberNOk() {
-        tested.enterpriseNumber(Input.body("criteria.enterpriseNumber", "2111111112"));
-        verifyValidateWithError(new BadRequestProblem(
-                InputValidationIssues.invalidEnterpriseNumber(BODY, "criteria.enterpriseNumber",
-                        "2111111112")));
+    void enterpriseNumberNull() {
+        assertValid(new RequestValidator().enterpriseNumber(null));
+        assertValid(new RequestValidator().enterpriseNumber(Input.body("enterpriseNumber", null)));
     }
 
     @Test
-    void validateEstablishmentUnitNumberNOk() {
-        tested.establishmentUnitNumber(Input.body("criteria.establishmentUnitNumber", "2111111111"));
-        verifyValidateWithError(new BadRequestProblem(
-                InputValidationIssues.invalidEstablishmentUnitNumber(BODY, "criteria.establishmentUnitNumber",
-                        "2111111111")));
+    void enterpriseNumberInvalid() {
+        assertInvalid(
+                new RequestValidator().enterpriseNumber(Input.body("enterpriseNumber", "2111111112")),
+                InputValidationIssues.invalidEnterpriseNumber(BODY, "enterpriseNumber", "2111111112"));
     }
 
     @Test
-    void validatePeriodNOk() {
+    void establishmentUnitNumberValid() {
+        assertValid(
+                new RequestValidator().establishmentUnitNumber(Input.body("establishmentUnitNumber", "2297964444")));
+    }
+
+    @Test
+    void establishmentUnitNumberNull() {
+        assertValid(new RequestValidator().establishmentUnitNumber(null));
+        assertValid(new RequestValidator().establishmentUnitNumber(Input.body("establishmentUnitNumber", null)));
+    }
+
+    @Test
+    void establishmentUnitNumberInvalid() {
+        assertInvalid(
+                new RequestValidator().establishmentUnitNumber(Input.body("establishmentUnitNumber", "2111111111")),
+                InputValidationIssues.invalidEstablishmentUnitNumber(BODY, "establishmentUnitNumber", "2111111111"));
+    }
+
+    @Test
+    void periodValid() {
+        InputPeriod period = new InputPeriod(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 12, 31));
+        assertValid(new RequestValidator().period(Input.body("period", period)));
+    }
+
+    @Test
+    void periodNull() {
+        assertValid(new RequestValidator().period(null));
+        assertValid(new RequestValidator().period(Input.body("period", null)));
+    }
+
+    @Test
+    void periodInvalid() {
         InputPeriod badPeriod = new InputPeriod(LocalDate.of(2023, 10, 14), LocalDate.of(2023, 10, 12));
-        tested.period(Input.body("criteria.periods.period", badPeriod));
-        verifyValidateWithError(new BadRequestProblem(
-                InputValidationIssues.invalidPeriod(BODY, "criteria.periods.period", badPeriod)));
+        assertInvalid(new RequestValidator().period(Input.body("period", badPeriod)),
+                InputValidationIssues.invalidPeriod(BODY, "period", badPeriod));
     }
 
     @Test
-    void validateIncompleteDateNOk() {
-        tested.incompleteDate(Input.body("criteria.date", "2024-00-01"));
-        verifyValidateWithError(new BadRequestProblem(
-                InputValidationIssues.invalidIncompleteDate(BODY, "criteria.date", "2024-00-01")));
+    void temporalPeriodValid() {
+        assertValid(new RequestValidator().period(Input.body("startDate", LocalDate.of(2023, 1, 1)),
+                Input.body("endDate", LocalDate.of(2023, 12, 31))));
     }
 
     @Test
-    void validateYearMonthNOk() {
-        tested.yearMonth(Input.body("criteria.month", "2024-99"));
-        verifyValidateWithError(new BadRequestProblem(
-                InputValidationIssues.invalidYearMonth(BODY, "criteria.month", "2024-99")));
+    void temporalPeriodInvalid() {
+        assertInvalid(
+                new RequestValidator().period(Input.body("startDate", LocalDate.of(2023, 10, 14)),
+                        Input.body("endDate", LocalDate.of(2023, 10, 12))),
+                InputValidationIssues.invalidPeriod(Input.body("startDate", LocalDate.of(2023, 10, 14)),
+                        Input.body("endDate", LocalDate.of(2023, 10, 12))));
     }
 
     @Test
-    void validateExactlyOneOfNOk() {
-        List<Input<?>> items = Arrays.asList(Input.body("cbeNumber", "0694965804"),
-                Input.body("sector", "25"));
-        tested.exactlyOneOf(Input.body("cbeNumber", "0694965804"), Input.body("sector", "25"));
-        verifyValidateWithError(new BadRequestProblem(InputValidationIssues.exactlyOneOfExpected(items)));
+    void incompleteDateValid() {
+        assertValid(new RequestValidator().incompleteDate(Input.body("date", "2024-00-00")));
     }
 
     @Test
-    void validateEqualNOk() {
-        List<Input<?>> items = Arrays.asList(Input.header("id", "25"),
-                Input.body("id", "26"));
-        tested.equal(Input.header("id", "25"), Input.body("id", "26"));
-        verifyValidateWithError(new BadRequestProblem(InputValidationIssues.equalExpected(items)));
+    void incompleteDateNull() {
+        assertValid(new RequestValidator().incompleteDate(null));
+        assertValid(new RequestValidator().incompleteDate(Input.body("date", null)));
     }
 
     @Test
-    void validateNullOrEqualNOk() {
-        List<Input<?>> items = Arrays.asList(Input.header("id", "25"),
-                Input.body("id", "26"));
-        tested.nullOrEqual(Input.header("id", "25"), Input.body("id", "26"));
-        verifyValidateWithError(new BadRequestProblem(InputValidationIssues.equalExpected(items)));
+    void incompleteDateInvalid() {
+        assertInvalid(
+                new RequestValidator().incompleteDate(Input.body("date", "2024-00-01")),
+                InputValidationIssues.invalidIncompleteDate(BODY, "date", "2024-00-01"));
+
     }
 
     @Test
-    void validateAnyOfNOk() {
-        List<Input<?>> items =
-                Arrays.asList(Input.header("id", null), Input.body("id1", null));
-        tested.anyOf(Input.header("id", null), Input.body("id1", null));
-        verifyValidateWithError(new BadRequestProblem(InputValidationIssues.anyOfExpected(items)));
+    void yearMonthValid() {
+        assertValid(new RequestValidator().yearMonth(Input.body("yearMonth", "2024-01")));
     }
 
     @Test
-    void validateZeroOrAllOfNOk() {
-        List<Input<?>> items = Arrays.asList(Input.body("cbeNumber", "0694965804"),
-                Input.body("sector", null));
-        tested.zeroOrAllOf(Input.body("cbeNumber", "0694965804"), Input.body("sector", null));
-        verifyValidateWithError(new BadRequestProblem(InputValidationIssues.zeroOrAllOfExpected(items)));
+    void yearMonthNull() {
+        assertValid(new RequestValidator().yearMonth(null));
+        assertValid(new RequestValidator().yearMonth(Input.body("yearMonth", null)));
     }
 
     @Test
-    void validateZeroOrExactlyOneOfNOk() {
-        List<Input<?>> items = Arrays.asList(Input.body("cbeNumber", "0694965804"),
-                Input.body("sector", "25"));
-        tested.zeroOrExactlyOneOf(Input.body("cbeNumber", "0694965804"), Input.body("sector", "25"));
-        verifyValidateWithError(new BadRequestProblem(InputValidationIssues.zeroOrExactlyOneOfExpected(items)));
+    void yearMonthInvalid() {
+        assertInvalid(new RequestValidator().yearMonth(Input.body("yearMonth", "2024-99")),
+                InputValidationIssues.invalidYearMonth(BODY, "yearMonth", "2024-99"));
     }
 
     @Test
-    void validateRefDataNok() {
-        tested.refData(Input.query("refData", "x"), Arrays.asList("a", "b", "c"));
-        verifyValidateWithError(
-                new BadRequestProblem(InputValidationIssues.referencedResourceNotFound(QUERY, "refData", "x")));
+    void exactlyOneOfValid() {
+        Input<?>[] inputs = { Input.body("cbeNumber", null), Input.body("sector", "25") };
+        assertValid(new RequestValidator().exactlyOneOf(inputs));
     }
 
     @Test
-    void validateRefDataNokSupplier() {
-        tested.refData(Input.query("refData", "x"), () -> Arrays.asList("a", "b", "c"));
-        verifyValidateWithError(
-                new BadRequestProblem(InputValidationIssues.referencedResourceNotFound(QUERY, "refData", "x")));
+    void exactlyOneOfInvalidMoreThatOne() {
+        Input<?>[] inputs = { Input.body("cbeNumber", "0694965804"), Input.body("sector", "25") };
+        assertInvalid(new RequestValidator().exactlyOneOf(inputs),
+                InputValidationIssues.exactlyOneOfExpected(Arrays.asList(inputs)));
     }
 
     @Test
-    void validateRefDataNokPredicate() {
-        tested.refData(Input.query("refData", "x"), Arrays.asList("a", "b", "c")::contains);
-        verifyValidateWithError(
-                new BadRequestProblem(InputValidationIssues.referencedResourceNotFound(QUERY, "refData", "x")));
+    void exactlyOneOfInvalidNone() {
+        Input<?>[] inputs = { Input.body("cbeNumber", null), Input.body("sector", null) };
+        assertInvalid(new RequestValidator().exactlyOneOf(inputs),
+                InputValidationIssues.exactlyOneOfExpected(Arrays.asList(inputs)));
     }
 
     @Test
-    void validateRefDatasNok() {
-        tested.refDatas(Input.query("refDatas", Arrays.asList("a", "x", "b", "y")), Arrays.asList("a", "b", "c"));
-        verifyValidateWithError(new BadRequestProblem(Arrays.asList(
+    void anyOfValid() {
+        Input<?>[] inputs = { Input.query("a", "value"), Input.query("b", null) };
+        assertValid(new RequestValidator().anyOf(inputs));
+    }
+
+    @Test
+    void anyOfInvalid() {
+        Input<?>[] inputs = { Input.query("a", null), Input.query("b", null) };
+        assertInvalid(new RequestValidator().anyOf(inputs),
+                InputValidationIssues.anyOfExpected(Arrays.asList(inputs)));
+    }
+
+    @Test
+    void zeroOrAllOfValidZero() {
+        Input<?>[] inputs = { Input.query("a", null), Input.query("b", null) };
+        assertValid(new RequestValidator().zeroOrAllOf(inputs));
+    }
+
+    @Test
+    void zeroOrAllOfValidAll() {
+        Input<?>[] inputs = { Input.query("a", "ok"), Input.query("b", "ok") };
+        assertValid(new RequestValidator().zeroOrAllOf(inputs));
+    }
+
+    @Test
+    void zeroOrallOfInvalid() {
+        Input<?>[] inputs = { Input.query("a", "ok"), Input.query("b", null) };
+        assertInvalid(new RequestValidator().zeroOrAllOf(inputs),
+                InputValidationIssues.zeroOrAllOfExpected(Arrays.asList(inputs)));
+    }
+
+    @Test
+    void zeroOrExactlyOneOfValidZero() {
+        Input<?>[] inputs = { Input.query("a", null), Input.query("b", null) };
+        assertValid(new RequestValidator().zeroOrExactlyOneOf(inputs));
+    }
+
+    @Test
+    void zeroOrExactlyOneOfValidOne() {
+        Input<?>[] inputs = { Input.query("a", "ok"), Input.query("b", null) };
+        assertValid(new RequestValidator().zeroOrExactlyOneOf(inputs));
+    }
+
+    @Test
+    void zeroOrExactlyOneOfInvalid() {
+        Input<?>[] inputs = { Input.query("a", "nok"), Input.query("b", "nok") };
+        assertInvalid(new RequestValidator().zeroOrExactlyOneOf(inputs),
+                InputValidationIssues.zeroOrExactlyOneOfExpected(Arrays.asList(inputs)));
+    }
+
+    @Test
+    void equalValid() {
+        Input<?>[] inputs = { Input.query("a", "ok"), Input.query("b", "ok") };
+        assertValid(new RequestValidator().equal(inputs));
+    }
+
+    @Test
+    void equalValidNull() {
+        Input<?>[] inputs = { Input.query("a", null), Input.query("b", null) };
+        assertValid(new RequestValidator().equal(inputs));
+    }
+
+    @Test
+    void equalInvalid() {
+        Input<?>[] inputs = { Input.query("a", "ok"), Input.query("b", "nok") };
+        assertInvalid(new RequestValidator().equal(inputs),
+                InputValidationIssues.equalExpected(Arrays.asList(inputs)));
+    }
+
+    @Test
+    void nullOrEqualValidEqual() {
+        assertValid(new RequestValidator().nullOrEqual(
+                Input.query("a", "ok"), Input.query("b", "ok")));
+    }
+
+    @Test
+    void nullOrEqualValidNull() {
+        assertValid(new RequestValidator().nullOrEqual(
+                Input.query("a", "ok"), Input.query("b", "ok")));
+    }
+
+    @Test
+    void nullOrEqualInvalid() {
+        assertInvalid(new RequestValidator().nullOrEqual(
+                Input.query("a", "ok"), Input.query("b", "nok")),
+                InputValidationIssues.equalExpected(Arrays.asList(Input.query("a", "ok"), Input.query("b", "nok"))));
+    }
+
+    @Test
+    void refDataCollectionValid() {
+        assertValid(new RequestValidator().refData(Input.query("refData", "b"), Arrays.asList("a", "b", "c")));
+    }
+
+    @Test
+    void refDataCollectionInvalid() {
+        assertInvalid(new RequestValidator().refData(Input.query("refData", "x"), Arrays.asList("a", "b", "c")),
+                InputValidationIssues.referencedResourceNotFound(QUERY, "refData", "x"));
+    }
+
+    @Test
+    void refDataSupplierValid() {
+        assertValid(new RequestValidator().refData(Input.query("refData", "b"), () -> Arrays.asList("a", "b", "c")));
+    }
+
+    @Test
+    void refDataSupplierInvalid() {
+        assertInvalid(new RequestValidator().refData(Input.query("refData", "x"), () -> Arrays.asList("a", "b", "c")),
+                InputValidationIssues.referencedResourceNotFound(QUERY, "refData", "x"));
+    }
+
+    @Test
+    void refDataPredicateValid() {
+        assertValid(
+                new RequestValidator().refData(Input.query("refData", "b"), Arrays.asList("a", "b", "c")::contains));
+    }
+
+    @Test
+    void refDataPredicateInvalid() {
+        assertInvalid(
+                new RequestValidator().refData(Input.query("refData", "x"), Arrays.asList("a", "b", "c")::contains),
+                InputValidationIssues.referencedResourceNotFound(QUERY, "refData", "x"));
+    }
+
+    @Test
+    void refDatasCollectionValid() {
+        assertValid(new RequestValidator().refDatas(Input.query("refDatas",
+                Arrays.asList("a", "b")), Arrays.asList("a", "b", "c")));
+    }
+
+    @Test
+    void refDatasCollectionInvalid() {
+        assertInvalid(new RequestValidator().refDatas(Input.query("refDatas",
+                Arrays.asList("a", "x", "b", "y")), Arrays.asList("a", "b", "c")),
                 InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[1]", "x"),
-                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[3]", "y"))));
+                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[3]", "y"));
     }
 
     @Test
-    void validateRefDatasNokSupplier() {
+    void refDatasSupplierValid() {
         AtomicInteger calls = new AtomicInteger(0);
-        tested.refDatas(Input.query("refDatas", Arrays.asList("a", "x", "b", "y")), () -> {
-            calls.incrementAndGet();
-            return Arrays.asList("a", "b", "c");
-        });
-        verifyValidateWithError(new BadRequestProblem(Arrays.asList(
-                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[1]", "x"),
-                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[3]", "y"))));
+        assertValid(new RequestValidator().refDatas(Input.query("refDatas",
+                Arrays.asList("a", "b")), () -> {
+                    calls.incrementAndGet();
+                    return Arrays.asList("a", "b", "c");
+                }));
         assertThat(calls).hasValue(1);
     }
 
     @Test
-    void validateRefDatasNokSupplierEmpty() {
+    void refDatasSupplierInvalid() {
         AtomicInteger calls = new AtomicInteger(0);
-        tested.refDatas(Input.query("refDatas", Collections.emptyList()), () -> {
+        assertInvalid(new RequestValidator().refDatas(Input.query("refDatas",
+                Arrays.asList("a", "x", "b", "y")), () -> {
+                    calls.incrementAndGet();
+                    return Arrays.asList("a", "b", "c");
+                }),
+                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[1]", "x"),
+                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[3]", "y"));
+        assertThat(calls).hasValue(1);
+    }
+
+    @Test
+    void refDatasSupplierValidEmpty() {
+        AtomicInteger calls = new AtomicInteger(0);
+        assertValid(new RequestValidator().refDatas(Input.query("refDatas", Collections.emptyList()), () -> {
             calls.incrementAndGet();
             return Arrays.asList("a", "b", "c");
-        });
-        tested.validate();
+        }));
         assertThat(calls).hasValue(0);
     }
 
     @Test
-    void validateRefDatasNokPredicate() {
-        tested.refDatas(Input.query("refDatas", Arrays.asList("a", "x", "b", "y")),
-                Arrays.asList("a", "b", "c")::contains);
-        verifyValidateWithError(new BadRequestProblem(Arrays.asList(
+    void refDatasPredicateValid() {
+        assertValid(new RequestValidator().refDatas(Input.query("refDatas", Arrays.asList("a", "b")),
+                Arrays.asList("a", "b", "c")::contains));
+    }
+
+    @Test
+    void refDatasPredicateInvalid() {
+        assertInvalid(new RequestValidator().refDatas(Input.query("refDatas", Arrays.asList("a", "x", "b", "y")),
+                Arrays.asList("a", "b", "c")::contains),
                 InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[1]", "x"),
-                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[3]", "y"))));
+                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[3]", "y"));
     }
 
     @Test
-    void validateRejectedInput() {
-        tested.reject(Input.body("reject", "bad"));
-        verifyValidateWithError(new BadRequestProblem(
-                InputValidationIssues.rejectedInput(BODY, "reject", "bad")));
+    void rejectValid() {
+        assertValid(new RequestValidator().reject(Input.query("reject", null)));
     }
 
     @Test
-    void validateRequiredInput() {
-        tested.require(Input.body("required", null));
-        verifyValidateWithError(new BadRequestProblem(
-                InputValidationIssues.requiredInput(BODY, "required")));
+    void rejectInvalid() {
+        assertInvalid(new RequestValidator().reject(Input.query("reject", "nok")),
+                InputValidationIssues.rejectedInput(QUERY, "reject", "nok"));
     }
 
     @Test
-    void validateWhenConditionalFalse() {
-        tested.when(false, validator -> validator.reject(Input.body("reject", "bad")));
-        assertDoesNotThrow(() -> tested.validate());
+    void requireValid() {
+        assertValid(new RequestValidator().require(Input.query("require", "ok")));
     }
 
     @Test
-    void validateWhenConditionalTrue() {
-        tested.when(true, validator -> validator.reject(Input.body("reject", "bad")));
-        verifyValidateWithError(new BadRequestProblem(
-                InputValidationIssues.rejectedInput(BODY, "reject", "bad")));
+    void requireInvalid() {
+        assertInvalid(new RequestValidator().require(Input.query("require", null)),
+                InputValidationIssues.requiredInput(QUERY, "require"));
     }
 
     @Test
-    void validateRangeNOk() {
-        tested.range(Input.query("page", 6), 1, 5);
-        verifyValidateWithError(new BadRequestProblem(
-                InputValidationIssues.outOfRange(QUERY, "page", 6, 1, 5)));
+    void whenValid() {
+        assertValid(new RequestValidator().when(false, validator -> validator.reject(Input.query("reject", "nok"))));
     }
 
     @Test
-    void validateMinimumNOk() {
-        tested.minimum(Input.query("page", 0), 1);
-        verifyValidateWithError(new BadRequestProblem(
-                InputValidationIssues.outOfRange(QUERY, "page", 0, 1, null)));
+    void whenInvalid() {
+        assertInvalid(new RequestValidator().when(true, validator -> validator.reject(Input.query("reject", "nok"))),
+                InputValidationIssues.rejectedInput(QUERY, "reject", "nok"));
     }
 
     @Test
-    void validateMaximumNOk() {
-        tested.maximum(Input.query("page", 6), 5);
-        verifyValidateWithError(new BadRequestProblem(
-                InputValidationIssues.outOfRange(QUERY, "page", 6, null, 5)));
+    void rangeValid() {
+        assertValid(new RequestValidator().range(Input.query("page", 4), 1, 5));
     }
 
     @Test
-    void validateMultipleIssues() {
-        List<Input<?>> itemsExactlyOne = Arrays.asList(Input.body("id", "25"),
-                Input.body("id1", "22"));
-        InputValidationIssue issue1 = InputValidationIssues.exactlyOneOfExpected(itemsExactlyOne);
-        tested.exactlyOneOf(Input.body("id", "25"), Input.body("id1", "22"));
-
-        List<Input<?>> itemsZeroOrOne = Arrays.asList(Input.body("cbeNumber", "0694965804"),
-                Input.body("sector", "25"));
-        InputValidationIssue issue2 = InputValidationIssues.zeroOrExactlyOneOfExpected(itemsZeroOrOne);
-        tested.zeroOrExactlyOneOf(Input.body("cbeNumber", "0694965804"), Input.body("sector", "25"));
-
-        List<Input<?>> itemsAtLeastOne = Arrays.asList(Input.header("id", null), Input.body("id1", null));
-        InputValidationIssue issue3 = InputValidationIssues
-                .anyOfExpected(itemsAtLeastOne);
-        tested.anyOf(Input.header("id", null), Input.body("id1", null));
-
-        verifyValidateWithError(new BadRequestProblem(Arrays.asList(issue1, issue2, issue3)));
+    void rangeInvalid() {
+        assertInvalid(new RequestValidator().range(Input.query("page", 6), 1, 5),
+                InputValidationIssues.outOfRange(QUERY, "page", 6, 1, 5));
     }
 
-    private void verifyValidateWithError(BadRequestProblem expected) {
-        BadRequestProblem thrown =
-                assertThrows(BadRequestProblem.class, () -> tested.validate(), "Should have thrown exception");
-        assertThat(thrown).usingRecursiveComparison().isEqualTo(expected);
+    @Test
+    void minimumValid() {
+        assertValid(new RequestValidator().minimum(Input.query("page", 4), 1));
     }
+
+    @Test
+    void minimumInvalid() {
+        assertInvalid(new RequestValidator().minimum(Input.query("page", 0), 1),
+                InputValidationIssues.outOfRange(QUERY, "page", 0, 1, null));
+    }
+
+    @Test
+    void maximumValid() {
+        assertValid(new RequestValidator().maximum(Input.query("page", 4), 5));
+    }
+
+    @Test
+    void maximumInvalid() {
+        assertInvalid(new RequestValidator().maximum(Input.query("page", 6), 5),
+                InputValidationIssues.outOfRange(QUERY, "page", 6, null, 5));
+    }
+
+    @Test
+    void customValid() {
+        assertValid(new RequestValidator().custom(Optional::empty));
+    }
+
+    @Test
+    void customInvalid() {
+        assertInvalid(new RequestValidator()
+                .custom(() -> Optional.of(InputValidationIssues.invalidStructure(QUERY, "custom", "xyz", null))),
+                InputValidationIssues.invalidStructure(QUERY, "custom", "xyz", null));
+    }
+
+    private void assertValid(RequestValidator validator) {
+        assertThatNoException().isThrownBy(validator::validate);
+    }
+
+    private void assertInvalid(RequestValidator validator, InputValidationIssue... issues) {
+        assertThatExceptionOfType(BadRequestProblem.class).isThrownBy(validator::validate)
+                .extracting(BadRequestProblem::getIssues).isEqualTo(Arrays.asList(issues));
+    }
+
 }

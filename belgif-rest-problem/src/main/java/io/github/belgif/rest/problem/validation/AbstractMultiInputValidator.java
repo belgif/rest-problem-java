@@ -17,7 +17,7 @@ public abstract class AbstractMultiInputValidator<V> implements InputValidator {
     private final List<Input<? extends V>> inputs;
 
     protected AbstractMultiInputValidator(List<Input<? extends V>> inputs) {
-        Objects.requireNonNull(inputs);
+        Objects.requireNonNull(inputs, "input list should not be null");
         if (inputs.isEmpty()) {
             throw new IllegalArgumentException("input list can not be empty");
         }

@@ -325,4 +325,20 @@ public class InputValidationIssue {
                 && Objects.equals(type, other.type) && Objects.equals(value, other.value);
     }
 
+    @Override
+    public String toString() {
+        return "InputValidationIssue{" +
+                "type=" + type +
+                ", href=" + href +
+                ", title='" + title + '\'' +
+                ", status=" + status +
+                ", detail='" + detail + '\'' +
+                ", instance=" + instance +
+                ", in=" + in +
+                ", name='" + name + '\'' +
+                ", value=" + value +
+                ", inputs=" + inputs +
+                ", additionalProperties=" + additionalProperties +
+                '}';
+    }
 }

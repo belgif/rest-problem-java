@@ -2,28 +2,23 @@ package io.github.belgif.rest.problem.validation;
 
 import static io.github.belgif.rest.problem.api.InEnum.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
 import io.github.belgif.rest.problem.api.Input;
-import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 
 class RequiredInputValidatorTest {
 
     @Test
-    void validateOk() {
-        RequiredInputValidator<String> validator = new RequiredInputValidator<>(Input.body("required", "ok"));
-        assertDoesNotThrow(validator::validate);
+    void ok() {
+        assertThat(new RequiredInputValidator<>(Input.body("required", "ok")).validate()).isEmpty();
     }
 
     @Test
-    void validateNOk() {
-        RequiredInputValidator<String> validator = new RequiredInputValidator<>(Input.body("required", null));
-        InputValidationIssue expected = InputValidationIssues.requiredInput(BODY, "required");
-        InputValidationIssue result = validator.validate().get();
-        assertThat(result).usingRecursiveComparison().isEqualTo(expected);
+    void nok() {
+        assertThat(new RequiredInputValidator<String>(Input.body("required", null)).validate())
+                .contains(InputValidationIssues.requiredInput(BODY, "required"));
     }
 
 }
