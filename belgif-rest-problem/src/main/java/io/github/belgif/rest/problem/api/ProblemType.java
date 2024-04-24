@@ -5,8 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.enterprise.inject.Stereotype;
-
 import io.github.belgif.rest.problem.registry.ProblemTypeRegistry;
 
 /**
@@ -17,7 +15,8 @@ import io.github.belgif.rest.problem.registry.ProblemTypeRegistry;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Stereotype
+@javax.enterprise.inject.Stereotype
+@jakarta.enterprise.inject.Stereotype
 // This @Stereotype annotation is required for CDI integration.
 // Given that annotations that are not found on the classpath are ignored,
 // no CDI-api runtime dependency is required (e.g. for Spring Boot).
