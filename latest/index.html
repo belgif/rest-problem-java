@@ -564,6 +564,16 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="sect2">
 <h3 id="_version_0_2"><a class="anchor" href="#_version_0_2"></a>1.1. Version 0.2</h3>
 <div class="paragraph">
+<p><strong>belgif-rest-problem-java-ee:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Added Jakarta EE 9/10 support: use <code>&lt;classifier&gt;jakarta&lt;/classifier&gt;</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
 <p><strong>belgif-rest-problem-spring:</strong></p>
 </div>
 <div class="ulist">
@@ -600,7 +610,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <p><a href="#belgif-rest-problem">belgif-rest-problem</a>: library for RFC 9457 standardized Belgif problems</p>
 </li>
 <li>
-<p><a href="#belgif-rest-problem-java-ee">belgif-rest-problem-java-ee</a>: Java EE integration for belgif-rest-problem</p>
+<p><a href="#belgif-rest-problem-java-ee">belgif-rest-problem-java-ee</a>: Java EE / Jakarta EE integration for belgif-rest-problem</p>
 </li>
 <li>
 <p><a href="#belgif-rest-problem-spring">belgif-rest-problem-spring</a>: Spring Boot integration for belgif-rest-problem</p>
@@ -905,7 +915,7 @@ It performs all configured validations and if any of them failed, a <code>BadReq
 <h2 id="belgif-rest-problem-java-ee"><a class="anchor" href="#belgif-rest-problem-java-ee"></a>4. belgif-rest-problem-java-ee</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This module provides components that handle Java EE integration with the belgif-rest-problem library:</p>
+<p>This module provides components that handle Java EE / Jakarta EE integration with the belgif-rest-problem library:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -985,6 +995,10 @@ For that reason, the ProblemClientResponseFilter wraps the Problem exception in 
 </li>
 </ul>
 </div>
+</li>
+<li>
+<p><strong>Jakarta EE 9+</strong>: the main belgif-rest-problem-java-ee artifact targets Java EE (javax package namespace).
+A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is available with <code>&lt;classifier&gt;jakarta&lt;/classifier&gt;</code>.</p>
 </li>
 </ul>
 </div>
