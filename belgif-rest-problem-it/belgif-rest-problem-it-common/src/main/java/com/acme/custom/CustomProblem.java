@@ -1,8 +1,10 @@
 package com.acme.custom;
 
 import java.net.URI;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.github.belgif.rest.problem.api.ClientProblem;
 import io.github.belgif.rest.problem.api.ProblemType;
@@ -20,7 +22,7 @@ public class CustomProblem extends ClientProblem {
     private String customField;
 
     @JsonCreator
-    public CustomProblem(String customField) {
+    public CustomProblem(@JsonProperty("customField") String customField) {
         super(TYPE_URI, TITLE, STATUS);
         this.customField = customField;
     }
@@ -31,6 +33,26 @@ public class CustomProblem extends ClientProblem {
 
     public String getCustomField() {
         return customField;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        CustomProblem that = (CustomProblem) o;
+        return Objects.equals(customField, that.customField);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), customField);
     }
 
 }

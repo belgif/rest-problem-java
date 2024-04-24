@@ -1,8 +1,12 @@
 package io.github.belgif.rest.problem.api;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -29,9 +33,10 @@ import io.github.belgif.rest.problem.DefaultProblem;
         // when no problem type was mapped, fall back to the DefaultProblem class when deserializing
         defaultImpl = DefaultProblem.class)
 @JsonIgnoreProperties(
-        // we don't want to serialize these properties from the WebApplicationException superclass
-        value = { "cause", "stackTrace", "response", "message", "localizedMessage", "suppressed" },
-        // but we DO want to deserialize them, so we don't lose any info e.g. when a problem contains a "message" field
+        // we don't want to serialize these properties from the RuntimeException superclass
+        value = { "cause", "stackTrace", "message", "localizedMessage", "suppressed" },
+        // but we DO want to deserialize them (in additionalProperties),
+        // so we don't lose any info e.g. when a problem contains a "message" field
         allowSetters = true,
         // we also want to ignore unknown properties when deserializing:
         // - for extensibility purposes, don't fail on new unknown JSON properties
@@ -49,6 +54,8 @@ public abstract class Problem extends RuntimeException {
     private final int status;
     private String detail;
     private URI instance;
+
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
     protected Problem(URI type, String title, int status) {
         this(type, null, title, status, null);
@@ -106,6 +113,16 @@ public abstract class Problem extends RuntimeException {
         this.instance = instance;
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        additionalProperties.put(name, value);
+    }
+
     /**
      * Returns the problem message, consisting of the problem title, followed by the detail message (if present).
      *
@@ -131,12 +148,13 @@ public abstract class Problem extends RuntimeException {
         Problem problem = (Problem) o;
         return status == problem.status && Objects.equals(type, problem.type) && Objects.equals(href, problem.href)
                 && Objects.equals(title, problem.title) && Objects.equals(detail, problem.detail)
-                && Objects.equals(instance, problem.instance);
+                && Objects.equals(instance, problem.instance)
+                && Objects.equals(additionalProperties, problem.additionalProperties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, href, title, status, detail, instance);
+        return Objects.hash(type, href, title, status, detail, instance, additionalProperties);
     }
 
 }
