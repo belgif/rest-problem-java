@@ -24,7 +24,7 @@ import io.github.belgif.rest.problem.spring.ProblemConfigurationProperties;
  * <p>
  * Uses component scanning to search the classpath for classes annotated with @ProblemType.
  * In addition to known problem base packages, additional packages can be scanned by configuring
- * io.github.belgif.rest.problem.spring.scan-additional-problem-packages.
+ * io.github.belgif.rest.problem.scan-additional-problem-packages.
  * </p>
  *
  * @see ProblemType
@@ -34,8 +34,7 @@ public class SpringProblemTypeRegistry implements ProblemTypeRegistry {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringProblemTypeRegistry.class);
 
-    private static final List<String> DEFAULT_SCAN_PACKAGES = Arrays.asList(
-            "io.github.belgif.rest.problem", "be.fgov.kszbcss");
+    private static final List<String> DEFAULT_SCAN_PACKAGES = Arrays.asList("io.github.belgif.rest.problem");
 
     private final NamedType[] problemTypes;
 
