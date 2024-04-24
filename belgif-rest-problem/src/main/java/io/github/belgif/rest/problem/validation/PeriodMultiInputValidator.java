@@ -20,8 +20,8 @@ class PeriodMultiInputValidator<T extends Temporal & Comparable<? super T>> impl
     private final Input<T> end;
 
     PeriodMultiInputValidator(Input<T> start, Input<T> end) {
-        this.start = Objects.requireNonNull(start);
-        this.end = Objects.requireNonNull(end);
+        this.start = Objects.requireNonNull(start, "start should not be null");
+        this.end = Objects.requireNonNull(end, "end should not be null");
     }
 
     @Override

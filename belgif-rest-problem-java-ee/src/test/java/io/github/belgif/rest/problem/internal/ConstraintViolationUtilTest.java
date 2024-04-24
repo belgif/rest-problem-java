@@ -1,6 +1,6 @@
 package io.github.belgif.rest.problem.internal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,19 +29,19 @@ class ConstraintViolationUtilTest {
         target.things.add(new Thing(null));
 
         Set<ConstraintViolation<Wrapper>> violations = validator.validate(target);
-        assertEquals(1, violations.size());
+        assertThat(violations).hasSize(1);
 
         InputValidationIssue issue =
                 ConstraintViolationUtil.convertToInputValidationIssue(violations.iterator().next());
-        assertEquals("things[1].prop", issue.getName());
+        assertThat(issue.getName()).isEqualTo("things[1].prop");
     }
 
-    class Wrapper {
+    static class Wrapper {
         @Valid
         List<Thing> things = new ArrayList<>();
     }
 
-    class Thing {
+    static class Thing {
         @NotNull
         String prop;
 

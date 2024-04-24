@@ -38,8 +38,17 @@ class PeriodMultiInputValidatorTest {
     }
 
     @Test
-    void nokNullInputs() {
-        assertThatNullPointerException().isThrownBy(() -> new PeriodMultiInputValidator<>(null, null));
+    void nokNullStartInput() {
+        assertThatNullPointerException()
+                .isThrownBy(() -> new PeriodMultiInputValidator<>(null, Input.query("endDate", LocalDate.now())))
+                .withMessage("start should not be null");
+    }
+
+    @Test
+    void nokNullEndInput() {
+        assertThatNullPointerException()
+                .isThrownBy(() -> new PeriodMultiInputValidator<>(Input.query("startDate", LocalDate.now()), null))
+                .withMessage("end should not be null");
     }
 
     @Test

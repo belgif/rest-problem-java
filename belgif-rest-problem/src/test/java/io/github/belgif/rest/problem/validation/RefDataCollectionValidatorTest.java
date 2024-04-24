@@ -21,13 +21,15 @@ class RefDataCollectionValidatorTest {
     @Test
     void nokNullAllowedRefData() {
         assertThatNullPointerException().isThrownBy(
-                () -> new RefDataCollectionValidator<>(new Input<>(QUERY, "refData", "ok"), null));
+                () -> new RefDataCollectionValidator<>(new Input<>(QUERY, "refData", "ok"), null))
+                .withMessage("allowedRefData should not be null");
     }
 
     @Test
     void nokEmptyAllowedRefData() {
         assertThatIllegalStateException().isThrownBy(
-                () -> new RefDataCollectionValidator<>(new Input<>(QUERY, "refData", "ok"), Collections.emptyList()));
+                () -> new RefDataCollectionValidator<>(new Input<>(QUERY, "refData", "ok"), Collections.emptyList()))
+                .withMessage("allowedRefData should not be empty");
     }
 
     @Test

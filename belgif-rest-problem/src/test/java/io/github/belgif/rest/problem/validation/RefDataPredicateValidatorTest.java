@@ -18,7 +18,8 @@ class RefDataPredicateValidatorTest {
     @Test
     void nokNullAllowedRefData() {
         assertThatNullPointerException().isThrownBy(
-                () -> new RefDataPredicateValidator<>(new Input<>(QUERY, "refData", "ok"), null));
+                () -> new RefDataPredicateValidator<>(new Input<>(QUERY, "refData", "ok"), null))
+                .withMessage("allowedRefData predicate should not be null");
     }
 
     @Test

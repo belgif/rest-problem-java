@@ -198,7 +198,7 @@ class RequestValidatorTest {
     }
 
     @Test
-    void zeroOrallOfInvalid() {
+    void zeroOrAllOfInvalid() {
         Input<?>[] inputs = { Input.query("a", "ok"), Input.query("b", null) };
         assertInvalid(new RequestValidator().zeroOrAllOf(inputs),
                 InputValidationIssues.zeroOrAllOfExpected(Arrays.asList(inputs)));
@@ -434,6 +434,20 @@ class RequestValidatorTest {
         assertInvalid(new RequestValidator()
                 .custom(() -> Optional.of(InputValidationIssues.invalidStructure(QUERY, "custom", "xyz", null))),
                 InputValidationIssues.invalidStructure(QUERY, "custom", "xyz", null));
+    }
+
+    @Test
+    void chainingValid() {
+        assertValid(new RequestValidator().ssin(Input.body("ssin", "00000000196"))
+                .enterpriseNumber(Input.body("enterpriseNumber", "0884303369")));
+    }
+
+    @Test
+    void chainingInvalid() {
+        assertInvalid(new RequestValidator().ssin(Input.body("ssin", "22222222222"))
+                .enterpriseNumber(Input.body("enterpriseNumber", "2111111112")),
+                InputValidationIssues.invalidSsin(BODY, "ssin", "22222222222"),
+                InputValidationIssues.invalidEnterpriseNumber(BODY, "enterpriseNumber", "2111111112"));
     }
 
     private void assertValid(RequestValidator validator) {

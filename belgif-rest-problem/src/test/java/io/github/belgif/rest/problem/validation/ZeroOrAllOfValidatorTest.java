@@ -11,7 +11,6 @@ import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 
 class ZeroOrAllOfValidatorTest {
-    private ZeroOrAllOfValidator tested;
 
     @Test
     void okZero() {

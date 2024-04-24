@@ -1,7 +1,6 @@
 package io.github.belgif.rest.problem.validation;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -30,23 +29,22 @@ class TimeReflectionUtilTest {
 
         InputPeriodInvalidName invalidName = new InputPeriodInvalidName(beginDate, endingDate);
 
-        assertThrows(IllegalArgumentException.class, () -> TimeReflectionUtil.getStartDate(invalidName),
-                "Should have thrown exception");
-        assertThrows(IllegalArgumentException.class, () -> TimeReflectionUtil.getEndDate(invalidName),
-                "Should have thrown exception");
+        assertThatIllegalArgumentException().isThrownBy(() -> TimeReflectionUtil.getStartDate(invalidName))
+                .withMessageStartingWith("No startDate field with type class java.time.LocalDate was found on class");
+        assertThatIllegalArgumentException().isThrownBy(() -> TimeReflectionUtil.getEndDate(invalidName))
+                .withMessageStartingWith("No endDate field with type class java.time.LocalDate was found on class");
     }
 
     @Test
     void nokWithInvalidType() {
-
         Calendar startDate = new GregorianCalendar(2024, Calendar.OCTOBER, 1);
         Calendar endDate = new GregorianCalendar(2024, Calendar.NOVEMBER, 1);
 
         InputPeriodInvalidType invalidType = new InputPeriodInvalidType(startDate, endDate);
-        assertThrows(IllegalArgumentException.class, () -> TimeReflectionUtil.getStartDate(invalidType),
-                "Should have thrown exception");
-        assertThrows(IllegalArgumentException.class, () -> TimeReflectionUtil.getEndDate(invalidType),
-                "Should have thrown exception");
+        assertThatIllegalArgumentException().isThrownBy(() -> TimeReflectionUtil.getStartDate(invalidType))
+                .withMessageStartingWith("No startDate field with type class java.time.LocalDate was found on class");
+        assertThatIllegalArgumentException().isThrownBy(() -> TimeReflectionUtil.getEndDate(invalidType))
+                .withMessageStartingWith("No endDate field with type class java.time.LocalDate was found on class");
     }
 
     static class InputPeriodInvalidName {

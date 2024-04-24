@@ -67,6 +67,12 @@ public class InputValidationIssues {
                         .in(in, name, value);
     }
 
+    public static InputValidationIssue unknownInput(InEnum in, String name, Object value) {
+        return new InputValidationIssue(ISSUE_TYPE_UNKNOWN_INPUT, "Unknown input")
+                .detail(String.format("Input %s is unknown", name))
+                .in(in, name, value);
+    }
+
     public static InputValidationIssue invalidStructure(InEnum in, String name, Object value, String detail) {
         return new InputValidationIssue(ISSUE_TYPE_INVALID_STRUCTURE,
                 "Input value has invalid structure")
@@ -139,14 +145,14 @@ public class InputValidationIssues {
 
     public static InputValidationIssue invalidPeriod(InEnum in, String name, Object period) {
         return new InputValidationIssue(ISSUE_TYPE_INVALID_PERIOD, "Period is invalid")
-                .detail("endDate should not preceed startDate")
+                .detail("endDate should not precede startDate")
                 .in(in, name, period);
     }
 
     public static <T extends Temporal & Comparable<? super T>> InputValidationIssue invalidPeriod(
             Input<T> start, Input<T> end) {
         return new InputValidationIssue(ISSUE_TYPE_INVALID_PERIOD, "Period is invalid")
-                .detail(String.format("%s should not preceed %s", end.getName(), start.getName()))
+                .detail(String.format("%s should not precede %s", end.getName(), start.getName()))
                 .inputs(Arrays.asList(start, end));
     }
 

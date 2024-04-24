@@ -25,6 +25,18 @@ class InputValidationIssuesTest {
     }
 
     @Test
+    void unknownInput() {
+        InputValidationIssue issue =
+                InputValidationIssues.unknownInput(InEnum.BODY, "oops", "value");
+        assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:unknownInput");
+        assertThat(issue.getTitle()).isEqualTo("Unknown input");
+        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+        assertThat(issue.getName()).isEqualTo("oops");
+        assertThat(issue.getValue()).isEqualTo("value");
+        assertThat(issue.getDetail()).isEqualTo("Input oops is unknown");
+    }
+
+    @Test
     void invalidStructure() {
         InputValidationIssue issue =
                 InputValidationIssues.invalidStructure(InEnum.BODY, "test", "value", "detail");
@@ -46,7 +58,7 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo(6);
         assertThat(issue.getDetail()).isEqualTo("Input value test = 6 is out of range [1, 5]");
-        assertThat(issue.getAdditionalProperties()).containsEntry("minimum", "1").containsEntry("maximum", "5");
+        assertThat(issue.getAdditionalProperties()).containsOnly(entry("minimum", "1"), entry("maximum", "5"));
     }
 
     @Test
@@ -59,7 +71,7 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo(0);
         assertThat(issue.getDetail()).isEqualTo("Input value test = 0 should be at least 1");
-        assertThat(issue.getAdditionalProperties()).containsEntry("minimum", "1");
+        assertThat(issue.getAdditionalProperties()).containsExactly(entry("minimum", "1"));
     }
 
     @Test
@@ -72,13 +84,14 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo(6);
         assertThat(issue.getDetail()).isEqualTo("Input value test = 6 should not exceed 5");
-        assertThat(issue.getAdditionalProperties()).containsEntry("maximum", "5");
+        assertThat(issue.getAdditionalProperties()).containsExactly(entry("maximum", "5"));
     }
 
     @Test
     void outOfRangeMinAndMaxNull() {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> InputValidationIssues.outOfRange(InEnum.BODY, "test", 6, null, null));
+                .isThrownBy(() -> InputValidationIssues.outOfRange(InEnum.BODY, "test", 6, null, null))
+                .withMessage("At least one of min, max must be non-null");
     }
 
     @Test
@@ -127,7 +140,7 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("ssin");
         assertThat(issue.getValue()).isEqualTo("00000000196");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 has been replaced by 00000000295");
-        assertThat(issue.getAdditionalProperties()).containsEntry("replacedBy", "00000000295");
+        assertThat(issue.getAdditionalProperties()).containsExactly(entry("replacedBy", "00000000295"));
     }
 
     @Test
@@ -175,7 +188,7 @@ class InputValidationIssuesTest {
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("period");
         assertThat(issue.getValue()).isEqualTo("value");
-        assertThat(issue.getDetail()).isEqualTo("endDate should not preceed startDate");
+        assertThat(issue.getDetail()).isEqualTo("endDate should not precede startDate");
     }
 
     @Test
@@ -186,7 +199,7 @@ class InputValidationIssuesTest {
         assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:invalidPeriod");
         assertThat(issue.getTitle()).isEqualTo("Period is invalid");
         assertThat(issue.getInputs()).containsExactly(startDate, endDate);
-        assertThat(issue.getDetail()).isEqualTo("endDate should not preceed startDate");
+        assertThat(issue.getDetail()).isEqualTo("endDate should not precede startDate");
     }
 
     @Test
@@ -199,7 +212,7 @@ class InputValidationIssuesTest {
         assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:invalidPeriod");
         assertThat(issue.getTitle()).isEqualTo("Period is invalid");
         assertThat(issue.getInputs()).containsExactly(startDateTime, endDateTime);
-        assertThat(issue.getDetail()).isEqualTo("endDateTime should not preceed startDateTime");
+        assertThat(issue.getDetail()).isEqualTo("endDateTime should not precede startDateTime");
     }
 
     @Test

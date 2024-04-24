@@ -43,7 +43,9 @@ class PeriodValidatorTest {
     @Test
     void nokInvalidObject() {
         assertThatIllegalArgumentException().isThrownBy(() -> new PeriodValidator(
-                Input.body("period", "oops")).validate());
+                Input.body("period", "oops")).validate())
+                .withMessage("No startDate field with type class java.time.LocalDate was found"
+                        + " on class java.lang.String");
     }
 
 }

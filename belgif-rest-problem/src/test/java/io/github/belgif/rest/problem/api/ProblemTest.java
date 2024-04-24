@@ -3,6 +3,7 @@ package io.github.belgif.rest.problem.api;
 import static org.assertj.core.api.Assertions.*;
 
 import java.net.URI;
+import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +50,7 @@ class ProblemTest {
         Problem result = mapper.readValue(json, Problem.class);
         assertThat(result).isInstanceOf(BadRequestProblem.class);
         assertThat(((BadRequestProblem) result).getIssues().get(0).getAdditionalProperties())
-                .containsEntry("replacedBy", "23456789012");
+                .containsExactly(entry("replacedBy", "23456789012"));
         print(mapper.writeValueAsString(result));
     }
 
@@ -150,7 +151,12 @@ class ProblemTest {
         Problem problem = mapper.readValue(json, Problem.class);
         assertThat(problem).isInstanceOf(DefaultProblem.class);
         DefaultProblem defaultProblem = (DefaultProblem) problem;
-        assertThat(defaultProblem.getAdditionalProperties()).containsEntry("message", "552-Id Value is invalid");
+        assertThat(defaultProblem.getAdditionalProperties())
+                .containsOnly(
+                        entry("code", "Bad Request"),
+                        entry("details", Collections.emptyList()),
+                        entry("id", "08eb8aa6-d4a5-44fc-b25d-007b9f6a272a"),
+                        entry("message", "552-Id Value is invalid"));
     }
 
     private static void print(String value) {
