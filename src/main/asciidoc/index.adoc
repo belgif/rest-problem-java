@@ -13,6 +13,13 @@
 
 == Release notes
 
+=== Version 0.2
+
+*belgif-rest-problem-spring:*
+
+* Remove `be.fgov.kszbcss` from default scanned problem type packages
+* Rename `io.github.belgif.rest.problem.spring.scan-additional-problem-packages` configuration property to `io.github.belgif.rest.problem.scan-additional-problem-packages`
+
 === Version 0.1
 
 Initial release under Belgif organization.
@@ -271,12 +278,12 @@ NOTE: If the service returns a problem type for which you do not have a correspo
 This module provides auto-configuration for components that handle Spring Boot integration with the belgif-rest-problem library:
 
 * *SpringProblemTypeRegistry:* ProblemTypeRegistry implementation that uses classpath scanning to detect @ProblemType annotations.
-By default, only package `io.github.belgif.rest.problem` and `be.fgov.kszbcss` are scanned for @ProblemType annotations.
+By default, only package `io.github.belgif.rest.problem` is scanned for @ProblemType annotations.
 Additional packages to scan can be configured in your application.properties:
 
 [source,properties]
 ----
-io.github.belgif.rest.problem.spring.scan-additional-problem-packages=com.acme.custom
+io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
 ----
 
 * *SpringProblemModule:* a Jackson Module that registers the SpringProblemTypeRegistry.
