@@ -15,6 +15,10 @@
 
 === Version 0.2
 
+*belgif-rest-problem:*
+
+* Extracted RequestValidator to separate <<belgif-rest-problem-validator>> module.
+
 *belgif-rest-problem-java-ee:*
 
 * Added Jakarta EE 9/10 support: use `<classifier>jakarta</classifier>`
@@ -120,7 +124,8 @@ These are discovered automagically by a link:apidocs/io/github/belgif/rest/probl
 * in a Java EE container, this is done by the link:apidocs/io/github/belgif/rest/problem/registry/CdiProblemTypeRegistry.html[`CdiProblemTypeRegistry`] CDI extension, integrated with the Jackson ObjectMapper by the CdiProblemModule.
 * in a Spring Boot container, this is done by the link:apidocs/io/github/belgif/rest/problem/registry/SpringProblemTypeRegistry.html[`SpringProblemTypeRegistry`], integrated with the Jackson ObjectMapper by the SpringProblemModule.
 
-=== RequestValidator
+[[belgif-rest-problem-validator]]
+== belgif-rest-problem-validator
 
 The `io.github.belgif.rest.problem.validation.RequestValidator` can be used to perform validations on the input parameters of an API request.
 This validation does not stop on the first invalid input.
@@ -129,7 +134,7 @@ It performs all configured validations and if any of them failed, a `BadRequestP
 [source,java,indent=0]
 .RequestValidator
 ----
-include::../../../belgif-rest-problem-java-ee/src/test/java/adoc/CodeSamples.java[tag=request-validator]
+include::../../../belgif-rest-problem-validator/src/test/java/adoc/CodeSamples.java[tag=request-validator]
 ----
 
 <1> validate SSIN structure
