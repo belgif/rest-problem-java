@@ -34,14 +34,6 @@
       <artifactId>jackson-databind</artifactId>
       <scope>provided</scope>
     </dependency>
-    <!--
-    <dependency>
-      <groupId>org.jboss.resteasy</groupId>
-      <artifactId>resteasy-client-microprofile</artifactId>
-      <scope>provided</scope>
-      <version>4.7.9.Final</version>
-    </dependency>
-    -->
     <dependency>
       <groupId>org.jboss.resteasy.microprofile</groupId>
       <artifactId>microprofile-rest-client</artifactId>
