@@ -544,16 +544,16 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#_belgif_problem_types">3.1. Belgif problem types</a></li>
 <li><a href="#_custom_problem_types">3.2. Custom problem types</a></li>
 <li><a href="#_problemtype_and_problemtyperegistry">3.3. @ProblemType and ProblemTypeRegistry</a></li>
-<li><a href="#_requestvalidator">3.4. RequestValidator</a></li>
 </ul>
 </li>
-<li><a href="#belgif-rest-problem-java-ee">4. belgif-rest-problem-java-ee</a>
+<li><a href="#belgif-rest-problem-validator">4. belgif-rest-problem-validator</a></li>
+<li><a href="#belgif-rest-problem-java-ee">5. belgif-rest-problem-java-ee</a>
 <ul class="sectlevel2">
-<li><a href="#_using_rest_problem_library_for_implementing_rest_services">4.1. Using rest-problem library for implementing REST services</a></li>
-<li><a href="#_using_rest_problem_library_for_consuming_rest_services">4.2. Using rest-problem library for consuming REST services</a></li>
+<li><a href="#_using_rest_problem_library_for_implementing_rest_services">5.1. Using rest-problem library for implementing REST services</a></li>
+<li><a href="#_using_rest_problem_library_for_consuming_rest_services">5.2. Using rest-problem library for consuming REST services</a></li>
 </ul>
 </li>
-<li><a href="#belgif-rest-problem-spring">5. belgif-rest-problem-spring</a></li>
+<li><a href="#belgif-rest-problem-spring">6. belgif-rest-problem-spring</a></li>
 </ul>
 </div>
 </div>
@@ -563,6 +563,16 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_version_0_2"><a class="anchor" href="#_version_0_2"></a>1.1. Version 0.2</h3>
+<div class="paragraph">
+<p><strong>belgif-rest-problem:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Extracted RequestValidator to separate <a href="#belgif-rest-problem-validator">belgif-rest-problem-validator</a> module.</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p><strong>belgif-rest-problem-java-ee:</strong></p>
 </div>
@@ -775,8 +785,11 @@ The problem subclasses have their problem type URI configured in the
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_requestvalidator"><a class="anchor" href="#_requestvalidator"></a>3.4. RequestValidator</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="belgif-rest-problem-validator"><a class="anchor" href="#belgif-rest-problem-validator"></a>4. belgif-rest-problem-validator</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The <code>io.github.belgif.rest.problem.validation.RequestValidator</code> can be used to perform validations on the input parameters of an API request.
 This validation does not stop on the first invalid input.
@@ -910,9 +923,8 @@ It performs all configured validations and if any of them failed, a <code>BadReq
 </details>
 </div>
 </div>
-</div>
 <div class="sect1">
-<h2 id="belgif-rest-problem-java-ee"><a class="anchor" href="#belgif-rest-problem-java-ee"></a>4. belgif-rest-problem-java-ee</h2>
+<h2 id="belgif-rest-problem-java-ee"><a class="anchor" href="#belgif-rest-problem-java-ee"></a>5. belgif-rest-problem-java-ee</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This module provides components that handle Java EE / Jakarta EE integration with the belgif-rest-problem library:</p>
@@ -1003,7 +1015,7 @@ A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is a
 </ul>
 </div>
 <div class="sect2">
-<h3 id="_using_rest_problem_library_for_implementing_rest_services"><a class="anchor" href="#_using_rest_problem_library_for_implementing_rest_services"></a>4.1. Using rest-problem library for implementing REST services</h3>
+<h3 id="_using_rest_problem_library_for_implementing_rest_services"><a class="anchor" href="#_using_rest_problem_library_for_implementing_rest_services"></a>5.1. Using rest-problem library for implementing REST services</h3>
 <div class="paragraph">
 <p>When implementing a REST service with JAX-RS, returning a problem is as simple as throwing the problem exception from your code:</p>
 </div>
@@ -1017,7 +1029,7 @@ A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is a
 </div>
 </div>
 <div class="sect2">
-<h3 id="_using_rest_problem_library_for_consuming_rest_services"><a class="anchor" href="#_using_rest_problem_library_for_consuming_rest_services"></a>4.2. Using rest-problem library for consuming REST services</h3>
+<h3 id="_using_rest_problem_library_for_consuming_rest_services"><a class="anchor" href="#_using_rest_problem_library_for_consuming_rest_services"></a>5.2. Using rest-problem library for consuming REST services</h3>
 <div class="paragraph">
 <p>When using the MicroProfile REST Client API, handling a problem is as simple as catching the problem exception in your code:</p>
 </div>
@@ -1056,7 +1068,7 @@ If the service returns a problem type for which you do not have a corresponding 
 </div>
 </div>
 <div class="sect1">
-<h2 id="belgif-rest-problem-spring"><a class="anchor" href="#belgif-rest-problem-spring"></a>5. belgif-rest-problem-spring</h2>
+<h2 id="belgif-rest-problem-spring"><a class="anchor" href="#belgif-rest-problem-spring"></a>6. belgif-rest-problem-spring</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This module provides auto-configuration for components that handle Spring Boot integration with the belgif-rest-problem library:</p>
