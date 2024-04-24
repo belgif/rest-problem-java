@@ -171,8 +171,8 @@ loadScripts(document, 'script');</script>
 <h2>Method Summary</h2>
 <div id="method-summary-table">
 <div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
-<div id="method-summary-table.tabpanel" role="tabpanel">
-<div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
+<div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
+<div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
@@ -254,9 +254,8 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newSsin)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#requiredInput(io.github.belgif.rest.problem.api.InEnum,java.lang.String,java.lang.Object)" class="member-name-link">requiredInput</a><wbr>(<a href="InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a>&nbsp;in,
- <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#requiredInput(io.github.belgif.rest.problem.api.InEnum,java.lang.String)" class="member-name-link">requiredInput</a><wbr>(<a href="InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a>&nbsp;in,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#schemaViolation(io.github.belgif.rest.problem.api.InEnum,java.lang.String,java.lang.Object,java.lang.String)" class="member-name-link">schemaViolation</a><wbr>(<a href="InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a>&nbsp;in,
@@ -265,16 +264,21 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;detail)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#unknownSsin(io.github.belgif.rest.problem.api.InEnum,java.lang.String,java.lang.String)" class="member-name-link">unknownSsin</a><wbr>(<a href="InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a>&nbsp;in,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#unknownInput(io.github.belgif.rest.problem.api.InEnum,java.lang.String,java.lang.Object)" class="member-name-link">unknownInput</a><wbr>(<a href="InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a>&nbsp;in,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;ssin)</code></div>
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#zeroOrAllOfExpected(java.util.List)" class="member-name-link">zeroOrAllOfExpected</a><wbr>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;?&gt;&gt;&nbsp;inputs)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#unknownSsin(io.github.belgif.rest.problem.api.InEnum,java.lang.String,java.lang.String)" class="member-name-link">unknownSsin</a><wbr>(<a href="InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a>&nbsp;in,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;ssin)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#zeroOrExactlyOneOfExpected(java.util.List)" class="member-name-link">zeroOrExactlyOneOfExpected</a><wbr>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;?&gt;&gt;&nbsp;inputs)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#zeroOrAllOfExpected(java.util.List)" class="member-name-link">zeroOrAllOfExpected</a><wbr>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;?&gt;&gt;&nbsp;inputs)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#zeroOrExactlyOneOfExpected(java.util.List)" class="member-name-link">zeroOrExactlyOneOfExpected</a><wbr>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;?&gt;&gt;&nbsp;inputs)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -406,6 +410,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="unknownInput(io.github.belgif.rest.problem.api.InEnum,java.lang.String,java.lang.Object)">
+<h3>unknownInput</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></span>&nbsp;<span class="element-name">unknownInput</span><wbr><span class="parameters">(<a href="InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a>&nbsp;in,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="invalidStructure(io.github.belgif.rest.problem.api.InEnum,java.lang.String,java.lang.Object,java.lang.String)">
 <h3>invalidStructure</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></span>&nbsp;<span class="element-name">invalidStructure</span><wbr><span class="parameters">(<a href="InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a>&nbsp;in,
@@ -442,11 +454,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="requiredInput(io.github.belgif.rest.problem.api.InEnum,java.lang.String,java.lang.Object)">
+<section class="detail" id="requiredInput(io.github.belgif.rest.problem.api.InEnum,java.lang.String)">
 <h3>requiredInput</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></span>&nbsp;<span class="element-name">requiredInput</span><wbr><span class="parameters">(<a href="InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a>&nbsp;in,
- <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</span></div>
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
 </section>
 </li>
 <li>
