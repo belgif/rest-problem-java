@@ -53,6 +53,7 @@
 
   <modules>
     <module>belgif-rest-problem</module>
+    <module>belgif-rest-problem-validator</module>
     <module>belgif-rest-problem-java-ee</module>
     <module>belgif-rest-problem-spring</module>
     <module>belgif-rest-problem-it</module>

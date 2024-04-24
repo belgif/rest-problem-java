@@ -1,9 +1,7 @@
 package adoc;
 
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import javax.ws.rs.WebApplicationException;
 
@@ -14,10 +12,8 @@ import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.ResourceNotFoundProblem;
 import io.github.belgif.rest.problem.api.ClientProblem;
 import io.github.belgif.rest.problem.api.InEnum;
-import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.ProblemType;
-import io.github.belgif.rest.problem.validation.RequestValidator;
 
 public class CodeSamples {
 
@@ -80,35 +76,6 @@ public class CodeSamples {
             // handle all other WebApplicationException
         }
         // end::catch-problem[]
-    }
-
-    public void requestValidator() {
-        String ssin = "11111111111";
-        String enterpriseNumber = "2222222222";
-        LocalDate startDate = LocalDate.parse("2023-12-31");
-        LocalDate endDate = LocalDate.parse("2023-01-01");
-        String password = "oops";
-
-        // tag::request-validator[]
-        // example for an API resource with query parameters:
-        // ssin, enterpriseNumber, startDate, endDate and password
-        new RequestValidator()
-                .ssin(Input.query("ssin", ssin)) // <1>
-                .enterpriseNumber(Input.query("enterpriseNumber", enterpriseNumber)) // <2>
-                .period(Input.query("startDate", startDate), Input.query("endDate", endDate)) // <3>
-                .exactlyOneOf(Input.query("ssin", ssin),
-                        Input.query("enterpriseNumber", enterpriseNumber)) // <4>
-                .custom(() -> { // <5>
-                    // custom validation logic returning Optional<InputValidationIssue>
-                    if (!"secret".equals(password)) {
-                        return Optional.of(new InputValidationIssue(InEnum.QUERY, "password", password)
-                                .type("urn:problem-type:cbss:input-validation:example:invalidPassword")
-                                .title("Invalid password"));
-                    }
-                    return Optional.empty();
-                })
-                .validate(); // <6>
-        // end::request-validator[]
     }
 
 }
