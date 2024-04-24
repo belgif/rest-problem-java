@@ -534,7 +534,8 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <ul class="sectlevel1">
 <li><a href="#_release_notes">1. Release notes</a>
 <ul class="sectlevel2">
-<li><a href="#_version_0_1">1.1. Version 0.1</a></li>
+<li><a href="#_version_0_2">1.1. Version 0.2</a></li>
+<li><a href="#_version_0_1">1.2. Version 0.1</a></li>
 </ul>
 </li>
 <li><a href="#_context">2. Context</a></li>
@@ -561,7 +562,23 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h2 id="_release_notes"><a class="anchor" href="#_release_notes"></a>1. Release notes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_version_0_1"><a class="anchor" href="#_version_0_1"></a>1.1. Version 0.1</h3>
+<h3 id="_version_0_2"><a class="anchor" href="#_version_0_2"></a>1.1. Version 0.2</h3>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-spring:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove <code>be.fgov.kszbcss</code> from default scanned problem type packages</p>
+</li>
+<li>
+<p>Rename <code>io.github.belgif.rest.problem.spring.scan-additional-problem-packages</code> configuration property to <code>io.github.belgif.rest.problem.scan-additional-problem-packages</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_version_0_1"><a class="anchor" href="#_version_0_1"></a>1.2. Version 0.1</h3>
 <div class="paragraph">
 <p>Initial release under Belgif organization.</p>
 </div>
@@ -1034,14 +1051,14 @@ If the service returns a problem type for which you do not have a corresponding 
 <ul>
 <li>
 <p><strong>SpringProblemTypeRegistry:</strong> ProblemTypeRegistry implementation that uses classpath scanning to detect @ProblemType annotations.
-By default, only package <code>io.github.belgif.rest.problem</code> and <code>be.fgov.kszbcss</code> are scanned for @ProblemType annotations.
+By default, only package <code>io.github.belgif.rest.problem</code> is scanned for @ProblemType annotations.
 Additional packages to scan can be configured in your application.properties:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="properties">io.github.belgif.rest.problem.spring.scan-additional-problem-packages=com.acme.custom</code></pre>
+<pre class="CodeRay highlight"><code data-lang="properties">io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom</code></pre>
 </div>
 </div>
 <div class="ulist">
