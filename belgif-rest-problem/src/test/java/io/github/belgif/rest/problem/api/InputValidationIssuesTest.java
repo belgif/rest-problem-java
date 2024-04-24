@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("detail");
+        assertThat(issue).extracting("href", "instance", "status", "inputs", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -34,6 +37,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("oops");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("Input oops is unknown");
+        assertThat(issue).extracting("href", "instance", "status", "inputs", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -46,6 +51,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("detail");
+        assertThat(issue).extracting("href", "instance", "status", "inputs", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -59,6 +66,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getValue()).isEqualTo(6);
         assertThat(issue.getDetail()).isEqualTo("Input value test = 6 is out of range [1, 5]");
         assertThat(issue.getAdditionalProperties()).containsOnly(entry("minimum", "1"), entry("maximum", "5"));
+        assertThat(issue).extracting("href", "instance", "status", "inputs").allMatch(this::isEmpty);
+
     }
 
     @Test
@@ -72,6 +81,7 @@ class InputValidationIssuesTest {
         assertThat(issue.getValue()).isEqualTo(0);
         assertThat(issue.getDetail()).isEqualTo("Input value test = 0 should be at least 1");
         assertThat(issue.getAdditionalProperties()).containsExactly(entry("minimum", "1"));
+        assertThat(issue).extracting("href", "instance", "status", "inputs").allMatch(this::isEmpty);
     }
 
     @Test
@@ -85,6 +95,7 @@ class InputValidationIssuesTest {
         assertThat(issue.getValue()).isEqualTo(6);
         assertThat(issue.getDetail()).isEqualTo("Input value test = 6 should not exceed 5");
         assertThat(issue.getAdditionalProperties()).containsExactly(entry("maximum", "5"));
+        assertThat(issue).extracting("href", "instance", "status", "inputs").allMatch(this::isEmpty);
     }
 
     @Test
@@ -104,6 +115,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("Referenced resource test = 'value' does not exist");
+        assertThat(issue).extracting("href", "instance", "status", "inputs", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -116,6 +129,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("Input test is not allowed in this context");
+        assertThat(issue).extracting("href", "instance", "status", "inputs", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -128,6 +143,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isNull();
         assertThat(issue.getDetail()).isEqualTo("Input test is required in this context");
+        assertThat(issue).extracting("href", "instance", "status", "inputs", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -141,6 +158,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getValue()).isEqualTo("00000000196");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 has been replaced by 00000000295");
         assertThat(issue.getAdditionalProperties()).containsExactly(entry("replacedBy", "00000000295"));
+        assertThat(issue).extracting("href", "instance", "status", "inputs")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -153,6 +172,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("ssin");
         assertThat(issue.getValue()).isEqualTo("00000000196");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 has been canceled");
+        assertThat(issue).extracting("href", "instance", "status", "inputs", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -165,6 +186,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("ssin");
         assertThat(issue.getValue()).isEqualTo("00000000195");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000195 is invalid");
+        assertThat(issue).extracting("href", "instance", "status", "inputs", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -177,6 +200,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("ssin");
         assertThat(issue.getValue()).isEqualTo("00000000196");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 does not exist");
+        assertThat(issue).extracting("href", "instance", "status", "inputs", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -189,6 +214,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("period");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("endDate should not precede startDate");
+        assertThat(issue).extracting("href", "instance", "status", "inputs", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -200,6 +227,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getTitle()).isEqualTo("Period is invalid");
         assertThat(issue.getInputs()).containsExactly(startDate, endDate);
         assertThat(issue.getDetail()).isEqualTo("endDate should not precede startDate");
+        assertThat(issue).extracting("href", "instance", "status", "in", "name", "value", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -213,6 +242,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getTitle()).isEqualTo("Period is invalid");
         assertThat(issue.getInputs()).containsExactly(startDateTime, endDateTime);
         assertThat(issue.getDetail()).isEqualTo("endDateTime should not precede startDateTime");
+        assertThat(issue).extracting("href", "instance", "status", "in", "name", "value", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -225,6 +256,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("2024-00-01");
         assertThat(issue.getDetail()).isEqualTo("Incomplete date 2024-00-01 is invalid");
+        assertThat(issue).extracting("href", "instance", "status", "inputs", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -237,6 +270,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("2024-13");
         assertThat(issue.getDetail()).isEqualTo("Year month 2024-13 is invalid");
+        assertThat(issue).extracting("href", "instance", "status", "inputs", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -249,6 +284,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("0000000001");
         assertThat(issue.getDetail()).isEqualTo("Enterprise number 0000000001 is invalid");
+        assertThat(issue).extracting("href", "instance", "status", "inputs", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -261,6 +298,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("0000000001");
         assertThat(issue.getDetail()).isEqualTo("Establishment unit number 0000000001 is invalid");
+        assertThat(issue).extracting("href", "instance", "status", "inputs", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -271,6 +310,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getTitle()).isEqualTo("Exactly one of these inputs must be present");
         assertThat(issue.getInputs()).isEqualTo(inputs);
         assertThat(issue.getDetail()).isEqualTo("Exactly one of these inputs must be present: a, b");
+        assertThat(issue).extracting("href", "instance", "status", "in", "name", "value", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -281,6 +322,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getTitle()).isEqualTo("Any of these inputs must be present");
         assertThat(issue.getInputs()).isEqualTo(inputs);
         assertThat(issue.getDetail()).isEqualTo("Any of these inputs must be present: a, b");
+        assertThat(issue).extracting("href", "instance", "status", "in", "name", "value", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -291,6 +334,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getTitle()).isEqualTo("Exactly one or none of these inputs must be present");
         assertThat(issue.getInputs()).isEqualTo(inputs);
         assertThat(issue.getDetail()).isEqualTo("Exactly one or none of these inputs must be present: a, b");
+        assertThat(issue).extracting("href", "instance", "status", "in", "name", "value", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -301,6 +346,8 @@ class InputValidationIssuesTest {
         assertThat(issue.getTitle()).isEqualTo("All or none of these inputs must be present");
         assertThat(issue.getInputs()).isEqualTo(inputs);
         assertThat(issue.getDetail()).isEqualTo("All or none of these inputs must be present: a, b");
+        assertThat(issue).extracting("href", "instance", "status", "in", "name", "value", "additionalProperties")
+                .allMatch(this::isEmpty);
     }
 
     @Test
@@ -311,6 +358,13 @@ class InputValidationIssuesTest {
         assertThat(issue.getTitle()).isEqualTo("These inputs must be equal");
         assertThat(issue.getInputs()).isEqualTo(inputs);
         assertThat(issue.getDetail()).isEqualTo("These inputs must be equal: a, b");
+        assertThat(issue).extracting("href", "instance", "status", "in", "name", "value", "additionalProperties")
+                .allMatch(this::isEmpty);
+    }
+
+    public boolean isEmpty(Object value) {
+        return value == null || Integer.valueOf(0).equals(value) || Collections.emptyList().equals(value)
+                || Collections.emptyMap().equals(value);
     }
 
 }

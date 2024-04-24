@@ -307,7 +307,7 @@ public class InputValidationIssue {
 
     @Override
     public int hashCode() {
-        return Objects.hash(additionalProperties, detail, href, in, instance, name, status, title, type, value);
+        return Objects.hash(additionalProperties, detail, href, in, instance, name, status, title, type, value, inputs);
     }
 
     @Override
@@ -322,7 +322,8 @@ public class InputValidationIssue {
         return Objects.equals(additionalProperties, other.additionalProperties) && Objects.equals(detail, other.detail)
                 && Objects.equals(href, other.href) && in == other.in && Objects.equals(instance, other.instance)
                 && Objects.equals(name, other.name) && status == other.status && Objects.equals(title, other.title)
-                && Objects.equals(type, other.type) && Objects.equals(value, other.value);
+                && Objects.equals(type, other.type) && Objects.equals(value, other.value)
+                && Objects.equals(inputs, other.inputs);
     }
 
     @Override
