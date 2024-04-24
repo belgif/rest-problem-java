@@ -2,8 +2,6 @@ package io.github.belgif.rest.problem.api;
 
 import java.net.URI;
 
-import javax.ejb.ApplicationException;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -19,7 +17,8 @@ import io.github.belgif.rest.problem.DefaultProblem;
  *
  * Maps to Problem in belgif/problem/v1/problem-v1.yaml.
  */
-@ApplicationException
+@javax.ejb.ApplicationException
+@jakarta.ejb.ApplicationException
 // This @ApplicationException annotation is required for EJB integration (prevents wrapping in javax.ejb.EJBException).
 // Given that annotations that are not found on the classpath are ignored,
 // no EJB-api runtime dependency is required (e.g. for Spring Boot).

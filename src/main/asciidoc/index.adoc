@@ -15,6 +15,10 @@
 
 === Version 0.2
 
+*belgif-rest-problem-java-ee:*
+
+* Added Jakarta EE 9/10 support: use `<classifier>jakarta</classifier>`
+
 *belgif-rest-problem-spring:*
 
 * Remove `be.fgov.kszbcss` from default scanned problem type packages
@@ -31,7 +35,7 @@ Java library for working with https://www.belgif.be/specification/rest/api-guide
 The library consists of these modules:
 
 * <<belgif-rest-problem>>: library for RFC 9457 standardized Belgif problems
-* <<belgif-rest-problem-java-ee>>: Java EE integration for belgif-rest-problem
+* <<belgif-rest-problem-java-ee>>: Java EE / Jakarta EE integration for belgif-rest-problem
 * <<belgif-rest-problem-spring>>: Spring Boot integration for belgif-rest-problem
 
 [[belgif-rest-problem]]
@@ -212,7 +216,7 @@ include::../../../belgif-rest-problem-java-ee/src/test/java/adoc/CodeSamples.jav
 [[belgif-rest-problem-java-ee]]
 == belgif-rest-problem-java-ee
 
-This module provides components that handle Java EE integration with the belgif-rest-problem library:
+This module provides components that handle Java EE / Jakarta EE integration with the belgif-rest-problem library:
 
 * *CdiProblemTypeRegistry:* ProblemTypeRegistry implementation that uses CDI component scanning to detect @ProblemType annotations.
 * *CdiProblemModule:* a Jackson Module that registers the CdiProblemTypeRegistry.
@@ -249,6 +253,8 @@ public void setClient(Client client) {
 * *MicroProfile REST Client integration:*
 ** *ProblemResponseExceptionMapper:* a ResponseExceptionMapper that converts problem responses to Problem exceptions.
 ** *ProblemRestClientListener:* a RestClientListener that registers the ProblemObjectMapperContextResolver and ProblemResponseExceptionMapper.
+* *Jakarta EE 9+*: the main belgif-rest-problem-java-ee artifact targets Java EE (javax package namespace).
+A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is available with `<classifier>jakarta</classifier>`.
 
 === Using rest-problem library for implementing REST services
 

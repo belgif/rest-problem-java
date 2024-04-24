@@ -1,0 +1,3 @@
+<jboss-web>
+  <context-root>/rest-problem</context-root>
+</jboss-web>

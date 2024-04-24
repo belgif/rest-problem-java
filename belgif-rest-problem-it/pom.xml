@@ -37,6 +37,7 @@
   <modules>
     <module>belgif-rest-problem-spring-it</module>
     <module>belgif-rest-problem-java-ee-it</module>
+    <module>belgif-rest-problem-jakarta-ee-it</module>
   </modules>
 
 </project>

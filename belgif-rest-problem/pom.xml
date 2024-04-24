@@ -22,9 +22,9 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>jakarta.enterprise</groupId>
-      <artifactId>jakarta.enterprise.cdi-api</artifactId>
-      <version>2.0.2</version>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <version>2.0</version>
       <scope>provided</scope>
       <!--
         Used for @javax.enterprise.inject.Stereotype annotation on ProblemType.
@@ -33,12 +33,34 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>jakarta.ejb</groupId>
-      <artifactId>jakarta.ejb-api</artifactId>
-      <version>3.2.6</version>
+      <groupId>jakarta.enterprise</groupId>
+      <artifactId>jakarta.enterprise.cdi-api</artifactId>
+      <version>4.1.0</version>
+      <scope>provided</scope>
+      <!--
+        Used for @jakarta.enterprise.inject.Stereotype annotation on ProblemType.
+        Dependency is not required in non-CDI environments (e.g. Spring Boot).
+      -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>javax.ejb</groupId>
+      <artifactId>javax.ejb-api</artifactId>
+      <version>3.2.2</version>
       <scope>provided</scope>
       <!--
         Used for @javax.ejb.ApplicationException annotation on Problem.
+        Dependency is not required in non-EJB environments (e.g. Spring Boot).
+      -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.ejb</groupId>
+      <artifactId>jakarta.ejb-api</artifactId>
+      <version>4.0.1</version>
+      <scope>provided</scope>
+      <!--
+        Used for @jakarta.ejb.ApplicationException annotation on Problem.
         Dependency is not required in non-EJB environments (e.g. Spring Boot).
       -->
       <optional>true</optional>
