@@ -20,7 +20,7 @@ class RequiredInputValidator<T> extends AbstractSingleInputValidator<T> {
     @Override
     public Optional<InputValidationIssue> validate() {
         if (getValue() == null) {
-            return Optional.of(InputValidationIssues.requiredInput(getIn(), getName(), getValue()));
+            return Optional.of(InputValidationIssues.requiredInput(getIn(), getName()));
         } else {
             return Optional.empty();
         }

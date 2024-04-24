@@ -38,22 +38,22 @@ class RetryAfterTest {
     @Test
     void getHttpHeadersRetryAfterDate() {
         RetryAfter tested = new RetryAfterProblem(OffsetDateTime.now(), null);
-        assertThat(tested.getHttpResponseHeaders()).containsEntry(
-                RetryAfter.RETRY_AFTER, Date.from(tested.getRetryAfter().toInstant()));
+        assertThat(tested.getHttpResponseHeaders()).containsExactly(
+                entry(RetryAfter.RETRY_AFTER, Date.from(tested.getRetryAfter().toInstant())));
     }
 
     @Test
     void getHttpHeadersRetryAfterSec() {
         RetryAfter tested = new RetryAfterProblem(null, 12345L);
-        assertThat(tested.getHttpResponseHeaders()).containsEntry(
-                RetryAfter.RETRY_AFTER, 12345L);
+        assertThat(tested.getHttpResponseHeaders()).containsExactly(
+                entry(RetryAfter.RETRY_AFTER, 12345L));
     }
 
     @Test
     void getHttpHeadersRetryAfterDateAndSec() {
         RetryAfter tested = new RetryAfterProblem(OffsetDateTime.now(), 12345L);
-        assertThat(tested.getHttpResponseHeaders()).containsEntry(
-                RetryAfter.RETRY_AFTER, Date.from(tested.getRetryAfter().toInstant()));
+        assertThat(tested.getHttpResponseHeaders()).containsExactly(
+                entry(RetryAfter.RETRY_AFTER, Date.from(tested.getRetryAfter().toInstant())));
     }
 
 }
