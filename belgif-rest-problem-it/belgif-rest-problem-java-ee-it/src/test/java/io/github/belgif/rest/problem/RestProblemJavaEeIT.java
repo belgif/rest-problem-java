@@ -2,6 +2,11 @@ package io.github.belgif.rest.problem;
 
 import static org.hamcrest.Matchers.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Properties;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,10 +28,22 @@ class RestProblemJavaEeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestProblemJavaEeIT.class);
 
+    private static final String JBOSS_DOCKER_IMAGE;
+
+    static {
+        try {
+            Properties properties = new Properties();
+            properties.load(Files.newInputStream(Paths.get("../docker-images.properties")));
+            JBOSS_DOCKER_IMAGE = properties.getProperty("jboss");
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     @Container
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static final GenericContainer JBOSS_CONTAINER =
-            new GenericContainer("registry.redhat.io/jboss-eap-7/eap-xp4-openjdk17-openshift-rhel8:4.0-29")
+            new GenericContainer(JBOSS_DOCKER_IMAGE)
                     .withCopyFileToContainer(
                             MountableFile.forHostPath("target/belgif-rest-problem-java-ee-it.war"),
                             "/deployments/belgif-rest-problem-java-ee-it.war")

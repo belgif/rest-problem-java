@@ -2,6 +2,11 @@ package io.github.belgif.rest.problem;
 
 import static org.hamcrest.Matchers.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Properties;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,10 +28,22 @@ class RestProblemJakartaEeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestProblemJakartaEeIT.class);
 
+    private static final String WILDFLY_DOCKER_IMAGE;
+
+    static {
+        try {
+            Properties properties = new Properties();
+            properties.load(Files.newInputStream(Paths.get("../docker-images.properties")));
+            WILDFLY_DOCKER_IMAGE = properties.getProperty("wildfly");
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     @Container
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static final GenericContainer JBOSS_CONTAINER =
-            new GenericContainer("quay.io/wildfly/wildfly:31.0.1.Final-jdk17")
+            new GenericContainer(WILDFLY_DOCKER_IMAGE)
                     .withCopyFileToContainer(
                             MountableFile.forHostPath("target/belgif-rest-problem-jakarta-ee-it.war"),
                             "/opt/jboss/wildfly/standalone/deployments/belgif-rest-problem-jakarta-ee-it.war")

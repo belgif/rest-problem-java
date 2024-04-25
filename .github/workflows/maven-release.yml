@@ -17,6 +17,10 @@ jobs:
         server-id: ossrh
         server-username: MAVEN_CENTRAL_USER
         server-password: MAVEN_CENTRAL_TOKEN
+    - name: Cache docker images
+      uses: ScribeMD/docker-cache@0.5.0
+      with:
+        key: docker-${{ runner.os }}-${{ hashFiles('belgif-rest-problem-it/docker-images.properties') }}
     - name: Login to registry.redhat.io
       uses: docker/login-action@v3.1.0
       with:
