@@ -306,24 +306,24 @@ public class InputValidationIssue {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(additionalProperties, detail, href, in, instance, name, status, title, type, value, inputs);
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        InputValidationIssue that = (InputValidationIssue) o;
+        return status == that.status && Objects.equals(type, that.type) && Objects.equals(href, that.href)
+                && Objects.equals(title, that.title) && Objects.equals(detail, that.detail)
+                && Objects.equals(instance, that.instance) && in == that.in && Objects.equals(name, that.name)
+                && Objects.equals(value, that.value) && Objects.equals(inputs, that.inputs)
+                && Objects.equals(additionalProperties, that.additionalProperties);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof InputValidationIssue)) {
-            return false;
-        }
-        InputValidationIssue other = (InputValidationIssue) obj;
-        return Objects.equals(additionalProperties, other.additionalProperties) && Objects.equals(detail, other.detail)
-                && Objects.equals(href, other.href) && in == other.in && Objects.equals(instance, other.instance)
-                && Objects.equals(name, other.name) && status == other.status && Objects.equals(title, other.title)
-                && Objects.equals(type, other.type) && Objects.equals(value, other.value)
-                && Objects.equals(inputs, other.inputs);
+    public int hashCode() {
+        return Objects.hash(type, href, title, status, detail, instance, in, name, value, inputs, additionalProperties);
     }
 
     @Override
@@ -342,4 +342,5 @@ public class InputValidationIssue {
                 ", additionalProperties=" + additionalProperties +
                 '}';
     }
+
 }

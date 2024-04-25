@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 
@@ -76,6 +77,26 @@ public class MissingScopeProblem extends ClientProblem {
 
     public void addRequiredScope(String requiredScope) {
         requiredScopes.add(requiredScope);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        MissingScopeProblem that = (MissingScopeProblem) o;
+        return Objects.equals(requiredScopes, that.requiredScopes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), requiredScopes);
     }
 
 }

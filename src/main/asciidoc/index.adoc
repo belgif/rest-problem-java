@@ -18,6 +18,7 @@
 *belgif-rest-problem:*
 
 * Extracted RequestValidator to separate <<belgif-rest-problem-validator>> module.
+* Added equals() and hashCode() to all Problem classes
 
 *belgif-rest-problem-java-ee:*
 

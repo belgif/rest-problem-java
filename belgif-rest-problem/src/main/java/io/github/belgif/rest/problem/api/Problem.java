@@ -1,6 +1,7 @@
 package io.github.belgif.rest.problem.api;
 
 import java.net.URI;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -117,6 +118,25 @@ public abstract class Problem extends RuntimeException {
         } else {
             return title;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Problem problem = (Problem) o;
+        return status == problem.status && Objects.equals(type, problem.type) && Objects.equals(href, problem.href)
+                && Objects.equals(title, problem.title) && Objects.equals(detail, problem.detail)
+                && Objects.equals(instance, problem.instance);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, href, title, status, detail, instance);
     }
 
 }

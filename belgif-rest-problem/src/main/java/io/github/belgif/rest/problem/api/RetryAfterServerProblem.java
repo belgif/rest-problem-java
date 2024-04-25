@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem.api;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /**
  * Abstract base class for server problems with retryAfter/retryAfterSec.
@@ -46,6 +47,27 @@ public abstract class RetryAfterServerProblem extends ServerProblem implements R
 
     public void setRetryAfterSec(Long retryAfterSec) {
         this.retryAfterSec = retryAfterSec;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        RetryAfterServerProblem that = (RetryAfterServerProblem) o;
+        return Objects.equals(retryAfter, that.retryAfter) && Objects.equals(retryAfterSec,
+                that.retryAfterSec);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), retryAfter, retryAfterSec);
     }
 
 }

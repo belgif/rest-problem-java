@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 
@@ -73,6 +74,26 @@ public abstract class InputValidationProblem extends ClientProblem {
             }
         }
         return message.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        InputValidationProblem that = (InputValidationProblem) o;
+        return Objects.equals(issues, that.issues);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), issues);
     }
 
 }
