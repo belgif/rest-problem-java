@@ -3,6 +3,7 @@ package io.github.belgif.rest.problem;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -40,6 +41,26 @@ public class DefaultProblem extends Problem {
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         additionalProperties.put(name, value);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        DefaultProblem that = (DefaultProblem) o;
+        return Objects.equals(additionalProperties, that.additionalProperties);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), additionalProperties);
     }
 
 }

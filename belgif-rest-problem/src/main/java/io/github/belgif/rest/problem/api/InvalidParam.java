@@ -108,21 +108,22 @@ public class InvalidParam {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(in, name, reason, value, issueType);
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        InvalidParam that = (InvalidParam) o;
+        return in == that.in && Objects.equals(name, that.name) && Objects.equals(reason, that.reason)
+                && Objects.equals(value, that.value) && Objects.equals(issueType, that.issueType)
+                && Objects.equals(additionalProperties, that.additionalProperties);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof InvalidParam)) {
-            return false;
-        }
-        InvalidParam other = (InvalidParam) obj;
-        return in == other.in && Objects.equals(name, other.name) && Objects.equals(reason, other.reason)
-                && Objects.equals(value, other.value) && Objects.equals(issueType, other.issueType);
+    public int hashCode() {
+        return Objects.hash(in, name, reason, value, issueType, additionalProperties);
     }
 
     @Override

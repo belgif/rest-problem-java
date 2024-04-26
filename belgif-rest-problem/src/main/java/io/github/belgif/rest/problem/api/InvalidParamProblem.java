@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  * @deprecated use {@link InputValidationProblem}
  */
 @Deprecated
-public abstract class InvalidParamProblem extends Problem {
+public abstract class InvalidParamProblem extends ClientProblem {
 
     private static final long serialVersionUID = 1L;
 
@@ -54,6 +55,26 @@ public abstract class InvalidParamProblem extends Problem {
 
     public void addInvalidParam(InvalidParam invalidParam) {
         invalidParams.add(invalidParam);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        InvalidParamProblem that = (InvalidParamProblem) o;
+        return Objects.equals(invalidParams, that.invalidParams);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), invalidParams);
     }
 
 }

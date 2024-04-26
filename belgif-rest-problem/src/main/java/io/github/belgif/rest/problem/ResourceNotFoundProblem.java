@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
@@ -91,6 +92,26 @@ public class ResourceNotFoundProblem extends InputValidationProblem {
     public void setInvalidParams(List<InvalidParam> invalidParams) {
         this.invalidParams.clear();
         this.invalidParams.addAll(invalidParams);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        ResourceNotFoundProblem that = (ResourceNotFoundProblem) o;
+        return Objects.equals(invalidParams, that.invalidParams);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), invalidParams);
     }
 
 }
