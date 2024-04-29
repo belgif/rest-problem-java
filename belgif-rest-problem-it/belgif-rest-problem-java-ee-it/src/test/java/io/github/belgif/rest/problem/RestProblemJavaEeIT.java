@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem;
 
 import static org.hamcrest.Matchers.*;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,6 +16,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.MountableFile;
 
+import com.github.dockerjava.api.command.StopContainerCmd;
+
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
@@ -27,6 +30,12 @@ class RestProblemJavaEeIT {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static final GenericContainer JBOSS_CONTAINER =
             new GenericContainer("registry.redhat.io/jboss-eap-7/eap-xp4-openjdk17-openshift-rhel8:4.0-29")
+                    .withEnv("JAVA_OPTS_APPEND",
+                            "-javaagent:/deployments/jacocoagent.jar=destfile=/tmp/jacoco-it.exec," +
+                                    "includes=io.github.belgif.rest.problem.*")
+                    .withCopyFileToContainer(
+                            MountableFile.forHostPath("target/dependency/jacocoagent.jar"),
+                            "/deployments/jacocoagent.jar")
                     .withCopyFileToContainer(
                             MountableFile.forHostPath("target/belgif-rest-problem-java-ee-it.war"),
                             "/deployments/belgif-rest-problem-java-ee-it.war")
@@ -39,6 +48,15 @@ class RestProblemJavaEeIT {
     }
 
     private RequestSpecification spec;
+
+    @AfterAll
+    static void dumpJacocoReport() {
+        try (StopContainerCmd stop = JBOSS_CONTAINER.getDockerClient()
+                .stopContainerCmd(JBOSS_CONTAINER.getContainerId())) {
+            stop.exec();
+            JBOSS_CONTAINER.copyFileFromContainer("/tmp/jacoco-it.exec", "target/jacoco-it.exec");
+        }
+    }
 
     @BeforeEach
     void before() {
