@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem;
 
 import static org.hamcrest.Matchers.*;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,6 +16,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.MountableFile;
 
+import com.github.dockerjava.api.command.StopContainerCmd;
+
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
@@ -27,6 +30,11 @@ class RestProblemJakartaEeIT {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static final GenericContainer JBOSS_CONTAINER =
             new GenericContainer("quay.io/wildfly/wildfly:31.0.1.Final-jdk17")
+                    .withEnv("PREPEND_JAVA_OPTS", "-javaagent:/opt/jboss/wildfly/standalone/deployments/jacocoagent.jar"
+                            + "=destfile=/tmp/jacoco-it.exec,includes=io.github.belgif.rest.problem.*")
+                    .withCopyFileToContainer(
+                            MountableFile.forHostPath("target/dependency/jacocoagent.jar"),
+                            "/opt/jboss/wildfly/standalone/deployments/jacocoagent.jar")
                     .withCopyFileToContainer(
                             MountableFile.forHostPath("target/belgif-rest-problem-jakarta-ee-it.war"),
                             "/opt/jboss/wildfly/standalone/deployments/belgif-rest-problem-jakarta-ee-it.war")
@@ -39,6 +47,15 @@ class RestProblemJakartaEeIT {
     }
 
     private RequestSpecification spec;
+
+    @AfterAll
+    static void dumpJacocoReport() {
+        try (StopContainerCmd stop = JBOSS_CONTAINER.getDockerClient()
+                .stopContainerCmd(JBOSS_CONTAINER.getContainerId())) {
+            stop.exec();
+            JBOSS_CONTAINER.copyFileFromContainer("/tmp/jacoco-it.exec", "target/jacoco-it.exec");
+        }
+    }
 
     @BeforeEach
     void before() {
