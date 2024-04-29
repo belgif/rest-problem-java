@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.github.belgif.rest.problem</groupId>
+    <artifactId>belgif-rest-problem-parent</artifactId>
+    <version>${revision}</version>
+  </parent>
+
+  <artifactId>jacoco-aggregator</artifactId>
+  <packaging>pom</packaging>
+
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-java-ee</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-spring</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-validator</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-java-ee-it</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-jakarta-ee-it</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-spring-it</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>jacoco-report-aggregate</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report-aggregate</goal>
+            </goals>
+            <configuration>
+              <dataFileIncludes>
+                <dataFileInclude>**/jacoco.exec</dataFileInclude>
+                <dataFileInclude>**/jacoco-it.exec</dataFileInclude>
+              </dataFileIncludes>
+              <formats>XML</formats>
+              <outputDirectory>${project.build.directory}</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
