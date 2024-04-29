@@ -9,7 +9,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
@@ -32,9 +31,11 @@ class RestProblemJavaEeIT {
     public static final GenericContainer JBOSS_CONTAINER =
             new GenericContainer("registry.redhat.io/jboss-eap-7/eap-xp4-openjdk17-openshift-rhel8:4.0-29")
                     .withEnv("JAVA_OPTS_APPEND",
-                            "-javaagent:/target/dependency/jacocoagent.jar=destfile=/target/jacoco-it.exec," +
+                            "-javaagent:/deployments/jacocoagent.jar=destfile=/tmp/jacoco-it.exec," +
                                     "includes=io.github.belgif.rest.problem.*")
-                    .withFileSystemBind("target", "/target", BindMode.READ_WRITE)
+                    .withCopyFileToContainer(
+                            MountableFile.forHostPath("target/dependency/jacocoagent.jar"),
+                            "/deployments/jacocoagent.jar")
                     .withCopyFileToContainer(
                             MountableFile.forHostPath("target/belgif-rest-problem-java-ee-it.war"),
                             "/deployments/belgif-rest-problem-java-ee-it.war")
@@ -48,14 +49,12 @@ class RestProblemJavaEeIT {
 
     private RequestSpecification spec;
 
-    /**
-     * Stop container gracefully in order to dump jacoco-it.exec file.
-     */
     @AfterAll
-    static void stopGracefully() {
+    static void dumpJacocoReport() {
         try (StopContainerCmd stop = JBOSS_CONTAINER.getDockerClient()
                 .stopContainerCmd(JBOSS_CONTAINER.getContainerId())) {
             stop.exec();
+            JBOSS_CONTAINER.copyFileFromContainer("/tmp/jacoco-it.exec", "target/jacoco-it.exec");
         }
     }
 

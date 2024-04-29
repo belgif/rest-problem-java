@@ -9,7 +9,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
@@ -31,10 +30,11 @@ class RestProblemJakartaEeIT {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static final GenericContainer JBOSS_CONTAINER =
             new GenericContainer("quay.io/wildfly/wildfly:31.0.1.Final-jdk17")
-                    .withEnv("PREPEND_JAVA_OPTS",
-                            "-javaagent:/target/dependency/jacocoagent.jar=destfile=/target/jacoco-it.exec," +
-                                    "includes=io.github.belgif.rest.problem.*")
-                    .withFileSystemBind("target", "/target", BindMode.READ_WRITE)
+                    .withEnv("PREPEND_JAVA_OPTS", "-javaagent:/opt/jboss/wildfly/standalone/deployments/jacocoagent.jar"
+                            + "=destfile=/tmp/jacoco-it.exec,includes=io.github.belgif.rest.problem.*")
+                    .withCopyFileToContainer(
+                            MountableFile.forHostPath("target/dependency/jacocoagent.jar"),
+                            "/opt/jboss/wildfly/standalone/deployments/jacocoagent.jar")
                     .withCopyFileToContainer(
                             MountableFile.forHostPath("target/belgif-rest-problem-jakarta-ee-it.war"),
                             "/opt/jboss/wildfly/standalone/deployments/belgif-rest-problem-jakarta-ee-it.war")
@@ -48,14 +48,12 @@ class RestProblemJakartaEeIT {
 
     private RequestSpecification spec;
 
-    /**
-     * Stop container gracefully in order to dump jacoco-it.exec file.
-     */
     @AfterAll
-    static void stopGracefully() {
+    static void dumpJacocoReport() {
         try (StopContainerCmd stop = JBOSS_CONTAINER.getDockerClient()
                 .stopContainerCmd(JBOSS_CONTAINER.getContainerId())) {
             stop.exec();
+            JBOSS_CONTAINER.copyFileFromContainer("/tmp/jacoco-it.exec", "target/jacoco-it.exec");
         }
     }
 
