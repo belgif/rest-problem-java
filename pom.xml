@@ -48,6 +48,12 @@
         <version>4.5.1</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>org.jacoco</groupId>
+        <artifactId>org.jacoco.agent</artifactId>
+        <version>0.8.12</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -147,6 +153,16 @@
           <artifactId>swagger-codegen-maven-plugin</artifactId>
           <version>3.0.54</version>
         </plugin>
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>3.11.0.3922</version>
+        </plugin>
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>0.8.12</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -182,7 +198,7 @@
             </goals>
             <inherited>false</inherited>
             <configuration>
-              <skippedModules>belgif-rest-problem-it</skippedModules>
+              <skippedModules>belgif-rest-problem-it,jacoco-aggregator</skippedModules>
               <doclint>all,-missing</doclint>
               <notimestamp>true</notimestamp>
               <doctitle>belgif-rest-problem ${project.version}</doctitle>
@@ -352,6 +368,58 @@
                   <doclint>all,-missing</doclint>
                   <excludePackageNames>*.internal</excludePackageNames>
                 </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>sonar</id>
+      <properties>
+        <sonar.organization>belgif</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.projectName>rest-problem-java</sonar.projectName>
+        <sonar.projectKey>belgif_rest-problem-java</sonar.projectKey>
+        <sonar.coverage.jacoco.xmlReportPaths>${maven.multiModuleProjectDirectory}/jacoco-aggregator/target/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.exclusions>**/belgif-rest-problem-it/**</sonar.coverage.exclusions>
+        <sonar.cpd.exclusions>**/belgif-rest-problem-it/**,**/src/test/java/**</sonar.cpd.exclusions>
+      </properties>
+      <modules>
+        <module>belgif-rest-problem</module>
+        <module>belgif-rest-problem-validator</module>
+        <module>belgif-rest-problem-java-ee</module>
+        <module>belgif-rest-problem-spring</module>
+        <module>belgif-rest-problem-it</module>
+        <module>jacoco-aggregator</module>
+      </modules>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>jacoco-prepare-agent</id>
+                <goals>
+                  <goal>prepare-agent</goal>
+                </goals>
+                <configuration>
+                  <includes>io.github.belgif.rest.problem.*</includes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sonar</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sonar</goal>
+                </goals>
               </execution>
             </executions>
           </plugin>

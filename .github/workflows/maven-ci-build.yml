@@ -23,7 +23,10 @@ jobs:
         password: ${{ secrets.REDHAT_REGISTRY_TOKEN }}
         registry: registry.redhat.io
     - name: Build with Maven
-      run: mvn -B verify
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: mvn -B verify -Psonar
     - name: Publish doc
       if: github.ref == 'refs/heads/main'
       uses: peaceiris/actions-gh-pages@v4
