@@ -66,7 +66,6 @@ public class ConstraintViolationUtil {
     }
 
     private static InEnum determineSource(MethodArgumentNotValidException exception) {
-        //TODO check if this logic also works when not having the @Valid in the controller, but purely using bean validation in model class.
         List<Annotation> annotations = new ArrayList<>(Arrays.asList(exception.getParameter().getParameterAnnotations()));
         if (annotations.stream().map(Annotation::annotationType).anyMatch(annotationType -> annotationType.equals(RequestParam.class))) {
             return InEnum.QUERY;
