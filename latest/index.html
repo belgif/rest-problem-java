@@ -532,13 +532,13 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_release_notes">1. Release notes</a>
+<li><a href="#_context">1. Context</a></li>
+<li><a href="#_release_notes">2. Release notes</a>
 <ul class="sectlevel2">
-<li><a href="#_version_0_2">1.1. Version 0.2</a></li>
-<li><a href="#_version_0_1">1.2. Version 0.1</a></li>
+<li><a href="#_version_0_2">2.1. Version 0.2</a></li>
+<li><a href="#_version_0_1">2.2. Version 0.1</a></li>
 </ul>
 </li>
-<li><a href="#_context">2. Context</a></li>
 <li><a href="#belgif-rest-problem">3. belgif-rest-problem</a>
 <ul class="sectlevel2">
 <li><a href="#_belgif_problem_types">3.1. Belgif problem types</a></li>
@@ -559,10 +559,47 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_release_notes"><a class="anchor" href="#_release_notes"></a>1. Release notes</h2>
+<h2 id="_context"><a class="anchor" href="#_context"></a>1. Context</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Java library for working with <a href="https://www.belgif.be/specification/rest/api-guide/#error-handling">RFC 9457 standardized Belgif problems</a>.</p>
+</div>
+<div class="paragraph">
+<p>With this library, RFC 9457 Problems can be treated as standard java exceptions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the server side can throw <code>io.github.belgif.rest.problem.api.Problem</code> exceptions (or subclasses), which are transparently converted to RFC 9457 compliant "application/problem+json" responses</p>
+</li>
+<li>
+<p>the client side can catch <code>io.github.belgif.rest.problem.api.Problem</code> exceptions (or subclasses), which are transparently thrown when an RFC 9457 compliant "application/problem+json" response is received</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The library consists of these modules:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#belgif-rest-problem">belgif-rest-problem</a>: library for RFC 9457 standardized Belgif problems</p>
+</li>
+<li>
+<p><a href="#belgif-rest-problem-java-ee">belgif-rest-problem-java-ee</a>: Java EE / Jakarta EE integration for belgif-rest-problem</p>
+</li>
+<li>
+<p><a href="#belgif-rest-problem-spring">belgif-rest-problem-spring</a>: Spring Boot integration for belgif-rest-problem</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_release_notes"><a class="anchor" href="#_release_notes"></a>2. Release notes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_version_0_2"><a class="anchor" href="#_version_0_2"></a>1.1. Version 0.2</h3>
+<h3 id="_version_0_2"><a class="anchor" href="#_version_0_2"></a>2.1. Version 0.2</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -601,34 +638,10 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_1"><a class="anchor" href="#_version_0_1"></a>1.2. Version 0.1</h3>
+<h3 id="_version_0_1"><a class="anchor" href="#_version_0_1"></a>2.2. Version 0.1</h3>
 <div class="paragraph">
 <p>Initial release under Belgif organization.</p>
 </div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_context"><a class="anchor" href="#_context"></a>2. Context</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Java library for working with <a href="https://www.belgif.be/specification/rest/api-guide/#error-handling">RFC 9457 standardized Belgif problems</a>.</p>
-</div>
-<div class="paragraph">
-<p>The library consists of these modules:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="#belgif-rest-problem">belgif-rest-problem</a>: library for RFC 9457 standardized Belgif problems</p>
-</li>
-<li>
-<p><a href="#belgif-rest-problem-java-ee">belgif-rest-problem-java-ee</a>: Java EE / Jakarta EE integration for belgif-rest-problem</p>
-</li>
-<li>
-<p><a href="#belgif-rest-problem-spring">belgif-rest-problem-spring</a>: Spring Boot integration for belgif-rest-problem</p>
-</li>
-</ul>
 </div>
 </div>
 </div>
