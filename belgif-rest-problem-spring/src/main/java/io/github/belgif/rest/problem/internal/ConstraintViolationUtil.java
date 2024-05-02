@@ -1,5 +1,6 @@
 package io.github.belgif.rest.problem.internal;
 
+import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
@@ -7,15 +8,15 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ElementKind;
 import jakarta.validation.Path;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -50,12 +51,35 @@ public class ConstraintViolationUtil {
         return InputValidationIssues.schemaViolation(in, name, violation.getInvalidValue(), violation.getMessage());
     }
 
-    public static InputValidationIssue convertToInputValidationIssue(FieldError fieldError) {
-        InEnum in = null; //TODO
+    private static InputValidationIssue convertToInputValidationIssue(FieldError fieldError, InEnum in) {
         String name = fieldError.getField();
-        String invalidValue = Objects.requireNonNull(fieldError.getRejectedValue()).toString();
+        String invalidValue = fieldError.getRejectedValue() != null ? fieldError.getRejectedValue().toString() : "null";
         String message = fieldError.getDefaultMessage();
-        return InputValidationIssues.schemaViolation(InEnum.BODY, name, invalidValue, message);
+        return InputValidationIssues.schemaViolation(in, name, invalidValue, message);
+    }
+
+    public static BadRequestProblem convertToBadRequestProblem(MethodArgumentNotValidException exception) {
+        InEnum in = determineSource(exception);
+        List<InputValidationIssue> issues = exception.getFieldErrors().stream().map(fieldError ->
+                convertToInputValidationIssue(fieldError, in)).collect(Collectors.toList());
+        return new BadRequestProblem(issues);
+    }
+
+    private static InEnum determineSource(MethodArgumentNotValidException exception) {
+        //TODO check if this logic also works when not having the @Valid in the controller, but purely using bean validation in model class.
+        List<Annotation> annotations = new ArrayList<>(Arrays.asList(exception.getParameter().getParameterAnnotations()));
+        if (annotations.stream().map(Annotation::annotationType).anyMatch(annotationType -> annotationType.equals(RequestParam.class))) {
+            return InEnum.QUERY;
+        } else if (annotations.stream().map(Annotation::annotationType).anyMatch(annotationType -> annotationType.equals(PathVariable.class))) {
+            return InEnum.PATH;
+        } else if (annotations.stream().map(Annotation::annotationType).anyMatch(annotationType -> annotationType.equals(RequestHeader.class))) {
+            return InEnum.HEADER;
+        } else if (annotations.stream().map(Annotation::annotationType).anyMatch(annotationType -> annotationType.equals(RequestBody.class))) {
+            return InEnum.BODY;
+        } else {
+            //TODO do something sensible
+            throw new RuntimeException("Something is wrong");
+        }
     }
 
     private static InEnum determineSource(ConstraintViolation<?> violation,

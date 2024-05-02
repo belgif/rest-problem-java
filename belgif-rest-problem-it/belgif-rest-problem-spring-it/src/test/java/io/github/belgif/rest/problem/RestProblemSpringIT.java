@@ -102,7 +102,8 @@ class RestProblemSpringIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues.in", hasItem("body"))
-                .body("issues.detail", hasItem("must match \"^\\d\\d?$\""));
+                .body("issues.detail", hasItem("must be a well-formed email address"))
+                .body("issues.detail", hasItem("must not be blank"));
     }
 
     @ParameterizedTest

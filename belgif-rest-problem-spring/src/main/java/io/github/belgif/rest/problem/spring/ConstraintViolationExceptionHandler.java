@@ -38,11 +38,14 @@ public class ConstraintViolationExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Problem> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+//        return ProblemMediaType.INSTANCE.toResponse(
+//                new BadRequestProblem(exception.getFieldErrors().stream()
+//                        .map(ConstraintViolationUtil::convertToInputValidationIssue)
+//                        .sorted(Comparator.comparing(InputValidationIssue::getName))
+//                        .collect(Collectors.toList()))
+//        );
         return ProblemMediaType.INSTANCE.toResponse(
-                new BadRequestProblem(exception.getFieldErrors().stream()
-                        .map(ConstraintViolationUtil::convertToInputValidationIssue)
-                        .sorted(Comparator.comparing(InputValidationIssue::getName))
-                        .collect(Collectors.toList()))
+                ConstraintViolationUtil.convertToBadRequestProblem(exception)
         );
     }
 
