@@ -2,7 +2,6 @@ package io.github.belgif.rest.problem;
 
 import static org.hamcrest.Matchers.*;
 
-import io.restassured.http.Header;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import io.restassured.RestAssured;
+import io.restassured.http.Header;
 import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -95,8 +95,8 @@ class RestProblemSpringIT {
     @Test
     void bodyInputViolation() {
         spec.when().body("{" +
-                        "\"email\": \"mymail.com\"" +
-                        "}")
+                "\"email\": \"mymail.com\"" +
+                "}")
                 .contentType("application/json")
                 .post("/methodArgumentNotValid").then().assertThat()
                 .statusCode(400)

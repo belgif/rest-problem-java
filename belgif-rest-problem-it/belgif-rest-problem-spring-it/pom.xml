@@ -51,7 +51,6 @@
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
-      <!-- TODO: Verify which version works with newest spring boot, change dependencies per sub module -->
       <version>5.4.0</version>
       <scope>test</scope>
     </dependency>

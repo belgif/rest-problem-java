@@ -1,13 +1,12 @@
 package io.github.belgif.rest.problem;
 
-import com.acme.custom.CustomProblem;
-import io.github.belgif.rest.problem.api.Problem;
-import io.github.belgif.rest.problem.model.MyRequestBody;
-import jakarta.validation.Constraint;
+import java.net.URI;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
+
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.event.EventListener;
@@ -17,7 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.net.URI;
+import com.acme.custom.CustomProblem;
+
+import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.model.MyRequestBody;
 
 @RestController
 @RequestMapping("/frontend")
@@ -134,7 +136,8 @@ public class FrontendController {
     }
 
     @GetMapping("/constraintViolationHeader")
-    public ResponseEntity<String> constraintViolationHeader(@Valid @RequestHeader("id") @Pattern(regexp = "^\\d\\d?$") String id) {
+    public ResponseEntity<String>
+            constraintViolationHeader(@Valid @RequestHeader("id") @Pattern(regexp = "^\\d\\d?$") String id) {
         return ResponseEntity.ok(id + " was the ID");
     }
 
@@ -142,6 +145,5 @@ public class FrontendController {
     public ResponseEntity<String> methodArgumentNotValidBody(@Valid @RequestBody MyRequestBody body) {
         return ResponseEntity.ok(body.getEmail() + " was the Email");
     }
-
 
 }

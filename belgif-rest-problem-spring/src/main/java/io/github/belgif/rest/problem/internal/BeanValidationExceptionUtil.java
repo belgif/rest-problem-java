@@ -1,12 +1,14 @@
 package io.github.belgif.rest.problem.internal;
 
-import io.github.belgif.rest.problem.BadRequestProblem;
-import io.github.belgif.rest.problem.api.InEnum;
-import io.github.belgif.rest.problem.api.InputValidationIssue;
-import io.github.belgif.rest.problem.api.InputValidationIssues;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ElementKind;
 import jakarta.validation.Path;
+
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.stream.Collectors;
+import io.github.belgif.rest.problem.BadRequestProblem;
+import io.github.belgif.rest.problem.api.InEnum;
+import io.github.belgif.rest.problem.api.InputValidationIssue;
+import io.github.belgif.rest.problem.api.InputValidationIssues;
 
 /**
  * Internal utility class for converting ConstraintViolation to InputValidationIssue.
@@ -25,9 +27,9 @@ import java.util.stream.Collectors;
  * @see ConstraintViolation
  * @see InputValidationIssue
  */
-public class ConstraintViolationUtil {
+public class BeanValidationExceptionUtil {
 
-    private ConstraintViolationUtil() {
+    private BeanValidationExceptionUtil() {
     }
 
     public static InputValidationIssue convertToInputValidationIssue(ConstraintViolation<?> violation) {
@@ -51,38 +53,42 @@ public class ConstraintViolationUtil {
         return InputValidationIssues.schemaViolation(in, name, violation.getInvalidValue(), violation.getMessage());
     }
 
-    private static InputValidationIssue convertToInputValidationIssue(FieldError fieldError, InEnum in) {
-        String name = fieldError.getField();
-        String invalidValue = fieldError.getRejectedValue() != null ? fieldError.getRejectedValue().toString() : null;
-        String message = fieldError.getDefaultMessage();
-        return InputValidationIssues.schemaViolation(in, name, invalidValue, message);
-    }
-
     public static BadRequestProblem convertToBadRequestProblem(MethodArgumentNotValidException exception) {
         InEnum in = determineSource(exception);
-        List<InputValidationIssue> issues = exception.getFieldErrors().stream().map(fieldError ->
-                convertToInputValidationIssue(fieldError, in)).collect(Collectors.toList());
+        List<InputValidationIssue> issues = exception.getFieldErrors().stream()
+                .map(fieldError -> convertToInputValidationIssue(fieldError, in)).collect(Collectors.toList());
         return new BadRequestProblem(issues);
     }
 
+    private static InputValidationIssue convertToInputValidationIssue(FieldError fieldError, InEnum in) {
+        String invalidValue = fieldError.getRejectedValue() != null ? fieldError.getRejectedValue().toString() : null;
+        return InputValidationIssues.schemaViolation(in, fieldError.getField(), invalidValue,
+                fieldError.getDefaultMessage());
+    }
+
     private static InEnum determineSource(MethodArgumentNotValidException exception) {
-        List<Annotation> annotations = new ArrayList<>(Arrays.asList(exception.getParameter().getParameterAnnotations()));
-        if (annotations.stream().map(Annotation::annotationType).anyMatch(annotationType -> annotationType.equals(RequestParam.class))) {
+        List<Annotation> annotations =
+                new ArrayList<>(Arrays.asList(exception.getParameter().getParameterAnnotations()));
+        if (annotations.stream().map(Annotation::annotationType)
+                .anyMatch(annotationType -> annotationType.equals(RequestParam.class))) {
             return InEnum.QUERY;
-        } else if (annotations.stream().map(Annotation::annotationType).anyMatch(annotationType -> annotationType.equals(PathVariable.class))) {
+        } else if (annotations.stream().map(Annotation::annotationType)
+                .anyMatch(annotationType -> annotationType.equals(PathVariable.class))) {
             return InEnum.PATH;
-        } else if (annotations.stream().map(Annotation::annotationType).anyMatch(annotationType -> annotationType.equals(RequestHeader.class))) {
+        } else if (annotations.stream().map(Annotation::annotationType)
+                .anyMatch(annotationType -> annotationType.equals(RequestHeader.class))) {
             return InEnum.HEADER;
-        } else if (annotations.stream().map(Annotation::annotationType).anyMatch(annotationType -> annotationType.equals(RequestBody.class))) {
+        } else if (annotations.stream().map(Annotation::annotationType)
+                .anyMatch(annotationType -> annotationType.equals(RequestBody.class))) {
             return InEnum.BODY;
         } else {
-            //TODO do something sensible
+            // TODO do something sensible
             throw new RuntimeException("Something is wrong");
         }
     }
 
     private static InEnum determineSource(ConstraintViolation<?> violation,
-                                          LinkedList<Path.Node> propertyPath, Path.MethodNode methodNode) {
+            LinkedList<Path.Node> propertyPath, Path.MethodNode methodNode) {
         if (propertyPath.getLast().getKind() == ElementKind.PARAMETER) {
             if (methodNode != null) {
                 Path.ParameterNode param = propertyPath.getLast().as(Path.ParameterNode.class);
