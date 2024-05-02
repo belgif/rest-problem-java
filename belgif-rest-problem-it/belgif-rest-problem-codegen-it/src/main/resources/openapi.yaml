@@ -7,6 +7,7 @@ servers:
 paths:
   /problem:
     get:
+      operationId: getProblem
       responses:
         "200":
           description: Success
@@ -24,6 +25,7 @@ paths:
           $ref: "belgif/problem/v1/problem-v1.yaml#/components/responses/ProblemResponse"
   /legacy:
     get:
+      operationId: getLegacyProblem
       responses:
         "200":
           description: Success
