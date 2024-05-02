@@ -45,6 +45,10 @@ The library consists of these modules:
 * Remove `be.fgov.kszbcss` from default scanned problem type packages
 * Rename `io.github.belgif.rest.problem.spring.scan-additional-problem-packages` configuration property to `io.github.belgif.rest.problem.scan-additional-problem-packages`
 
+*documentation:*
+
+* Add chapter on <<code-generators>>
+
 === Version 0.1
 
 Initial release under Belgif organization.
@@ -312,3 +316,28 @@ io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
 This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
 
 In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.
+
+[[code-generators]]
+== Code generators
+
+Code generators should be configured to use the belgif-rest-problem types for problem-related model classes, instead of generating them.
+
+[[openapi-generator-maven-plugin]]
+=== openapi-generator-maven-plugin
+
+When using https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin[openapi-generator-maven-plugin], configure `<schemaMappings>` as follows:
+
+[source,xml,indent=0]
+----
+include::../../../belgif-rest-problem-it/belgif-rest-problem-codegen-it/pom.xml[tag=openapi-generator-maven-plugin]
+----
+
+[[swagger-codegen-maven-plugin]]
+=== swagger-codegen-maven-plugin
+
+When using https://github.com/swagger-api/swagger-codegen/tree/3.0.0/modules/swagger-codegen-maven-plugin[swagger-codegen-maven-plugin], configure `<importMappings>` as follows:
+
+[source,xml,indent=0]
+----
+include::../../../belgif-rest-problem-it/belgif-rest-problem-codegen-it/pom.xml[tag=swagger-codegen-maven-plugin]
+----

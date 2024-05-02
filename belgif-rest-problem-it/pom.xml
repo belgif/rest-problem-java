@@ -41,6 +41,7 @@
     <module>belgif-rest-problem-it-common</module>
     <module>belgif-rest-problem-jackson-minimal-it</module>
     <module>belgif-rest-problem-jackson-latest-it</module>
+    <module>belgif-rest-problem-codegen-it</module>
   </modules>
 
 </project>

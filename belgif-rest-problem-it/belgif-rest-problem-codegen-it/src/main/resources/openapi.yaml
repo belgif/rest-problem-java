@@ -1,0 +1,50 @@
+openapi: 3.0.3
+info:
+  title: problemCodegenTest
+  version: "1.0"
+servers:
+  - url: /problemCodegenTest/v1
+paths:
+  /problem:
+    get:
+      operationId: getProblem
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "belgif/problem/v1/problem-v1.yaml#/components/schemas/InputValidationProblem"
+        default:
+          $ref: "belgif/problem/v1/problem-v1.yaml#/components/responses/ProblemResponse"
+  /legacy:
+    get:
+      operationId: getLegacyProblem
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "belgif/problem/v1/problem-v1.yaml#/components/schemas/InvalidParamProblem"
+        default:
+          $ref: "belgif/problem/v1/problem-v1.yaml#/components/responses/ProblemResponse"
+components:
+  schemas:
+    SuccessResponse:
+      type: object
+      properties:
+        message:
+          type: string
