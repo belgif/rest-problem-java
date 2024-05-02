@@ -17,7 +17,6 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-<!--        <version>2.7.18</version>-->
         <version>3.0.0</version>
         <type>pom</type>
         <scope>import</scope>
@@ -51,7 +50,6 @@
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
-      <version>5.4.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
