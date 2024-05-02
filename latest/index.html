@@ -554,6 +554,12 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </ul>
 </li>
 <li><a href="#belgif-rest-problem-spring">6. belgif-rest-problem-spring</a></li>
+<li><a href="#code-generators">7. Code generators</a>
+<ul class="sectlevel2">
+<li><a href="#openapi-generator-maven-plugin">7.1. openapi-generator-maven-plugin</a></li>
+<li><a href="#swagger-codegen-maven-plugin">7.2. swagger-codegen-maven-plugin</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -636,6 +642,16 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </li>
 <li>
 <p>Rename <code>io.github.belgif.rest.problem.spring.scan-additional-problem-packages</code> configuration property to <code>io.github.belgif.rest.problem.scan-additional-problem-packages</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>documentation:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add chapter on <a href="#code-generators">Code generators</a></p>
 </li>
 </ul>
 </div>
@@ -1128,6 +1144,48 @@ This handles integration with the <a href="https://docs.spring.io/spring-framewo
 </div>
 <div class="paragraph">
 <p>In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="code-generators"><a class="anchor" href="#code-generators"></a>7. Code generators</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Code generators should be configured to use the belgif-rest-problem types for problem-related model classes, instead of generating them.</p>
+</div>
+<div class="sect2">
+<h3 id="openapi-generator-maven-plugin"><a class="anchor" href="#openapi-generator-maven-plugin"></a>7.1. openapi-generator-maven-plugin</h3>
+<div class="paragraph">
+<p>When using <a href="https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin">openapi-generator-maven-plugin</a>, configure <code>&lt;schemaMappings&gt;</code> as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;schemaMappings&gt;</span>
+  Problem=io.github.belgif.rest.problem.api.Problem,
+  InputValidationProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
+  InputValidationIssue=io.github.belgif.rest.problem.api.InputValidationIssue,
+  InvalidParamProblem=io.github.belgif.rest.problem.api.InvalidParamProblem,
+  InvalidParam=io.github.belgif.rest.problem.api.InvalidParam
+<span class="tag">&lt;/schemaMappings&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="swagger-codegen-maven-plugin"><a class="anchor" href="#swagger-codegen-maven-plugin"></a>7.2. swagger-codegen-maven-plugin</h3>
+<div class="paragraph">
+<p>When using <a href="https://github.com/swagger-api/swagger-codegen/tree/3.0.0/modules/swagger-codegen-maven-plugin">swagger-codegen-maven-plugin</a>, configure <code>&lt;importMappings&gt;</code> as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;importMappings&gt;</span>
+  Problem=io.github.belgif.rest.problem.api.Problem,
+  InputValidationProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
+  InputValidationIssue=io.github.belgif.rest.problem.api.InputValidationIssue,
+  InvalidParamProblem=io.github.belgif.rest.problem.api.InvalidParamProblem,
+  InvalidParam=io.github.belgif.rest.problem.api.InvalidParam
+<span class="tag">&lt;/importMappings&gt;</span></code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
