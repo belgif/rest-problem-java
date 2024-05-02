@@ -53,7 +53,7 @@ public class ConstraintViolationUtil {
 
     private static InputValidationIssue convertToInputValidationIssue(FieldError fieldError, InEnum in) {
         String name = fieldError.getField();
-        String invalidValue = fieldError.getRejectedValue() != null ? fieldError.getRejectedValue().toString() : "null";
+        String invalidValue = fieldError.getRejectedValue() != null ? fieldError.getRejectedValue().toString() : null;
         String message = fieldError.getDefaultMessage();
         return InputValidationIssues.schemaViolation(in, name, invalidValue, message);
     }
