@@ -38,6 +38,9 @@
     <module>belgif-rest-problem-spring-it</module>
     <module>belgif-rest-problem-java-ee-it</module>
     <module>belgif-rest-problem-jakarta-ee-it</module>
+    <module>belgif-rest-problem-it-common</module>
+    <module>belgif-rest-problem-jackson-minimal-it</module>
+    <module>belgif-rest-problem-jackson-latest-it</module>
   </modules>
 
 </project>

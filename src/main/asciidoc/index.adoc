@@ -34,6 +34,7 @@ The library consists of these modules:
 
 * Extracted RequestValidator to separate <<belgif-rest-problem-validator>> module.
 * Added equals() and hashCode() to all Problem classes
+* Move additionalProperties from DefaultProblem to Problem
 
 *belgif-rest-problem-java-ee:*
 
