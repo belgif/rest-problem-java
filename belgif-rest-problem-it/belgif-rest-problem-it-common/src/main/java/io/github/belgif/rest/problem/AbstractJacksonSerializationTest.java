@@ -1,80 +1,91 @@
-package io.github.belgif.rest.problem.api;
+package io.github.belgif.rest.problem;
 
 import static org.assertj.core.api.Assertions.*;
 
 import java.net.URI;
 import java.util.Collections;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.acme.custom.CustomProblem;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.cfg.PackageVersion;
 
-import io.github.belgif.rest.problem.BadRequestProblem;
-import io.github.belgif.rest.problem.DefaultProblem;
-import io.github.belgif.rest.problem.ProblemModule;
+import io.github.belgif.rest.problem.api.InEnum;
+import io.github.belgif.rest.problem.api.Input;
+import io.github.belgif.rest.problem.api.InputValidationIssue;
+import io.github.belgif.rest.problem.api.InputValidationIssues;
+import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.registry.TestProblemTypeRegistry;
 
-class ProblemTest {
+abstract class AbstractJacksonSerializationTest {
 
     private ObjectMapper mapper;
+
+    @BeforeAll
+    static void printJacksonVersion() {
+        print("jackson version: " + PackageVersion.VERSION);
+    }
 
     @BeforeEach
     void setUp() {
         mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         TestProblemTypeRegistry registry = new TestProblemTypeRegistry();
-        registry.registerProblemType(BadRequestProblem.class);
+        registry.registerProblemType(BadRequestProblem.class, CustomProblem.class, TooManyRequestsProblem.class);
         mapper.registerModule(new ProblemModule(registry));
     }
 
     @Test
-    void jacksonRoundtrip() throws JsonProcessingException {
+    void badRequestProblem() throws JsonProcessingException {
         BadRequestProblem problem = new BadRequestProblem();
         problem.setDetail("my detail message");
-        String json = mapper.writeValueAsString(problem);
-        print(json);
-        Problem result = mapper.readValue(json, Problem.class);
-        assertThat(result).isInstanceOf(BadRequestProblem.class);
-        print(mapper.writeValueAsString(result));
+        problem.setAdditionalProperty("additional", "property");
+        assertSerializationRoundtrip(problem);
     }
 
     @Test
-    void jacksonRoundtripSsinReplaced() throws JsonProcessingException {
+    void customProblem() throws JsonProcessingException {
+        CustomProblem problem = new CustomProblem("custom");
+        problem.setAdditionalProperty("additional", "property");
+        assertSerializationRoundtrip(problem);
+    }
+
+    @Test
+    void retryAfterProblem() throws JsonProcessingException {
+        TooManyRequestsProblem problem = new TooManyRequestsProblem();
+        problem.setRetryAfterSec(60L);
+        problem.setAdditionalProperty("additional", "property");
+        assertSerializationRoundtrip(problem);
+    }
+
+    @Test
+    void badRequestProblemReplacedSsin() throws JsonProcessingException {
         BadRequestProblem problem = new BadRequestProblem(
                 InputValidationIssues.replacedSsin(InEnum.BODY, "parent[1].ssin", "12345678901", "23456789012"));
-        String json = mapper.writeValueAsString(problem);
-        print(json);
-        Problem result = mapper.readValue(json, Problem.class);
-        assertThat(result).isInstanceOf(BadRequestProblem.class);
-        assertThat(((BadRequestProblem) result).getIssues().get(0).getAdditionalProperties())
-                .containsExactly(entry("replacedBy", "23456789012"));
-        print(mapper.writeValueAsString(result));
+        assertSerializationRoundtrip(problem);
     }
 
     @Test
-    void jacksonRoundtripMultipleInputs() throws JsonProcessingException {
+    void badRequestProblemMultipleInputs() throws JsonProcessingException {
         BadRequestProblem problem = new BadRequestProblem();
         problem.setDetail("my detail message");
         InputValidationIssue issue = new InputValidationIssue();
         issue.setType(URI.create("urn:problem-type:cbss:input-validation:exactlyOneOfExpected"));
         issue.setTitle("Exactly one of these inputs is expected");
         issue.setTitle("Exactly one of inputs [one, two] is expected");
-        issue.addInput(new Input(InEnum.QUERY, "one", 1));
-        issue.addInput(new Input(InEnum.QUERY, "two", 2));
+        issue.addInput(Input.query("one", 1));
+        issue.addInput(Input.query("two", 2));
         problem.addIssue(issue);
-        String json = mapper.writeValueAsString(problem);
-        print(json);
-        Problem result = mapper.readValue(json, Problem.class);
-        assertThat(result).isInstanceOf(BadRequestProblem.class);
-        assertThat(((BadRequestProblem) result).getIssues().get(0).getInputs()).hasSize(2);
-        print(mapper.writeValueAsString(result));
+        assertSerializationRoundtrip(problem);
     }
 
     @Test
-    void jacksonUnmarshallInNameValueWithInputsArray() throws JsonProcessingException {
+    void badRequestProblemWithInNameValueAndInputsArray() throws JsonProcessingException {
         String json = "{\n"
                 + "  \"type\": \"urn:problem-type:belgif:badRequest\",\n"
                 + "  \"href\": \"https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html\",\n"
@@ -101,21 +112,22 @@ class ProblemTest {
         InputValidationIssue issue = ((BadRequestProblem) result).getIssues().get(0);
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getInputs().get(0).getName()).isEqualTo("test");
-        print(mapper.writeValueAsString(result));
+        assertThat(mapper.writeValueAsString(result)).isEqualToIgnoringWhitespace(json);
     }
 
     @Test
-    void fallbackToDefaultProblemWhenProblemTypeNotMapped() throws JsonProcessingException {
+    void unmappedProblem() throws JsonProcessingException {
         mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         BadRequestProblem problem = new BadRequestProblem();
         problem.setDetail("my detail message");
+        problem.setAdditionalProperty("additional", "property");
         String json = mapper.writeValueAsString(problem);
         print(json);
         Problem result = mapper.readValue(json, Problem.class);
         assertThat(result).isInstanceOf(DefaultProblem.class);
-        print(mapper.writeValueAsString(result));
+        assertThat(mapper.writeValueAsString(result)).isEqualTo(json);
     }
 
     @Test
@@ -137,7 +149,8 @@ class ProblemTest {
         Problem problem = mapper.readValue(json, Problem.class);
         assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
-        InvalidParam invalidParam = badRequestProblem.getInvalidParams().get(0);
+        assertThat(badRequestProblem.getInvalidParams()).isNotEmpty();
+        assertThat(mapper.writeValueAsString(badRequestProblem)).isEqualToIgnoringWhitespace(json);
     }
 
     @Test
@@ -157,6 +170,30 @@ class ProblemTest {
                         entry("details", Collections.emptyList()),
                         entry("id", "08eb8aa6-d4a5-44fc-b25d-007b9f6a272a"),
                         entry("message", "552-Id Value is invalid"));
+    }
+
+    @Test
+    void additionalExceptionProperties() throws JsonProcessingException {
+        BadRequestProblem problem = new BadRequestProblem();
+        problem.setAdditionalProperty("cause", "cause");
+        problem.setAdditionalProperty("stackTrace", "stackTrace");
+        problem.setAdditionalProperty("suppressed", "suppressed");
+        problem.setAdditionalProperty("message", "message");
+        problem.setAdditionalProperty("localizedMessage", "localizedMessage");
+        assertSerializationRoundtrip(problem);
+    }
+
+    void assertSerializationRoundtrip(Problem problem) throws JsonProcessingException {
+        String json = mapper.writeValueAsString(problem);
+        print(json);
+        Problem result = mapper.readValue(json, Problem.class);
+        assertThat(result).withRepresentation(p -> {
+            try {
+                return mapper.writeValueAsString(p);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }).isEqualTo(problem);
     }
 
     private static void print(String value) {

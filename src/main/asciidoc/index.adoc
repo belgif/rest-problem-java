@@ -11,6 +11,21 @@
 
 = belgif-rest-problem
 
+== Context
+
+Java library for working with https://www.belgif.be/specification/rest/api-guide/#error-handling[RFC 9457 standardized Belgif problems].
+
+With this library, RFC 9457 Problems can be treated as standard java exceptions:
+
+* the server side can throw `io.github.belgif.rest.problem.api.Problem` exceptions (or subclasses), which are transparently converted to RFC 9457 compliant "application/problem+json" responses
+* the client side can catch `io.github.belgif.rest.problem.api.Problem` exceptions (or subclasses), which are transparently thrown when an RFC 9457 compliant "application/problem+json" response is received
+
+The library consists of these modules:
+
+* <<belgif-rest-problem>>: library for RFC 9457 standardized Belgif problems
+* <<belgif-rest-problem-java-ee>>: Java EE / Jakarta EE integration for belgif-rest-problem
+* <<belgif-rest-problem-spring>>: Spring Boot integration for belgif-rest-problem
+
 == Release notes
 
 === Version 0.2
@@ -19,6 +34,7 @@
 
 * Extracted RequestValidator to separate <<belgif-rest-problem-validator>> module.
 * Added equals() and hashCode() to all Problem classes
+* Move additionalProperties from DefaultProblem to Problem
 
 *belgif-rest-problem-java-ee:*
 
@@ -29,19 +45,13 @@
 * Remove `be.fgov.kszbcss` from default scanned problem type packages
 * Rename `io.github.belgif.rest.problem.spring.scan-additional-problem-packages` configuration property to `io.github.belgif.rest.problem.scan-additional-problem-packages`
 
+*documentation:*
+
+* Add chapter on <<code-generators>>
+
 === Version 0.1
 
 Initial release under Belgif organization.
-
-== Context
-
-Java library for working with https://www.belgif.be/specification/rest/api-guide/#error-handling[RFC 9457 standardized Belgif problems].
-
-The library consists of these modules:
-
-* <<belgif-rest-problem>>: library for RFC 9457 standardized Belgif problems
-* <<belgif-rest-problem-java-ee>>: Java EE / Jakarta EE integration for belgif-rest-problem
-* <<belgif-rest-problem-spring>>: Spring Boot integration for belgif-rest-problem
 
 [[belgif-rest-problem]]
 == belgif-rest-problem
@@ -306,3 +316,28 @@ io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
 This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
 
 In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.
+
+[[code-generators]]
+== Code generators
+
+Code generators should be configured to use the belgif-rest-problem types for problem-related model classes, instead of generating them.
+
+[[openapi-generator-maven-plugin]]
+=== openapi-generator-maven-plugin
+
+When using https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin[openapi-generator-maven-plugin], configure `<schemaMappings>` as follows:
+
+[source,xml,indent=0]
+----
+include::../../../belgif-rest-problem-it/belgif-rest-problem-codegen-it/pom.xml[tag=openapi-generator-maven-plugin]
+----
+
+[[swagger-codegen-maven-plugin]]
+=== swagger-codegen-maven-plugin
+
+When using https://github.com/swagger-api/swagger-codegen/tree/3.0.0/modules/swagger-codegen-maven-plugin[swagger-codegen-maven-plugin], configure `<importMappings>` as follows:
+
+[source,xml,indent=0]
+----
+include::../../../belgif-rest-problem-it/belgif-rest-problem-codegen-it/pom.xml[tag=swagger-codegen-maven-plugin]
+----
