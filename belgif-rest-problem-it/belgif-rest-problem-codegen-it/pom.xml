@@ -55,7 +55,7 @@
               <generatorName>jaxrs-spec</generatorName>
               <generateSupportingFiles>false</generateSupportingFiles>
               <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
-              <output>${project.build.outputDirectory}/generated-sources/openapi-generator</output>
+              <output>${project.build.directory}/generated-sources/openapi-generator</output>
               <modelPackage>io.github.belgif.rest.problem.codegen.openapi.model</modelPackage>
               <apiPackage>io.github.belgif.rest.problem.codegen.openapi.api</apiPackage>
               <configOptions>
@@ -86,7 +86,7 @@
             <configuration>
               <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
               <language>jaxrs-spec</language>
-              <output>${project.build.outputDirectory}/generated-sources/swagger-codegen</output>
+              <output>${project.build.directory}/generated-sources/swagger-codegen</output>
               <modelPackage>io.github.belgif.rest.problem.codegen.swagger.model</modelPackage>
               <apiPackage>io.github.belgif.rest.problem.codegen.swagger.api</apiPackage>
               <generateSupportingFiles>false</generateSupportingFiles>
@@ -117,8 +117,8 @@
             </goals>
             <configuration>
               <sources>
-                <source>${project.build.outputDirectory}/generated-sources/openapi-generator/src/gen/java</source>
-                <source>${project.build.outputDirectory}/generated-sources/swagger-codegen/src/gen/java</source>
+                <source>${project.build.directory}/generated-sources/openapi-generator/src/gen/java</source>
+                <source>${project.build.directory}/generated-sources/swagger-codegen/src/gen/java</source>
               </sources>
             </configuration>
           </execution>
