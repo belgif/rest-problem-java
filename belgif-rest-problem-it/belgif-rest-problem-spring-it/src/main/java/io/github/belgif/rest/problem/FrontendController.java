@@ -1,23 +1,27 @@
 package io.github.belgif.rest.problem;
 
-import java.net.URI;
-
+import com.acme.custom.CustomProblem;
+import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.model.MyRequestBody;
+import jakarta.validation.Constraint;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.acme.custom.CustomProblem;
-
-import io.github.belgif.rest.problem.api.Problem;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/frontend")
+@Validated
 public class FrontendController {
 
     private final RestTemplateBuilder restTemplateBuilder;
@@ -118,5 +122,26 @@ public class FrontendController {
             throw e;
         }
     }
+
+    @GetMapping("/constraintViolationPath/{id}")
+    public ResponseEntity<String> constraintViolationPath(@Valid @PathVariable("id") @Min(3) @Max(10) int id) {
+        return ResponseEntity.ok(id + " was the ID");
+    }
+
+    @GetMapping("/constraintViolationQuery")
+    public ResponseEntity<String> constraintViolationQuery(@Valid @RequestParam("id") @Min(3) @Max(10) int id) {
+        return ResponseEntity.ok(id + " was the ID");
+    }
+
+    @GetMapping("/constraintViolationHeader")
+    public ResponseEntity<String> constraintViolationHeader(@Valid @RequestHeader("id") @Pattern(regexp = "^\\d\\d?$") String id) {
+        return ResponseEntity.ok(id + " was the ID");
+    }
+
+    @PostMapping("/methodArgumentNotValid")
+    public ResponseEntity<String> methodArgumentNotValidBody(@Valid @RequestBody MyRequestBody body) {
+        return ResponseEntity.ok(body.getEmail() + " was the Email");
+    }
+
 
 }

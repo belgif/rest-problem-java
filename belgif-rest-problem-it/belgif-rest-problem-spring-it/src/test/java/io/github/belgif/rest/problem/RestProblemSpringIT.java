@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem;
 
 import static org.hamcrest.Matchers.*;
 
+import io.restassured.http.Header;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -62,6 +63,46 @@ class RestProblemSpringIT {
                 .statusCode(503)
                 .header("Retry-After", "10000")
                 .body("type", equalTo("urn:problem-type:belgif:serviceUnavailable"));
+    }
+
+    @Test
+    void pathParamInputViolation() {
+        spec.when().get("/constraintViolationPath/1").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues.in", hasItem("path"))
+                .body("issues.detail", hasItem("must be greater than or equal to 3"));
+    }
+
+    @Test
+    void queryParamInputViolation() {
+        spec.when().get("/constraintViolationQuery?id=100").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues.in", hasItem("query"))
+                .body("issues.detail", hasItem("must be less than or equal to 10"));
+    }
+
+    @Test
+    void headerParamInputViolation() {
+        spec.when().header(new Header("id", "100")).get("/constraintViolationHeader").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues.in", hasItem("header"))
+                .body("issues.detail", hasItem("must match \"^\\d\\d?$\""));
+    }
+
+    @Test
+    void bodyInputViolation() {
+        spec.when().body("{" +
+                        "\"email\": \"mymail.com\"" +
+                        "}")
+                .contentType("application/json")
+                .post("/methodArgumentNotValid").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues.in", hasItem("body"))
+                .body("issues.detail", hasItem("must match \"^\\d\\d?$\""));
     }
 
     @ParameterizedTest
