@@ -36,9 +36,7 @@ abstract class AbstractJacksonSerializationTest {
         mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         TestProblemTypeRegistry registry = new TestProblemTypeRegistry();
-        registry.registerProblemType(BadRequestProblem.class);
-        registry.registerProblemType(CustomProblem.class);
-        registry.registerProblemType(TooManyRequestsProblem.class);
+        registry.registerProblemType(BadRequestProblem.class, CustomProblem.class, TooManyRequestsProblem.class);
         mapper.registerModule(new ProblemModule(registry));
     }
 

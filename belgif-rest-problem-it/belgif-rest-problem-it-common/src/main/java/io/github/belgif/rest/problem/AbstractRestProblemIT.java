@@ -62,7 +62,8 @@ abstract class AbstractRestProblemIT {
     @ParameterizedTest
     @MethodSource("getClients")
     void badRequestFromBackend(String client) {
-        getSpec().when().get("/badRequestFromBackend?client=" + client).then().assertThat()
+        getSpec().when().queryParam("client", client)
+                .get("/badRequestFromBackend").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("detail", equalTo("Bad Request from backend (caught successfully by frontend)"));
@@ -71,7 +72,8 @@ abstract class AbstractRestProblemIT {
     @ParameterizedTest
     @MethodSource("getClients")
     void customFromBackend(String client) {
-        getSpec().when().get("/customFromBackend?client=" + client).then().assertThat()
+        getSpec().when().queryParam("client", client)
+                .get("/customFromBackend").then().assertThat()
                 .statusCode(409)
                 .body("type", equalTo("urn:problem-type:acme:custom"))
                 .body("customField", equalTo("value from backend (caught successfully by frontend)"));
@@ -80,7 +82,8 @@ abstract class AbstractRestProblemIT {
     @ParameterizedTest
     @MethodSource("getClients")
     void unmappedFromBackend(String client) {
-        getSpec().when().get("/unmappedFromBackend?client=" + client).then().assertThat()
+        getSpec().when().queryParam("client", client)
+                .get("/unmappedFromBackend").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:test:unmapped"))
                 .body("detail", equalTo("Unmapped problem from backend (caught successfully by frontend)"));
@@ -88,7 +91,8 @@ abstract class AbstractRestProblemIT {
 
     @Test
     void beanValidation() {
-        getSpec().when().get("/beanValidation?positive=-1").then().assertThat()
+        getSpec().when().queryParam("positive", -1)
+                .get("/beanValidation").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))

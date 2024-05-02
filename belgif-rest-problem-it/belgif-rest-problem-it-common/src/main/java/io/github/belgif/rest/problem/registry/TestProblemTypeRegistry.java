@@ -10,9 +10,10 @@ import io.github.belgif.rest.problem.api.ProblemType;
 
 public class TestProblemTypeRegistry implements ProblemTypeRegistry {
 
-    private List<NamedType> problemTypes = new ArrayList<>();
+    private final List<NamedType> problemTypes = new ArrayList<>();
 
-    public void registerProblemType(Class<? extends Problem>... problem) {
+    @SafeVarargs
+    public final void registerProblemType(Class<? extends Problem>... problem) {
         for (Class<? extends Problem> problemType : problem) {
             ProblemType annotation = problemType.getAnnotation(ProblemType.class);
             if (annotation != null) {
@@ -25,4 +26,5 @@ public class TestProblemTypeRegistry implements ProblemTypeRegistry {
     public NamedType[] getProblemTypes() {
         return problemTypes.toArray(new NamedType[0]);
     }
+
 }
