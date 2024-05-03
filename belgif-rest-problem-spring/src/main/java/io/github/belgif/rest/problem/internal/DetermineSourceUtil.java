@@ -54,7 +54,12 @@ public class DetermineSourceUtil {
                 Annotation[] annotations = parameter.get().getAnnotations();
                 return determineSource(annotations);
             }
+            if (parameters.size() == 1) {
+                Annotation[] annotations = parameters.get(0).getAnnotations();
+                return determineSource(annotations);
+            }
         }
+        // Default if no annotations are added
         return InEnum.QUERY;
     }
 

@@ -133,4 +133,19 @@ class RestProblemSpringIT extends AbstractRestProblemIT {
                 .body("issues.detail", hasItem("must be a well-formed email address"))
                 .body("issues.detail", hasItem("must not be blank"));
     }
+
+    @Test
+    void unreadableBody() {
+        getSpec().when().body("{" +
+                "\"email: \"mymail.com\"" +
+                "}")
+                .contentType("application/json")
+                .post("/methodArgumentNotValid").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues.in", hasItem("body"))
+                .body("issues.detail", hasItem(
+                        "JSON parse error: Unexpected character ('m' (code 109)): was expecting a colon to separate field name and value"));
+    }
+
 }

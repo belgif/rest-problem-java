@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem.spring;
 
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -34,6 +35,15 @@ public class RoutingExceptionsHandler {
         String invalidValue = null;
         return ProblemMediaType.INSTANCE
                 .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(in, name, invalidValue,
+                        detail)));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Problem> handleHttpMessageNotReadable(HttpMessageNotReadableException exception) {
+        InEnum in = InEnum.BODY;
+        String detail = exception.getMessage();
+        return ProblemMediaType.INSTANCE
+                .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(in, null, null,
                         detail)));
     }
 
