@@ -60,12 +60,32 @@ class RestProblemSpringIT extends AbstractRestProblemIT {
     }
 
     @Test
+    void pathParamTypeMismatch() {
+        getSpec().when().get("/constraintViolationPath/test").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues.in", hasItem("path"))
+                .body("issues.detail", hasItem("id should be of type int"))
+                .body("issues.value", hasItem("test"));
+    }
+
+    @Test
     void queryParamInputViolation() {
         getSpec().when().get("/constraintViolationQuery?id=100").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues.in", hasItem("query"))
                 .body("issues.detail", hasItem("must be less than or equal to 10"));
+    }
+
+    @Test
+    void queryParamTypeMismatch() {
+        getSpec().when().get("/constraintViolationQuery?id=test").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues.in", hasItem("query"))
+                .body("issues.detail", hasItem("id should be of type int"))
+                .body("issues.value", hasItem("test"));
     }
 
     @Test

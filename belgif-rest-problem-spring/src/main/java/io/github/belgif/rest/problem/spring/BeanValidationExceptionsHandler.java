@@ -13,10 +13,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
+import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.internal.BeanValidationExceptionUtil;
 import io.github.belgif.rest.problem.internal.DetermineSourceUtil;
@@ -57,6 +59,23 @@ public class BeanValidationExceptionsHandler {
                 .map(fieldError -> BeanValidationExceptionUtil.convertToInputValidationIssue(fieldError, in))
                 .collect(Collectors.toList());
         return ProblemMediaType.INSTANCE.toResponse(new BadRequestProblem(issues));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Problem>
+            handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
+        InEnum in = DetermineSourceUtil.determineSource(exception.getParameter().getParameterAnnotations());
+        String name = exception.getName();
+        String detail;
+        if (exception.getRequiredType() != null) {
+            detail = name + " should be of type " + exception.getRequiredType().getSimpleName();
+        } else {
+            detail = name + " of incorrect type";
+        }
+        String invalidValue = (String) exception.getValue();
+        return ProblemMediaType.INSTANCE
+                .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(in, name, invalidValue,
+                        detail)));
     }
 
 }
