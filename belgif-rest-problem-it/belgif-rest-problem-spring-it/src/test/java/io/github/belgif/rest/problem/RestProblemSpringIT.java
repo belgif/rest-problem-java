@@ -48,6 +48,8 @@ class RestProblemSpringIT extends AbstractRestProblemIT {
                 .body("issues[0].value", nullValue());
     }
 
+    // Since Spring throws different exceptions for different kind of validation issues
+    // Several ITs are implemented on different types of validations.
     @Test
     void pathParamInputViolation() {
         getSpec().when().get("/constraintViolationPath/1").then().assertThat()
@@ -85,6 +87,29 @@ class RestProblemSpringIT extends AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues.in", hasItem("body"))
+                .body("issues.detail", hasItem("must be a well-formed email address"))
+                .body("issues.detail", hasItem("must not be blank"));
+    }
+
+    @Test
+    void nestedQueryParamsViolation() {
+        getSpec().when()
+                .contentType("application/json")
+                .post("/nestedQueryParams?email=myemail.com&name=myName").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues.in", hasItem("query"))
+                .body("issues.detail", hasItem("must be a well-formed email address"));
+    }
+
+    @Test
+    void doubleNestedQueryParamsViolation() {
+        getSpec().when()
+                .contentType("application/json")
+                .post("/nestedQueryParams?email=myemail.com").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues.in", hasItem("query"))
                 .body("issues.detail", hasItem("must be a well-formed email address"))
                 .body("issues.detail", hasItem("must not be blank"));
     }

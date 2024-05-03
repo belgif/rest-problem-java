@@ -153,4 +153,9 @@ public class FrontendController {
         return ResponseEntity.ok(body.getEmail() + " was the Email");
     }
 
+    @PostMapping("/nestedQueryParams")
+    public ResponseEntity<String> methodArgumentNotValidBodyNoAnnotation(@Valid MyRequestBody nestedQueryParams) {
+        return ResponseEntity.ok(nestedQueryParams.getEmail() + " was the Email");
+    }
+
 }

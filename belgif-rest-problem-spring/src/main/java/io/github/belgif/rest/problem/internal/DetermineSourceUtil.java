@@ -24,9 +24,6 @@ public class DetermineSourceUtil {
         List<Annotation> annotationList =
                 new ArrayList<>(Arrays.asList(annotations));
         if (annotationList.stream().map(Annotation::annotationType)
-                .anyMatch(annotationType -> annotationType.equals(RequestParam.class))) {
-            return InEnum.QUERY;
-        } else if (annotationList.stream().map(Annotation::annotationType)
                 .anyMatch(annotationType -> annotationType.equals(PathVariable.class))) {
             return InEnum.PATH;
         } else if (annotationList.stream().map(Annotation::annotationType)
@@ -36,8 +33,7 @@ public class DetermineSourceUtil {
                 .anyMatch(annotationType -> annotationType.equals(RequestBody.class))) {
             return InEnum.BODY;
         } else {
-            // TODO do something sensible -> defaults when no annotation is present.
-            throw new RuntimeException("Something is wrong");
+            return InEnum.QUERY;
         }
     }
 
@@ -52,9 +48,13 @@ public class DetermineSourceUtil {
                 Annotation[] annotations = parameter.get().getAnnotations();
                 return determineSource(annotations);
             }
+            parameter = parameters.stream()
+                    .filter(param -> param.getType().getSimpleName().equalsIgnoreCase(parameterName)).findAny();
+            if (parameter.isPresent()) {
+                Annotation[] annotations = parameter.get().getAnnotations();
+                return determineSource(annotations);
+            }
         }
-        // default
-        // TODO verify
         return InEnum.QUERY;
     }
 

@@ -8,9 +8,11 @@ import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.ServletWebRequest;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
@@ -42,6 +44,15 @@ public class BeanValidationExceptionsHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Problem> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         InEnum in = DetermineSourceUtil.determineSource(exception.getParameter().getParameterAnnotations());
+        List<InputValidationIssue> issues = exception.getFieldErrors().stream()
+                .map(fieldError -> BeanValidationExceptionUtil.convertToInputValidationIssue(fieldError, in))
+                .collect(Collectors.toList());
+        return ProblemMediaType.INSTANCE.toResponse(new BadRequestProblem(issues));
+    }
+
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<Problem> handleBindException(BindException exception, ServletWebRequest request) {
+        InEnum in = DetermineSourceUtil.determineSource(request, exception.getObjectName());
         List<InputValidationIssue> issues = exception.getFieldErrors().stream()
                 .map(fieldError -> BeanValidationExceptionUtil.convertToInputValidationIssue(fieldError, in))
                 .collect(Collectors.toList());
