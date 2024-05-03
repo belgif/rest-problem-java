@@ -27,7 +27,8 @@ import io.github.belgif.rest.problem.internal.DetermineSourceUtil;
  * Exception handler for RestControllers.
  *
  * <p>
- * Handles the response serialization for ConstraintViolation, MethodArgumentNotValid, BindException and MethodArgumentTypeMismatchException exceptions.
+ * Handles the response serialization for ConstraintViolation, MethodArgumentNotValid, BindException and
+ * MethodArgumentTypeMismatchException exceptions.
  * </p>
  */
 @RestControllerAdvice

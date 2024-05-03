@@ -18,7 +18,8 @@ import io.github.belgif.rest.problem.internal.DetermineSourceUtil;
  * Exception handler for RestControllers.
  *
  * <p>
- * Handles the response serialization for MissingServletRequestParameterException, HttpMessageNotReadableException and other routing exceptions in the
+ * Handles the response serialization for MissingServletRequestParameterException, HttpMessageNotReadableException and
+ * other routing exceptions in the
  * future
  * </p>
  */
