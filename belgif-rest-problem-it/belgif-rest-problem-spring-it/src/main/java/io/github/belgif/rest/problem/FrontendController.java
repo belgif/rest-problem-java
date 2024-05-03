@@ -5,6 +5,7 @@ import java.net.URI;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -123,6 +124,12 @@ public class FrontendController {
             e.setDetail(e.getDetail() + " (caught successfully by frontend)");
             throw e;
         }
+    }
+
+    @GetMapping("/beanValidation")
+    public ResponseEntity<String> beanValidation(@Valid @RequestParam("positive") @Min(0) int positive,
+            @Valid @RequestParam("required") @NotBlank String required) {
+        return ResponseEntity.ok("Positive: " + positive + "\nRequired: " + required);
     }
 
     @GetMapping("/constraintViolationPath/{id}")

@@ -1,9 +1,11 @@
 package io.github.belgif.rest.problem;
 
+import static org.hamcrest.Matchers.*;
+
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
@@ -27,10 +29,23 @@ class RestProblemSpringIT extends AbstractRestProblemIT {
         return Arrays.stream(Client.values()).map(Client::name);
     }
 
+    // beanValidation in superclass won't work this way with the Spring framework.
+    // Spring cannot find a method with path /beanValidation and only a 'positive' queryParam, so it throws a
+    // MissingServletRequestParameterException
+    // The 'positive' queryParam isn't validated by Spring, because it throws the exception before the validation phase.
     @Override
-    @Disabled("Not supported yet: https://github.com/belgif/rest-problem-java/issues/12")
+    @Test
     void beanValidation() {
-        super.beanValidation();
+        getSpec().when().queryParam("positive", -1)
+                .get("/beanValidation").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[0].detail", equalTo("Required parameter 'required' is not present."))
+                .body("issues[0].in", equalTo("query"))
+                .body("issues[0].name", equalTo("required"))
+                .body("issues[0].value", nullValue());
     }
 
     @Test
