@@ -94,7 +94,17 @@ class RestProblemSpringIT extends AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues.in", hasItem("header"))
-                .body("issues.detail", hasItem("must match \"^\\d\\d?$\""));
+                .body("issues.detail", hasItem("must be less than or equal to 10"));
+    }
+
+    @Test
+    void headerParamTypeMismatch() {
+        getSpec().when().header(new Header("id", "myId")).get("/constraintViolationHeader").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues.in", hasItem("header"))
+                .body("issues.detail", hasItem("id should be of type int"))
+                .body("issues.value", hasItem("myId"));
     }
 
     @Test

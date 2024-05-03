@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ElementKind;
@@ -20,17 +21,17 @@ import io.github.belgif.rest.problem.api.InEnum;
 
 public class DetermineSourceUtil {
 
+    private DetermineSourceUtil() {
+    }
+
     public static InEnum determineSource(Annotation[] annotations) {
-        List<Annotation> annotationList =
-                new ArrayList<>(Arrays.asList(annotations));
-        if (annotationList.stream().map(Annotation::annotationType)
-                .anyMatch(annotationType -> annotationType.equals(PathVariable.class))) {
+        Set<Class<? extends Annotation>> annotationTypes =
+                Arrays.stream(annotations).map(Annotation::annotationType).collect(Collectors.toSet());
+        if (annotationTypes.contains(PathVariable.class)) {
             return InEnum.PATH;
-        } else if (annotationList.stream().map(Annotation::annotationType)
-                .anyMatch(annotationType -> annotationType.equals(RequestHeader.class))) {
+        } else if (annotationTypes.contains(RequestHeader.class)) {
             return InEnum.HEADER;
-        } else if (annotationList.stream().map(Annotation::annotationType)
-                .anyMatch(annotationType -> annotationType.equals(RequestBody.class))) {
+        } else if (annotationTypes.contains(RequestBody.class)) {
             return InEnum.BODY;
         } else {
             return InEnum.QUERY;

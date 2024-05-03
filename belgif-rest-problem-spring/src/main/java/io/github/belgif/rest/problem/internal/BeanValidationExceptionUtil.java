@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ElementKind;
 import jakarta.validation.Path;
+import jakarta.validation.constraints.NotNull;
 
 import org.springframework.validation.FieldError;
 
@@ -46,7 +47,7 @@ public class BeanValidationExceptionUtil {
         return InputValidationIssues.schemaViolation(in, name, violation.getInvalidValue(), violation.getMessage());
     }
 
-    public static InputValidationIssue convertToInputValidationIssue(FieldError fieldError, InEnum in) {
+    public static InputValidationIssue convertToInputValidationIssue(@NotNull FieldError fieldError, InEnum in) {
         String invalidValue = fieldError.getRejectedValue() != null ? fieldError.getRejectedValue().toString() : null;
         return InputValidationIssues.schemaViolation(in, fieldError.getField(), invalidValue,
                 fieldError.getDefaultMessage());

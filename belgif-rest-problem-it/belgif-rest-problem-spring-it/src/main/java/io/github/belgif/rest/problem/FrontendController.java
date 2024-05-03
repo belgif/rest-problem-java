@@ -6,7 +6,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
@@ -144,7 +143,7 @@ public class FrontendController {
 
     @GetMapping("/constraintViolationHeader")
     public ResponseEntity<String>
-            constraintViolationHeader(@Valid @RequestHeader("id") @Pattern(regexp = "^\\d\\d?$") String id) {
+            constraintViolationHeader(@Valid @RequestHeader("id") @Min(3) @Max(10) int id) {
         return ResponseEntity.ok(id + " was the ID");
     }
 
