@@ -18,7 +18,7 @@ import io.github.belgif.rest.problem.internal.DetermineSourceUtil;
  * Exception handler for RestControllers.
  *
  * <p>
- * Handles the response serialization for MissingServletRequestParameterException and other routing exceptions in the
+ * Handles the response serialization for MissingServletRequestParameterException, HttpMessageNotReadableException and other routing exceptions in the
  * future
  * </p>
  */
@@ -32,9 +32,8 @@ public class RoutingExceptionsHandler {
         String name = exception.getParameterName();
         InEnum in = DetermineSourceUtil.determineSource(request, name);
         String detail = exception.getBody().getDetail();
-        String invalidValue = null;
         return ProblemMediaType.INSTANCE
-                .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(in, name, invalidValue,
+                .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(in, name, null,
                         detail)));
     }
 
