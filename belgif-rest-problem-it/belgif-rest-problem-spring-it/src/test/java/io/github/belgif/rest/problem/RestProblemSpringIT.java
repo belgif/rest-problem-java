@@ -108,6 +108,7 @@ class RestProblemSpringIT extends AbstractRestProblemIT {
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues.in", hasItem("body"))
                 .body("issues.detail", hasItem("must be a well-formed email address"))
+                .body("issues.name", hasItem("email"))
                 .body("issues.detail", hasItem("must not be blank"));
     }
 
