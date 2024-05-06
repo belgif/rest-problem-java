@@ -3,12 +3,20 @@ package io.github.belgif.rest.problem.internal;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ElementKind;
-import jakarta.validation.Path;
+import jakarta.validation.Path.MethodNode;
+import jakarta.validation.Path.Node;
+import jakarta.validation.Path.ParameterNode;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,10 +72,10 @@ public class DetermineSourceUtil {
     }
 
     public static InEnum determineSource(ConstraintViolation<?> violation,
-            LinkedList<Path.Node> propertyPath, Path.MethodNode methodNode) {
+            LinkedList<Node> propertyPath, MethodNode methodNode) {
         if (propertyPath.getLast().getKind() == ElementKind.PARAMETER) {
             if (methodNode != null) {
-                Path.ParameterNode param = propertyPath.getLast().as(Path.ParameterNode.class);
+                ParameterNode param = propertyPath.getLast().as(ParameterNode.class);
                 try {
                     Method method = violation.getRootBeanClass().getMethod(methodNode.getName(),
                             methodNode.getParameterTypes().toArray(new Class[0]));

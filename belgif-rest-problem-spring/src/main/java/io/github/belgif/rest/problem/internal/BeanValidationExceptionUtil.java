@@ -6,7 +6,8 @@ import java.util.stream.Collectors;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ElementKind;
-import jakarta.validation.Path;
+import jakarta.validation.Path.MethodNode;
+import jakarta.validation.Path.Node;
 import jakarta.validation.constraints.NotNull;
 
 import org.springframework.validation.FieldError;
@@ -27,13 +28,13 @@ public class BeanValidationExceptionUtil {
     }
 
     public static InputValidationIssue convertToInputValidationIssue(ConstraintViolation<?> violation) {
-        LinkedList<Path.Node> propertyPath = new LinkedList<>();
-        Iterator<Path.Node> pathIterator = violation.getPropertyPath().iterator();
-        Path.MethodNode methodNode = null;
+        LinkedList<Node> propertyPath = new LinkedList<>();
+        Iterator<Node> pathIterator = violation.getPropertyPath().iterator();
+        MethodNode methodNode = null;
         while (pathIterator.hasNext()) {
-            Path.Node p = pathIterator.next();
+            Node p = pathIterator.next();
             if (p.getKind() == ElementKind.METHOD) {
-                methodNode = p.as(Path.MethodNode.class);
+                methodNode = p.as(MethodNode.class);
             }
             if ((p.getKind() != ElementKind.METHOD && p.getKind() != ElementKind.PARAMETER)
                     || !pathIterator.hasNext()) {
@@ -43,7 +44,7 @@ public class BeanValidationExceptionUtil {
             }
         }
         InEnum in = DetermineSourceUtil.determineSource(violation, propertyPath, methodNode);
-        String name = propertyPath.stream().map(Path.Node::toString).collect(Collectors.joining("."));
+        String name = propertyPath.stream().map(Node::toString).collect(Collectors.joining("."));
         return InputValidationIssues.schemaViolation(in, name, violation.getInvalidValue(), violation.getMessage());
     }
 
