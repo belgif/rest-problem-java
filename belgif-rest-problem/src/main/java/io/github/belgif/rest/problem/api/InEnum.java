@@ -13,7 +13,7 @@ public enum InEnum {
     QUERY("query"),
     HEADER("header");
 
-    private String value;
+    private final String value;
 
     InEnum(String value) {
         this.value = value;
