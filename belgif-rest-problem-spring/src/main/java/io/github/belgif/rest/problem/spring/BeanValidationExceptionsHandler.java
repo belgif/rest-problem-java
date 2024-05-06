@@ -36,7 +36,8 @@ import io.github.belgif.rest.problem.internal.DetermineSourceUtil;
 public class BeanValidationExceptionsHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Problem> handleConstraintViolationException(ConstraintViolationException exception) {
+    public ResponseEntity<Problem> handleConstraintViolationException(ConstraintViolationException exception,
+            ServletWebRequest request) {
         return ProblemMediaType.INSTANCE.toResponse(
                 new BadRequestProblem(exception.getConstraintViolations().stream()
                         .map(BeanValidationExceptionUtil::convertToInputValidationIssue)
@@ -55,9 +56,9 @@ public class BeanValidationExceptionsHandler {
 
     @ExceptionHandler(BindException.class)
     public ResponseEntity<Problem> handleBindException(BindException exception, ServletWebRequest request) {
-        InEnum in = DetermineSourceUtil.determineSource(request, exception.getObjectName());
         List<InputValidationIssue> issues = exception.getFieldErrors().stream()
-                .map(fieldError -> BeanValidationExceptionUtil.convertToInputValidationIssue(fieldError, in))
+                .map(fieldError -> BeanValidationExceptionUtil.convertToInputValidationIssue(fieldError,
+                        DetermineSourceUtil.determineSource(request, fieldError.getField())))
                 .collect(Collectors.toList());
         return ProblemMediaType.INSTANCE.toResponse(new BadRequestProblem(issues));
     }
