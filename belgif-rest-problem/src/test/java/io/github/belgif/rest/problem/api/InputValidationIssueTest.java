@@ -1,13 +1,13 @@
 package io.github.belgif.rest.problem.api;
 
-import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.*;
 
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import org.assertj.core.api.InstanceOfAssertFactories;
+import org.junit.jupiter.api.Test;
 
 class InputValidationIssueTest {
 
@@ -18,7 +18,8 @@ class InputValidationIssueTest {
 
     @Test
     void constructTypeTitle() {
-        InputValidationIssue issue = new InputValidationIssue(URI.create("urn:problem-type:belgif:input-validation:test"), "Title");
+        InputValidationIssue issue =
+                new InputValidationIssue(URI.create("urn:problem-type:belgif:input-validation:test"), "Title");
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:test");
         assertThat(issue.getTitle()).isEqualTo("Title");
     }
