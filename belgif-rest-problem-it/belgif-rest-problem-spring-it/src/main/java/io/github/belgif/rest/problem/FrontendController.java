@@ -34,6 +34,9 @@ public class FrontendController {
 
     private WebClient webClient;
 
+    private static final String DETAIL_MESSAGE_SUFFIX = " (caught successfully by frontend)";
+    private static final String ILLEGAL_STATE_MESSAGE_PREFIX = "Unsupported client ";
+
     public FrontendController(RestTemplateBuilder restTemplateBuilder, WebClient.Builder webClientBuilder) {
         this.restTemplateBuilder = restTemplateBuilder;
         this.webClientBuilder = webClientBuilder;
@@ -88,9 +91,9 @@ public class FrontendController {
             } else if (client == Client.WEB_CLIENT) {
                 webClient.get().uri("/badRequest").retrieve().toEntity(String.class).block();
             }
-            throw new IllegalStateException("Unsupported client " + client);
+            throw new IllegalStateException(ILLEGAL_STATE_MESSAGE_PREFIX + client);
         } catch (BadRequestProblem e) {
-            e.setDetail(e.getDetail() + " (caught successfully by frontend)");
+            e.setDetail(e.getDetail() + DETAIL_MESSAGE_SUFFIX);
             throw e;
         }
     }
@@ -103,9 +106,9 @@ public class FrontendController {
             } else if (client == Client.WEB_CLIENT) {
                 webClient.get().uri("/custom").retrieve().toEntity(String.class).block();
             }
-            throw new IllegalStateException("Unsupported client " + client);
+            throw new IllegalStateException(ILLEGAL_STATE_MESSAGE_PREFIX + client);
         } catch (CustomProblem e) {
-            e.setCustomField(e.getCustomField() + " (caught successfully by frontend)");
+            e.setCustomField(e.getCustomField() + DETAIL_MESSAGE_SUFFIX);
             throw e;
         }
     }
@@ -118,9 +121,9 @@ public class FrontendController {
             } else if (client == Client.WEB_CLIENT) {
                 webClient.get().uri("/unmapped").retrieve().toEntity(String.class).block();
             }
-            throw new IllegalStateException("Unsupported client " + client);
+            throw new IllegalStateException(ILLEGAL_STATE_MESSAGE_PREFIX + client);
         } catch (DefaultProblem e) {
-            e.setDetail(e.getDetail() + " (caught successfully by frontend)");
+            e.setDetail(e.getDetail() + DETAIL_MESSAGE_SUFFIX);
             throw e;
         }
     }
@@ -133,28 +136,28 @@ public class FrontendController {
 
     @GetMapping("/constraintViolationPath/{id}")
     public ResponseEntity<String> constraintViolationPath(@Valid @PathVariable("id") @Min(3) @Max(10) int id) {
-        return ResponseEntity.ok(id + " was the ID");
+        return ResponseEntity.ok("" + id);
     }
 
     @GetMapping("/constraintViolationQuery")
     public ResponseEntity<String> constraintViolationQuery(@Valid @RequestParam("id") @Min(3) @Max(10) int id) {
-        return ResponseEntity.ok(id + " was the ID");
+        return ResponseEntity.ok("" + id);
     }
 
     @GetMapping("/constraintViolationHeader")
     public ResponseEntity<String>
             constraintViolationHeader(@Valid @RequestHeader("id") @Min(3) @Max(10) int id) {
-        return ResponseEntity.ok(id + " was the ID");
+        return ResponseEntity.ok("" + id);
     }
 
     @PostMapping("/methodArgumentNotValid")
     public ResponseEntity<String> methodArgumentNotValidBody(@Valid @RequestBody MyRequestBody body) {
-        return ResponseEntity.ok(body.getEmail() + " was the Email");
+        return ResponseEntity.ok("Email: " + body.getEmail());
     }
 
     @PostMapping("/nestedQueryParams")
     public ResponseEntity<String> methodArgumentNotValidBodyNoAnnotation(@Valid MyRequestBody nestedQueryParams) {
-        return ResponseEntity.ok(nestedQueryParams.getEmail() + " was the Email");
+        return ResponseEntity.ok("Email: " + nestedQueryParams.getEmail());
     }
 
 }

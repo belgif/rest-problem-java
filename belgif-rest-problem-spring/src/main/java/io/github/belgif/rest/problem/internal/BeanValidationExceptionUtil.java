@@ -48,7 +48,8 @@ public class BeanValidationExceptionUtil {
     }
 
     public static InputValidationIssue convertToInputValidationIssue(@NotNull FieldError fieldError, InEnum in) {
-        String invalidValue = fieldError.getRejectedValue() != null ? fieldError.getRejectedValue().toString() : null;
+        String invalidValue =
+                fieldError.getRejectedValue() != null ? String.valueOf(fieldError.getRejectedValue()) : null;
         return InputValidationIssues.schemaViolation(in, fieldError.getField(), invalidValue,
                 fieldError.getDefaultMessage());
     }

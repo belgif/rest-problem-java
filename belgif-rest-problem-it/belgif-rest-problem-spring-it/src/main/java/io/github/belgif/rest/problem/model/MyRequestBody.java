@@ -11,6 +11,7 @@ public class MyRequestBody {
     private String name;
 
     public MyRequestBody() {
+        // NoArg constructor for a dataclass only used in an integration test
     }
 
     public String getEmail() {
