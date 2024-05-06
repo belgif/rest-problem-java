@@ -161,7 +161,7 @@ class InputValidationIssueTest {
         List<Input<?>> inputs = Collections.singletonList(Input.query("name", "value"));
         InputValidationIssue issue = new InputValidationIssue();
         issue.setInputs(inputs);
-        assertThat(issue.getInputs()).isEqualTo(inputs);
+        assertThat(issue.getInputs()).isUnmodifiable().isEqualTo(inputs);
         assertThat(new InputValidationIssue().inputs(inputs).getInputs()).isEqualTo(inputs);
     }
 
@@ -170,7 +170,7 @@ class InputValidationIssueTest {
         Input<?> input = Input.query("name", "value");
         InputValidationIssue issue = new InputValidationIssue();
         issue.setInputs(input);
-        assertThat(issue.getInputs()).containsExactly(input);
+        assertThat(issue.getInputs()).isUnmodifiable().containsExactly(input);
         assertThat(new InputValidationIssue().inputs(input).getInputs()).containsExactly(input);
     }
 
