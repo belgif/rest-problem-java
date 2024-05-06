@@ -4,11 +4,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ElementKind;
-import jakarta.validation.Path.MethodNode;
-import jakarta.validation.Path.Node;
-import jakarta.validation.constraints.NotNull;
+import javax.validation.ConstraintViolation;
+import javax.validation.ElementKind;
+import javax.validation.Path.MethodNode;
+import javax.validation.Path.Node;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.validation.FieldError;
 

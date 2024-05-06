@@ -2,10 +2,21 @@ package io.github.belgif.rest.problem;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,10 +26,15 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.acme.custom.CustomProblem;
 
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.model.MyRequestBody;
 
 @RestController
 @RequestMapping("/frontend")
+@Validated
 public class FrontendController {
+
+    private static final String DETAIL_MESSAGE_SUFFIX = " (caught successfully by frontend)";
+    private static final String ILLEGAL_STATE_MESSAGE_PREFIX = "Unsupported client ";
 
     private final RestTemplateBuilder restTemplateBuilder;
 
@@ -82,9 +98,9 @@ public class FrontendController {
             } else if (client == Client.WEB_CLIENT) {
                 webClient.get().uri("/badRequest").retrieve().toEntity(String.class).block();
             }
-            throw new IllegalStateException("Unsupported client " + client);
+            throw new IllegalStateException(ILLEGAL_STATE_MESSAGE_PREFIX + client);
         } catch (BadRequestProblem e) {
-            e.setDetail(e.getDetail() + " (caught successfully by frontend)");
+            e.setDetail(e.getDetail() + DETAIL_MESSAGE_SUFFIX);
             throw e;
         }
     }
@@ -97,9 +113,9 @@ public class FrontendController {
             } else if (client == Client.WEB_CLIENT) {
                 webClient.get().uri("/custom").retrieve().toEntity(String.class).block();
             }
-            throw new IllegalStateException("Unsupported client " + client);
+            throw new IllegalStateException(ILLEGAL_STATE_MESSAGE_PREFIX + client);
         } catch (CustomProblem e) {
-            e.setCustomField(e.getCustomField() + " (caught successfully by frontend)");
+            e.setCustomField(e.getCustomField() + DETAIL_MESSAGE_SUFFIX);
             throw e;
         }
     }
@@ -112,11 +128,43 @@ public class FrontendController {
             } else if (client == Client.WEB_CLIENT) {
                 webClient.get().uri("/unmapped").retrieve().toEntity(String.class).block();
             }
-            throw new IllegalStateException("Unsupported client " + client);
+            throw new IllegalStateException(ILLEGAL_STATE_MESSAGE_PREFIX + client);
         } catch (DefaultProblem e) {
-            e.setDetail(e.getDetail() + " (caught successfully by frontend)");
+            e.setDetail(e.getDetail() + DETAIL_MESSAGE_SUFFIX);
             throw e;
         }
+    }
+
+    @GetMapping("/beanValidation")
+    public ResponseEntity<String> beanValidation(@Valid @RequestParam("positive") @Min(0) int positive,
+            @Valid @RequestParam("required") @NotBlank String required) {
+        return ResponseEntity.ok("Positive: " + positive + "\nRequired: " + required);
+    }
+
+    @GetMapping("/constraintViolationPath/{id}")
+    public ResponseEntity<String> constraintViolationPath(@Valid @PathVariable("id") @Min(3) @Max(10) int id) {
+        return ResponseEntity.ok("" + id);
+    }
+
+    @GetMapping("/constraintViolationQuery")
+    public ResponseEntity<String> constraintViolationQuery(@Valid @RequestParam("id") @Min(3) @Max(10) int id) {
+        return ResponseEntity.ok("" + id);
+    }
+
+    @GetMapping("/constraintViolationHeader")
+    public ResponseEntity<String>
+            constraintViolationHeader(@Valid @RequestHeader("id") @Min(3) @Max(10) int id) {
+        return ResponseEntity.ok("" + id);
+    }
+
+    @PostMapping("/methodArgumentNotValid")
+    public ResponseEntity<String> methodArgumentNotValidBody(@Valid @RequestBody MyRequestBody body) {
+        return ResponseEntity.ok("Email: " + body.getEmail());
+    }
+
+    @PostMapping("/nestedQueryParams")
+    public ResponseEntity<String> methodArgumentNotValidBodyNoAnnotation(@Valid MyRequestBody nestedQueryParams) {
+        return ResponseEntity.ok("Email: " + nestedQueryParams.getEmail());
     }
 
 }

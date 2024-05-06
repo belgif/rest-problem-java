@@ -29,6 +29,7 @@
       <groupId>io.github.belgif.rest.problem</groupId>
       <artifactId>belgif-rest-problem-spring</artifactId>
       <version>${project.version}</version>
+      <classifier>jakarta</classifier>
     </dependency>
     <dependency>
       <groupId>io.github.belgif.rest.problem</groupId>
