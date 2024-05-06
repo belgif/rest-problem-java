@@ -62,7 +62,7 @@ class RetryAfterClientProblemTest {
                 new RetryAfterClientProblem(URI.create("urn:problem-type:belgif:test"), "Title", 499) {
                 };
         OffsetDateTime retryAfter = OffsetDateTime.now();
-        problem.setRetryAfter(OffsetDateTime.now());
+        problem.setRetryAfter(retryAfter);
         assertThat(problem.getRetryAfter()).isEqualTo(retryAfter);
         assertThat(problem.getHttpResponseHeaders()).containsExactly(
                 entry(RetryAfter.RETRY_AFTER, Date.from(retryAfter.toInstant())));
