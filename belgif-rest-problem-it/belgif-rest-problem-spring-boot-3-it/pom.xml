@@ -9,7 +9,7 @@
     <version>${revision}</version>
   </parent>
 
-  <artifactId>belgif-rest-problem-spring-it</artifactId>
+  <artifactId>belgif-rest-problem-spring-boot-3-it</artifactId>
   <packaging>war</packaging>
 
   <dependencyManagement>
