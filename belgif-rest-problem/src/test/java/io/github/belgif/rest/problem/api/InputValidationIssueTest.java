@@ -14,6 +14,7 @@ class InputValidationIssueTest {
     @Test
     void construct() {
         InputValidationIssue issue = new InputValidationIssue();
+        assertThat(issue.getType()).isNull();
     }
 
     @Test
