@@ -17,7 +17,7 @@ class InputValidationIssueTest {
     }
 
     @Test
-    void constructTypeTitle() {
+    void constructWithTypeTitle() {
         InputValidationIssue issue =
                 new InputValidationIssue(URI.create("urn:problem-type:belgif:input-validation:test"), "Title");
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:test");
@@ -25,14 +25,14 @@ class InputValidationIssueTest {
     }
 
     @Test
-    void constructInName() {
+    void constructWithInName() {
         InputValidationIssue issue = new InputValidationIssue(InEnum.QUERY, "name");
         assertThat(issue.getIn()).isEqualTo(InEnum.QUERY);
         assertThat(issue.getName()).isEqualTo("name");
     }
 
     @Test
-    void constructInNameValue() {
+    void constructWithInNameValue() {
         InputValidationIssue issue = new InputValidationIssue(InEnum.QUERY, "name", "value");
         assertThat(issue.getIn()).isEqualTo(InEnum.QUERY);
         assertThat(issue.getName()).isEqualTo("name");

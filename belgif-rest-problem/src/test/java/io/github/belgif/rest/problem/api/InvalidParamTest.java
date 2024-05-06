@@ -13,14 +13,14 @@ class InvalidParamTest {
     }
 
     @Test
-    void constructInName() {
+    void constructWithInName() {
         InvalidParam param = new InvalidParam(InEnum.QUERY, "name");
         assertThat(param.getIn()).isEqualTo(InEnum.QUERY);
         assertThat(param.getName()).isEqualTo("name");
     }
 
     @Test
-    void constructInNameValue() {
+    void constructWithInNameValue() {
         InvalidParam param = new InvalidParam(InEnum.QUERY, "name", "value");
         assertThat(param.getIn()).isEqualTo(InEnum.QUERY);
         assertThat(param.getName()).isEqualTo("name");
@@ -28,7 +28,7 @@ class InvalidParamTest {
     }
 
     @Test
-    void constructInNameReasonValue() {
+    void constructWithInNameReasonValue() {
         InvalidParam param = new InvalidParam(InEnum.QUERY, "name", "reason", "value");
         assertThat(param.getIn()).isEqualTo(InEnum.QUERY);
         assertThat(param.getName()).isEqualTo("name");
@@ -37,7 +37,7 @@ class InvalidParamTest {
     }
 
     @Test
-    void constructInNameReasonValueType() {
+    void constructWithInNameReasonValueType() {
         InvalidParam param = new InvalidParam(InEnum.QUERY, "name", "reason", "value", "type");
         assertThat(param.getIn()).isEqualTo(InEnum.QUERY);
         assertThat(param.getName()).isEqualTo("name");

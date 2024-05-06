@@ -16,7 +16,7 @@ class InputValidationProblemTest {
     }
 
     @Test
-    void constructTypeTitleStatus() {
+    void constructWithTypeTitleStatus() {
         InputValidationProblem problem = new InputValidationProblem(URI.create("urn:problem-type:belgif:test"),
                 "Title", 499) {
         };
@@ -26,7 +26,7 @@ class InputValidationProblemTest {
     }
 
     @Test
-    void constructTypeHrefTitleStatus() {
+    void constructWithTypeHrefTitleStatus() {
         InputValidationProblem problem = new InputValidationProblem(URI.create("urn:problem-type:belgif:test"),
                 URI.create("https://www.belgif.be"), "Title", 499) {
         };
@@ -37,7 +37,7 @@ class InputValidationProblemTest {
     }
 
     @Test
-    void constructTypeTitleStatusCause() {
+    void constructWithTypeTitleStatusCause() {
         Throwable cause = new IllegalStateException("cause");
         InputValidationProblem problem = new InputValidationProblem(URI.create("urn:problem-type:belgif:test"),
                 "Title", 499, cause) {
@@ -49,7 +49,7 @@ class InputValidationProblemTest {
     }
 
     @Test
-    void constructTypeHrefTitleStatusCause() {
+    void constructWithTypeHrefTitleStatusCause() {
         Throwable cause = new IllegalStateException("cause");
         InputValidationProblem problem = new InputValidationProblem(URI.create("urn:problem-type:belgif:test"),
                 URI.create("https://www.belgif.be"), "Title", 499, cause) {
