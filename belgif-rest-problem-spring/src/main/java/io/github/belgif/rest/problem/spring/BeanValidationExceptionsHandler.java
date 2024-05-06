@@ -36,8 +36,7 @@ import io.github.belgif.rest.problem.internal.DetermineSourceUtil;
 public class BeanValidationExceptionsHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Problem> handleConstraintViolationException(ConstraintViolationException exception,
-            ServletWebRequest request) {
+    public ResponseEntity<Problem> handleConstraintViolationException(ConstraintViolationException exception) {
         return ProblemMediaType.INSTANCE.toResponse(
                 new BadRequestProblem(exception.getConstraintViolations().stream()
                         .map(BeanValidationExceptionUtil::convertToInputValidationIssue)
@@ -68,12 +67,9 @@ public class BeanValidationExceptionsHandler {
             handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
         InEnum in = DetermineSourceUtil.determineSource(exception.getParameter().getParameterAnnotations());
         String name = exception.getName();
-        String detail;
-        if (exception.getRequiredType() != null) {
-            detail = name + " should be of type " + exception.getRequiredType().getSimpleName();
-        } else {
-            detail = name + " of incorrect type";
-        }
+        Class<?> requiredType = exception.getRequiredType();
+        String detail = requiredType != null ? name + " should be of type " + requiredType.getSimpleName()
+                : name + " of incorrect type";
         String invalidValue = (String) exception.getValue();
         return ProblemMediaType.INSTANCE
                 .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(in, name, invalidValue,
