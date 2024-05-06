@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import jakarta.validation.ConstraintViolationException;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -33,6 +34,7 @@ import io.github.belgif.rest.problem.internal.DetermineSourceUtil;
  */
 @RestControllerAdvice
 @Order(1)
+@ConditionalOnClass(ConstraintViolationException.class)
 public class BeanValidationExceptionsHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
