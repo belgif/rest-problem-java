@@ -19,7 +19,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.acme.custom.CustomProblem;
 
 import io.github.belgif.rest.problem.api.Problem;
-import io.github.belgif.rest.problem.model.MyRequestBody;
+import io.github.belgif.rest.problem.model.ChildRequestBody;
+import io.github.belgif.rest.problem.model.NestedRequestBody;
+import io.github.belgif.rest.problem.model.ParentRequestBody;
 
 @RestController
 @RequestMapping("/frontend")
@@ -151,13 +153,23 @@ public class FrontendController {
     }
 
     @PostMapping("/methodArgumentNotValid")
-    public ResponseEntity<String> methodArgumentNotValidBody(@Valid @RequestBody MyRequestBody body) {
+    public ResponseEntity<String> methodArgumentNotValidBody(@Valid @RequestBody ParentRequestBody body) {
         return ResponseEntity.ok("Email: " + body.getEmail());
     }
 
     @PostMapping("/nestedQueryParams")
-    public ResponseEntity<String> methodArgumentNotValidBodyNoAnnotation(@Valid MyRequestBody nestedQueryParams) {
+    public ResponseEntity<String> methodArgumentNotValidBodyNoAnnotation(@Valid ParentRequestBody nestedQueryParams) {
         return ResponseEntity.ok("Email: " + nestedQueryParams.getEmail());
+    }
+
+    @PostMapping("/superClassValidation")
+    public ResponseEntity<String> superClassValidation(@Valid @RequestBody ChildRequestBody body) {
+        return ResponseEntity.ok("Email: " + body.getEmail());
+    }
+
+    @PostMapping("/nestedValidation")
+    public ResponseEntity<String> nestedValidation(@Valid @RequestBody NestedRequestBody body) {
+        return ResponseEntity.ok("Email: " + body.getMyRequestBody().getEmail());
     }
 
 }
