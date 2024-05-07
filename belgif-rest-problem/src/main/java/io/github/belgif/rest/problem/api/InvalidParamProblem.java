@@ -22,19 +22,19 @@ public abstract class InvalidParamProblem extends ClientProblem {
 
     private final List<InvalidParam> invalidParams = new ArrayList<>();
 
-    public InvalidParamProblem(URI type, URI href, String title, int status) {
+    protected InvalidParamProblem(URI type, URI href, String title, int status) {
         super(type, href, title, status);
     }
 
-    public InvalidParamProblem(URI type, String title, int status) {
+    protected InvalidParamProblem(URI type, String title, int status) {
         super(type, title, status);
     }
 
-    public InvalidParamProblem(URI type, URI href, String title, int status, Throwable cause) {
+    protected InvalidParamProblem(URI type, URI href, String title, int status, Throwable cause) {
         super(type, href, title, status, cause);
     }
 
-    public InvalidParamProblem(URI type, String title, int status, Throwable cause) {
+    protected InvalidParamProblem(URI type, String title, int status, Throwable cause) {
         super(type, title, status, cause);
     }
 

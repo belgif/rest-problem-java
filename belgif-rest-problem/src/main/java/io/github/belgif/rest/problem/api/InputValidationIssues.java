@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Helper class for creating InputValidationIssue for common CBSS request validations.
+ * Helper class for creating InputValidationIssues for common request validations.
  *
  * @see InputValidationIssue
  */
