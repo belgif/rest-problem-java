@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * Input model for {@link InputValidationIssue#getInputs()}.
  *
  * <p>
- * The recommended way for clients to instatiate an Input is through these factory methods:
+ * The recommended way for clients to instantiate an Input is through these factory methods:
  * </p>
  * <ul>
  * <li>{@link #query(String, Object)}</li>

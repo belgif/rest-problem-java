@@ -67,6 +67,11 @@ class SsinValidatorTest {
     }
 
     @Test
+    void nokUnspecifiedMonth() {
+        assertInvalidSsin("81001202357");
+    }
+
+    @Test
     void nokMonthOutOfRange() {
         assertInvalidSsin("81130103578");
     }
@@ -79,6 +84,11 @@ class SsinValidatorTest {
     @Test
     void nokDateOutOfRangeForMonth() {
         assertInvalidSsin("81023003522");
+    }
+
+    @Test
+    void nokInvalidDate() {
+        assertInvalidSsin("81022903534");
     }
 
     @Test

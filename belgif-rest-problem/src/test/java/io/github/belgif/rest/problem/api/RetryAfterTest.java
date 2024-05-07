@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 class RetryAfterTest {
 
     private static class RetryAfterProblem implements RetryAfter {
-        private OffsetDateTime retryAfter;
-        private Long retryAfterSec;
+        private final OffsetDateTime retryAfter;
+        private final Long retryAfterSec;
 
         private RetryAfterProblem(OffsetDateTime retryAfter, Long retryAfterSec) {
             this.retryAfter = retryAfter;

@@ -61,6 +61,16 @@
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-jackson-minimal-it</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-jackson-latest-it</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 
   <build>

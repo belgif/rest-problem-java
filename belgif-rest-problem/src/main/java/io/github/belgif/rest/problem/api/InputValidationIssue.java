@@ -170,6 +170,7 @@ public class InputValidationIssue {
      * @param inputs the inputs[]
      */
     @JsonSetter("inputs")
+    @SuppressWarnings("unused")
     private void setInputsFromJson(List<Input<?>> inputs) {
         this.inputs.clear();
         this.inputs.addAll(inputs);
@@ -271,6 +272,7 @@ public class InputValidationIssue {
      * @return this InputValidationIssue
      * @deprecated use {@link InputValidationIssue#input(Input)} to reference multiple input values
      */
+    @SuppressWarnings("unchecked")
     @Deprecated
     public InputValidationIssue valueEntry(String key, Object value) {
         if (this.value != null && !(this.value instanceof Map)) {
@@ -281,11 +283,11 @@ public class InputValidationIssue {
         if (this.value == null) {
             this.value = new LinkedHashMap<String, Object>();
         }
-        ((Map) this.value).put(key, value);
+        ((Map<String, Object>) this.value).put(key, value);
         return this;
     }
 
-    public InputValidationIssue input(Input input) {
+    public InputValidationIssue input(Input<?> input) {
         addInput(input);
         return this;
     }
@@ -332,9 +334,7 @@ public class InputValidationIssue {
                 "type=" + type +
                 ", href=" + href +
                 ", title='" + title + '\'' +
-                ", status=" + status +
                 ", detail='" + detail + '\'' +
-                ", instance=" + instance +
                 ", in=" + in +
                 ", name='" + name + '\'' +
                 ", value=" + value +
