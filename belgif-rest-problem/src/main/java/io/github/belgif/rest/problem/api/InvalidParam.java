@@ -19,8 +19,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @Deprecated
 public class InvalidParam {
 
-    public static final String ISSUE_TYPE_SCHEMA_VIOLATION = "schemaViolation";
-
     private InEnum in;
     private String name;
     private String reason;
