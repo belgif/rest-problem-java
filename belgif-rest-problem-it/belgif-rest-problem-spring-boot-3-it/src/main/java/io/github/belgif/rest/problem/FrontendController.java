@@ -26,12 +26,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.acme.custom.CustomProblem;
 
 import io.github.belgif.rest.problem.api.Problem;
-import io.github.belgif.rest.problem.model.MyRequestBody;
+import io.github.belgif.rest.problem.model.ChildRequestBody;
+import io.github.belgif.rest.problem.model.NestedRequestBody;
+import io.github.belgif.rest.problem.model.ParentRequestBody;
 
 @RestController
 @RequestMapping("/frontend")
 @Validated
-public class FrontendController {
+public class FrontendController implements ControllerInterface {
 
     private static final String DETAIL_MESSAGE_SUFFIX = " (caught successfully by frontend)";
     private static final String ILLEGAL_STATE_MESSAGE_PREFIX = "Unsupported client ";
@@ -141,8 +143,8 @@ public class FrontendController {
         return ResponseEntity.ok("Positive: " + positive + "\nRequired: " + required);
     }
 
-    @GetMapping("/constraintViolationPath/{id}")
-    public ResponseEntity<String> constraintViolationPath(@Valid @PathVariable("id") @Min(3) @Max(10) int id) {
+    @Override
+    public ResponseEntity<String> constraintViolationPath(int id) {
         return ResponseEntity.ok("" + id);
     }
 
@@ -158,13 +160,28 @@ public class FrontendController {
     }
 
     @PostMapping("/methodArgumentNotValid")
-    public ResponseEntity<String> methodArgumentNotValidBody(@Valid @RequestBody MyRequestBody body) {
+    public ResponseEntity<String> methodArgumentNotValidBody(@Valid @RequestBody ParentRequestBody body) {
         return ResponseEntity.ok("Email: " + body.getEmail());
     }
 
     @PostMapping("/nestedQueryParams")
-    public ResponseEntity<String> methodArgumentNotValidBodyNoAnnotation(@Valid MyRequestBody nestedQueryParams) {
+    public ResponseEntity<String> methodArgumentNotValidBodyNoAnnotation(@Valid ParentRequestBody nestedQueryParams) {
         return ResponseEntity.ok("Email: " + nestedQueryParams.getEmail());
     }
 
+    @PostMapping("/superClassValidation")
+    public ResponseEntity<String> superClassValidation(@Valid @RequestBody ChildRequestBody body) {
+        return ResponseEntity.ok("Email: " + body.getEmail());
+    }
+
+    @PostMapping("/nestedValidation")
+    public ResponseEntity<String> nestedValidation(@Valid @RequestBody NestedRequestBody body) {
+        return ResponseEntity.ok("Email: " + body.getMyRequestBody().getEmail());
+    }
+
+    @Override
+    @GetMapping("/overriddenPath")
+    public ResponseEntity<String> overriddenPath(@RequestParam int id) {
+        return null;
+    }
 }

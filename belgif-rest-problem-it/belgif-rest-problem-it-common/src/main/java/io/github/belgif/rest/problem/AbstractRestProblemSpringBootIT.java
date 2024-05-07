@@ -110,6 +110,17 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
     }
 
     @Test
+    void overriddenParamViolation() {
+        getSpec().when()
+                .contentType("application/json")
+                .get("/overriddenPath?id=0").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues.in", hasItem("query"))
+                .body("issues.detail", hasItem("must be greater than or equal to 3"));
+    }
+
+    @Test
     void doubleNestedQueryParamsViolation() {
         getSpec().when()
                 .contentType("application/json")
@@ -137,6 +148,39 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
                 .body("issues[0].detail", containsString(
                         "JSON parse error: Unexpected character ('m' (code 109)): "
                                 + "was expecting a colon to separate field name and value"));
+    }
+
+    @Test
+    void superClassViolation() {
+        getSpec().when().body("{" +
+                "\"email\": \"mymail.com\"," +
+                "\"age\": 4" +
+                "}")
+                .contentType("application/json")
+                .post("/superClassValidation").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues.in", hasItem("body"))
+                .body("issues.detail", hasItem("must be a well-formed email address"))
+                .body("issues.name", hasItem("email"))
+                .body("issues.detail", hasItem("must not be blank"));
+    }
+
+    @Test
+    void nestedBodyViolation() {
+        getSpec().when().body("{" +
+                "\"myRequestBody\": {" +
+                "\"email\": \"mymail.com\"," +
+                "\"age\": 4" +
+                "}\n}")
+                .contentType("application/json")
+                .post("/nestedValidation").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues.in", hasItem("body"))
+                .body("issues.detail", hasItem("must be a well-formed email address"))
+                .body("issues.name", hasItem("myRequestBody.email"))
+                .body("issues.detail", hasItem("must not be blank"));
     }
 
 }
