@@ -31,9 +31,9 @@ public class DetermineSourceUtil {
     private DetermineSourceUtil() {
     }
 
-    public static InEnum determineSource(Annotation[] annotations) {
+    public static InEnum determineSource(List<Annotation> annotations) {
         Set<Class<? extends Annotation>> annotationTypes =
-                Arrays.stream(annotations).map(Annotation::annotationType).collect(Collectors.toSet());
+                annotations.stream().map(Annotation::annotationType).collect(Collectors.toSet());
         if (annotationTypes.contains(PathVariable.class)) {
             return InEnum.PATH;
         } else if (annotationTypes.contains(RequestHeader.class)) {
@@ -60,15 +60,30 @@ public class DetermineSourceUtil {
             Optional<Parameter> parameter =
                     parameters.stream().filter(param -> param.getName().equals(parameterName)).findAny();
             if (parameter.isPresent()) {
-                Annotation[] annotations = parameter.get().getAnnotations();
-                return determineSource(annotations);
+                return determineSource(parameter.get());
             }
         }
         if (parameters.size() == 1) {
-            Annotation[] annotations = parameters.get(0).getAnnotations();
-            return determineSource(annotations);
+            return determineSource(parameters.get(0));
         }
         return InEnum.QUERY;
+    }
+
+    public static InEnum determineSource(Parameter parameter) {
+        List<Annotation> annotations = new ArrayList<>(Arrays.asList(parameter.getAnnotations()));
+        Method method = (Method) parameter.getDeclaringExecutable();
+        Class<?> superclass = method.getDeclaringClass().getSuperclass();
+        if (superclass != null && superclass != Object.class
+                && Arrays.asList(superclass.getMethods()).contains(method)) {
+            Arrays.stream(superclass.getMethods()).filter(meth -> isSuperMethod(meth, method)).forEach(
+                    meth -> annotations.addAll(Arrays.asList(getSuperParameter(meth, parameter).getAnnotations())));
+        }
+        Class<?>[] interfaces = method.getDeclaringClass().getInterfaces();
+        for (Class<?> interfaceClass : interfaces) {
+            Arrays.stream(interfaceClass.getMethods()).filter(meth -> isSuperMethod(meth, method)).forEach(
+                    meth -> annotations.addAll(Arrays.asList(getSuperParameter(meth, parameter).getAnnotations())));
+        }
+        return determineSource(annotations);
     }
 
     public static InEnum determineSource(ConstraintViolation<?> violation,
@@ -102,4 +117,16 @@ public class DetermineSourceUtil {
         return null;
     }
 
+    private static boolean isSuperMethod(Method superMethod, Method method) {
+        return superMethod.getName().equals(method.getName())
+                && Arrays.equals(superMethod.getParameterTypes(), method.getParameterTypes())
+                && superMethod.getReturnType().equals(method.getReturnType());
+    }
+
+    private static Parameter getSuperParameter(Method superMethod, Parameter parameter) {
+        List<Parameter> params = Arrays.asList(superMethod.getParameters());
+        return params.stream().filter(
+                param -> param.getName().equals(parameter.getName()) && param.getType().equals(parameter.getType()))
+                .findAny().orElse(null);
+    }
 }

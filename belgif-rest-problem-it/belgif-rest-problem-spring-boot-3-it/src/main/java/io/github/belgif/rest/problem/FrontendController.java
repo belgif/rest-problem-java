@@ -26,7 +26,7 @@ import io.github.belgif.rest.problem.model.ParentRequestBody;
 @RestController
 @RequestMapping("/frontend")
 @Validated
-public class FrontendController {
+public class FrontendController implements ControllerInterface {
 
     private final RestTemplateBuilder restTemplateBuilder;
 
@@ -136,8 +136,14 @@ public class FrontendController {
         return ResponseEntity.ok("Positive: " + positive + "\nRequired: " + required);
     }
 
-    @GetMapping("/constraintViolationPath/{id}")
-    public ResponseEntity<String> constraintViolationPath(@Valid @PathVariable("id") @Min(3) @Max(10) int id) {
+    // TODO
+//    @GetMapping("/constraintViolationPath/{id}")
+//    public ResponseEntity<String> constraintViolationPath(@Valid @PathVariable("id") @Min(3) @Max(10) int id) {
+//        return ResponseEntity.ok("" + id);
+//    }
+
+    @Override
+    public ResponseEntity<String> constraintViolationPath(int id) {
         return ResponseEntity.ok("" + id);
     }
 

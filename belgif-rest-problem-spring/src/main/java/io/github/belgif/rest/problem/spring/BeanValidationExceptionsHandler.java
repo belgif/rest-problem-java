@@ -48,7 +48,7 @@ public class BeanValidationExceptionsHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Problem> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        InEnum in = DetermineSourceUtil.determineSource(exception.getParameter().getParameterAnnotations());
+        InEnum in = DetermineSourceUtil.determineSource(exception.getParameter().getParameter());
         List<InputValidationIssue> issues = exception.getFieldErrors().stream()
                 .map(fieldError -> BeanValidationExceptionUtil.convertToInputValidationIssue(fieldError, in))
                 .collect(Collectors.toList());
@@ -67,7 +67,7 @@ public class BeanValidationExceptionsHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Problem>
             handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
-        InEnum in = DetermineSourceUtil.determineSource(exception.getParameter().getParameterAnnotations());
+        InEnum in = DetermineSourceUtil.determineSource(exception.getParameter().getParameter());
         String name = exception.getName();
         Class<?> requiredType = exception.getRequiredType();
         String detail = requiredType != null ? name + " should be of type " + requiredType.getSimpleName()
