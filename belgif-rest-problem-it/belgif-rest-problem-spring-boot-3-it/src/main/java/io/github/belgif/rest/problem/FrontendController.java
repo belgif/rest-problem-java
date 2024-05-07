@@ -12,7 +12,13 @@ import org.springframework.boot.web.servlet.context.ServletWebServerInitializedE
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -28,6 +34,9 @@ import io.github.belgif.rest.problem.model.ParentRequestBody;
 @Validated
 public class FrontendController implements ControllerInterface {
 
+    private static final String DETAIL_MESSAGE_SUFFIX = " (caught successfully by frontend)";
+    private static final String ILLEGAL_STATE_MESSAGE_PREFIX = "Unsupported client ";
+
     private final RestTemplateBuilder restTemplateBuilder;
 
     private final WebClient.Builder webClientBuilder;
@@ -35,9 +44,6 @@ public class FrontendController implements ControllerInterface {
     private RestTemplate restTemplate;
 
     private WebClient webClient;
-
-    private static final String DETAIL_MESSAGE_SUFFIX = " (caught successfully by frontend)";
-    private static final String ILLEGAL_STATE_MESSAGE_PREFIX = "Unsupported client ";
 
     public FrontendController(RestTemplateBuilder restTemplateBuilder, WebClient.Builder webClientBuilder) {
         this.restTemplateBuilder = restTemplateBuilder;

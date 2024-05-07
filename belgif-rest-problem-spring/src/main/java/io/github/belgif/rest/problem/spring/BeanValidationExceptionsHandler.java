@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import jakarta.validation.ConstraintViolationException;
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.core.annotation.Order;
@@ -51,6 +51,7 @@ public class BeanValidationExceptionsHandler {
         InEnum in = DetermineSourceUtil.determineSource(exception.getParameter().getParameter());
         List<InputValidationIssue> issues = exception.getFieldErrors().stream()
                 .map(fieldError -> BeanValidationExceptionUtil.convertToInputValidationIssue(fieldError, in))
+                .sorted(Comparator.comparing(InputValidationIssue::getName))
                 .collect(Collectors.toList());
         return ProblemMediaType.INSTANCE.toResponse(new BadRequestProblem(issues));
     }
@@ -60,6 +61,7 @@ public class BeanValidationExceptionsHandler {
         List<InputValidationIssue> issues = exception.getFieldErrors().stream()
                 .map(fieldError -> BeanValidationExceptionUtil.convertToInputValidationIssue(fieldError,
                         DetermineSourceUtil.determineSource(request, fieldError.getField())))
+                .sorted(Comparator.comparing(InputValidationIssue::getName))
                 .collect(Collectors.toList());
         return ProblemMediaType.INSTANCE.toResponse(new BadRequestProblem(issues));
     }

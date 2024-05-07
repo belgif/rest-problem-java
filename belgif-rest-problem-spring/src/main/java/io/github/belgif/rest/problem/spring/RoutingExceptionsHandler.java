@@ -32,7 +32,7 @@ public class RoutingExceptionsHandler {
             MissingServletRequestParameterException exception, ServletWebRequest request) {
         String name = exception.getParameterName();
         InEnum in = DetermineSourceUtil.determineSource(request, name);
-        String detail = exception.getBody().getDetail();
+        String detail = exception.getMessage();
         return ProblemMediaType.INSTANCE
                 .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(in, name, null,
                         detail)));

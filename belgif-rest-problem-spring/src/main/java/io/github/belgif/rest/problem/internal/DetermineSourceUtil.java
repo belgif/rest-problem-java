@@ -12,11 +12,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ElementKind;
-import jakarta.validation.Path.MethodNode;
-import jakarta.validation.Path.Node;
-import jakarta.validation.Path.ParameterNode;
+import javax.validation.ConstraintViolation;
+import javax.validation.ElementKind;
+import javax.validation.Path.MethodNode;
+import javax.validation.Path.Node;
+import javax.validation.Path.ParameterNode;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
