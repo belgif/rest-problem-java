@@ -9,13 +9,13 @@ import org.junit.jupiter.params.provider.EnumSource;
 class InEnumTest {
 
     @ParameterizedTest
-    @EnumSource(InEnum.class)
+    @EnumSource
     void toString(InEnum in) {
         assertThat(in).hasToString(in.name().toLowerCase());
     }
 
     @ParameterizedTest
-    @EnumSource(InEnum.class)
+    @EnumSource
     void fromValue(InEnum in) {
         assertThat(InEnum.fromValue(in.toString())).isEqualTo(in);
     }
