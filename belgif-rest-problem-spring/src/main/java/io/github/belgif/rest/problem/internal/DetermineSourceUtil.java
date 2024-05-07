@@ -21,6 +21,7 @@ import jakarta.validation.Path.ParameterNode;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.HandlerMethod;
 
@@ -31,7 +32,7 @@ public class DetermineSourceUtil {
     private DetermineSourceUtil() {
     }
 
-    public static InEnum determineSource(List<Annotation> annotations) {
+    public static InEnum determineSourceOrNull(List<Annotation> annotations) {
         Set<Class<? extends Annotation>> annotationTypes =
                 annotations.stream().map(Annotation::annotationType).collect(Collectors.toSet());
         if (annotationTypes.contains(PathVariable.class)) {
@@ -40,9 +41,10 @@ public class DetermineSourceUtil {
             return InEnum.HEADER;
         } else if (annotationTypes.contains(RequestBody.class)) {
             return InEnum.BODY;
-        } else {
+        } else if (annotationTypes.contains(RequestParam.class)) {
             return InEnum.QUERY;
         }
+        return null;
     }
 
     public static InEnum determineSource(ServletWebRequest request, String parameterName) {
@@ -70,20 +72,29 @@ public class DetermineSourceUtil {
     }
 
     public static InEnum determineSource(Parameter parameter) {
+        InEnum inEnum;
         List<Annotation> annotations = new ArrayList<>(Arrays.asList(parameter.getAnnotations()));
+        inEnum = determineSourceOrNull(annotations);
         Method method = (Method) parameter.getDeclaringExecutable();
-        Class<?> superclass = method.getDeclaringClass().getSuperclass();
-        if (superclass != null && superclass != Object.class
-                && Arrays.asList(superclass.getMethods()).contains(method)) {
-            Arrays.stream(superclass.getMethods()).filter(meth -> isSuperMethod(meth, method)).forEach(
-                    meth -> annotations.addAll(Arrays.asList(getSuperParameter(meth, parameter).getAnnotations())));
+        if (inEnum == null) { // Can be null if annotation is in superclass
+            Class<?> superclass = method.getDeclaringClass().getSuperclass();
+            if (superclass != null && superclass != Object.class
+                    && Arrays.asList(superclass.getMethods()).contains(method)) {
+                annotations.addAll(getAnnotationsFromSuperParam(superclass, parameter));
+            }
+            inEnum = determineSourceOrNull(annotations);
         }
-        Class<?>[] interfaces = method.getDeclaringClass().getInterfaces();
-        for (Class<?> interfaceClass : interfaces) {
-            Arrays.stream(interfaceClass.getMethods()).filter(meth -> isSuperMethod(meth, method)).forEach(
-                    meth -> annotations.addAll(Arrays.asList(getSuperParameter(meth, parameter).getAnnotations())));
+        if (inEnum == null) { // Can be null if annotation is in implemented interfaces
+            Class<?>[] interfaces = method.getDeclaringClass().getInterfaces();
+            for (Class<?> interfaceClass : interfaces) {
+                annotations.addAll(getAnnotationsFromSuperParam(interfaceClass, parameter));
+            }
+            inEnum = determineSourceOrNull(annotations);
         }
-        return determineSource(annotations);
+        if (inEnum == null) { // If still null, use default
+            inEnum = InEnum.QUERY;
+        }
+        return inEnum;
     }
 
     public static InEnum determineSource(ConstraintViolation<?> violation,
@@ -128,5 +139,19 @@ public class DetermineSourceUtil {
         return params.stream().filter(
                 param -> param.getName().equals(parameter.getName()) && param.getType().equals(parameter.getType()))
                 .findAny().orElse(null);
+    }
+
+    private static List<Annotation> getAnnotationsFromSuperParam(Class<?> superClass, Parameter parameter) {
+        List<Annotation> annotations = new ArrayList<>();
+        Method method = (Method) parameter.getDeclaringExecutable();
+        Optional<Method> superMethod =
+                Arrays.stream(superClass.getMethods()).filter(meth -> isSuperMethod(meth, method)).findAny();
+        if (superMethod.isPresent()) {
+            Parameter superParameter = getSuperParameter(superMethod.get(), parameter);
+            if (superParameter != null) {
+                annotations.addAll(Arrays.asList(superParameter.getAnnotations()));
+            }
+        }
+        return annotations;
     }
 }

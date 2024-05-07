@@ -134,6 +134,17 @@ class RestProblemSpringIT extends AbstractRestProblemIT {
     }
 
     @Test
+    void overriddenParamViolation() {
+        getSpec().when()
+                .contentType("application/json")
+                .get("/overriddenPath?id=0").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues.in", hasItem("query"))
+                .body("issues.detail", hasItem("must be greater than or equal to 3"));
+    }
+
+    @Test
     void doubleNestedQueryParamsViolation() {
         getSpec().when()
                 .contentType("application/json")

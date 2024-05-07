@@ -17,4 +17,7 @@ public interface ControllerInterface {
     @GetMapping("/constraintViolationPath/{id}")
     ResponseEntity<String> constraintViolationPath(@Valid @PathVariable("id") @Min(3) @Max(10) int id);
 
+    @GetMapping("/overriddenPath/{id}")
+    ResponseEntity<String> overriddenPath(@Valid @PathVariable("id") @Min(3) @Max(10) int id);
+
 }

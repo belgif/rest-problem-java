@@ -136,12 +136,6 @@ public class FrontendController implements ControllerInterface {
         return ResponseEntity.ok("Positive: " + positive + "\nRequired: " + required);
     }
 
-    // TODO
-//    @GetMapping("/constraintViolationPath/{id}")
-//    public ResponseEntity<String> constraintViolationPath(@Valid @PathVariable("id") @Min(3) @Max(10) int id) {
-//        return ResponseEntity.ok("" + id);
-//    }
-
     @Override
     public ResponseEntity<String> constraintViolationPath(int id) {
         return ResponseEntity.ok("" + id);
@@ -178,4 +172,9 @@ public class FrontendController implements ControllerInterface {
         return ResponseEntity.ok("Email: " + body.getMyRequestBody().getEmail());
     }
 
+    @Override
+    @GetMapping("/overriddenPath")
+    public ResponseEntity<String> overriddenPath(@RequestParam int id) {
+        return null;
+    }
 }
