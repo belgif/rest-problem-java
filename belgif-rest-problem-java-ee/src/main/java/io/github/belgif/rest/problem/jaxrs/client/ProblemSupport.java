@@ -55,7 +55,7 @@ public class ProblemSupport {
     /**
      * JDK Dynamic Proxy InvocationHandler for JAX-RS Client.
      */
-    private static final class ClientInvocationHandler implements InvocationHandler {
+    static final class ClientInvocationHandler implements InvocationHandler {
 
         private final Client target;
 
@@ -82,7 +82,7 @@ public class ProblemSupport {
     /**
      * JDK Dynamic Proxy InvocationHandler for JAX-RS WebTarget.
      */
-    private static final class WebTargetInvocationHandler implements InvocationHandler {
+    static final class WebTargetInvocationHandler implements InvocationHandler {
 
         private final WebTarget target;
 
@@ -236,7 +236,7 @@ public class ProblemSupport {
     /**
      * JDK Dynamic Proxy InvocationHandler for proxy clients.
      */
-    private static final class ProxyInvocationHandler implements InvocationHandler {
+    static final class ProxyInvocationHandler implements InvocationHandler {
 
         private final Object target;
 

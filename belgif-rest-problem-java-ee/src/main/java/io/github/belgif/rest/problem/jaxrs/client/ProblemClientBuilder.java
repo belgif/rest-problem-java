@@ -28,106 +28,125 @@ public class ProblemClientBuilder extends ClientBuilder {
         return ProblemSupport.enable(delegate.build());
     }
 
-    // all other methods below simply delegate to the wrapped ClientBuilder
-
-    @Override
-    public ClientBuilder withConfig(Configuration config) {
-        return delegate.withConfig(config);
-    }
-
-    @Override
-    public ClientBuilder sslContext(SSLContext sslContext) {
-        return delegate.sslContext(sslContext);
-    }
-
-    @Override
-    public ClientBuilder keyStore(KeyStore keyStore, char[] password) {
-        return delegate.keyStore(keyStore, password);
-    }
-
-    @Override
-    public ClientBuilder keyStore(KeyStore keyStore, String password) {
-        return delegate.keyStore(keyStore, password);
-    }
-
-    @Override
-    public ClientBuilder trustStore(KeyStore trustStore) {
-        return delegate.trustStore(trustStore);
-    }
-
-    @Override
-    public ClientBuilder hostnameVerifier(HostnameVerifier verifier) {
-        return delegate.hostnameVerifier(verifier);
-    }
-
-    @Override
-    public ClientBuilder executorService(ExecutorService executorService) {
-        return delegate.executorService(executorService);
-    }
-
-    @Override
-    public ClientBuilder scheduledExecutorService(ScheduledExecutorService scheduledExecutorService) {
-        return delegate.scheduledExecutorService(scheduledExecutorService);
-    }
-
-    @Override
-    public ClientBuilder connectTimeout(long timeout, TimeUnit unit) {
-        return delegate.connectTimeout(timeout, unit);
-    }
-
-    @Override
-    public ClientBuilder readTimeout(long timeout, TimeUnit unit) {
-        return delegate.readTimeout(timeout, unit);
-    }
-
     @Override
     public Configuration getConfiguration() {
         return delegate.getConfiguration();
     }
 
+    // all other methods below simply delegate to the wrapped ClientBuilder, but return the ProblemClientBuilder
+
+    @Override
+    public ClientBuilder withConfig(Configuration config) {
+        delegate.withConfig(config);
+        return this;
+    }
+
+    @Override
+    public ClientBuilder sslContext(SSLContext sslContext) {
+        delegate.sslContext(sslContext);
+        return this;
+    }
+
+    @Override
+    public ClientBuilder keyStore(KeyStore keyStore, char[] password) {
+        delegate.keyStore(keyStore, password);
+        return this;
+    }
+
+    @Override
+    public ClientBuilder keyStore(KeyStore keyStore, String password) {
+        delegate.keyStore(keyStore, password);
+        return this;
+    }
+
+    @Override
+    public ClientBuilder trustStore(KeyStore trustStore) {
+        delegate.trustStore(trustStore);
+        return this;
+    }
+
+    @Override
+    public ClientBuilder hostnameVerifier(HostnameVerifier verifier) {
+        delegate.hostnameVerifier(verifier);
+        return this;
+    }
+
+    @Override
+    public ClientBuilder executorService(ExecutorService executorService) {
+        delegate.executorService(executorService);
+        return this;
+    }
+
+    @Override
+    public ClientBuilder scheduledExecutorService(ScheduledExecutorService scheduledExecutorService) {
+        delegate.scheduledExecutorService(scheduledExecutorService);
+        return this;
+    }
+
+    @Override
+    public ClientBuilder connectTimeout(long timeout, TimeUnit unit) {
+        delegate.connectTimeout(timeout, unit);
+        return this;
+    }
+
+    @Override
+    public ClientBuilder readTimeout(long timeout, TimeUnit unit) {
+        delegate.readTimeout(timeout, unit);
+        return this;
+    }
+
     @Override
     public ClientBuilder property(String name, Object value) {
-        return delegate.property(name, value);
+        delegate.property(name, value);
+        return this;
     }
 
     @Override
     public ClientBuilder register(Class<?> componentClass) {
-        return delegate.register(componentClass);
+        delegate.register(componentClass);
+        return this;
     }
 
     @Override
     public ClientBuilder register(Class<?> componentClass, int priority) {
-        return delegate.register(componentClass, priority);
+        delegate.register(componentClass, priority);
+        return this;
     }
 
     @Override
     public ClientBuilder register(Class<?> componentClass, Class<?>... contracts) {
-        return delegate.register(componentClass, contracts);
+        delegate.register(componentClass, contracts);
+        return this;
     }
 
     @Override
     public ClientBuilder register(Class<?> componentClass, Map<Class<?>, Integer> contracts) {
-        return delegate.register(componentClass, contracts);
+        delegate.register(componentClass, contracts);
+        return this;
     }
 
     @Override
     public ClientBuilder register(Object component) {
-        return delegate.register(component);
+        delegate.register(component);
+        return this;
     }
 
     @Override
     public ClientBuilder register(Object component, int priority) {
-        return delegate.register(component, priority);
+        delegate.register(component, priority);
+        return this;
     }
 
     @Override
     public ClientBuilder register(Object component, Class<?>... contracts) {
-        return delegate.register(component, contracts);
+        delegate.register(component, contracts);
+        return this;
     }
 
     @Override
     public ClientBuilder register(Object component, Map<Class<?>, Integer> contracts) {
-        return delegate.register(component, contracts);
+        delegate.register(component, contracts);
+        return this;
     }
 
 }

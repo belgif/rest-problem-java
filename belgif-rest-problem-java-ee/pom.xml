@@ -34,12 +34,6 @@
       <artifactId>resteasy-client-microprofile</artifactId>
       <scope>provided</scope>
       <version>3.15.6.Final</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.jboss.weld</groupId>
-          <artifactId>weld-api</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -58,6 +52,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
       <version>6.0.23.Final</version>
@@ -67,12 +66,6 @@
       <groupId>org.glassfish</groupId>
       <artifactId>javax.el</artifactId>
       <version>3.0.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.weld</groupId>
-      <artifactId>weld-junit5</artifactId>
-      <version>2.0.2.Final</version>
       <scope>test</scope>
     </dependency>
     <dependency>
