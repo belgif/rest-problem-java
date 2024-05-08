@@ -116,8 +116,8 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
                 .get("/overriddenPath?id=0").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
-                .body("issues.in", hasItem("query"))
-                .body("issues.detail", hasItem("must be greater than or equal to 3"));
+                .body("issues[0].in", equalTo("query"))
+                .body("issues[0].detail", equalTo("must be greater than or equal to 3"));
     }
 
     @Test
@@ -160,10 +160,12 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
                 .post("/superClassValidation").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
-                .body("issues.in", hasItem("body"))
-                .body("issues.detail", hasItem("must be a well-formed email address"))
-                .body("issues.name", hasItem("email"))
-                .body("issues.detail", hasItem("must not be blank"));
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].detail", equalTo("must be a well-formed email address"))
+                .body("issues[0].name", equalTo("email"))
+                .body("issues[1].in", equalTo("body"))
+                .body("issues[1].detail", equalTo("must not be blank"))
+                .body("issues[1].name", equalTo("name"));
     }
 
     @Test
@@ -177,10 +179,12 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
                 .post("/nestedValidation").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
-                .body("issues.in", hasItem("body"))
-                .body("issues.detail", hasItem("must be a well-formed email address"))
-                .body("issues.name", hasItem("myRequestBody.email"))
-                .body("issues.detail", hasItem("must not be blank"));
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].detail", equalTo("must be a well-formed email address"))
+                .body("issues[0].name", equalTo("myRequestBody.email"))
+                .body("issues[1].in", equalTo("body"))
+                .body("issues[1].detail", equalTo("must not be blank"))
+                .body("issues[1].name", equalTo("myRequestBody.name"));
     }
 
 }
