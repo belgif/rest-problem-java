@@ -17,7 +17,7 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>3.0.0</version>
+        <version>3.2.5</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -30,6 +30,11 @@
       <artifactId>belgif-rest-problem-spring</artifactId>
       <version>${project.version}</version>
       <classifier>jakarta</classifier>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.github.belgif.rest.problem</groupId>

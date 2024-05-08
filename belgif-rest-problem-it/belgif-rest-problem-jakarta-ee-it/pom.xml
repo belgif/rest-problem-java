@@ -52,11 +52,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.jboss.resteasy.microprofile</groupId>
       <artifactId>microprofile-rest-client</artifactId>
       <scope>provided</scope>
