@@ -2,8 +2,11 @@ package io.github.belgif.rest.problem.internal;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
@@ -26,6 +29,17 @@ import io.github.belgif.rest.problem.api.InputValidationIssues;
  * @see InputValidationIssue
  */
 public class ConstraintViolationUtil {
+
+    private static final Map<Class<? extends Annotation>, InEnum> SOURCE_MAPPING = new HashMap<>();
+
+    static {
+        SOURCE_MAPPING.put(QueryParam.class, InEnum.QUERY);
+        SOURCE_MAPPING.put(PathParam.class, InEnum.PATH);
+        SOURCE_MAPPING.put(HeaderParam.class, InEnum.HEADER);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static final Class<? extends Annotation>[] ANNOTATIONS = SOURCE_MAPPING.keySet().toArray(new Class[0]);
 
     private ConstraintViolationUtil() {
     }
@@ -59,17 +73,12 @@ public class ConstraintViolationUtil {
                 try {
                     Method method = violation.getRootBeanClass().getMethod(methodNode.getName(),
                             methodNode.getParameterTypes().toArray(new Class[0]));
-                    if (hasParamAnnotation(method, param.getParameterIndex(), QueryParam.class)) {
-                        return InEnum.QUERY;
-                    } else if (hasParamAnnotation(method, param.getParameterIndex(), PathParam.class)) {
-                        return InEnum.PATH;
-                    } else if (hasParamAnnotation(method, param.getParameterIndex(), HeaderParam.class)) {
-                        return InEnum.HEADER;
-                    } else {
-                        return InEnum.QUERY;
-                    }
+                    Optional<Annotation> annotation =
+                            AnnotationUtil.findParamAnnotation(method, param.getParameterIndex(), ANNOTATIONS);
+                    return annotation.map(Annotation::annotationType).map(SOURCE_MAPPING::get).orElse(InEnum.QUERY);
                 } catch (NoSuchMethodException e) {
-                    return InEnum.QUERY;
+                    throw new IllegalStateException(
+                            "Method " + methodNode.getName() + " not found on " + violation.getRootBeanClass(), e);
                 }
             } else {
                 return InEnum.QUERY;
@@ -77,32 +86,6 @@ public class ConstraintViolationUtil {
         } else {
             return InEnum.BODY;
         }
-    }
-
-    private static boolean hasParamAnnotation(Method m, int ix, Class<? extends Annotation> ann) {
-        if (m.getParameters()[ix].isAnnotationPresent(ann)) {
-            return true;
-        }
-        Class<?> superclass = m.getDeclaringClass().getSuperclass();
-        try {
-            if (superclass != null && superclass != Object.class
-                    && hasParamAnnotation(superclass.getMethod(m.getName(), m.getParameterTypes()), ix, ann)) {
-                return true;
-            }
-        } catch (NoSuchMethodException e) {
-            // ignore
-        }
-        Class<?>[] interfaces = m.getDeclaringClass().getInterfaces();
-        for (Class<?> intf : interfaces) {
-            try {
-                if (hasParamAnnotation(intf.getMethod(m.getName(), m.getParameterTypes()), ix, ann)) {
-                    return true;
-                }
-            } catch (NoSuchMethodException e) {
-                // ignore
-            }
-        }
-        return false;
     }
 
 }
