@@ -20,7 +20,7 @@ import io.github.belgif.rest.problem.api.ProblemType;
 @ExtendWith(MockitoExtension.class)
 class CdiProblemTypeRegistryTest {
 
-    private CdiProblemTypeRegistry registry = new CdiProblemTypeRegistry();
+    private final CdiProblemTypeRegistry registry = new CdiProblemTypeRegistry();
 
     @Mock
     private ProcessAnnotatedType processAnnotatedType;
@@ -41,11 +41,8 @@ class CdiProblemTypeRegistryTest {
 
         registry.afterTypeDiscovery(null);
 
-        assertThat(registry.getProblemTypes()).hasSize(1);
-        NamedType registeredType = registry.getProblemTypes()[0];
-
-        assertThat(registeredType.getType()).isEqualTo(BadRequestProblem.class);
-        assertThat(registeredType.getName()).isEqualTo("urn:problem-type:belgif:badRequest");
+        assertThat(registry.getProblemTypes())
+                .containsExactly(new NamedType(BadRequestProblem.class, "urn:problem-type:belgif:badRequest"));
     }
 
     @Test

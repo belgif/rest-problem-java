@@ -24,7 +24,7 @@ import io.github.belgif.rest.problem.api.InputValidationIssue;
 
 class ConstraintViolationUtilTest {
 
-    private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Test
     void bodyProperty() {

@@ -26,8 +26,7 @@ class CdiProblemModuleTest {
             mock.when(CdiProblemTypeRegistry::instance).thenReturn(registry);
             when(registry.getProblemTypes()).thenReturn(new NamedType[] {});
             CdiProblemModule module = new CdiProblemModule();
-            assertThat(new CdiProblemModule().getModuleName())
-                    .isEqualTo("io.github.belgif.rest.problem.CdiProblemModule");
+            assertThat(module.getModuleName()).isEqualTo("io.github.belgif.rest.problem.CdiProblemModule");
         }
     }
 

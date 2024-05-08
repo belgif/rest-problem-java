@@ -1,6 +1,7 @@
 package io.github.belgif.rest.problem.jaxrs.client;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientResponseContext;
@@ -36,7 +37,7 @@ public class ProblemClientResponseFilter implements ClientResponseFilter {
     }
 
     public ProblemClientResponseFilter(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+        this.objectMapper = Objects.requireNonNull(objectMapper, "ObjectMapper should not be null");
     }
 
     @Override
