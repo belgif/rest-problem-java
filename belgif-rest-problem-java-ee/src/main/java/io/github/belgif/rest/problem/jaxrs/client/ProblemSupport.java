@@ -4,6 +4,9 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -57,177 +60,38 @@ public class ProblemSupport {
      */
     static final class ClientInvocationHandler implements InvocationHandler {
 
-        private final Client target;
+        private static final Set<Class<?>> PROXIED_RETURN_TYPES = new HashSet<>(Arrays.asList(
+                WebTarget.class, Invocation.Builder.class, Invocation.class, AsyncInvoker.class, Future.class));
 
-        ClientInvocationHandler(Client target) {
+        private final Object target;
+
+        ClientInvocationHandler(Object target) {
             this.target = target;
         }
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            try {
-                if (WebTarget.class.equals(method.getReturnType())) {
-                    return createProxy(WebTarget.class,
-                            new WebTargetInvocationHandler((WebTarget) method.invoke(target, args)));
-                } else {
+            if (PROXIED_RETURN_TYPES.contains(method.getReturnType())) {
+                try {
+                    return createProxy(method.getReturnType(),
+                            new ClientInvocationHandler(method.invoke(target, args)));
+                } catch (InvocationTargetException e) {
+                    throw e.getTargetException();
+                }
+            } else {
+                try {
                     return method.invoke(target, args);
-                }
-            } catch (InvocationTargetException e) {
-                throw e.getTargetException();
-            }
-        }
-
-    }
-
-    /**
-     * JDK Dynamic Proxy InvocationHandler for JAX-RS WebTarget.
-     */
-    static final class WebTargetInvocationHandler implements InvocationHandler {
-
-        private final WebTarget target;
-
-        WebTargetInvocationHandler(WebTarget target) {
-            this.target = target;
-        }
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            try {
-                if (WebTarget.class.equals(method.getReturnType())) {
-                    return createProxy(WebTarget.class,
-                            new WebTargetInvocationHandler((WebTarget) method.invoke(target, args)));
-                } else if (Invocation.Builder.class.equals(method.getReturnType())) {
-                    return createProxy(Invocation.Builder.class,
-                            new InvocationBuilderInvocationHandler((Invocation.Builder) method.invoke(target, args)));
-                } else {
-                    return method.invoke(target, args);
-                }
-            } catch (InvocationTargetException e) {
-                throw e.getTargetException();
-            }
-        }
-
-    }
-
-    /**
-     * JDK Dynamic Proxy InvocationHandler for JAX-RS Invocation.Builder.
-     */
-    private static final class InvocationBuilderInvocationHandler implements InvocationHandler {
-
-        private final Invocation.Builder target;
-
-        InvocationBuilderInvocationHandler(Invocation.Builder target) {
-            this.target = target;
-        }
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            try {
-                if (Invocation.Builder.class.equals(method.getReturnType())) {
-                    return createProxy(Invocation.Builder.class,
-                            new InvocationBuilderInvocationHandler((Invocation.Builder) method.invoke(target, args)));
-                } else if (Invocation.class.equals(method.getReturnType())) {
-                    return createProxy(Invocation.class,
-                            new InvocationInvocationHandler((Invocation) method.invoke(target, args)));
-                } else if (AsyncInvoker.class.equals(method.getReturnType())) {
-                    return createProxy(AsyncInvoker.class,
-                            new AsyncInvokerInvocationHandler((AsyncInvoker) method.invoke(target, args)));
-                } else {
-                    return method.invoke(target, args);
-                }
-            } catch (InvocationTargetException e) {
-                if (e.getTargetException() instanceof ProblemWrapper) {
-                    throw ((ProblemWrapper) e.getTargetException()).getProblem();
-                }
-                throw e.getTargetException();
-            }
-        }
-
-    }
-
-    /**
-     * JDK Dynamic Proxy InvocationHandler for JAX-RS Invocation.
-     */
-    private static final class InvocationInvocationHandler implements InvocationHandler {
-
-        private final Invocation target;
-
-        InvocationInvocationHandler(Invocation target) {
-            this.target = target;
-        }
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            try {
-                if (Invocation.class.equals(method.getReturnType())) {
-                    return createProxy(Invocation.class,
-                            new InvocationInvocationHandler((Invocation) method.invoke(target, args)));
-                } else if (Future.class.equals(method.getReturnType())) {
-                    return createProxy(Future.class,
-                            new FutureInvocationHandler((Future<?>) method.invoke(target, args)));
-                } else {
-                    return method.invoke(target, args);
-                }
-            } catch (InvocationTargetException e) {
-                if (e.getTargetException() instanceof ProblemWrapper) {
-                    throw ((ProblemWrapper) e.getTargetException()).getProblem();
-                }
-                throw e.getTargetException();
-            }
-        }
-
-    }
-
-    /**
-     * JDK Dynamic Proxy InvocationHandler for JAX-RS AsyncInvoker.
-     */
-    private static final class AsyncInvokerInvocationHandler implements InvocationHandler {
-
-        private final AsyncInvoker target;
-
-        AsyncInvokerInvocationHandler(AsyncInvoker target) {
-            this.target = target;
-        }
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            try {
-                if (Future.class.equals(method.getReturnType())) {
-                    return createProxy(Future.class,
-                            new FutureInvocationHandler((Future<?>) method.invoke(target, args)));
-                } else {
-                    return method.invoke(target, args);
-                }
-            } catch (InvocationTargetException e) {
-                throw e.getTargetException();
-            }
-        }
-
-    }
-
-    /**
-     * JDK Dynamic Proxy InvocationHandler for Future returned by JAX-RS Client.
-     */
-    private static final class FutureInvocationHandler implements InvocationHandler {
-
-        private final Future<?> target;
-
-        FutureInvocationHandler(Future<?> target) {
-            this.target = target;
-        }
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            try {
-                return method.invoke(target, args);
-            } catch (InvocationTargetException e) {
-                if (e.getTargetException() instanceof ExecutionException) {
-                    ExecutionException executionException = (ExecutionException) e.getTargetException();
-                    if (executionException.getCause() instanceof ProblemWrapper) {
-                        throw ((ProblemWrapper) executionException.getCause()).getProblem();
+                } catch (InvocationTargetException e) {
+                    if (e.getTargetException() instanceof ProblemWrapper) {
+                        throw ((ProblemWrapper) e.getTargetException()).getProblem();
+                    } else if (e.getTargetException() instanceof ExecutionException) {
+                        ExecutionException executionException = (ExecutionException) e.getTargetException();
+                        if (executionException.getCause() instanceof ProblemWrapper) {
+                            throw ((ProblemWrapper) executionException.getCause()).getProblem();
+                        }
                     }
+                    throw e.getTargetException();
                 }
-                throw e.getTargetException();
             }
         }
 
