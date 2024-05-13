@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem.internal;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
@@ -49,8 +50,7 @@ public class BeanValidationExceptionUtil {
     }
 
     public static InputValidationIssue convertToInputValidationIssue(@NotNull FieldError fieldError, InEnum in) {
-        String invalidValue =
-                fieldError.getRejectedValue() != null ? String.valueOf(fieldError.getRejectedValue()) : null;
+        String invalidValue = Objects.toString(fieldError.getRejectedValue(), null);
         return InputValidationIssues.schemaViolation(in, fieldError.getField(), invalidValue,
                 fieldError.getDefaultMessage());
     }

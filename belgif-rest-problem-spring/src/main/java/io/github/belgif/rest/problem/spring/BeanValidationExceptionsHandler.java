@@ -42,7 +42,7 @@ public class BeanValidationExceptionsHandler {
         return ProblemMediaType.INSTANCE.toResponse(
                 new BadRequestProblem(exception.getConstraintViolations().stream()
                         .map(BeanValidationExceptionUtil::convertToInputValidationIssue)
-                        .sorted(Comparator.comparing(InputValidationIssue::getName))
+                        .sorted(InputValidationIssue.BY_NAME)
                         .collect(Collectors.toList())));
     }
 

@@ -16,11 +16,11 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
                 .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
-                .body("issues[0].detail", equalTo(
-                        "Required request parameter 'required' for method parameter type String is not present"))
                 .body("issues[0].in", equalTo("query"))
                 .body("issues[0].name", equalTo("required"))
-                .body("issues[0].value", nullValue());
+                .body("issues[0].value", nullValue())
+                .body("issues[0].detail", equalTo(
+                        "Required request parameter 'required' for method parameter type String is not present"));
     }
 
     @Test
@@ -29,6 +29,8 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("path"))
+                .body("issues[0].name", equalTo("id"))
+                .body("issues[0].value", equalTo(1))
                 .body("issues[0].detail", equalTo("must be greater than or equal to 3"));
     }
 
@@ -38,46 +40,59 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("path"))
-                .body("issues[0].detail", equalTo("id should be of type int"))
-                .body("issues[0].value", equalTo("test"));
+                .body("issues[0].name", equalTo("id"))
+                .body("issues[0].value", equalTo("test"))
+                .body("issues[0].detail", equalTo("id should be of type int"));
     }
 
     @Test
     void queryParamInputViolation() {
-        getSpec().when().get("/constraintViolationQuery?id=100").then().assertThat()
+        getSpec().when()
+                .queryParam("id", 100)
+                .get("/constraintViolationQuery").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("query"))
+                .body("issues[0].name", equalTo("id"))
+                .body("issues[0].value", equalTo(100))
                 .body("issues[0].detail", equalTo("must be less than or equal to 10"));
     }
 
     @Test
     void queryParamTypeMismatch() {
-        getSpec().when().get("/constraintViolationQuery?id=test").then().assertThat()
+        getSpec().when()
+                .queryParam("id", "test")
+                .get("/constraintViolationQuery").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("query"))
-                .body("issues[0].detail", equalTo("id should be of type int"))
-                .body("issues[0].value", equalTo("test"));
+                .body("issues[0].name", equalTo("id"))
+                .body("issues[0].value", equalTo("test"))
+                .body("issues[0].detail", equalTo("id should be of type int"));
     }
 
     @Test
     void headerParamInputViolation() {
-        getSpec().when().header(new Header("id", "100")).get("/constraintViolationHeader").then().assertThat()
+        getSpec().when().header(new Header("id", "100"))
+                .get("/constraintViolationHeader").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("header"))
+                .body("issues[0].name", equalTo("id"))
+                .body("issues[0].value", equalTo(100))
                 .body("issues[0].detail", equalTo("must be less than or equal to 10"));
     }
 
     @Test
     void headerParamTypeMismatch() {
-        getSpec().when().header(new Header("id", "myId")).get("/constraintViolationHeader").then().assertThat()
+        getSpec().when().header(new Header("id", "myId"))
+                .get("/constraintViolationHeader").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("header"))
-                .body("issues[0].detail", equalTo("id should be of type int"))
-                .body("issues[0].value", equalTo("myId"));
+                .body("issues[0].name", equalTo("id"))
+                .body("issues[0].value", equalTo("myId"))
+                .body("issues[0].detail", equalTo("id should be of type int"));
     }
 
     @Test
@@ -90,49 +105,57 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("body"))
-                .body("issues[0].detail", equalTo("must be a well-formed email address"))
                 .body("issues[0].name", equalTo("email"))
+                .body("issues[0].value", equalTo("mymail.com"))
+                .body("issues[0].detail", equalTo("must be a well-formed email address"))
                 .body("issues[1].in", equalTo("body"))
-                .body("issues[1].detail", equalTo("must not be blank"))
-                .body("issues[1].name", equalTo("name"));
-
+                .body("issues[1].name", equalTo("name"))
+                .body("issues[1].value", nullValue())
+                .body("issues[1].detail", equalTo("must not be blank"));
     }
 
     @Test
     void nestedQueryParamsViolation() {
         getSpec().when()
-                .contentType("application/json")
-                .post("/nestedQueryParams?email=myemail.com&name=myName").then().assertThat()
+                .queryParam("email", "myemail.com")
+                .queryParam("name", "myName")
+                .post("/nestedQueryParams").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("query"))
+                .body("issues[0].name", equalTo("email"))
+                .body("issues[0].value", equalTo("myemail.com"))
                 .body("issues[0].detail", equalTo("must be a well-formed email address"));
     }
 
     @Test
     void overriddenParamViolation() {
         getSpec().when()
-                .contentType("application/json")
-                .get("/overriddenPath?id=0").then().assertThat()
+                .queryParam("id", 0)
+                .get("/overriddenPath").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("query"))
+                .body("issues[0].name", equalTo("id"))
+                .body("issues[0].value", equalTo(0))
                 .body("issues[0].detail", equalTo("must be greater than or equal to 3"));
     }
 
     @Test
     void doubleNestedQueryParamsViolation() {
         getSpec().when()
-                .contentType("application/json")
-                .post("/nestedQueryParams?email=myemail.com").then().assertThat()
+                .queryParam("email", "myemail.com")
+                .post("/nestedQueryParams").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("query"))
-                .body("issues[0].detail", equalTo("must be a well-formed email address"))
                 .body("issues[0].name", equalTo("email"))
+                .body("issues[0].value", equalTo("myemail.com"))
+                .body("issues[0].detail", equalTo("must be a well-formed email address"))
                 .body("issues[1].in", equalTo("query"))
-                .body("issues[1].detail", equalTo("must not be blank"))
-                .body("issues[1].name", equalTo("name"));
+                .body("issues[1].name", equalTo("name"))
+                .body("issues[1].value", nullValue())
+                .body("issues[1].detail", equalTo("must not be blank"));
     }
 
     @Test
@@ -161,11 +184,13 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("body"))
-                .body("issues[0].detail", equalTo("must be a well-formed email address"))
                 .body("issues[0].name", equalTo("email"))
+                .body("issues[0].value", equalTo("mymail.com"))
+                .body("issues[0].detail", equalTo("must be a well-formed email address"))
                 .body("issues[1].in", equalTo("body"))
-                .body("issues[1].detail", equalTo("must not be blank"))
-                .body("issues[1].name", equalTo("name"));
+                .body("issues[1].name", equalTo("name"))
+                .body("issues[1].value", nullValue())
+                .body("issues[1].detail", equalTo("must not be blank"));
     }
 
     @Test
@@ -180,11 +205,13 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("body"))
-                .body("issues[0].detail", equalTo("must be a well-formed email address"))
                 .body("issues[0].name", equalTo("myRequestBody.email"))
+                .body("issues[0].value", equalTo("mymail.com"))
+                .body("issues[0].detail", equalTo("must be a well-formed email address"))
                 .body("issues[1].in", equalTo("body"))
-                .body("issues[1].detail", equalTo("must not be blank"))
-                .body("issues[1].name", equalTo("myRequestBody.name"));
+                .body("issues[1].name", equalTo("myRequestBody.name"))
+                .body("issues[1].value", nullValue())
+                .body("issues[1].detail", equalTo("must not be blank"));
     }
 
 }

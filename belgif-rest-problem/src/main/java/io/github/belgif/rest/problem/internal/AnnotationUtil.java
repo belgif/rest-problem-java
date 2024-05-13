@@ -19,6 +19,11 @@ public class AnnotationUtil {
      * traversing its super methods (i.e. from superclasses and interfaces) if the annotation is not
      * directly present on the given method itself.
      *
+     * <p>
+     * In case the given method only has 1 single parameter, that parameter is used as fallback even when
+     * it does not match the given parameter name.
+     * </p>
+     *
      * @param method the method
      * @param paramName the parameter name
      * @param annotations the annotations

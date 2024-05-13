@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,6 +26,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 @JsonInclude(value = Include.NON_DEFAULT)
 @JsonPropertyOrder(value = { "type", "href", "title", "status", "detail", "instance", "in", "name", "value", "inputs" })
 public class InputValidationIssue {
+
+    public static final Comparator<InputValidationIssue> BY_NAME = Comparator.comparing(InputValidationIssue::getName);
 
     private static final String INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE =
             "inputs[] and in/name/value are mutually exclusive";
