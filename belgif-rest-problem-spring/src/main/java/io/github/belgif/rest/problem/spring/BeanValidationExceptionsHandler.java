@@ -25,12 +25,7 @@ import io.github.belgif.rest.problem.internal.BeanValidationExceptionUtil;
 import io.github.belgif.rest.problem.internal.DetermineSourceUtil;
 
 /**
- * Exception handler for RestControllers.
- *
- * <p>
- * Handles the response serialization for ConstraintViolation, MethodArgumentNotValid, BindException and
- * MethodArgumentTypeMismatchException exceptions.
- * </p>
+ * RestController exception handler for exceptions related to bean validation.
  */
 @RestControllerAdvice
 @Order(1)

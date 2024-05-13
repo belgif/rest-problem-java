@@ -24,6 +24,21 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
     }
 
     @Test
+    void missingRequestHeaderParameterException() {
+        getSpec().when().header(new Header("id", "1"))
+                .get("/constraintViolationHeader").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[0].in", equalTo("header"))
+                .body("issues[0].name", equalTo("required"))
+                .body("issues[0].value", nullValue())
+                .body("issues[0].detail", equalTo(
+                        "Required request header 'required' for method parameter type String is not present"));
+    }
+
+    @Test
     void pathParamInputViolation() {
         getSpec().when().get("/constraintViolationPath/1").then().assertThat()
                 .statusCode(400)
@@ -74,6 +89,7 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
     @Test
     void headerParamInputViolation() {
         getSpec().when().header(new Header("id", "100"))
+                .header(new Header("required", "OK"))
                 .get("/constraintViolationHeader").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
@@ -86,6 +102,7 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
     @Test
     void headerParamTypeMismatch() {
         getSpec().when().header(new Header("id", "myId"))
+                .header(new Header("required", "OK"))
                 .get("/constraintViolationHeader").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))

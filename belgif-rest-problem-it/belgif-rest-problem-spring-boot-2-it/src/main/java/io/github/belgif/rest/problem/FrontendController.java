@@ -154,7 +154,8 @@ public class FrontendController implements ControllerInterface {
 
     @GetMapping("/constraintViolationHeader")
     public ResponseEntity<String>
-            constraintViolationHeader(@Valid @RequestHeader("id") @Min(3) @Max(10) int id) {
+            constraintViolationHeader(@Valid @RequestHeader("id") @Min(3) @Max(10) int id,
+                    @Valid @RequestHeader("required") @NotBlank String required) {
         return ResponseEntity.ok("" + id);
     }
 
