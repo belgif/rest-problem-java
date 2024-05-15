@@ -535,8 +535,9 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#_context">1. Context</a></li>
 <li><a href="#_release_notes">2. Release notes</a>
 <ul class="sectlevel2">
-<li><a href="#_version_0_2">2.1. Version 0.2</a></li>
-<li><a href="#_version_0_1">2.2. Version 0.1</a></li>
+<li><a href="#_version_0_3">2.1. Version 0.3</a></li>
+<li><a href="#_version_0_2">2.2. Version 0.2</a></li>
+<li><a href="#_version_0_1">2.3. Version 0.1</a></li>
 </ul>
 </li>
 <li><a href="#belgif-rest-problem">3. belgif-rest-problem</a>
@@ -605,7 +606,23 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h2 id="_release_notes"><a class="anchor" href="#_release_notes"></a>2. Release notes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_version_0_2"><a class="anchor" href="#_version_0_2"></a>2.1. Version 0.2</h3>
+<h3 id="_version_0_3"><a class="anchor" href="#_version_0_3"></a>2.1. Version 0.3</h3>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-spring:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Added support for bean validation</p>
+</li>
+<li>
+<p>Added Jakarta EE 9/10 support: use <code>&lt;classifier&gt;jakarta&lt;/classifier&gt;</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_version_0_2"><a class="anchor" href="#_version_0_2"></a>2.2. Version 0.2</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -657,7 +674,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_1"><a class="anchor" href="#_version_0_1"></a>2.2. Version 0.1</h3>
+<h3 id="_version_0_1"><a class="anchor" href="#_version_0_1"></a>2.3. Version 0.1</h3>
 <div class="paragraph">
 <p>Initial release under Belgif organization.</p>
 </div>
@@ -1129,6 +1146,12 @@ Additional packages to scan can be configured in your application.properties:</p
 </li>
 <li>
 <p><strong>ProblemExceptionHandler:</strong> an exception handler for RestControllers that handles the response serialization for Problem exceptions, and converts all other uncaught exceptions to an InternalServerErrorProblem.</p>
+</li>
+<li>
+<p><strong>BeanValidationExceptionsHandler:</strong> an exception handler for RestControllers that converts bean validation related exceptions to HTTP 400 BadRequestProblem.</p>
+</li>
+<li>
+<p><strong>RoutingExceptionsHandler:</strong> an exception handler for RestControllers that converts routing related validation exceptions to HTTP 400 BadRequestProblem.</p>
 </li>
 <li>
 <p><strong>ProblemResponseErrorHandler:</strong> a RestTemplate error handler that converts problem responses to Problem exceptions.</p>

@@ -111,11 +111,19 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/github/belgif/rest/problem/BadRequestProblem.html#%3Cinit%3E(java.util.List)" class="member-name-link">BadRequestProblem(List&lt;InputValidationIssue&gt;)</a> - Constructor for exception class io.github.belgif.rest.problem.<a href="io/github/belgif/rest/problem/BadRequestProblem.html" title="class in io.github.belgif.rest.problem">BadRequestProblem</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/github/belgif/rest/problem/spring/BeanValidationExceptionsHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">BeanValidationExceptionsHandler</a> - Class in <a href="io/github/belgif/rest/problem/spring/package-summary.html">io.github.belgif.rest.problem.spring</a></dt>
+<dd>
+<div class="block">RestController exception handler for exceptions related to bean validation.</div>
+</dd>
+<dt><a href="io/github/belgif/rest/problem/spring/BeanValidationExceptionsHandler.html#%3Cinit%3E()" class="member-name-link">BeanValidationExceptionsHandler()</a> - Constructor for class io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/BeanValidationExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">BeanValidationExceptionsHandler</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/github/belgif/rest/problem/api/Input.html#body(java.lang.String,V)" class="member-name-link">body(String, V)</a> - Static method in class io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/Input.html" title="class in io.github.belgif.rest.problem.api">Input</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/github/belgif/rest/problem/api/InEnum.html#BODY" class="member-name-link">BODY</a> - Enum constant in enum io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/github/belgif/rest/problem/jaxrs/client/ProblemClientBuilder.html#build()" class="member-name-link">build()</a> - Method in class io.github.belgif.rest.problem.jaxrs.client.<a href="io/github/belgif/rest/problem/jaxrs/client/ProblemClientBuilder.html" title="class in io.github.belgif.rest.problem.jaxrs.client">ProblemClientBuilder</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/github/belgif/rest/problem/api/InputValidationIssue.html#BY_NAME" class="member-name-link">BY_NAME</a> - Static variable in class io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:C">C</h2>
@@ -435,9 +443,23 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:H">H</h2>
 <dl class="index">
+<dt><a href="io/github/belgif/rest/problem/spring/BeanValidationExceptionsHandler.html#handleBindException(org.springframework.validation.BindException,org.springframework.web.context.request.ServletWebRequest)" class="member-name-link">handleBindException(BindException, ServletWebRequest)</a> - Method in class io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/BeanValidationExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">BeanValidationExceptionsHandler</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/github/belgif/rest/problem/spring/BeanValidationExceptionsHandler.html#handleConstraintViolationException(javax.validation.ConstraintViolationException)" class="member-name-link">handleConstraintViolationException(ConstraintViolationException)</a> - Method in class io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/BeanValidationExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">BeanValidationExceptionsHandler</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/github/belgif/rest/problem/spring/ProblemResponseErrorHandler.html#handleError(org.springframework.http.client.ClientHttpResponse)" class="member-name-link">handleError(ClientHttpResponse)</a> - Method in class io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/ProblemResponseErrorHandler.html" title="class in io.github.belgif.rest.problem.spring">ProblemResponseErrorHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/github/belgif/rest/problem/spring/ProblemExceptionHandler.html#handleException(java.lang.Exception)" class="member-name-link">handleException(Exception)</a> - Method in class io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/ProblemExceptionHandler.html" title="class in io.github.belgif.rest.problem.spring">ProblemExceptionHandler</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/github/belgif/rest/problem/spring/RoutingExceptionsHandler.html#handleHttpMessageNotReadable(org.springframework.http.converter.HttpMessageNotReadableException)" class="member-name-link">handleHttpMessageNotReadable(HttpMessageNotReadableException)</a> - Method in class io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/RoutingExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">RoutingExceptionsHandler</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/github/belgif/rest/problem/spring/BeanValidationExceptionsHandler.html#handleMethodArgumentNotValidException(org.springframework.web.bind.MethodArgumentNotValidException)" class="member-name-link">handleMethodArgumentNotValidException(MethodArgumentNotValidException)</a> - Method in class io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/BeanValidationExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">BeanValidationExceptionsHandler</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/github/belgif/rest/problem/spring/BeanValidationExceptionsHandler.html#handleMethodArgumentTypeMismatchException(org.springframework.web.method.annotation.MethodArgumentTypeMismatchException)" class="member-name-link">handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException)</a> - Method in class io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/BeanValidationExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">BeanValidationExceptionsHandler</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/github/belgif/rest/problem/spring/RoutingExceptionsHandler.html#handleMissingRequestHeaderException(org.springframework.web.bind.MissingRequestHeaderException)" class="member-name-link">handleMissingRequestHeaderException(MissingRequestHeaderException)</a> - Method in class io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/RoutingExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">RoutingExceptionsHandler</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/github/belgif/rest/problem/spring/RoutingExceptionsHandler.html#handleMissingServletRequestParameterException(org.springframework.web.bind.MissingServletRequestParameterException)" class="member-name-link">handleMissingServletRequestParameterException(MissingServletRequestParameterException)</a> - Method in class io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/RoutingExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">RoutingExceptionsHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/github/belgif/rest/problem/spring/ProblemExceptionHandler.html#handleProblem(io.github.belgif.rest.problem.api.Problem)" class="member-name-link">handleProblem(Problem)</a> - Method in class io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/ProblemExceptionHandler.html" title="class in io.github.belgif.rest.problem.spring">ProblemExceptionHandler</a></dt>
 <dd>&nbsp;</dd>
@@ -1064,6 +1086,12 @@ loadScripts(document, 'script');</script>
 <dt><a href="io/github/belgif/rest/problem/api/RetryAfterServerProblem.html#%3Cinit%3E(java.net.URI,java.net.URI,java.lang.String,int)" class="member-name-link">RetryAfterServerProblem(URI, URI, String, int)</a> - Constructor for exception class io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/RetryAfterServerProblem.html" title="class in io.github.belgif.rest.problem.api">RetryAfterServerProblem</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/github/belgif/rest/problem/api/RetryAfterServerProblem.html#%3Cinit%3E(java.net.URI,java.net.URI,java.lang.String,int,java.lang.Throwable)" class="member-name-link">RetryAfterServerProblem(URI, URI, String, int, Throwable)</a> - Constructor for exception class io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/RetryAfterServerProblem.html" title="class in io.github.belgif.rest.problem.api">RetryAfterServerProblem</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/github/belgif/rest/problem/spring/RoutingExceptionsHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">RoutingExceptionsHandler</a> - Class in <a href="io/github/belgif/rest/problem/spring/package-summary.html">io.github.belgif.rest.problem.spring</a></dt>
+<dd>
+<div class="block">RestController exception handler for routing-related exceptions.</div>
+</dd>
+<dt><a href="io/github/belgif/rest/problem/spring/RoutingExceptionsHandler.html#%3Cinit%3E()" class="member-name-link">RoutingExceptionsHandler()</a> - Constructor for class io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/RoutingExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">RoutingExceptionsHandler</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:S">S</h2>
