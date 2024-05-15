@@ -19,7 +19,7 @@ import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
 @Testcontainers
-class RestProblemJakartaEeIT extends AbstractRestProblemIT {
+class RestProblemJakartaEeIT extends AbstractRestProblemEEIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestProblemJakartaEeIT.class);
 

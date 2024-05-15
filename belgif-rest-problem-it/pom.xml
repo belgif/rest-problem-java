@@ -35,7 +35,8 @@
   </build>
 
   <modules>
-    <module>belgif-rest-problem-spring-it</module>
+    <module>belgif-rest-problem-spring-boot-2-it</module>
+    <module>belgif-rest-problem-spring-boot-3-it</module>
     <module>belgif-rest-problem-java-ee-it</module>
     <module>belgif-rest-problem-jakarta-ee-it</module>
     <module>belgif-rest-problem-it-common</module>

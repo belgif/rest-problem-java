@@ -19,17 +19,12 @@
     <maven.compiler.release>8</maven.compiler.release>
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- Aligns with version used on JBoss EAP 7.4 -->
+    <version.jackson.minimal>2.12.7</version.jackson.minimal>
   </properties>
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <!-- Aligns with version used on JBoss EAP 7.4 -->
-        <version>2.12.7</version>
-        <scope>provided</scope>
-      </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter</artifactId>
@@ -51,7 +46,7 @@
       <dependency>
         <groupId>io.rest-assured</groupId>
         <artifactId>rest-assured</artifactId>
-        <version>4.5.1</version>
+        <version>5.4.0</version>
         <scope>test</scope>
       </dependency>
       <dependency>
