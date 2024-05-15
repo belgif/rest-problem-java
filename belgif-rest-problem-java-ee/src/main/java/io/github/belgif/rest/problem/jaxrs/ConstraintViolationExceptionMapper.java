@@ -1,6 +1,5 @@
 package io.github.belgif.rest.problem.jaxrs;
 
-import java.util.Comparator;
 import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolationException;
@@ -30,7 +29,7 @@ public class ConstraintViolationExceptionMapper implements ExceptionMapper<Const
             return ProblemMediaType.INSTANCE.toResponse(new BadRequestProblem(
                     exception.getConstraintViolations().stream()
                             .map(ConstraintViolationUtil::convertToInputValidationIssue)
-                            .sorted(Comparator.comparing(InputValidationIssue::getName))
+                            .sorted(InputValidationIssue.BY_NAME)
                             .collect(Collectors.toList())));
         } catch (RuntimeException e) {
             return DEFAULT_MAPPER.toResponse(e);
