@@ -183,6 +183,17 @@ abstract class AbstractJacksonSerializationTest {
         assertSerializationRoundtrip(problem);
     }
 
+    @Test
+    void issueWithStatusAndInstance() throws JsonProcessingException {
+        BadRequestProblem problem = new BadRequestProblem();
+        problem.setDetail("my detail message");
+        InputValidationIssue issue = new InputValidationIssue().detail("test");
+        issue.setAdditionalProperty("status", 400);
+        issue.setAdditionalProperty("instance", "instance");
+        problem.addIssue(issue);
+        assertSerializationRoundtrip(problem);
+    }
+
     void assertSerializationRoundtrip(Problem problem) throws JsonProcessingException {
         String json = mapper.writeValueAsString(problem);
         print(json);

@@ -30,6 +30,10 @@ The library consists of these modules:
 
 === Version 0.3
 
+*belgif-rest-problem:*
+
+* Removed deprecated "status" and "instance" properties from InputValidationIssue
+
 *belgif-rest-problem-spring:*
 
 * Added support for bean validation

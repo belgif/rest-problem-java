@@ -21,10 +21,17 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 /**
  * Maps to InputValidationIssue in belgif/problem/v1/problem-v1.yaml.
  *
+ * <p>
+ * Note that this model class intentionally does not include the "status" and "instance" properties.
+ * In problem-v1.yaml, InputValidationIssue technically inherits these properties from Problem,
+ * but they are not meant to be used for input validation issues. In the unlikely scenario where these properties
+ * would be needed, they can still be added/retrieved via the additionalProperties.
+ * </p>
+ *
  * @see InputValidationProblem
  */
 @JsonInclude(value = Include.NON_DEFAULT)
-@JsonPropertyOrder(value = { "type", "href", "title", "status", "detail", "instance", "in", "name", "value", "inputs" })
+@JsonPropertyOrder(value = { "type", "href", "title", "detail", "in", "name", "value", "inputs" })
 public class InputValidationIssue {
 
     public static final Comparator<InputValidationIssue> BY_NAME = Comparator.comparing(InputValidationIssue::getName);
@@ -35,9 +42,7 @@ public class InputValidationIssue {
     private URI type;
     private URI href;
     private String title;
-    private int status;
     private String detail;
-    private URI instance;
     private InEnum in;
     private String name;
     private Object value;
@@ -87,52 +92,12 @@ public class InputValidationIssue {
         this.title = title;
     }
 
-    /**
-     * @return the status
-     * @deprecated this status property is generally not intended to be used, it is only provided because
-     *             InputValidationIssue inherits from Problem in belgif-openapi-problem
-     */
-    @Deprecated
-    public int getStatus() {
-        return status;
-    }
-
-    /**
-     * @param status the status
-     * @deprecated this status property is generally not intended to be used, it is only provided because
-     *             InputValidationIssue inherits from Problem in belgif-openapi-problem
-     */
-    @Deprecated
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
     public String getDetail() {
         return detail;
     }
 
     public void setDetail(String detail) {
         this.detail = detail;
-    }
-
-    /**
-     * @return the instance
-     * @deprecated this instance property is generally not intended to be used, it is only provided because
-     *             InputValidationIssue inherits from Problem in belgif-openapi-problem
-     */
-    @Deprecated
-    public URI getInstance() {
-        return instance;
-    }
-
-    /**
-     * @param instance the instance
-     * @deprecated this instance property is generally not intended to be used, it is only provided because
-     *             InputValidationIssue inherits from Problem in belgif-openapi-problem
-     */
-    @Deprecated
-    public void setInstance(URI instance) {
-        this.instance = instance;
     }
 
     public InEnum getIn() {
@@ -319,16 +284,16 @@ public class InputValidationIssue {
             return false;
         }
         InputValidationIssue that = (InputValidationIssue) o;
-        return status == that.status && Objects.equals(type, that.type) && Objects.equals(href, that.href)
+        return Objects.equals(type, that.type) && Objects.equals(href, that.href)
                 && Objects.equals(title, that.title) && Objects.equals(detail, that.detail)
-                && Objects.equals(instance, that.instance) && in == that.in && Objects.equals(name, that.name)
-                && Objects.equals(value, that.value) && Objects.equals(inputs, that.inputs)
+                && in == that.in && Objects.equals(name, that.name) && Objects.equals(value, that.value)
+                && Objects.equals(inputs, that.inputs)
                 && Objects.equals(additionalProperties, that.additionalProperties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, href, title, status, detail, instance, in, name, value, inputs, additionalProperties);
+        return Objects.hash(type, href, title, detail, in, name, value, inputs, additionalProperties);
     }
 
     @Override
