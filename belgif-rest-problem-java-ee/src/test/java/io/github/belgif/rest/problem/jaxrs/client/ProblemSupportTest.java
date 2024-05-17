@@ -23,7 +23,7 @@ import io.github.belgif.rest.problem.jaxrs.client.ProblemSupport.ProxyInvocation
 class ProblemSupportTest {
 
     interface Service {
-        void test();
+        String test();
     }
 
     @Test
@@ -49,6 +49,28 @@ class ProblemSupportTest {
     }
 
     @Test
+    void normalResponseFromJaxRsClient() {
+        Client client = mock(Client.class);
+        Client result = ProblemSupport.enable(client);
+        assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
+        assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
+
+        WebTarget target = mock(WebTarget.class);
+        when(client.target("https://www.belgif.be")).thenReturn(target);
+
+        Invocation.Builder builder = mock(Invocation.Builder.class);
+        when(target.request()).thenReturn(builder);
+
+        Invocation invocation = mock(Invocation.class);
+        when(builder.buildGet()).thenReturn(invocation);
+
+        Response response = Response.ok().build();
+        when(invocation.invoke()).thenReturn(response);
+
+        assertThat(result.target("https://www.belgif.be").request().buildGet().invoke()).isEqualTo(response);
+    }
+
+    @Test
     void unwrapProblemWrapperInAsyncJaxRsClient() throws Exception {
         Client client = mock(Client.class);
         Client result = ProblemSupport.enable(client);
@@ -71,6 +93,31 @@ class ProblemSupportTest {
 
         assertThatExceptionOfType(BadRequestProblem.class)
                 .isThrownBy(() -> result.target("https://www.belgif.be").request().async().get().get());
+    }
+
+    @Test
+    void normalResponseFromAsyncJaxRsClient() throws Exception {
+        Client client = mock(Client.class);
+        Client result = ProblemSupport.enable(client);
+        assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
+        assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
+
+        WebTarget target = mock(WebTarget.class);
+        when(client.target("https://www.belgif.be")).thenReturn(target);
+
+        Invocation.Builder builder = mock(Invocation.Builder.class);
+        when(target.request()).thenReturn(builder);
+
+        AsyncInvoker asyncInvoker = mock(AsyncInvoker.class);
+        when(builder.async()).thenReturn(asyncInvoker);
+
+        Future<Response> future = mock(Future.class);
+        when(asyncInvoker.get()).thenReturn(future);
+
+        Response response = Response.ok().build();
+        when(future.get()).thenReturn(response);
+
+        assertThat(result.target("https://www.belgif.be").request().async().get().get()).isEqualTo(response);
     }
 
     @Test
@@ -115,7 +162,7 @@ class ProblemSupportTest {
 
         when(builder.get()).thenThrow(new RuntimeException("other"));
 
-        assertThatExceptionOfType(RuntimeException.class)
+        assertThatRuntimeException()
                 .isThrownBy(() -> result.target("https://www.belgif.be").request().get())
                 .withMessage("other");
     }
@@ -129,7 +176,7 @@ class ProblemSupportTest {
 
         when(client.target("https://www.belgif.be")).thenThrow(new RuntimeException("oops"));
 
-        assertThatExceptionOfType(RuntimeException.class)
+        assertThatRuntimeException()
                 .isThrownBy(() -> result.target("https://www.belgif.be"))
                 .withMessage("oops");
     }
@@ -147,6 +194,18 @@ class ProblemSupportTest {
     }
 
     @Test
+    void normalResponseFromProxyClient() {
+        Service service = mock(Service.class);
+        Service result = ProblemSupport.enable(service);
+        assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
+        assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ProxyInvocationHandler.class);
+
+        when(service.test()).thenReturn("OK");
+
+        assertThat(result.test()).isEqualTo("OK");
+    }
+
+    @Test
     void otherExceptionInProxyClient() {
         Service service = mock(Service.class);
         Service result = ProblemSupport.enable(service);
@@ -155,7 +214,7 @@ class ProblemSupportTest {
 
         doThrow(new RuntimeException("other")).when(service).test();
 
-        assertThatExceptionOfType(RuntimeException.class).isThrownBy(result::test).withMessage("other");
+        assertThatRuntimeException().isThrownBy(result::test).withMessage("other");
     }
 
 }
