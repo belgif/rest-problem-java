@@ -32,9 +32,9 @@ For a build of the main branch, this also publishes the latest documentation to 
 ## Releasing
 
 > [!WARNING]
-> Be sure to pull the latest version of the master branch first!
+> Be sure to pull the latest version of the main branch first!
 
-To release, simply create a tag:
+To release, simply create a tag on the main branch:
 
 ```
 git tag -a v1.0.0 -m "release v1.0.0"
