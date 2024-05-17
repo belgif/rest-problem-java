@@ -31,6 +31,9 @@ For a build of the main branch, this also publishes the latest documentation to 
 
 ## Releasing
 
+> [!WARNING]
+> Be sure to pull the latest version of the master branch first!
+
 To release, simply create a tag:
 
 ```
