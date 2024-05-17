@@ -71,25 +71,11 @@ class InputValidationIssueTest {
     }
 
     @Test
-    void status() {
-        InputValidationIssue issue = new InputValidationIssue();
-        issue.setStatus(499);
-        assertThat(issue.getStatus()).isEqualTo(499);
-    }
-
-    @Test
     void detail() {
         InputValidationIssue issue = new InputValidationIssue();
         issue.setDetail("Detail");
         assertThat(issue.getDetail()).isEqualTo("Detail");
         assertThat(new InputValidationIssue().detail("Detail").getDetail()).isEqualTo("Detail");
-    }
-
-    @Test
-    void instance() {
-        InputValidationIssue issue = new InputValidationIssue();
-        issue.setInstance(URI.create("instance"));
-        assertThat(issue.getInstance()).hasToString("instance");
     }
 
     @Test
