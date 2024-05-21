@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * RestTemplateCustumizer that registers the {@link ProblemResponseErrorHandler}.
+ * RestTemplateCustomizer that registers the {@link ProblemResponseErrorHandler}.
  *
  * @see ProblemResponseErrorHandler
  */
