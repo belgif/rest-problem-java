@@ -1,8 +1,7 @@
 package io.github.belgif.rest.problem;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,10 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public interface ControllerInterface {
 
-    @GetMapping("/constraintViolationPath/{id}")
-    ResponseEntity<String> constraintViolationPath(@Valid @PathVariable("id") @Min(3) @Max(10) int id);
+    @GetMapping("/beanValidation/pathParameter/inherited/{param}")
+    ResponseEntity<String> beanValidationPathParameterInherited(
+            @PathVariable("param") @Positive @NotNull Integer param);
 
-    @GetMapping("/overriddenPath/{id}")
-    ResponseEntity<String> overriddenPath(@Valid @PathVariable("id") @Min(3) @Max(10) int id);
+    @GetMapping("/beanValidation/pathParameter/overridden/{param}")
+    ResponseEntity<String> beanValidationPathParameterOverridden(
+            @PathVariable("param") @Positive @NotNull Integer param);
 
 }

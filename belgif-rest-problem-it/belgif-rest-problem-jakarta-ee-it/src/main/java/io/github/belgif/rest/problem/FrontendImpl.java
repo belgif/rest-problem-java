@@ -5,6 +5,11 @@ import java.util.concurrent.ExecutionException;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
 
@@ -15,8 +20,12 @@ import com.acme.custom.CustomProblem;
 
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.jaxrs.client.ProblemSupport;
+import io.github.belgif.rest.problem.model.ChildModel;
+import io.github.belgif.rest.problem.model.Model;
+import io.github.belgif.rest.problem.model.NestedModel;
 
 @RequestScoped
+@Path("/frontend")
 public class FrontendImpl implements Frontend {
 
     private static final URI BASE_URI =
@@ -147,8 +156,46 @@ public class FrontendImpl implements Frontend {
     }
 
     @Override
-    public Response beanValidation(String required, Integer positive) {
-        return Response.ok().build();
+    public Response beanValidationQueryParameter(Integer param, String other) {
+        return Response.ok("param: " + param + ", other: " + other).build();
+    }
+
+    @Override
+    public Response beanValidationHeaderParameter(Integer param) {
+        return Response.ok("param: " + param).build();
+    }
+
+    @GET
+    @Path("/beanValidation/pathParameter/class/{param}")
+    public Response beanValidationPathParameter(@PathParam("param") @NotNull @Positive Integer param) {
+        return Response.ok("param: " + param).build();
+    }
+
+    @Override
+    public Response beanValidationPathParameterInherited(Integer param) {
+        return Response.ok("param: " + param).build();
+    }
+
+    @Override
+    @GET
+    @Path("/beanValidation/pathParameter/overridden")
+    public Response beanValidationPathParameterOverridden(@QueryParam("param") @NotNull @Positive Integer param) {
+        return Response.ok("param: " + param).build();
+    }
+
+    @Override
+    public Response beanValidationBody(Model body) {
+        return Response.ok("body: " + body).build();
+    }
+
+    @Override
+    public Response beanValidationBodyNested(NestedModel body) {
+        return Response.ok("body: " + body).build();
+    }
+
+    @Override
+    public Response beanValidationBodyInheritance(ChildModel body) {
+        return Response.ok("body: " + body).build();
     }
 
 }

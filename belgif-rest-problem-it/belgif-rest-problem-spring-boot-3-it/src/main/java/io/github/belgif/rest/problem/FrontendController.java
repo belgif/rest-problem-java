@@ -3,31 +3,23 @@ package io.github.belgif.rest.problem;
 import java.net.URI;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.acme.custom.CustomProblem;
 
 import io.github.belgif.rest.problem.api.Problem;
-import io.github.belgif.rest.problem.model.ChildRequestBody;
-import io.github.belgif.rest.problem.model.NestedRequestBody;
-import io.github.belgif.rest.problem.model.ParentRequestBody;
+import io.github.belgif.rest.problem.model.ChildModel;
+import io.github.belgif.rest.problem.model.Model;
+import io.github.belgif.rest.problem.model.NestedModel;
 
 @RestController
 @RequestMapping("/frontend")
@@ -136,52 +128,54 @@ public class FrontendController implements ControllerInterface {
         }
     }
 
-    @GetMapping("/beanValidation")
-    public ResponseEntity<String> beanValidation(@Valid @RequestParam("positive") @Min(0) int positive,
-            @Valid @RequestParam("required") @NotBlank String required) {
-        return ResponseEntity.ok("Positive: " + positive + "\nRequired: " + required);
+    @GetMapping("/beanValidation/queryParameter")
+    public ResponseEntity<String> beanValidationQueryParameter(
+            @RequestParam("param") @Positive @NotNull Integer param,
+            @RequestParam("other") @Size(max = 5) String other) {
+        return ResponseEntity.ok("param: " + param + ", other: " + other);
+    }
+
+    @GetMapping("/beanValidation/headerParameter")
+    public ResponseEntity<String> beanValidationHeaderParameter(
+            @RequestHeader("param") @Positive @NotNull Integer param) {
+        return ResponseEntity.ok("param: " + param);
+    }
+
+    @GetMapping("/beanValidation/pathParameter/class/{param}")
+    public ResponseEntity<String> beanValidationPathParameter(
+            @PathVariable("param") @Positive @NotNull Integer param) {
+        return ResponseEntity.ok("param: " + param);
     }
 
     @Override
-    public ResponseEntity<String> constraintViolationPath(int id) {
-        return ResponseEntity.ok("" + id);
-    }
-
-    @GetMapping("/constraintViolationQuery")
-    public ResponseEntity<String> constraintViolationQuery(@Valid @RequestParam("id") @Min(3) @Max(10) int id) {
-        return ResponseEntity.ok("" + id);
-    }
-
-    @GetMapping("/constraintViolationHeader")
-    public ResponseEntity<String>
-            constraintViolationHeader(@Valid @RequestHeader("id") @Min(3) @Max(10) int id,
-                    @Valid @RequestHeader("required") @NotBlank String required) {
-        return ResponseEntity.ok("" + id);
-    }
-
-    @PostMapping("/methodArgumentNotValid")
-    public ResponseEntity<String> methodArgumentNotValidBody(@Valid @RequestBody ParentRequestBody body) {
-        return ResponseEntity.ok("Email: " + body.getEmail());
-    }
-
-    @PostMapping("/nestedQueryParams")
-    public ResponseEntity<String> methodArgumentNotValidBodyNoAnnotation(@Valid ParentRequestBody nestedQueryParams) {
-        return ResponseEntity.ok("Email: " + nestedQueryParams.getEmail());
-    }
-
-    @PostMapping("/superClassValidation")
-    public ResponseEntity<String> superClassValidation(@Valid @RequestBody ChildRequestBody body) {
-        return ResponseEntity.ok("Email: " + body.getEmail());
-    }
-
-    @PostMapping("/nestedValidation")
-    public ResponseEntity<String> nestedValidation(@Valid @RequestBody NestedRequestBody body) {
-        return ResponseEntity.ok("Email: " + body.getMyRequestBody().getEmail());
+    public ResponseEntity<String> beanValidationPathParameterInherited(Integer param) {
+        return ResponseEntity.ok("param: " + param);
     }
 
     @Override
-    @GetMapping("/overriddenPath")
-    public ResponseEntity<String> overriddenPath(@RequestParam int id) {
-        return null;
+    @GetMapping("/beanValidation/pathParameter/overridden")
+    public ResponseEntity<String> beanValidationPathParameterOverridden(@RequestParam Integer param) {
+        return ResponseEntity.ok("param: " + param);
     }
+
+    @PostMapping("/beanValidation/body")
+    public ResponseEntity<String> beanValidationBody(@Valid @RequestBody Model body) {
+        return ResponseEntity.ok("body: " + body);
+    }
+
+    @PostMapping("/beanValidation/body/nested")
+    public ResponseEntity<String> beanValidationBodyNested(@Valid @RequestBody NestedModel body) {
+        return ResponseEntity.ok("body: " + body);
+    }
+
+    @PostMapping("/beanValidation/body/inheritance")
+    public ResponseEntity<String> beanValidationBodyInheritance(@Valid @RequestBody ChildModel body) {
+        return ResponseEntity.ok("body: " + body);
+    }
+
+    @PostMapping("/beanValidation/queryParameter/nested")
+    public ResponseEntity<String> beanValidationQueryParameterNested(@Valid Model param) {
+        return ResponseEntity.ok("param: " + param);
+    }
+
 }
