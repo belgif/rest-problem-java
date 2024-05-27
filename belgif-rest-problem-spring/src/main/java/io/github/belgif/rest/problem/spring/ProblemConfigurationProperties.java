@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Lists all supported application.properties configurations for the rest-problem-spring library.
+ * Lists all supported application.properties configurations for the belgif-rest-problem-spring library.
  */
 @ConfigurationProperties(prefix = "io.github.belgif.rest.problem")
 public class ProblemConfigurationProperties {

@@ -116,6 +116,36 @@ abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
+    void badRequestProblemWithInputsArrayAndInNameValue() throws JsonProcessingException {
+        String json = "{\n"
+                + "  \"type\": \"urn:problem-type:belgif:badRequest\",\n"
+                + "  \"href\": \"https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html\",\n"
+                + "  \"title\": \"Bad Request\",\n"
+                + "  \"status\": 400,\n"
+                + "  \"detail\": \"my detail message\",\n"
+                + "  \"issues\": [\n"
+                + "    {\n"
+                + "      \"inputs\": [\n"
+                + "        {\n"
+                + "          \"in\": \"query\",\n"
+                + "          \"name\": \"test\",\n"
+                + "          \"value\": \"test\"\n"
+                + "        }\n"
+                + "      ],\n"
+                + "      \"in\": \"query\",\n"
+                + "      \"name\": \"test\",\n"
+                + "      \"value\": \"test\"\n"
+                + "    }\n"
+                + "  ]\n"
+                + "}";
+        Problem result = mapper.readValue(json, Problem.class);
+        assertThat(result).isInstanceOf(BadRequestProblem.class);
+        InputValidationIssue issue = ((BadRequestProblem) result).getIssues().get(0);
+        assertThat(issue.getName()).isEqualTo("test");
+        assertThat(issue.getInputs().get(0).getName()).isEqualTo("test");
+    }
+
+    @Test
     void unmappedProblem() throws JsonProcessingException {
         mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);

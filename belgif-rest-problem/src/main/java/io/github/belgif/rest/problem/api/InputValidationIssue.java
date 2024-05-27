@@ -132,18 +132,6 @@ public class InputValidationIssue {
         return Collections.unmodifiableList(inputs);
     }
 
-    /**
-     * Don't fail on combined use of inputs[] and in/name/value when unmarshalling JSON.
-     *
-     * @param inputs the inputs[]
-     */
-    @JsonSetter("inputs")
-    @SuppressWarnings("unused")
-    private void setInputsFromJson(List<Input<?>> inputs) {
-        this.inputs.clear();
-        this.inputs.addAll(inputs);
-    }
-
     public void setInputs(List<Input<?>> inputs) {
         verifyNoInNameValue();
         this.inputs.clear();
@@ -181,6 +169,51 @@ public class InputValidationIssue {
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         additionalProperties.put(name, value);
+    }
+
+    /**
+     * Don't fail on combined use of inputs[] and in/name/value when unmarshalling JSON.
+     *
+     * @param inputs the inputs[]
+     */
+    @JsonSetter("inputs")
+    @SuppressWarnings("unused")
+    private void setInputsFromJson(List<Input<?>> inputs) {
+        this.inputs.clear();
+        this.inputs.addAll(inputs);
+    }
+
+    /**
+     * Don't fail on combined use of inputs[] and in/name/value when unmarshalling JSON.
+     *
+     * @param in the InEnum
+     */
+    @JsonSetter("in")
+    @SuppressWarnings("unused")
+    private void setInFromJson(InEnum in) {
+        this.in = in;
+    }
+
+    /**
+     * Don't fail on combined use of inputs[] and in/name/value when unmarshalling JSON.
+     *
+     * @param name the name
+     */
+    @JsonSetter("name")
+    @SuppressWarnings("unused")
+    private void setNameFromJson(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Don't fail on combined use of inputs[] and in/name/value when unmarshalling JSON.
+     *
+     * @param value the value
+     */
+    @JsonSetter("value")
+    @SuppressWarnings("unused")
+    private void setValueFromJson(Object value) {
+        this.value = value;
     }
 
     // builder methods
