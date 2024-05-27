@@ -19,6 +19,10 @@ updates:
       - dependency-name: "org.jboss.weld:weld-junit5"
       - dependency-name: "org.hibernate.validator:hibernate-validator"
       - dependency-name: "com.fasterxml.jackson.core:jackson-databind"
+    groups:
+      maven:
+        patterns:
+          - "*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
