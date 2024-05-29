@@ -62,11 +62,7 @@ public class ResourceNotFoundProblem extends InputValidationProblem {
     }
 
     /**
-     * Deprecated ResourceNotFoundProblem constructor with InvalidParam.
-     *
-     * @param resource the resource name
-     * @param param the resource key
-     * @deprecated replaced by {@link #ResourceNotFoundProblem(String, InEnum, String, Object)}
+     * @deprecated use {@link #ResourceNotFoundProblem(String, InEnum, String, Object)}
      */
     @Deprecated
     public ResourceNotFoundProblem(String resource, InvalidParam param) {

@@ -68,10 +68,7 @@ public class BadRequestProblem extends InputValidationProblem {
     }
 
     /**
-     * Deprecated ResourceNotFoundProblem constructor with InvalidParam.
-     *
-     * @param invalidParam the invalid param
-     * @deprecated replaced by {@link #BadRequestProblem(InputValidationIssue)}
+     * @deprecated use {@link #BadRequestProblem(InputValidationIssue)}
      */
     @Deprecated
     public BadRequestProblem(InvalidParam invalidParam) {
@@ -85,11 +82,7 @@ public class BadRequestProblem extends InputValidationProblem {
     }
 
     /**
-     * Deprecated ResourceNotFoundProblem constructor with InvalidParam.
-     *
-     * @param detail the detail message
-     * @param invalidParam the invalid param
-     * @deprecated replaced by {@link #BadRequestProblem(InputValidationIssue)}
+     * @deprecated use {@link #BadRequestProblem(InputValidationIssue)}
      */
     @Deprecated
     public BadRequestProblem(String detail, InvalidParam invalidParam) {

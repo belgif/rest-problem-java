@@ -24,6 +24,8 @@ public abstract class InputValidationProblem extends ClientProblem {
 
     /**
      * Deprecated invalid params, for backwards compatibility with supplier services using legacy problem type.
+     *
+     * @deprecated use {@link #issues}
      */
     @Deprecated
     private final List<InvalidParam> invalidParams = new ArrayList<>();
@@ -63,11 +65,17 @@ public abstract class InputValidationProblem extends ClientProblem {
         issues.add(issue);
     }
 
+    /**
+     * @deprecated use {@link #getIssues()}
+     */
     @Deprecated
     public List<InvalidParam> getInvalidParams() {
         return Collections.unmodifiableList(invalidParams);
     }
 
+    /**
+     * @deprecated use {@link #setIssues(List)}
+     */
     @JsonSetter
     @Deprecated
     public void setInvalidParams(List<InvalidParam> invalidParams) {
@@ -75,12 +83,18 @@ public abstract class InputValidationProblem extends ClientProblem {
         this.invalidParams.addAll(invalidParams);
     }
 
+    /**
+     * @deprecated use {@link #setIssues(InputValidationIssue...)}
+     */
     @Deprecated
     public void setInvalidParams(InvalidParam... invalidParams) {
         this.invalidParams.clear();
         this.invalidParams.addAll(Arrays.asList(invalidParams));
     }
 
+    /**
+     * @deprecated use {@link #addIssue(InputValidationIssue)}
+     */
     @Deprecated
     public void addInvalidParam(InvalidParam invalidParam) {
         invalidParams.add(invalidParam);
