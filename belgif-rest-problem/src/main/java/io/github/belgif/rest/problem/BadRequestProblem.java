@@ -1,10 +1,7 @@
 package io.github.belgif.rest.problem;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationProblem;
@@ -54,12 +51,6 @@ public class BadRequestProblem extends InputValidationProblem {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Deprecated invalid params, for backwards compatibility with supplier services using legacy problem type.
-     */
-    @Deprecated
-    private final List<InvalidParam> invalidParams = new ArrayList<>();
-
     public BadRequestProblem() {
         super(TYPE_URI, HREF, TITLE, STATUS);
     }
@@ -76,6 +67,12 @@ public class BadRequestProblem extends InputValidationProblem {
         issues.forEach(this::addIssue);
     }
 
+    /**
+     * Deprecated ResourceNotFoundProblem constructor with InvalidParam.
+     *
+     * @param invalidParam the invalid param
+     * @deprecated replaced by {@link #BadRequestProblem(InputValidationIssue)}
+     */
     @Deprecated
     public BadRequestProblem(InvalidParam invalidParam) {
         this();
@@ -87,42 +84,18 @@ public class BadRequestProblem extends InputValidationProblem {
         addIssue(new InputValidationIssue(invalidParam.getIn(), invalidParam.getName(), invalidParam.getValue()));
     }
 
+    /**
+     * Deprecated ResourceNotFoundProblem constructor with InvalidParam.
+     *
+     * @param detail the detail message
+     * @param invalidParam the invalid param
+     * @deprecated replaced by {@link #BadRequestProblem(InputValidationIssue)}
+     */
     @Deprecated
     public BadRequestProblem(String detail, InvalidParam invalidParam) {
         this();
         setDetail(detail);
         addIssue(new InputValidationIssue(invalidParam.getIn(), invalidParam.getName(), invalidParam.getValue()));
-    }
-
-    @Deprecated
-    public List<InvalidParam> getInvalidParams() {
-        return Collections.unmodifiableList(invalidParams);
-    }
-
-    @Deprecated
-    public void setInvalidParams(List<InvalidParam> invalidParams) {
-        this.invalidParams.clear();
-        this.invalidParams.addAll(invalidParams);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        BadRequestProblem that = (BadRequestProblem) o;
-        return Objects.equals(invalidParams, that.invalidParams);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), invalidParams);
     }
 
 }

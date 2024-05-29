@@ -1,10 +1,6 @@
 package io.github.belgif.rest.problem;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
@@ -50,26 +46,8 @@ public class ResourceNotFoundProblem extends InputValidationProblem {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Deprecated invalid params, for backwards compatibility with supplier services using legacy problem type.
-     */
-    @Deprecated
-    private final List<InvalidParam> invalidParams = new ArrayList<>();
-
     public ResourceNotFoundProblem() {
         super(TYPE_URI, HREF, TITLE, STATUS);
-    }
-
-    /**
-     * Deprecated ResourceNotFoundProblem constructor with InvalidParam.
-     *
-     * @param resource the resource name
-     * @param param the resource key
-     * @deprecated replaced by {@link #ResourceNotFoundProblem(String, InEnum, String, Object)}
-     */
-    @Deprecated
-    public ResourceNotFoundProblem(String resource, InvalidParam param) {
-        this(resource, param.getIn(), param.getName(), param.getValue());
     }
 
     public ResourceNotFoundProblem(String resource, InEnum in, String name, Object value) {
@@ -83,35 +61,16 @@ public class ResourceNotFoundProblem extends InputValidationProblem {
         addIssue(issue);
     }
 
+    /**
+     * Deprecated ResourceNotFoundProblem constructor with InvalidParam.
+     *
+     * @param resource the resource name
+     * @param param the resource key
+     * @deprecated replaced by {@link #ResourceNotFoundProblem(String, InEnum, String, Object)}
+     */
     @Deprecated
-    public List<InvalidParam> getInvalidParams() {
-        return Collections.unmodifiableList(invalidParams);
-    }
-
-    @Deprecated
-    public void setInvalidParams(List<InvalidParam> invalidParams) {
-        this.invalidParams.clear();
-        this.invalidParams.addAll(invalidParams);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        ResourceNotFoundProblem that = (ResourceNotFoundProblem) o;
-        return Objects.equals(invalidParams, that.invalidParams);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), invalidParams);
+    public ResourceNotFoundProblem(String resource, InvalidParam param) {
+        this(resource, param.getIn(), param.getName(), param.getValue());
     }
 
 }

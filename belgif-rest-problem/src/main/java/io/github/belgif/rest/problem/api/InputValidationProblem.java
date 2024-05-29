@@ -22,6 +22,12 @@ public abstract class InputValidationProblem extends ClientProblem {
 
     private final List<InputValidationIssue> issues = new ArrayList<>();
 
+    /**
+     * Deprecated invalid params, for backwards compatibility with supplier services using legacy problem type.
+     */
+    @Deprecated
+    private final List<InvalidParam> invalidParams = new ArrayList<>();
+
     protected InputValidationProblem(URI type, URI href, String title, int status) {
         super(type, href, title, status);
     }
@@ -57,6 +63,29 @@ public abstract class InputValidationProblem extends ClientProblem {
         issues.add(issue);
     }
 
+    @Deprecated
+    public List<InvalidParam> getInvalidParams() {
+        return Collections.unmodifiableList(invalidParams);
+    }
+
+    @JsonSetter
+    @Deprecated
+    public void setInvalidParams(List<InvalidParam> invalidParams) {
+        this.invalidParams.clear();
+        this.invalidParams.addAll(invalidParams);
+    }
+
+    @Deprecated
+    public void setInvalidParams(InvalidParam... invalidParams) {
+        this.invalidParams.clear();
+        this.invalidParams.addAll(Arrays.asList(invalidParams));
+    }
+
+    @Deprecated
+    public void addInvalidParam(InvalidParam invalidParam) {
+        invalidParams.add(invalidParam);
+    }
+
     @Override
     public String getMessage() {
         StringBuilder message = new StringBuilder(super.getMessage());
@@ -88,12 +117,12 @@ public abstract class InputValidationProblem extends ClientProblem {
             return false;
         }
         InputValidationProblem that = (InputValidationProblem) o;
-        return Objects.equals(issues, that.issues);
+        return Objects.equals(issues, that.issues) && Objects.equals(invalidParams, that.invalidParams);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), issues);
+        return Objects.hash(super.hashCode(), issues, invalidParams);
     }
 
 }
