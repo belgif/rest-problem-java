@@ -5,8 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -60,8 +60,9 @@ public class ProblemSupport {
      */
     static final class ClientInvocationHandler implements InvocationHandler {
 
-        private static final Set<Class<?>> PROXIED_RETURN_TYPES = new HashSet<>(Arrays.asList(
-                WebTarget.class, Invocation.Builder.class, Invocation.class, AsyncInvoker.class, Future.class));
+        private static final List<Class<?>> PROXIED_RETURN_TYPES = Arrays.asList(
+                Client.class, WebTarget.class, Invocation.Builder.class, Invocation.class,
+                AsyncInvoker.class, Future.class);
 
         private final Object target;
 
@@ -71,30 +72,35 @@ public class ProblemSupport {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            if (PROXIED_RETURN_TYPES.contains(method.getReturnType())) {
-                try {
-                    return createProxy(method.getReturnType(),
-                            new ClientInvocationHandler(method.invoke(target, args)));
-                } catch (InvocationTargetException e) {
-                    throw e.getTargetException();
-                }
-            } else {
-                try {
-                    return method.invoke(target, args);
-                } catch (InvocationTargetException e) {
-                    if (e.getTargetException() instanceof ProblemWrapper) {
-                        throw ((ProblemWrapper) e.getTargetException()).getProblem();
-                    } else if (e.getTargetException() instanceof ExecutionException) {
-                        ExecutionException executionException = (ExecutionException) e.getTargetException();
-                        if (executionException.getCause() instanceof ProblemWrapper) {
-                            throw ((ProblemWrapper) executionException.getCause()).getProblem();
-                        }
+            Object result;
+            try {
+                result = method.invoke(target, args);
+            } catch (InvocationTargetException e) {
+                if (e.getTargetException() instanceof ProblemWrapper) {
+                    throw ((ProblemWrapper) e.getTargetException()).getProblem();
+                } else if (e.getTargetException() instanceof ExecutionException) {
+                    ExecutionException executionException = (ExecutionException) e.getTargetException();
+                    if (executionException.getCause() instanceof ProblemWrapper) {
+                        throw ((ProblemWrapper) executionException.getCause()).getProblem();
                     }
-                    throw e.getTargetException();
+                }
+                throw e.getTargetException();
+            }
+            if (result != null) {
+                Optional<Class<?>> returnTypeToProxy = PROXIED_RETURN_TYPES.stream()
+                        .filter(t -> t.isAssignableFrom(result.getClass()))
+                        .findFirst();
+                if (returnTypeToProxy.isPresent()) {
+                    try {
+                        return createProxy(returnTypeToProxy.get(),
+                                new ClientInvocationHandler(method.invoke(target, args)));
+                    } catch (InvocationTargetException e) {
+                        throw e.getTargetException();
+                    }
                 }
             }
+            return result;
         }
-
     }
 
     /**
