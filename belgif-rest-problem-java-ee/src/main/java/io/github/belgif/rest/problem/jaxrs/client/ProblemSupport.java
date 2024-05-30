@@ -86,6 +86,9 @@ public class ProblemSupport {
                 }
                 throw e.getTargetException();
             }
+            if (result == target) {
+                return proxy;
+            }
             if (result != null) {
                 Optional<Class<?>> returnTypeToProxy = PROXIED_RETURN_TYPES.stream()
                         .filter(t -> t.isAssignableFrom(result.getClass()))
