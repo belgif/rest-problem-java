@@ -358,6 +358,18 @@ public class RequestValidator {
     }
 
     /**
+     * Validate that all the given inputs are present when the given target input is present.
+     *
+     * @param target the target input
+     * @param inputs the inputs that are required when the target input is present
+     * @return this RequestValidator
+     */
+    public RequestValidator requireIfPresent(Input<?> target, Input<?>... inputs) {
+        validators.add(new RequiredIfPresentValidator(target, Arrays.asList(inputs)));
+        return this;
+    }
+
+    /**
      * Conditionally register input validators.
      *
      * @param condition the condition

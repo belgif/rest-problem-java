@@ -142,6 +142,19 @@ class InputValidationIssuesTest {
     }
 
     @Test
+    void requiredInputsIfPresent() {
+        Input<?> target = Input.query("x", "value");
+        List<Input<?>> inputs = Arrays.asList(Input.query("a", null), Input.query("b", "value"));
+        InputValidationIssue issue = InputValidationIssues.requiredInputsIfPresent(target, inputs);
+        assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:requiredInput");
+        assertThat(issue.getTitle()).isEqualTo("Input is required in this context");
+        assertThat(issue.getDetail()).isEqualTo("All of these inputs must be present if x is present: a, b");
+        assertThat(issue.getInputs()).contains(target).containsAll(inputs);
+        assertThat(issue).extracting("href", "in", "name", "value", "additionalProperties")
+                .allMatch(this::isEmpty);
+    }
+
+    @Test
     void replacedSsin() {
         InputValidationIssue issue =
                 InputValidationIssues.replacedSsin(InEnum.BODY, "ssin", "00000000196", "00000000295");

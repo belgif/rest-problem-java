@@ -381,6 +381,24 @@ class RequestValidatorTest {
     }
 
     @Test
+    void requireIfPresentValid() {
+        assertValid(new RequestValidator().requireIfPresent(Input.query("target", "ok"),
+                Input.query("a", "ok"), Input.query("b", "ok")));
+        assertValid(new RequestValidator().requireIfPresent(Input.query("target", null),
+                Input.query("a", "ok"), Input.query("b", "ok")));
+        assertValid(new RequestValidator().requireIfPresent(Input.query("target", null),
+                Input.query("a", null), Input.query("b", "ok")));
+    }
+
+    @Test
+    void requireIfPresentInvalid() {
+        assertInvalid(new RequestValidator().requireIfPresent(Input.query("target", "ok"),
+                Input.query("a", null), Input.query("b", "ok")),
+                InputValidationIssues.requiredInputsIfPresent(Input.query("target", "ok"),
+                        Arrays.asList(Input.query("a", null), Input.query("b", "ok"))));
+    }
+
+    @Test
     void whenValid() {
         assertValid(new RequestValidator().when(false, validator -> validator.reject(Input.query("reject", "nok"))));
     }
