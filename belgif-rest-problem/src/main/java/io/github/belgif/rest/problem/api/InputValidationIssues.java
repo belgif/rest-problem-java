@@ -120,6 +120,18 @@ public class InputValidationIssues {
                 .in(in, name, null);
     }
 
+    public static InputValidationIssue requiredInputsIfPresent(Input<?> target, List<Input<?>> inputs) {
+        InputValidationIssue issue =
+                new InputValidationIssue(ISSUE_TYPE_REQUIRED_INPUT, "Input is required in this context")
+                        .detail(String.format("All of these inputs must be present if %s is present: %s",
+                                target.getName(), getJoinedNames(inputs)));
+        issue.addInput(target);
+        for (Input<?> input : inputs) {
+            issue.addInput(input);
+        }
+        return issue;
+    }
+
     public static InputValidationIssue replacedSsin(InEnum in, String name, String ssin, String newSsin) {
         return new InputValidationIssue(ISSUE_TYPE_REPLACED_SSIN, "SSIN has been replaced, use new SSIN")
                 .detail(String.format("SSIN %s has been replaced by %s", ssin, newSsin))

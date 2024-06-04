@@ -34,6 +34,10 @@ The library consists of these modules:
 
 * Removed deprecated InvalidParamProblem: use InputValidationProblem, which supports both the legacy invalidParams[] and the new issues[] structure
 
+*belgif-rest-problem-validator:*
+
+* Added requireIfPresent check for validating input(s) that must be present when a given target input is present
+
 === Version 0.3
 
 *belgif-rest-problem:*
