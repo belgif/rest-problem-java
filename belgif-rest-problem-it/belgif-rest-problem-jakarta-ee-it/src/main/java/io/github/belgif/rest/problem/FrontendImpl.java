@@ -90,7 +90,10 @@ public class FrontendImpl implements Frontend {
             } else if (client == Client.JAXRS_ASYNC) {
                 try {
                     jaxRsClient.target(BASE_URI).path("backend/badRequest").request().async().get().get();
-                } catch (InterruptedException | ExecutionException e) {
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                } catch (ExecutionException e) {
                     throw new RuntimeException(e);
                 }
             } else if (client == Client.RESTEASY) {
@@ -115,7 +118,10 @@ public class FrontendImpl implements Frontend {
             } else if (client == Client.JAXRS_ASYNC) {
                 try {
                     jaxRsClient.target(BASE_URI).path("backend/custom").request().buildGet().submit().get();
-                } catch (InterruptedException | ExecutionException e) {
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                } catch (ExecutionException e) {
                     throw new RuntimeException(e);
                 }
             } else if (client == Client.RESTEASY) {
@@ -140,7 +146,10 @@ public class FrontendImpl implements Frontend {
             } else if (client == Client.JAXRS_ASYNC) {
                 try {
                     jaxRsClient.target(BASE_URI).path("backend/unmapped").request().async().get().get();
-                } catch (InterruptedException | ExecutionException e) {
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                } catch (ExecutionException e) {
                     throw new RuntimeException(e);
                 }
             } else if (client == Client.RESTEASY) {
