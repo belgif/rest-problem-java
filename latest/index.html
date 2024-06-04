@@ -535,9 +535,10 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#_context">1. Context</a></li>
 <li><a href="#_release_notes">2. Release notes</a>
 <ul class="sectlevel2">
-<li><a href="#_version_0_3">2.1. Version 0.3</a></li>
-<li><a href="#_version_0_2">2.2. Version 0.2</a></li>
-<li><a href="#_version_0_1">2.3. Version 0.1</a></li>
+<li><a href="#_version_0_4">2.1. Version 0.4</a></li>
+<li><a href="#_version_0_3">2.2. Version 0.3</a></li>
+<li><a href="#_version_0_2">2.3. Version 0.2</a></li>
+<li><a href="#_version_0_1">2.4. Version 0.1</a></li>
 </ul>
 </li>
 <li><a href="#belgif-rest-problem">3. belgif-rest-problem</a>
@@ -606,7 +607,20 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h2 id="_release_notes"><a class="anchor" href="#_release_notes"></a>2. Release notes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_version_0_3"><a class="anchor" href="#_version_0_3"></a>2.1. Version 0.3</h3>
+<h3 id="_version_0_4"><a class="anchor" href="#_version_0_4"></a>2.1. Version 0.4</h3>
+<div class="paragraph">
+<p><strong>belgif-rest-problem:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Removed deprecated InvalidParamProblem: use InputValidationProblem, which supports both the legacy invalidParams[] and the new issues[] structure</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_version_0_3"><a class="anchor" href="#_version_0_3"></a>2.2. Version 0.3</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -632,7 +646,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_2"><a class="anchor" href="#_version_0_2"></a>2.2. Version 0.2</h3>
+<h3 id="_version_0_2"><a class="anchor" href="#_version_0_2"></a>2.3. Version 0.2</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -684,7 +698,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_1"><a class="anchor" href="#_version_0_1"></a>2.3. Version 0.1</h3>
+<h3 id="_version_0_1"><a class="anchor" href="#_version_0_1"></a>2.4. Version 0.1</h3>
 <div class="paragraph">
 <p>Initial release under Belgif organization.</p>
 </div>
@@ -1197,7 +1211,7 @@ This handles integration with the <a href="https://docs.spring.io/spring-framewo
   Problem=io.github.belgif.rest.problem.api.Problem,
   InputValidationProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
   InputValidationIssue=io.github.belgif.rest.problem.api.InputValidationIssue,
-  InvalidParamProblem=io.github.belgif.rest.problem.api.InvalidParamProblem,
+  InvalidParamProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
   InvalidParam=io.github.belgif.rest.problem.api.InvalidParam
 <span class="tag">&lt;/schemaMappings&gt;</span></code></pre>
 </div>
@@ -1214,7 +1228,7 @@ This handles integration with the <a href="https://docs.spring.io/spring-framewo
   Problem=io.github.belgif.rest.problem.api.Problem,
   InputValidationProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
   InputValidationIssue=io.github.belgif.rest.problem.api.InputValidationIssue,
-  InvalidParamProblem=io.github.belgif.rest.problem.api.InvalidParamProblem,
+  InvalidParamProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
   InvalidParam=io.github.belgif.rest.problem.api.InvalidParam
 <span class="tag">&lt;/importMappings&gt;</span></code></pre>
 </div>
