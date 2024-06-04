@@ -186,34 +186,40 @@ loadScripts(document, 'script');</script>
 <div class="block">Validate that the given input is present.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="../RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">RequestValidator.</span><code><a href="../RequestValidator.html#ssin(io.github.belgif.rest.problem.api.Input)" class="member-name-link">ssin</a><wbr>(<a href="../../api/Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;ssin)</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">RequestValidator.</span><code><a href="../RequestValidator.html#requireIfPresent(io.github.belgif.rest.problem.api.Input,io.github.belgif.rest.problem.api.Input...)" class="member-name-link">requireIfPresent</a><wbr>(<a href="../../api/Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;?&gt;&nbsp;target,
+ <a href="../../api/Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;?&gt;...&nbsp;inputs)</code></div>
 <div class="col-last odd-row-color">
+<div class="block">Validate that all the given inputs are present when the given target input is present.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="../RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">RequestValidator.</span><code><a href="../RequestValidator.html#ssin(io.github.belgif.rest.problem.api.Input)" class="member-name-link">ssin</a><wbr>(<a href="../../api/Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;ssin)</code></div>
+<div class="col-last even-row-color">
 <div class="block">Validate the structure of a Belgif openapi-person-identifier SSIN.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="../RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">RequestValidator.</span><code><a href="../RequestValidator.html#ssins(io.github.belgif.rest.problem.api.Input)" class="member-name-link">ssins</a><wbr>(<a href="../../api/Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;ssins)</code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="../RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">RequestValidator.</span><code><a href="../RequestValidator.html#ssins(io.github.belgif.rest.problem.api.Input)" class="member-name-link">ssins</a><wbr>(<a href="../../api/Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;ssins)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Validate the structure of a list of Belgif openapi-person-identifier SSIN.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="../RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">RequestValidator.</span><code><a href="../RequestValidator.html#when(boolean,java.util.function.Consumer)" class="member-name-link">when</a><wbr>(boolean&nbsp;condition,
+<div class="col-first even-row-color"><code><a href="../RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">RequestValidator.</span><code><a href="../RequestValidator.html#when(boolean,java.util.function.Consumer)" class="member-name-link">when</a><wbr>(boolean&nbsp;condition,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="../RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a>&gt;&nbsp;requestValidatorConsumer)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">Conditionally register input validators.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="../RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">RequestValidator.</span><code><a href="../RequestValidator.html#yearMonth(io.github.belgif.rest.problem.api.Input)" class="member-name-link">yearMonth</a><wbr>(<a href="../../api/Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;yearMonth)</code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="../RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">RequestValidator.</span><code><a href="../RequestValidator.html#yearMonth(io.github.belgif.rest.problem.api.Input)" class="member-name-link">yearMonth</a><wbr>(<a href="../../api/Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;yearMonth)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Validate the structure of a Belgif openapi-time YearMonth.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="../RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">RequestValidator.</span><code><a href="../RequestValidator.html#zeroOrAllOf(io.github.belgif.rest.problem.api.Input...)" class="member-name-link">zeroOrAllOf</a><wbr>(<a href="../../api/Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;?&gt;...&nbsp;inputs)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="../RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">RequestValidator.</span><code><a href="../RequestValidator.html#zeroOrAllOf(io.github.belgif.rest.problem.api.Input...)" class="member-name-link">zeroOrAllOf</a><wbr>(<a href="../../api/Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;?&gt;...&nbsp;inputs)</code></div>
+<div class="col-last even-row-color">
 <div class="block">Validate that all or none of the given inputs are present.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="../RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">RequestValidator.</span><code><a href="../RequestValidator.html#zeroOrExactlyOneOf(io.github.belgif.rest.problem.api.Input...)" class="member-name-link">zeroOrExactlyOneOf</a><wbr>(<a href="../../api/Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;?&gt;...&nbsp;inputs)</code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="../RequestValidator.html" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">RequestValidator.</span><code><a href="../RequestValidator.html#zeroOrExactlyOneOf(io.github.belgif.rest.problem.api.Input...)" class="member-name-link">zeroOrExactlyOneOf</a><wbr>(<a href="../../api/Input.html" title="class in io.github.belgif.rest.problem.api">Input</a>&lt;?&gt;...&nbsp;inputs)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Validate that exactly one or none of the given inputs are present.</div>
 </div>
 </div>
