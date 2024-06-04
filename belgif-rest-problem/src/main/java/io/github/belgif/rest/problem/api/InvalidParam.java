@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 /**
  * Invalid parameter.
  *
- * @see InvalidParamProblem
+ * @see InputValidationProblem
  * @deprecated use {@link InputValidationIssue}
  */
 @JsonInclude(Include.NON_EMPTY)

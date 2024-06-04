@@ -66,14 +66,6 @@ class BadRequestProblemTest {
     }
 
     @Test
-    void invalidParams() {
-        InvalidParam invalidParam = new InvalidParam(InEnum.QUERY, "test", "value");
-        BadRequestProblem problem = new BadRequestProblem();
-        problem.setInvalidParams(Collections.singletonList(invalidParam));
-        assertThat(problem.getInvalidParams()).isUnmodifiable().containsExactly(invalidParam);
-    }
-
-    @Test
     void problemTypeAnnotation() {
         assertThat(BadRequestProblem.class).hasAnnotation(ProblemType.class);
         assertThat(BadRequestProblem.class.getAnnotation(ProblemType.class).value())

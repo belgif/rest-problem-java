@@ -86,6 +86,30 @@ class InputValidationProblemTest {
     }
 
     @Test
+    void invalidParams() {
+        InvalidParam invalidParam = new InvalidParam(InEnum.QUERY, "test");
+        InputValidationProblem problem = new MyInputValidationProblem();
+        problem.setInvalidParams(Collections.singletonList(invalidParam));
+        assertThat(problem.getInvalidParams()).isUnmodifiable().containsExactly(invalidParam);
+    }
+
+    @Test
+    void invalidParamsVarargs() {
+        InvalidParam invalidParam = new InvalidParam(InEnum.QUERY, "test");
+        InputValidationProblem problem = new MyInputValidationProblem();
+        problem.setInvalidParams(invalidParam);
+        assertThat(problem.getInvalidParams()).isUnmodifiable().containsExactly(invalidParam);
+    }
+
+    @Test
+    void addInvalidParam() {
+        InvalidParam invalidParam = new InvalidParam(InEnum.QUERY, "test");
+        InputValidationProblem problem = new MyInputValidationProblem();
+        problem.addInvalidParam(invalidParam);
+        assertThat(problem.getInvalidParams()).isUnmodifiable().containsExactly(invalidParam);
+    }
+
+    @Test
     void equalsHashCodeToString() {
         InputValidationIssue issue = new InputValidationIssue(InEnum.QUERY, "test");
         InputValidationIssue otherIssue = new InputValidationIssue(InEnum.QUERY, "other");

@@ -2,8 +2,6 @@ package io.github.belgif.rest.problem;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.Collections;
-
 import org.junit.jupiter.api.Test;
 
 import io.github.belgif.rest.problem.api.InEnum;
@@ -54,14 +52,6 @@ class ResourceNotFoundProblemTest {
         assertThat(issue.getIn()).isEqualTo(InEnum.QUERY);
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("value");
-    }
-
-    @Test
-    void invalidParams() {
-        InvalidParam invalidParam = new InvalidParam(InEnum.QUERY, "test", "value");
-        ResourceNotFoundProblem problem = new ResourceNotFoundProblem();
-        problem.setInvalidParams(Collections.singletonList(invalidParam));
-        assertThat(problem.getInvalidParams()).isUnmodifiable().containsExactly(invalidParam);
     }
 
     @Test
