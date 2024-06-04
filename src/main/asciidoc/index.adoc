@@ -28,6 +28,12 @@ The library consists of these modules:
 
 == Release notes
 
+=== Version 0.4
+
+*belgif-rest-problem:*
+
+* Removed deprecated InvalidParamProblem: use InputValidationProblem, which supports both the legacy invalidParams[] and the new issues[] structure
+
 === Version 0.3
 
 *belgif-rest-problem:*

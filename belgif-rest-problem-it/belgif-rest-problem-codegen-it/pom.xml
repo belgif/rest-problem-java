@@ -66,7 +66,7 @@
                 Problem=io.github.belgif.rest.problem.api.Problem,
                 InputValidationProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
                 InputValidationIssue=io.github.belgif.rest.problem.api.InputValidationIssue,
-                InvalidParamProblem=io.github.belgif.rest.problem.api.InvalidParamProblem,
+                InvalidParamProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
                 InvalidParam=io.github.belgif.rest.problem.api.InvalidParam
               </schemaMappings>
               <!-- end::openapi-generator-maven-plugin[] -->
@@ -98,7 +98,7 @@
                 Problem=io.github.belgif.rest.problem.api.Problem,
                 InputValidationProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
                 InputValidationIssue=io.github.belgif.rest.problem.api.InputValidationIssue,
-                InvalidParamProblem=io.github.belgif.rest.problem.api.InvalidParamProblem,
+                InvalidParamProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
                 InvalidParam=io.github.belgif.rest.problem.api.InvalidParam
               </importMappings>
               <!-- end::swagger-codegen-maven-plugin[] -->
