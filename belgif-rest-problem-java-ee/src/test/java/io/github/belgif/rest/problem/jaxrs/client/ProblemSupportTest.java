@@ -217,4 +217,34 @@ class ProblemSupportTest {
         assertThatRuntimeException().isThrownBy(result::test).withMessage("other");
     }
 
+    @Test
+    void configurable() {
+        Client client = mock(Client.class);
+        Client result = ProblemSupport.enable(client);
+        assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
+        assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
+
+        when(client.register("test")).thenReturn(client);
+
+        WebTarget target = mock(WebTarget.class);
+
+        when(target.register("test")).thenReturn(target);
+        when(client.target("https://www.belgif.be")).thenReturn(target);
+
+        Invocation.Builder builder = mock(Invocation.Builder.class);
+        when(target.request()).thenReturn(builder);
+
+        Invocation invocation = mock(Invocation.class);
+        when(builder.buildGet()).thenReturn(invocation);
+
+        when(invocation.invoke()).thenThrow(new ProblemWrapper(new BadRequestProblem()));
+
+        assertThatExceptionOfType(BadRequestProblem.class)
+                .isThrownBy(() -> result
+                        .register("test")
+                        .target("https://www.belgif.be")
+                        .register("test")
+                        .request().buildGet().invoke());
+    }
+
 }
