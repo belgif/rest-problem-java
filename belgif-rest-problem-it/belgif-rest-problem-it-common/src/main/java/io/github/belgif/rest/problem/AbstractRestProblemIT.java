@@ -106,7 +106,11 @@ abstract class AbstractRestProblemIT {
                 .body("issues[0].in", equalTo("query"))
                 .body("issues[0].name", equalTo("param"))
                 .body("issues[0].value", nullValue())
-                .body("issues[0].detail", anyOf(equalTo("must not be null"), containsString("is not present")));
+                .body("issues[0].detail", anyOf(
+                        // JEE
+                        equalTo("must not be null"),
+                        // Spring Boot
+                        containsString("is not present")));
     }
 
     @Test
@@ -158,7 +162,11 @@ abstract class AbstractRestProblemIT {
                 .body("issues[0].in", equalTo("header"))
                 .body("issues[0].name", equalTo("param"))
                 .body("issues[0].value", nullValue())
-                .body("issues[0].detail", anyOf(equalTo("must not be null"), containsString("is not present")));
+                .body("issues[0].detail", anyOf(
+                        // JEE
+                        equalTo("must not be null"),
+                        // Spring Boot
+                        containsString("is not present")));
     }
 
     @Test
@@ -212,6 +220,27 @@ abstract class AbstractRestProblemIT {
                 .body("issues[0].name", equalTo("param"))
                 .body("issues[0].value", equalTo(-1))
                 .body("issues[0].detail", equalTo("must be greater than 0"));
+    }
+
+    @Test
+    void constraintViolationRequiredBody() {
+        getSpec().when()
+                .contentType("application/json")
+                .post("/beanValidation/body").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].name", anyOf(
+                        // JEE
+                        equalTo("body"),
+                        // Spring Boot
+                        nullValue()))
+                .body("issues[0].value", nullValue())
+                .body("issues[0].detail", anyOf(
+                        // JEE
+                        equalTo("must not be null"),
+                        // Spring Boot
+                        containsString("Required request body is missing")));
     }
 
     @Test

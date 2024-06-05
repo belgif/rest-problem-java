@@ -74,7 +74,7 @@ public class ConstraintViolationUtil {
                             methodNode.getParameterTypes().toArray(new Class[0]));
                     return AnnotationUtil.findParamAnnotation(method, param.getParameterIndex(), ANNOTATIONS)
                             .map(Annotation::annotationType).map(SOURCE_MAPPING::get)
-                            .orElse(InEnum.QUERY);
+                            .orElse(InEnum.BODY);
                 } catch (NoSuchMethodException e) {
                     throw new IllegalStateException(
                             "Method " + methodNode.getName() + " not found on " + violation.getRootBeanClass(), e);

@@ -117,7 +117,7 @@ class ConstraintViolationUtilTest {
 
         InputValidationIssue issue =
                 ConstraintViolationUtil.convertToInputValidationIssue(violations.iterator().next());
-        assertThat(issue.getIn()).isEqualTo(InEnum.QUERY);
+        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("value");
         assertThat(issue.getValue()).isEqualTo(10);
         assertThat(issue.getDetail()).isEqualTo("must be less than or equal to 5");
