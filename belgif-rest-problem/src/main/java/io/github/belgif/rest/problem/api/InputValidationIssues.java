@@ -139,6 +139,10 @@ public class InputValidationIssues {
                 .additionalProperty("replacedBy", newSsin);
     }
 
+    public static InputValidationIssue replacedSsin(InEnum in, String name, String ssin, String newSsin, URI newHref) {
+        return replacedSsin(in, name, ssin, newSsin).additionalProperty("replacedByHref", String.valueOf(newHref));
+    }
+
     public static InputValidationIssue canceledSsin(InEnum in, String name, String ssin) {
         return new InputValidationIssue(ISSUE_TYPE_CANCELED_SSIN, "SSIN has been canceled")
                 .detail(String.format("SSIN %s has been canceled", ssin))

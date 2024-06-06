@@ -33,6 +33,7 @@ The library consists of these modules:
 *belgif-rest-problem:*
 
 * Removed deprecated InvalidParamProblem: use InputValidationProblem, which supports both the legacy invalidParams[] and the new issues[] structure
+* Added optional replacedByHref property to replacedSsin issue type
 
 *belgif-rest-problem-validator:*
 
