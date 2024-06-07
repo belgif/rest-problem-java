@@ -61,6 +61,9 @@ public class ConstraintViolationUtil {
         }
         InEnum in = determineSource(violation, propertyPath, methodNode);
         String name = propertyPath.stream().map(Node::toString).collect(Collectors.joining("."));
+        if (in == InEnum.BODY && propertyPath.getLast().getKind() == ElementKind.PARAMETER) {
+            name = null;
+        }
         return InputValidationIssues.schemaViolation(in, name, violation.getInvalidValue(), violation.getMessage());
     }
 

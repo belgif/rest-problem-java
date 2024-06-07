@@ -223,18 +223,14 @@ abstract class AbstractRestProblemIT {
     }
 
     @Test
-    void constraintViolationRequiredBody() {
+    void constraintViolationMissingRequiredBody() {
         getSpec().when()
                 .contentType("application/json")
                 .post("/beanValidation/body").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("body"))
-                .body("issues[0].name", anyOf(
-                        // JEE
-                        equalTo("body"),
-                        // Spring Boot
-                        nullValue()))
+                .body("issues[0].name", nullValue())
                 .body("issues[0].value", nullValue())
                 .body("issues[0].detail", anyOf(
                         // JEE
