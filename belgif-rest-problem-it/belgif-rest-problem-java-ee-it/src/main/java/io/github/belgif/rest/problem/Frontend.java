@@ -64,7 +64,7 @@ public interface Frontend {
 
     @POST
     @Path("/beanValidation/body")
-    Response beanValidationBody(@Valid Model body);
+    Response beanValidationBody(@Valid @NotNull Model body);
 
     @POST
     @Path("/beanValidation/body/nested")

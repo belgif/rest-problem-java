@@ -61,6 +61,9 @@ public class ConstraintViolationUtil {
         }
         InEnum in = determineSource(violation, propertyPath, methodNode);
         String name = propertyPath.stream().map(Node::toString).collect(Collectors.joining("."));
+        if (in == InEnum.BODY && propertyPath.getLast().getKind() == ElementKind.PARAMETER) {
+            name = null;
+        }
         return InputValidationIssues.schemaViolation(in, name, violation.getInvalidValue(), violation.getMessage());
     }
 
@@ -74,7 +77,7 @@ public class ConstraintViolationUtil {
                             methodNode.getParameterTypes().toArray(new Class[0]));
                     return AnnotationUtil.findParamAnnotation(method, param.getParameterIndex(), ANNOTATIONS)
                             .map(Annotation::annotationType).map(SOURCE_MAPPING::get)
-                            .orElse(InEnum.QUERY);
+                            .orElse(InEnum.BODY);
                 } catch (NoSuchMethodException e) {
                     throw new IllegalStateException(
                             "Method " + methodNode.getName() + " not found on " + violation.getRootBeanClass(), e);
