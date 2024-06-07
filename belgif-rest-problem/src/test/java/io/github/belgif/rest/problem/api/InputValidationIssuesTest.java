@@ -198,8 +198,8 @@ class InputValidationIssuesTest {
     void unknownSsin() {
         InputValidationIssue issue =
                 InputValidationIssues.unknownSsin(InEnum.BODY, "ssin", "00000000196");
-        assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:unknownSsin");
-        assertThat(issue.getTitle()).isEqualTo("SSIN does not exist");
+        assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:referencedResourceNotFound");
+        assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("ssin");
         assertThat(issue.getValue()).isEqualTo("00000000196");
