@@ -38,8 +38,6 @@ public class InputValidationIssues {
             URI.create("urn:problem-type:cbss:input-validation:replacedSsin");
     public static final URI ISSUE_TYPE_CANCELED_SSIN =
             URI.create("urn:problem-type:cbss:input-validation:canceledSsin");
-    public static final URI ISSUE_TYPE_UNKNOWN_SSIN =
-            URI.create("urn:problem-type:cbss:input-validation:unknownSsin");
     public static final URI ISSUE_TYPE_INVALID_PERIOD =
             URI.create("urn:problem-type:cbss:input-validation:invalidPeriod");
 
@@ -154,9 +152,7 @@ public class InputValidationIssues {
     }
 
     public static InputValidationIssue unknownSsin(InEnum in, String name, String ssin) {
-        return new InputValidationIssue(ISSUE_TYPE_UNKNOWN_SSIN, "SSIN does not exist")
-                .detail(String.format("SSIN %s does not exist", ssin))
-                .in(in, name, ssin);
+        return referencedResourceNotFound(in, name, ssin).detail(String.format("SSIN %s does not exist", ssin));
     }
 
     public static InputValidationIssue invalidPeriod(InEnum in, String name, Object period) {
