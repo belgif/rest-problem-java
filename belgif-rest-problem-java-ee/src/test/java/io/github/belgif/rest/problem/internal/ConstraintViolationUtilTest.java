@@ -27,11 +27,30 @@ class ConstraintViolationUtilTest {
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Test
-    void bodyProperty() {
+    void missingRequiredBody() throws Exception {
+        Set<ConstraintViolation<Resource>> violations =
+                validator.forExecutables().validateParameters(new Resource(),
+                        Resource.class.getMethod("bodyParam", Body.class), new Object[] { null });
+
+        assertThat(violations).hasSize(1);
+
+        InputValidationIssue issue =
+                ConstraintViolationUtil.convertToInputValidationIssue(violations.iterator().next());
+        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+        assertThat(issue.getName()).isNull();
+        assertThat(issue.getValue()).isNull();
+        assertThat(issue.getDetail()).isEqualTo("must not be null");
+    }
+
+    @Test
+    void bodyProperty() throws Exception {
         Body target = new Body();
         target.value = 10;
 
-        Set<ConstraintViolation<Body>> violations = validator.validate(target);
+        Set<ConstraintViolation<Resource>> violations =
+                validator.forExecutables().validateParameters(new Resource(),
+                        Resource.class.getMethod("bodyParam", Body.class), new Object[] { target });
+
         assertThat(violations).hasSize(1);
 
         InputValidationIssue issue =
@@ -43,12 +62,15 @@ class ConstraintViolationUtilTest {
     }
 
     @Test
-    void nestedBodyProperty() {
+    void nestedBodyProperty() throws Exception {
         Body target = new Body();
         target.nested.add(new Nested("OK"));
         target.nested.add(new Nested(null));
 
-        Set<ConstraintViolation<Body>> violations = validator.validate(target);
+        Set<ConstraintViolation<Resource>> violations =
+                validator.forExecutables().validateParameters(new Resource(),
+                        Resource.class.getMethod("bodyParam", Body.class), new Object[] { target });
+
         assertThat(violations).hasSize(1);
 
         InputValidationIssue issue =
@@ -108,22 +130,6 @@ class ConstraintViolationUtilTest {
     }
 
     @Test
-    void noAnnotationParam() throws Exception {
-        Set<ConstraintViolation<Resource>> violations =
-                validator.forExecutables().validateParameters(new Resource(),
-                        Resource.class.getMethod("noAnnotationParam", int.class), new Object[] { 10 });
-
-        assertThat(violations).hasSize(1);
-
-        InputValidationIssue issue =
-                ConstraintViolationUtil.convertToInputValidationIssue(violations.iterator().next());
-        assertThat(issue.getIn()).isEqualTo(InEnum.QUERY);
-        assertThat(issue.getName()).isEqualTo("value");
-        assertThat(issue.getValue()).isEqualTo(10);
-        assertThat(issue.getDetail()).isEqualTo("must be less than or equal to 5");
-    }
-
-    @Test
     void paramFromSuperClass() throws Exception {
         Set<ConstraintViolation<Resource>> violations =
                 validator.forExecutables().validateParameters(new Resource(),
@@ -166,6 +172,11 @@ class ConstraintViolationUtilTest {
     }
 
     static class Resource extends SuperClass implements Interface {
+
+        public Response bodyParam(@Valid @NotNull Body body) {
+            return null;
+        }
+
         public Response queryParam(@QueryParam("value") @Max(5) int value) {
             return null;
         }
@@ -175,10 +186,6 @@ class ConstraintViolationUtilTest {
         }
 
         public Response headerParam(@HeaderParam("value") @Max(5) int value) {
-            return null;
-        }
-
-        public Response noAnnotationParam(@Max(5) int value) {
             return null;
         }
 
