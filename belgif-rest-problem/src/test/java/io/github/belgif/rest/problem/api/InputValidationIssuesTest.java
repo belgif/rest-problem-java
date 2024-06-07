@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem.api;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
@@ -165,6 +166,23 @@ class InputValidationIssuesTest {
         assertThat(issue.getValue()).isEqualTo("00000000196");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 has been replaced by 00000000295");
         assertThat(issue.getAdditionalProperties()).containsExactly(entry("replacedBy", "00000000295"));
+        assertThat(issue).extracting("href", "inputs").allMatch(this::isEmpty);
+    }
+
+    @Test
+    void replacedSsinWithReplacedByHref() {
+        InputValidationIssue issue =
+                InputValidationIssues.replacedSsin(InEnum.BODY, "ssin", "00000000196", "00000000295",
+                        URI.create("https://api.company.com/v1/employees?ssin=00000000295"));
+        assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:replacedSsin");
+        assertThat(issue.getTitle()).isEqualTo("SSIN has been replaced, use new SSIN");
+        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+        assertThat(issue.getName()).isEqualTo("ssin");
+        assertThat(issue.getValue()).isEqualTo("00000000196");
+        assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 has been replaced by 00000000295");
+        assertThat(issue.getAdditionalProperties()).containsExactly(
+                entry("replacedBy", "00000000295"),
+                entry("replacedByHref", "https://api.company.com/v1/employees?ssin=00000000295"));
         assertThat(issue).extracting("href", "inputs").allMatch(this::isEmpty);
     }
 
