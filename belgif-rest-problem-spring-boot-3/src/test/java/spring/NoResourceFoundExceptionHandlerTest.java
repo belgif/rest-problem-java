@@ -1,15 +1,16 @@
 package spring;
 
-import io.github.belgif.rest.problem.ResourceNotFoundProblem;
-import io.github.belgif.rest.problem.api.Problem;
-import io.github.belgif.rest.problem.spring.NoResourceFoundExceptionHandler;
-import io.github.belgif.rest.problem.spring.ProblemMediaType;
+import static org.assertj.core.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import static org.assertj.core.api.Assertions.*;
+import io.github.belgif.rest.problem.ResourceNotFoundProblem;
+import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.spring.NoResourceFoundExceptionHandler;
+import io.github.belgif.rest.problem.spring.ProblemMediaType;
 
 class NoResourceFoundExceptionHandlerTest {
 
