@@ -1,4 +1,4 @@
-package spring;
+package io.github.belgif.rest.problem.spring;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -9,8 +9,6 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import io.github.belgif.rest.problem.ResourceNotFoundProblem;
 import io.github.belgif.rest.problem.api.Problem;
-import io.github.belgif.rest.problem.spring.NoResourceFoundExceptionHandler;
-import io.github.belgif.rest.problem.spring.ProblemMediaType;
 
 class NoResourceFoundExceptionHandlerTest {
 
