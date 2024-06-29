@@ -63,6 +63,8 @@
     <module>belgif-rest-problem-validator</module>
     <module>belgif-rest-problem-java-ee</module>
     <module>belgif-rest-problem-spring</module>
+    <module>belgif-rest-problem-spring-boot-2</module>
+    <module>belgif-rest-problem-spring-boot-3</module>
     <module>belgif-rest-problem-it</module>
   </modules>
 
@@ -219,6 +221,13 @@
               <notimestamp>true</notimestamp>
               <doctitle>belgif-rest-problem ${project.version}</doctitle>
               <excludePackageNames>*.internal</excludePackageNames>
+              <additionalDependencies>
+                <dependency>
+                  <groupId>jakarta.platform</groupId>
+                  <artifactId>jakarta.jakartaee-api</artifactId>
+                  <version>8.0.0</version>
+                </dependency>
+              </additionalDependencies>
             </configuration>
           </execution>
         </executions>
@@ -406,6 +415,8 @@
         <module>belgif-rest-problem-validator</module>
         <module>belgif-rest-problem-java-ee</module>
         <module>belgif-rest-problem-spring</module>
+        <module>belgif-rest-problem-spring-boot-2</module>
+        <module>belgif-rest-problem-spring-boot-3</module>
         <module>belgif-rest-problem-it</module>
         <module>jacoco-aggregator</module>
       </modules>
