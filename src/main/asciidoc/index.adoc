@@ -24,9 +24,21 @@ The library consists of these modules:
 
 * <<belgif-rest-problem>>: library for RFC 9457 standardized Belgif problems
 * <<belgif-rest-problem-java-ee>>: Java EE / Jakarta EE integration for belgif-rest-problem
-* <<belgif-rest-problem-spring>>: Spring Boot integration for belgif-rest-problem
+* <<belgif-rest-problem-spring-boot-2>>: Spring Boot 2.x integration for belgif-rest-problem
+* <<belgif-rest-problem-spring-boot-3>>: Spring Boot 3.x integration for belgif-rest-problem
 
 == Release notes
+
+=== Version 0.5
+
+*belgif-rest-problem-spring:*
+
+Split into <<belgif-rest-problem-spring-boot-2>> and <<belgif-rest-problem-spring-boot-3>>.
+To benefit from Spring Boot 2.x or 3.x specific features, replace dependencies to belgif-rest-problem-spring by the version-specific variant.
+
+*belgif-rest-problem-spring-boot-3:*
+
+* Map NoResourceFoundException to 404 `urn:problem-type:belgif:resourceNotFound`
 
 === Version 0.4
 
@@ -341,6 +353,18 @@ io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
 This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
 
 In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.
+
+[[belgif-rest-problem-spring-boot-2]]
+=== belgif-rest-problem-spring-boot-2
+
+Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 2.x users are recommended to depend on `belgif-rest-problem-spring-boot-2`, which adds some Spring Boot 2.x specific integrations.
+
+[[belgif-rest-problem-spring-boot-3]]
+=== belgif-rest-problem-spring-boot-3
+
+Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 3.x users are recommended to depend on `belgif-rest-problem-spring-boot-3`, which adds some Spring Boot 3.x specific integrations:
+
+* *NoResourceFoundExceptionHandler:* an exception handler for RestControllers that converts NoResourceFoundException to HTTP 404 ResourceNotFoundProblem.
 
 [[code-generators]]
 == Code generators
