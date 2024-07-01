@@ -632,6 +632,9 @@ To benefit from Spring Boot 2.x or 3.x specific features, replace dependencies t
 <li>
 <p>Map NoResourceFoundException to 404 <code>urn:problem-type:belgif:resourceNotFound</code></p>
 </li>
+<li>
+<p>Added support for <a href="https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-restclient">RestClient</a> API</p>
+</li>
 </ul>
 </div>
 </div>
@@ -1226,7 +1229,7 @@ Additional packages to scan can be configured in your application.properties:</p
 <p><strong>ProblemResponseErrorHandler:</strong> a RestTemplate error handler that converts problem responses to Problem exceptions.</p>
 </li>
 <li>
-<p><strong>ProblemRestTemplateCustomizer:</strong> a RestTemplateCustomizer that registers the ProblemResponseErrorHandler</p>
+<p><strong>ProblemRestTemplateCustomizer:</strong> a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.</p>
 </li>
 <li>
 <p><strong>ProblemWebClientCustomizer:</strong> a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
@@ -1252,6 +1255,9 @@ This handles integration with the <a href="https://docs.spring.io/spring-framewo
 <ul>
 <li>
 <p><strong>NoResourceFoundExceptionHandler:</strong> an exception handler for RestControllers that converts NoResourceFoundException to HTTP 404 ResourceNotFoundProblem.</p>
+</li>
+<li>
+<p><strong>ProblemRestClientCustomizer:</strong> a RestClientCustomizer that registers the ProblemResponseErrorHandler.</p>
 </li>
 </ul>
 </div>
