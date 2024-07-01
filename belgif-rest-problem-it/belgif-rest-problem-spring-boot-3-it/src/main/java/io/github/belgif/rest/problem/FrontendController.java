@@ -11,6 +11,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -33,13 +34,20 @@ public class FrontendController implements ControllerInterface {
 
     private final WebClient.Builder webClientBuilder;
 
+    private final RestClient.Builder restClientBuilder;
+
     private RestTemplate restTemplate;
 
     private WebClient webClient;
 
-    public FrontendController(RestTemplateBuilder restTemplateBuilder, WebClient.Builder webClientBuilder) {
+    private RestClient restClient;
+
+    public FrontendController(RestTemplateBuilder restTemplateBuilder,
+            WebClient.Builder webClientBuilder,
+            RestClient.Builder restClientBuilder) {
         this.restTemplateBuilder = restTemplateBuilder;
         this.webClientBuilder = webClientBuilder;
+        this.restClientBuilder = restClientBuilder;
     }
 
     @EventListener
@@ -48,7 +56,11 @@ public class FrontendController implements ControllerInterface {
                 .rootUri("http://localhost:" + event.getWebServer().getPort() + "/spring/backend")
                 .build();
         this.webClient = webClientBuilder
-                .baseUrl("http://localhost:" + event.getWebServer().getPort() + "/spring/backend").build();
+                .baseUrl("http://localhost:" + event.getWebServer().getPort() + "/spring/backend")
+                .build();
+        this.restClient = restClientBuilder
+                .baseUrl("http://localhost:" + event.getWebServer().getPort() + "/spring/backend")
+                .build();
     }
 
     @GetMapping("/badRequest")
@@ -90,6 +102,8 @@ public class FrontendController implements ControllerInterface {
                 restTemplate.getForObject("/badRequest", String.class);
             } else if (client == Client.WEB_CLIENT) {
                 webClient.get().uri("/badRequest").retrieve().toEntity(String.class).block();
+            } else if (client == Client.REST_CLIENT) {
+                restClient.get().uri("/badRequest").retrieve().toEntity(String.class);
             }
             throw new IllegalStateException(ILLEGAL_STATE_MESSAGE_PREFIX + client);
         } catch (BadRequestProblem e) {
@@ -105,6 +119,8 @@ public class FrontendController implements ControllerInterface {
                 restTemplate.getForObject("/custom", String.class);
             } else if (client == Client.WEB_CLIENT) {
                 webClient.get().uri("/custom").retrieve().toEntity(String.class).block();
+            } else if (client == Client.REST_CLIENT) {
+                restClient.get().uri("/custom").retrieve().toEntity(String.class);
             }
             throw new IllegalStateException(ILLEGAL_STATE_MESSAGE_PREFIX + client);
         } catch (CustomProblem e) {
@@ -120,6 +136,8 @@ public class FrontendController implements ControllerInterface {
                 restTemplate.getForObject("/unmapped", String.class);
             } else if (client == Client.WEB_CLIENT) {
                 webClient.get().uri("/unmapped").retrieve().toEntity(String.class).block();
+            } else if (client == Client.REST_CLIENT) {
+                restClient.get().uri("/unmapped").retrieve().toEntity(String.class);
             }
             throw new IllegalStateException(ILLEGAL_STATE_MESSAGE_PREFIX + client);
         } catch (DefaultProblem e) {
