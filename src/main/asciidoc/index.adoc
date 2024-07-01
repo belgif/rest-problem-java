@@ -39,6 +39,7 @@ To benefit from Spring Boot 2.x or 3.x specific features, replace dependencies t
 *belgif-rest-problem-spring-boot-3:*
 
 * Map NoResourceFoundException to 404 `urn:problem-type:belgif:resourceNotFound`
+* Added support for https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-restclient[RestClient] API
 
 === Version 0.4
 
@@ -348,7 +349,7 @@ io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
 * *BeanValidationExceptionsHandler:* an exception handler for RestControllers that converts bean validation related exceptions to HTTP 400 BadRequestProblem.
 * *RoutingExceptionsHandler:* an exception handler for RestControllers that converts routing related validation exceptions to HTTP 400 BadRequestProblem.
 * *ProblemResponseErrorHandler:* a RestTemplate error handler that converts problem responses to Problem exceptions.
-* *ProblemRestTemplateCustomizer:* a RestTemplateCustomizer that registers the ProblemResponseErrorHandler
+* *ProblemRestTemplateCustomizer:* a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.
 * *ProblemWebClientCustomizer:* a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
 This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
 
@@ -365,6 +366,7 @@ Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 2.
 Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 3.x users are recommended to depend on `belgif-rest-problem-spring-boot-3`, which adds some Spring Boot 3.x specific integrations:
 
 * *NoResourceFoundExceptionHandler:* an exception handler for RestControllers that converts NoResourceFoundException to HTTP 404 ResourceNotFoundProblem.
+* *ProblemRestClientCustomizer:* a RestClientCustomizer that registers the ProblemResponseErrorHandler.
 
 [[code-generators]]
 == Code generators
