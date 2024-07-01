@@ -535,10 +535,11 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#_context">1. Context</a></li>
 <li><a href="#_release_notes">2. Release notes</a>
 <ul class="sectlevel2">
-<li><a href="#_version_0_4">2.1. Version 0.4</a></li>
-<li><a href="#_version_0_3">2.2. Version 0.3</a></li>
-<li><a href="#_version_0_2">2.3. Version 0.2</a></li>
-<li><a href="#_version_0_1">2.4. Version 0.1</a></li>
+<li><a href="#_version_0_5">2.1. Version 0.5</a></li>
+<li><a href="#_version_0_4">2.2. Version 0.4</a></li>
+<li><a href="#_version_0_3">2.3. Version 0.3</a></li>
+<li><a href="#_version_0_2">2.4. Version 0.2</a></li>
+<li><a href="#_version_0_1">2.5. Version 0.1</a></li>
 </ul>
 </li>
 <li><a href="#belgif-rest-problem">3. belgif-rest-problem</a>
@@ -555,7 +556,12 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#_using_rest_problem_library_for_consuming_rest_services">5.2. Using rest-problem library for consuming REST services</a></li>
 </ul>
 </li>
-<li><a href="#belgif-rest-problem-spring">6. belgif-rest-problem-spring</a></li>
+<li><a href="#belgif-rest-problem-spring">6. belgif-rest-problem-spring</a>
+<ul class="sectlevel2">
+<li><a href="#belgif-rest-problem-spring-boot-2">6.1. belgif-rest-problem-spring-boot-2</a></li>
+<li><a href="#belgif-rest-problem-spring-boot-3">6.2. belgif-rest-problem-spring-boot-3</a></li>
+</ul>
+</li>
 <li><a href="#code-generators">7. Code generators</a>
 <ul class="sectlevel2">
 <li><a href="#openapi-generator-maven-plugin">7.1. openapi-generator-maven-plugin</a></li>
@@ -597,7 +603,10 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <p><a href="#belgif-rest-problem-java-ee">belgif-rest-problem-java-ee</a>: Java EE / Jakarta EE integration for belgif-rest-problem</p>
 </li>
 <li>
-<p><a href="#belgif-rest-problem-spring">belgif-rest-problem-spring</a>: Spring Boot integration for belgif-rest-problem</p>
+<p><a href="#belgif-rest-problem-spring-boot-2">belgif-rest-problem-spring-boot-2</a>: Spring Boot 2.x integration for belgif-rest-problem</p>
+</li>
+<li>
+<p><a href="#belgif-rest-problem-spring-boot-3">belgif-rest-problem-spring-boot-3</a>: Spring Boot 3.x integration for belgif-rest-problem</p>
 </li>
 </ul>
 </div>
@@ -607,7 +616,27 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h2 id="_release_notes"><a class="anchor" href="#_release_notes"></a>2. Release notes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_version_0_4"><a class="anchor" href="#_version_0_4"></a>2.1. Version 0.4</h3>
+<h3 id="_version_0_5"><a class="anchor" href="#_version_0_5"></a>2.1. Version 0.5</h3>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-spring:</strong></p>
+</div>
+<div class="paragraph">
+<p>Split into <a href="#belgif-rest-problem-spring-boot-2">belgif-rest-problem-spring-boot-2</a> and <a href="#belgif-rest-problem-spring-boot-3">belgif-rest-problem-spring-boot-3</a>.
+To benefit from Spring Boot 2.x or 3.x specific features, replace dependencies to belgif-rest-problem-spring by the version-specific variant.</p>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-spring-boot-3:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Map NoResourceFoundException to 404 <code>urn:problem-type:belgif:resourceNotFound</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_version_0_4"><a class="anchor" href="#_version_0_4"></a>2.2. Version 0.4</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -636,7 +665,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_3"><a class="anchor" href="#_version_0_3"></a>2.2. Version 0.3</h3>
+<h3 id="_version_0_3"><a class="anchor" href="#_version_0_3"></a>2.3. Version 0.3</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -662,7 +691,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_2"><a class="anchor" href="#_version_0_2"></a>2.3. Version 0.2</h3>
+<h3 id="_version_0_2"><a class="anchor" href="#_version_0_2"></a>2.4. Version 0.2</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -714,7 +743,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_1"><a class="anchor" href="#_version_0_1"></a>2.4. Version 0.1</h3>
+<h3 id="_version_0_1"><a class="anchor" href="#_version_0_1"></a>2.5. Version 0.1</h3>
 <div class="paragraph">
 <p>Initial release under Belgif organization.</p>
 </div>
@@ -1207,6 +1236,25 @@ This handles integration with the <a href="https://docs.spring.io/spring-framewo
 </div>
 <div class="paragraph">
 <p>In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.</p>
+</div>
+<div class="sect2">
+<h3 id="belgif-rest-problem-spring-boot-2"><a class="anchor" href="#belgif-rest-problem-spring-boot-2"></a>6.1. belgif-rest-problem-spring-boot-2</h3>
+<div class="paragraph">
+<p>Rather than depending on <a href="#belgif-rest-problem-spring">belgif-rest-problem-spring</a> directly, Spring Boot 2.x users are recommended to depend on <code>belgif-rest-problem-spring-boot-2</code>, which adds some Spring Boot 2.x specific integrations.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="belgif-rest-problem-spring-boot-3"><a class="anchor" href="#belgif-rest-problem-spring-boot-3"></a>6.2. belgif-rest-problem-spring-boot-3</h3>
+<div class="paragraph">
+<p>Rather than depending on <a href="#belgif-rest-problem-spring">belgif-rest-problem-spring</a> directly, Spring Boot 3.x users are recommended to depend on <code>belgif-rest-problem-spring-boot-3</code>, which adds some Spring Boot 3.x specific integrations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>NoResourceFoundExceptionHandler:</strong> an exception handler for RestControllers that converts NoResourceFoundException to HTTP 404 ResourceNotFoundProblem.</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
