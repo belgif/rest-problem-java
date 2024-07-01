@@ -1,8 +1,11 @@
 package io.github.belgif.rest.problem;
 
+import static org.hamcrest.Matchers.*;
+
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
@@ -23,6 +26,16 @@ class RestProblemSpringBoot3IT extends AbstractRestProblemSpringBootIT {
     @Override
     protected Stream<String> getClients() {
         return Arrays.stream(Client.values()).map(Client::name);
+    }
+
+    // On Spring Boot 3.x only (for now), a proper resourceNotFound problem is returned
+    @Override
+    @Test
+    void notFound() {
+        getSpec().when().get("/not/found").then().assertThat()
+                .statusCode(404)
+                .body("type", equalTo("urn:problem-type:belgif:resourceNotFound"))
+                .body("detail", equalTo("No resource frontend/not/found found"));
     }
 
 }

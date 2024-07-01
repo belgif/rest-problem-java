@@ -357,12 +357,12 @@ In general, these components make it possible to use standard java exception han
 [[belgif-rest-problem-spring-boot-2]]
 === belgif-rest-problem-spring-boot-2
 
-Rather than depending on `belgif-rest-problem-spring` directly, Spring Boot 2.x users are recommended to depend on `belgif-rest-problem-spring-boot-2`, which adds some Spring Boot 2.x specific integrations.
+Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 2.x users are recommended to depend on `belgif-rest-problem-spring-boot-2`, which adds some Spring Boot 2.x specific integrations.
 
 [[belgif-rest-problem-spring-boot-3]]
 === belgif-rest-problem-spring-boot-3
 
-Rather than depending on `belgif-rest-problem-spring` directly, Spring Boot 3.x users are recommended to depend on `belgif-rest-problem-spring-boot-3`, which adds some Spring Boot 3.x specific integrations:
+Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 3.x users are recommended to depend on `belgif-rest-problem-spring-boot-3`, which adds some Spring Boot 3.x specific integrations:
 
 * *NoResourceFoundExceptionHandler:* an exception handler for RestControllers that converts NoResourceFoundException to HTTP 404 ResourceNotFoundProblem.
 
