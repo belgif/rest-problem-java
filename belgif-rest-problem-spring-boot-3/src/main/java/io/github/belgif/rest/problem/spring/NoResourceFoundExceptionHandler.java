@@ -17,7 +17,9 @@ public class NoResourceFoundExceptionHandler {
     public ResponseEntity<Problem> handleNoResourceFoundException(
             NoResourceFoundException exception) {
         ResourceNotFoundProblem problem = new ResourceNotFoundProblem();
-        problem.setDetail(String.format("No resource %s found", exception.getResourcePath()));
+        problem.setDetail(String.format("No resource %s found",
+                exception.getResourcePath().startsWith("/") ? exception.getResourcePath()
+                        : "/" + exception.getResourcePath()));
         return ProblemMediaType.INSTANCE.toResponse(problem);
     }
 

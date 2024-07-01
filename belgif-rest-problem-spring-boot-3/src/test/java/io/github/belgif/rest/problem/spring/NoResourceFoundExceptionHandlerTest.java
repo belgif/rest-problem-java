@@ -24,4 +24,14 @@ class NoResourceFoundExceptionHandlerTest {
         assertThat(problem.getDetail()).isEqualTo("No resource /test found");
     }
 
+    @Test
+    void handleNoResourceFoundExceptionAddsLeadingSlash() {
+        ResponseEntity<Problem> entity = handler.handleNoResourceFoundException(
+                new NoResourceFoundException(HttpMethod.GET, "test"));
+        assertThat(entity.getStatusCode().value()).isEqualTo(404);
+        assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
+        ResourceNotFoundProblem problem = (ResourceNotFoundProblem) entity.getBody();
+        assertThat(problem.getDetail()).isEqualTo("No resource /test found");
+    }
+
 }
