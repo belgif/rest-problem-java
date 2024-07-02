@@ -1,0 +1,7 @@
+io.github.belgif.rest.problem
+io.github.belgif.rest.problem.api
+io.github.belgif.rest.problem.jaxrs
+io.github.belgif.rest.problem.jaxrs.client
+io.github.belgif.rest.problem.registry
+io.github.belgif.rest.problem.spring
+io.github.belgif.rest.problem.validation
