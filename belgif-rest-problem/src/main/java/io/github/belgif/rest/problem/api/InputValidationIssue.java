@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -39,6 +40,9 @@ public class InputValidationIssue {
     private static final String INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE =
             "inputs[] and in/name/value are mutually exclusive";
 
+    private static final String INPUTS_SETTER_ONE_ITEM =
+            "inputs[] can not be set with one non null item, use in(in, name, value) instead ";
+
     private URI type;
     private URI href;
     private String title;
@@ -66,6 +70,12 @@ public class InputValidationIssue {
     public InputValidationIssue(InEnum in, String name) {
         this.in = in;
         this.name = name;
+    }
+
+    public InputValidationIssue(Input<?> input) {
+        this.in = input.getIn();
+        this.name = input.getName();
+        this.value = input.getValue();
     }
 
     public URI getType() {
@@ -105,7 +115,7 @@ public class InputValidationIssue {
     }
 
     public void setIn(InEnum in) {
-        verifyNoInputs();
+        verifyNoInputs(in);
         this.in = in;
     }
 
@@ -114,7 +124,7 @@ public class InputValidationIssue {
     }
 
     public void setName(String name) {
-        verifyNoInputs();
+        verifyNoInputs(name);
         this.name = name;
     }
 
@@ -124,7 +134,7 @@ public class InputValidationIssue {
     }
 
     public void setValue(Object value) {
-        verifyNoInputs();
+        verifyNoInputs(value);
         this.value = value;
     }
 
@@ -133,32 +143,82 @@ public class InputValidationIssue {
     }
 
     public void setInputs(List<Input<?>> inputs) {
-        verifyNoInNameValue();
+
         this.inputs.clear();
-        this.inputs.addAll(inputs);
+
+        if (inputs == null) {
+            return;
+        }
+
+        if (in != null || name != null || value != null) {
+            throw new IllegalArgumentException(INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE);
+        }
+
+        List<Input<?>> filteredInputs = inputs.stream().filter(Objects::nonNull).collect(Collectors.toList());
+
+        if (filteredInputs.size() == 1) {
+            throw new IllegalArgumentException(INPUTS_SETTER_ONE_ITEM);
+        }
+
+        this.inputs.addAll(filteredInputs);
     }
 
     public void setInputs(Input<?>... inputs) {
-        verifyNoInNameValue();
-        this.inputs.clear();
-        this.inputs.addAll(Arrays.asList(inputs));
+        if (inputs == null) {
+            return;
+        }
+        setInputs(Arrays.asList(inputs));
+    }
+
+    private void clearInNameValue() {
+        this.in = null;
+        this.name = null;
+        this.value = null;
     }
 
     public void addInput(Input<?> input) {
-        verifyNoInNameValue();
-        inputs.add(input);
+
+        if (input == null) {
+            return;
+        }
+
+        if (hasInNameValue()) {
+            this.inputs.add(new Input<>(in, name, value));
+            this.inputs.add(input);
+            clearInNameValue();
+        } else if (!inputs.isEmpty()) {
+            this.inputs.add(input);
+        } else {
+            in(input.getIn(), input.getName(), input.getValue());
+        }
     }
 
-    private void verifyNoInputs() {
+    public void addInput(List<Input<?>> input) {
+        if (input == null || input.isEmpty()) {
+            return;
+        }
+        input.forEach(this::addInput);
+    }
+
+    public void addInput(Input<?>... input) {
+        if (input == null) {
+            return;
+        }
+        addInput(Arrays.asList(input));
+    }
+
+    private void verifyNoInputs(Object valueToUpdate) {
+        if (valueToUpdate == null) {
+            return;
+        }
+
         if (!inputs.isEmpty()) {
             throw new IllegalArgumentException(INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE);
         }
     }
 
-    private void verifyNoInNameValue() {
-        if (in != null || name != null || value != null) {
-            throw new IllegalArgumentException(INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE);
-        }
+    private boolean hasInNameValue() {
+        return in != null || name != null || value != null;
     }
 
     @JsonAnyGetter
@@ -247,7 +307,8 @@ public class InputValidationIssue {
     }
 
     public InputValidationIssue in(InEnum in, String name, Object value) {
-        return in(in).name(name).value(value);
+        in(in).name(name).value(value);
+        return this;
     }
 
     public InputValidationIssue in(InEnum in) {
