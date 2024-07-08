@@ -307,8 +307,7 @@ public class InputValidationIssue {
     }
 
     public InputValidationIssue in(InEnum in, String name, Object value) {
-        in(in).name(name).value(value);
-        return this;
+        return in(in).name(name).value(value);
     }
 
     public InputValidationIssue in(InEnum in) {
