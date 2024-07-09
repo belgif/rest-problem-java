@@ -253,11 +253,11 @@ class InputValidationIssueTest {
         assertThat(issue.getInputs()).isEmpty();
         issue.addInput(null, null);
         assertThat(issue.getInputs()).isEmpty();
-        issue.addInput(inputs);
+        issue.addInputs(inputs);
         assertThat(issue.getInputs()).isEmpty();
-        issue.addInput(Arrays.asList(null, null));
+        issue.addInputs(Arrays.asList(null, null));
         assertThat(issue.getInputs()).isEmpty();
-        issue.addInput(new ArrayList<>());
+        issue.addInputs(new ArrayList<>());
         assertThat(issue.getInputs()).isEmpty();
 
         input = Input.query("name", "value");
@@ -287,13 +287,13 @@ class InputValidationIssueTest {
         assertThat(issue.getInputs()).containsExactly(input, input);
 
         issue = new InputValidationIssue();
-        issue.addInput(Collections.singletonList((input)));
+        issue.addInputs(Collections.singletonList((input)));
         assertThat(issue.getInputs()).isEmpty();
         assertThat(issue.getName()).isEqualTo(input.getName());
         assertThat(issue.getIn()).isEqualTo(input.getIn());
         assertThat(issue.getValue()).isEqualTo(input.getValue());
 
-        issue.addInput(Arrays.asList(input, input));
+        issue.addInputs(Arrays.asList(input, input));
         assertThat(issue.getName()).isNull();
         assertThat(issue.getIn()).isNull();
         assertThat(issue.getValue()).isNull();

@@ -150,7 +150,7 @@ public class InputValidationIssue {
             return;
         }
 
-        if (in != null || name != null || value != null) {
+        if (hasInNameValue()) {
             throw new IllegalArgumentException(INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE);
         }
 
@@ -193,7 +193,7 @@ public class InputValidationIssue {
         }
     }
 
-    public void addInput(List<Input<?>> input) {
+    public void addInputs(List<Input<?>> input) {
         if (input == null || input.isEmpty()) {
             return;
         }
@@ -204,7 +204,7 @@ public class InputValidationIssue {
         if (input == null) {
             return;
         }
-        addInput(Arrays.asList(input));
+        addInputs(Arrays.asList(input));
     }
 
     private void verifyNoInputs(Object valueToUpdate) {

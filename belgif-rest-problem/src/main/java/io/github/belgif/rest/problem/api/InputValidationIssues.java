@@ -61,8 +61,8 @@ public class InputValidationIssues {
     public static InputValidationIssue schemaViolation(InEnum in, String name, Object value, String detail) {
         return new InputValidationIssue(ISSUE_TYPE_SCHEMA_VIOLATION,
                 "Input value is invalid with respect to the schema")
-                        .detail(detail)
-                        .in(in, name, value);
+                .detail(detail)
+                .in(in, name, value);
     }
 
     public static InputValidationIssue unknownInput(InEnum in, String name, Object value) {
@@ -74,8 +74,8 @@ public class InputValidationIssues {
     public static InputValidationIssue invalidStructure(InEnum in, String name, Object value, String detail) {
         return new InputValidationIssue(ISSUE_TYPE_INVALID_STRUCTURE,
                 "Input value has invalid structure")
-                        .detail(detail)
-                        .in(in, name, value);
+                .detail(detail)
+                .in(in, name, value);
     }
 
     public static <T extends Comparable<T>> InputValidationIssue outOfRange(InEnum in, String name, T value, T min,
@@ -124,9 +124,7 @@ public class InputValidationIssues {
                         .detail(String.format("All of these inputs must be present if %s is present: %s",
                                 target.getName(), getJoinedNames(inputs)));
         issue.addInput(target);
-        for (Input<?> input : inputs) {
-            issue.addInput(input);
-        }
+        issue.addInputs(inputs);
         return issue;
     }
 
@@ -191,9 +189,9 @@ public class InputValidationIssues {
     public static InputValidationIssue exactlyOneOfExpected(List<Input<?>> inputs) {
         return new InputValidationIssue(ISSUE_TYPE_EXACTLY_ONE_OF_EXPECTED,
                 "Exactly one of these inputs must be present")
-                        .detail(String.format("Exactly one of these inputs must be present: %s",
-                                getJoinedNames(inputs)))
-                        .inputs(inputs);
+                .detail(String.format("Exactly one of these inputs must be present: %s",
+                        getJoinedNames(inputs)))
+                .inputs(inputs);
     }
 
     public static InputValidationIssue anyOfExpected(List<Input<?>> inputs) {
@@ -205,17 +203,17 @@ public class InputValidationIssues {
     public static InputValidationIssue zeroOrExactlyOneOfExpected(List<Input<?>> inputs) {
         return new InputValidationIssue(ISSUE_TYPE_ZERO_OR_EXACTLY_ONE_OF_EXPECTED,
                 "Exactly one or none of these inputs must be present")
-                        .detail(String.format("Exactly one or none of these inputs must be present: %s",
-                                getJoinedNames(inputs)))
-                        .inputs(inputs);
+                .detail(String.format("Exactly one or none of these inputs must be present: %s",
+                        getJoinedNames(inputs)))
+                .inputs(inputs);
     }
 
     public static InputValidationIssue zeroOrAllOfExpected(List<Input<?>> inputs) {
         return new InputValidationIssue(ISSUE_TYPE_ZERO_OR_ALL_OF_EXPECTED,
                 "All or none of these inputs must be present")
-                        .detail(String.format("All or none of these inputs must be present: %s",
-                                getJoinedNames(inputs)))
-                        .inputs(inputs);
+                .detail(String.format("All or none of these inputs must be present: %s",
+                        getJoinedNames(inputs)))
+                .inputs(inputs);
     }
 
     public static InputValidationIssue equalExpected(List<Input<?>> inputs) {
