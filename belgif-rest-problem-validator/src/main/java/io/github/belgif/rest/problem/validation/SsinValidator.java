@@ -65,10 +65,7 @@ class SsinValidator extends AbstractSingleInputValidator<String> {
             }
         }
         // validate date structure
-        if (dayPart != UNSPECIFIED) {
-            if (month == UNSPECIFIED) {
-                return false;
-            }
+        if (dayPart != UNSPECIFIED && month != UNSPECIFIED) {
             try {
                 LocalDate.of(year2000 ? 2000 + yearPart : 1900 + yearPart, month, dayPart);
             } catch (DateTimeException e) {
