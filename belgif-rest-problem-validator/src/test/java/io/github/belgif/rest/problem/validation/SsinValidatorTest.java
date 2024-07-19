@@ -26,10 +26,16 @@ class SsinValidatorTest {
     void okBis() {
         // bis with month == 20
         assertValidSsin("92200006963");
+        // bis with month == 20 && day > 0 && day < 32
+        assertValidSsin("10200100128");
+        // bis with month == 20 && day > 31
+        assertValidSsin("24203200171");
         // bis with month == 32
         assertValidSsin("92321506985");
         // bis with month == 40
         assertValidSsin("92400006909");
+        // bis with month == 40 && day > 0
+        assertValidSsin("10400100171");
         // bis with month == 52
         assertValidSsin("92521506931");
         // bis with month >20 & <32
@@ -44,11 +50,15 @@ class SsinValidatorTest {
 
     @Test
     void okNr() {
-        // nr with month == 0
+        // nr with month == 0 && day == 0
         assertValidSsin("81000003517");
+        // nr with month == 0 && day > 0 && day < 32
+        assertValidSsin("10000100182");
+        // nr with month == 0 && day > 31
+        assertValidSsin("00003241778");
         // nr with month == 12
         assertValidSsin("81120103571");
-        // nr with month > 0 && month < 12
+        // nr with day > 0 && month < 12
         assertValidSsin("81050103522");
         // nr 2k
         assertValidSsin("19082416188");
@@ -64,11 +74,6 @@ class SsinValidatorTest {
     void nokBirthDateInFuture() {
         // birth date is tomorrow
         assertInvalidSsin(createSsinFromDate(LocalDate.now().plusDays(1)));
-    }
-
-    @Test
-    void nokUnspecifiedMonth() {
-        assertInvalidSsin("81001202357");
     }
 
     @Test
