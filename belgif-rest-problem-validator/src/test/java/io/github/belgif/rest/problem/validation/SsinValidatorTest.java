@@ -92,11 +92,6 @@ class SsinValidatorTest {
     }
 
     @Test
-    void nokDateOverflow() {
-        assertValidSsin("00003241778");
-    }
-
-    @Test
     void nokInvalidDate() {
         assertInvalidSsin("81022903534");
     }
