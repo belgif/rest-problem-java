@@ -52,6 +52,8 @@ class SsinValidatorTest {
     void okNr() {
         // nr with month == 0 && day == 0
         assertValidSsin("81000003517");
+        // nr with month == 0 && day > 0 && day < 32
+        assertValidSsin("10000100182");
         // nr with month == 0 && day > 31
         assertValidSsin("00003241778");
         // nr with month == 12
