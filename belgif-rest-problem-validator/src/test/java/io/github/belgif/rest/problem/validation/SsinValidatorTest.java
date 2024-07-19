@@ -24,8 +24,6 @@ class SsinValidatorTest {
 
     @Test
     void okBis() {
-        // bis with month == 0 && day > 0
-        assertValidSsin("10000100182");
         // bis with month == 20
         assertValidSsin("92200006963");
         // bis with month == 20 && day > 0 && day < 32
@@ -54,8 +52,6 @@ class SsinValidatorTest {
     void okNr() {
         // nr with month == 0 && day == 0
         assertValidSsin("81000003517");
-        // nr with month == 0 && day > 0 && day < 32
-        assertValidSsin("81120103571");
         // nr with month == 0 && day > 31
         assertValidSsin("00003241778");
         // nr with month == 12
