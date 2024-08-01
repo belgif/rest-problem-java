@@ -41,7 +41,7 @@ public class InputValidationIssue {
             "inputs[] and in/name/value are mutually exclusive";
 
     private static final String INPUTS_SETTER_ONE_ITEM =
-            "inputs[] can not be set with one non null item, use in(in, name, value) instead ";
+            "inputs[] can not be set with a single item, use in(in, name, value) instead";
 
     private URI type;
     private URI href;
@@ -142,34 +142,6 @@ public class InputValidationIssue {
         return Collections.unmodifiableList(inputs);
     }
 
-    public void setInputs(List<Input<?>> inputs) {
-
-        this.inputs.clear();
-
-        if (inputs == null) {
-            return;
-        }
-
-        if (hasInNameValue()) {
-            throw new IllegalArgumentException(INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE);
-        }
-
-        List<Input<?>> filteredInputs = inputs.stream().filter(Objects::nonNull).collect(Collectors.toList());
-
-        if (filteredInputs.size() == 1) {
-            throw new IllegalArgumentException(INPUTS_SETTER_ONE_ITEM);
-        }
-
-        this.inputs.addAll(filteredInputs);
-    }
-
-    public void setInputs(Input<?>... inputs) {
-        if (inputs == null) {
-            return;
-        }
-        setInputs(Arrays.asList(inputs));
-    }
-
     private void clearInNameValue() {
         this.in = null;
         this.name = null;
@@ -193,18 +165,18 @@ public class InputValidationIssue {
         }
     }
 
-    public void addInputs(List<Input<?>> input) {
-        if (input == null || input.isEmpty()) {
-            return;
-        }
-        input.forEach(this::addInput);
-    }
-
     public void addInput(Input<?>... input) {
         if (input == null) {
             return;
         }
         addInputs(Arrays.asList(input));
+    }
+
+    public void addInputs(List<Input<?>> input) {
+        if (input == null || input.isEmpty()) {
+            return;
+        }
+        input.forEach(this::addInput);
     }
 
     private void verifyNoInputs(Object valueToUpdate) {
@@ -331,7 +303,8 @@ public class InputValidationIssue {
      * @param key the key
      * @param value the value
      * @return this InputValidationIssue
-     * @deprecated use {@link InputValidationIssue#input(Input)} to reference multiple input values
+     * @deprecated use {@link InputValidationIssue#inputs(List)} or {@link InputValidationIssue#inputs(Input[])} to
+     *             reference multiple input values
      */
     @SuppressWarnings("unchecked")
     @Deprecated
@@ -348,18 +321,33 @@ public class InputValidationIssue {
         return this;
     }
 
-    public InputValidationIssue input(Input<?> input) {
-        addInput(input);
-        return this;
-    }
-
     public InputValidationIssue inputs(List<Input<?>> inputs) {
-        setInputs(inputs);
+        this.inputs.clear();
+
+        if (inputs == null) {
+            return this;
+        }
+
+        if (hasInNameValue()) {
+            throw new IllegalArgumentException(INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE);
+        }
+
+        List<Input<?>> filteredInputs = inputs.stream().filter(Objects::nonNull).collect(Collectors.toList());
+
+        if (filteredInputs.size() == 1) {
+            throw new IllegalArgumentException(INPUTS_SETTER_ONE_ITEM);
+        }
+
+        this.inputs.addAll(filteredInputs);
         return this;
     }
 
     public InputValidationIssue inputs(Input<?>... inputs) {
-        setInputs(inputs);
+        if (inputs == null) {
+            return this;
+        }
+        inputs(Arrays.asList(inputs));
+
         return this;
     }
 
