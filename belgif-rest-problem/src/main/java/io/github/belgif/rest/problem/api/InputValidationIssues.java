@@ -124,9 +124,7 @@ public class InputValidationIssues {
                         .detail(String.format("All of these inputs must be present if %s is present: %s",
                                 target.getName(), getJoinedNames(inputs)));
         issue.addInput(target);
-        for (Input<?> input : inputs) {
-            issue.addInput(input);
-        }
+        issue.addInputs(inputs);
         return issue;
     }
 
