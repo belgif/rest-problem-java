@@ -29,6 +29,12 @@ The library consists of these modules:
 
 == Release notes
 
+=== Version 0.6
+
+*belgif-rest-problem-validator:*
+
+* Fix validation for "overflow" SSINs
+
 === Version 0.5
 
 *belgif-rest-problem-spring:*
