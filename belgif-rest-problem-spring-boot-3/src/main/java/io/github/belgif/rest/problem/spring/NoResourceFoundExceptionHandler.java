@@ -1,5 +1,6 @@
 package io.github.belgif.rest.problem.spring;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,6 +12,7 @@ import io.github.belgif.rest.problem.api.Problem;
 
 @RestControllerAdvice
 @Order(1)
+@ConditionalOnWebApplication
 public class NoResourceFoundExceptionHandler {
 
     @ExceptionHandler(NoResourceFoundException.class)
