@@ -170,32 +170,32 @@ public class FrontendController implements ControllerInterface {
 
     @GetMapping("/beanValidation/queryParameter")
     public ResponseEntity<String> beanValidationQueryParameter(
-            @RequestParam("param") @Positive @NotNull Integer param,
-            @RequestParam("other") @Size(max = 5) String other) {
-        return ResponseEntity.ok("param: " + param + ", other: " + other);
+            @RequestParam("param") @Positive @NotNull Integer p,
+            @RequestParam("other") @Size(max = 5) String o) {
+        return ResponseEntity.ok("param: " + p + ", other: " + o);
     }
 
     @GetMapping("/beanValidation/headerParameter")
     public ResponseEntity<String> beanValidationHeaderParameter(
-            @RequestHeader("param") @Positive @NotNull Integer param) {
-        return ResponseEntity.ok("param: " + param);
+            @RequestHeader("param") @Positive @NotNull Integer p) {
+        return ResponseEntity.ok("param: " + p);
     }
 
     @GetMapping("/beanValidation/pathParameter/class/{param}")
     public ResponseEntity<String> beanValidationPathParameter(
-            @PathVariable("param") @Positive @NotNull Integer param) {
-        return ResponseEntity.ok("param: " + param);
+            @PathVariable("param") @Positive @NotNull Integer p) {
+        return ResponseEntity.ok("param: " + p);
     }
 
     @Override
-    public ResponseEntity<String> beanValidationPathParameterInherited(Integer param) {
-        return ResponseEntity.ok("param: " + param);
+    public ResponseEntity<String> beanValidationPathParameterInherited(Integer p) {
+        return ResponseEntity.ok("param: " + p);
     }
 
     @Override
     @GetMapping("/beanValidation/pathParameter/overridden")
-    public ResponseEntity<String> beanValidationPathParameterOverridden(@RequestParam Integer param) {
-        return ResponseEntity.ok("param: " + param);
+    public ResponseEntity<String> beanValidationPathParameterOverridden(@RequestParam("param") Integer p) {
+        return ResponseEntity.ok("param: " + p);
     }
 
     @PostMapping("/beanValidation/body")
@@ -214,8 +214,8 @@ public class FrontendController implements ControllerInterface {
     }
 
     @PostMapping("/beanValidation/queryParameter/nested")
-    public ResponseEntity<String> beanValidationQueryParameterNested(@Valid Model param) {
-        return ResponseEntity.ok("param: " + param);
+    public ResponseEntity<String> beanValidationQueryParameterNested(@Valid Model p) {
+        return ResponseEntity.ok("param: " + p);
     }
 
 }
