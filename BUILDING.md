@@ -59,6 +59,8 @@ Once the build has completed, follow these steps to publish the artifacts on Mav
 * Login to https://oss.sonatype.org/#stagingRepositories to "Close" the staging repo (this can take about 15 minutes to complete)
 * Still on https://oss.sonatype.org/#stagingRepositories, click "Release" to publish to Maven Central
 
+After a successful release the artifact will be published to Maven Central, typically within 10 minutes. However updates to search.maven.org can take up to two hours.
+
 On GitHub, complete the changelog and publish the drafted release.
 
 ## Versioning

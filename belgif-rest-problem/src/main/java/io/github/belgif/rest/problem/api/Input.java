@@ -3,6 +3,7 @@ package io.github.belgif.rest.problem.api;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * Input model for {@link InputValidationIssue#getInputs()}.
@@ -19,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  *
  * @param <V> the input value type
  */
+@JsonPropertyOrder({ "in", "name", "value" })
 public class Input<V> {
 
     private InEnum in;

@@ -1,5 +1,6 @@
 package io.github.belgif.rest.problem.spring;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -18,6 +19,7 @@ import io.github.belgif.rest.problem.api.Problem;
  */
 @RestControllerAdvice
 @Order(1)
+@ConditionalOnWebApplication
 public class RoutingExceptionsHandler {
 
     @ExceptionHandler(MissingServletRequestParameterException.class)

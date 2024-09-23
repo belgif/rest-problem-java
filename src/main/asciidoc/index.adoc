@@ -41,6 +41,10 @@ The library consists of these modules:
 
 * Fix validation for "overflow" SSINs
 
+*belgif-rest-problem-spring:*
+
+* Make RestControllerAdvice components @ConditionalOnWebApplication
+
 === Version 0.5
 
 *belgif-rest-problem-spring:*
