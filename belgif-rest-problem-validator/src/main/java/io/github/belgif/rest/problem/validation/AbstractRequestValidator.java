@@ -288,7 +288,7 @@ public abstract class AbstractRequestValidator<V extends AbstractRequestValidato
      * @return this RequestValidator
      */
     public <T> V refDatas(Input<List<T>> input, Collection<T> allowedRefData) {
-        return (V) refDatas(input, () -> allowedRefData);
+        return refDatas(input, () -> allowedRefData);
     }
 
     /**
