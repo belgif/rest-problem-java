@@ -13,8 +13,8 @@ import reactor.core.publisher.Mono;
 /**
  * WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
  * 
- * @implNote This class is intentionally duplicated in belgif-rest-problem-spring-boot-2,
- *           to address a (<a href="https://github.com/belgif/rest-problem-java/issues/98">compatibility issue</a>).
+ * NOTE: This class is intentionally duplicated in belgif-rest-problem-spring-boot-2,
+ * to address a (<a href="https://github.com/belgif/rest-problem-java/issues/98">compatibility issue</a>).
  */
 @Component
 @ConditionalOnClass(WebClient.class)
