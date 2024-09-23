@@ -470,12 +470,23 @@ class RequestValidatorTest {
 
     @Test
     void extension() {
-        new RequestValidatorExtensionB()
+        final class MyRequestValidator extends AbstractRequestValidator<MyRequestValidator> implements
+                StandardRequestValidatorModule<MyRequestValidator>,
+                RequestValidatorModuleA<MyRequestValidator>,
+                RequestValidatorModuleB<MyRequestValidator> {
+
+            @Override
+            public MyRequestValidator getThis() {
+                return this;
+            }
+        }
+
+        new MyRequestValidator()
                 .require(Input.body("test", "value"))
                 .b()
                 .a()
                 .validate();
-        new RequestValidatorExtensionB()
+        new MyRequestValidator()
                 .a()
                 .b()
                 .require(Input.body("test", "value"))

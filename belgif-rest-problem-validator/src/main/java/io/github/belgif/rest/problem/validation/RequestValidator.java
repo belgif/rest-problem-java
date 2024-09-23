@@ -19,10 +19,11 @@ import io.github.belgif.rest.problem.api.InputValidationIssue;
  * @see InputValidationIssue
  * @see InputValidator
  */
-public final class RequestValidator extends AbstractRequestValidator<RequestValidator> {
+public final class RequestValidator extends AbstractRequestValidator<RequestValidator>
+        implements StandardRequestValidatorModule<RequestValidator> {
 
     @Override
-    protected RequestValidator getThis() {
+    public RequestValidator getThis() {
         return this;
     }
 
