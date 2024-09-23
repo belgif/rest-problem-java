@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem;
 
 import java.net.URI;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +33,11 @@ public class BackendController {
         };
         unmapped.setDetail("Unmapped problem from backend");
         throw unmapped;
+    }
+
+    @GetMapping("/happyPath")
+    public ResponseEntity<String> happyPath() {
+        return ResponseEntity.ok("Yes, very happy path");
     }
 
 }

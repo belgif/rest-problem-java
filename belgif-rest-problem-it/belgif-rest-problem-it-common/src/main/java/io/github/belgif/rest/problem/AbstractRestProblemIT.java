@@ -61,6 +61,15 @@ abstract class AbstractRestProblemIT {
 
     @ParameterizedTest
     @MethodSource("getClients")
+    void happyPathFromBackend(String client) {
+        getSpec().when().queryParam("client", client)
+                .get("/happyPathFromBackend").then().assertThat()
+                .statusCode(200)
+                .body(containsString("Yes, very happy path"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getClients")
     void badRequestFromBackend(String client) {
         getSpec().when().queryParam("client", client)
                 .get("/badRequestFromBackend").then().assertThat()
@@ -226,7 +235,7 @@ abstract class AbstractRestProblemIT {
     void constraintViolationMissingRequiredBody() {
         getSpec().when()
                 .contentType("application/json")
-                .post("/beanValidation/body").then().assertThat()
+                .post("/beanValidation/body").then().log().all().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("body"))

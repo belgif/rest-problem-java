@@ -54,7 +54,7 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
                 "\"email: \"mymail.com\"" +
                 "}")
                 .contentType("application/json")
-                .post("/beanValidation/body").then().assertThat()
+                .post("/beanValidation/body").then().log().all().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("body"))

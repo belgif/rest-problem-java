@@ -95,6 +95,26 @@ public class FrontendController implements ControllerInterface {
         throw problem;
     }
 
+    @GetMapping("/happyPathFromBackend")
+    public ResponseEntity<String> happyPathFromBackend(@RequestParam("client") Client client) {
+        String receivedString = null;
+        try {
+            if (client == Client.REST_TEMPLATE) {
+                receivedString = restTemplate.getForObject("/happyPath", String.class);
+            } else if (client == Client.WEB_CLIENT) {
+                receivedString = webClient.get().uri("/happyPath").retrieve().toEntity(String.class).block().getBody();
+            } else if (client == Client.REST_CLIENT) {
+                receivedString = restClient.get().uri("/happyPath").retrieve().toEntity(String.class).getBody();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        if (receivedString == null) {
+            throw new RuntimeException("Client returned null");
+        }
+        return ResponseEntity.ok(receivedString);
+    }
+
     @GetMapping("/badRequestFromBackend")
     public void badRequestFromBackend(@RequestParam("client") Client client) {
         try {
