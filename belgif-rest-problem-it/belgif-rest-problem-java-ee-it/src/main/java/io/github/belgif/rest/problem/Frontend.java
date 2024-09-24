@@ -4,7 +4,12 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import io.github.belgif.rest.problem.model.ChildModel;
@@ -32,6 +37,10 @@ public interface Frontend {
     @GET
     @Path("/retryAfter")
     Response retryAfter();
+
+    @GET
+    @Path("/okFromBackend")
+    Response okFromBackend(@QueryParam("client") Client client);
 
     @GET
     @Path("/badRequestFromBackend")

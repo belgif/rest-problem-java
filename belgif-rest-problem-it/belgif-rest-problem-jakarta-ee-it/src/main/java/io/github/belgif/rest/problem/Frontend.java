@@ -4,7 +4,12 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
 
 import io.github.belgif.rest.problem.model.ChildModel;
@@ -32,6 +37,10 @@ public interface Frontend {
     @GET
     @Path("/retryAfter")
     Response retryAfter();
+
+    @GET
+    @Path("/okFromBackend")
+    Response okFromBackend(@QueryParam("client") Client client);
 
     @GET
     @Path("/badRequestFromBackend")

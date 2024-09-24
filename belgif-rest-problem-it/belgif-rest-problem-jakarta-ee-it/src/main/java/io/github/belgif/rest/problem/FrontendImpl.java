@@ -81,6 +81,31 @@ public class FrontendImpl implements Frontend {
     }
 
     @Override
+    public Response okFromBackend(Client client) {
+        String result = null;
+        if (client == null || client == Client.MICROPROFILE) {
+            result = microprofileClient.ok().readEntity(String.class);
+        } else if (client == Client.JAXRS) {
+            result = jaxRsClient.target(BASE_URI).path("backend/ok").request().get().readEntity(String.class);
+        } else if (client == Client.JAXRS_ASYNC) {
+            try {
+                result = jaxRsClient.target(BASE_URI).path("backend/ok").request().async().get().get()
+                        .readEntity(String.class);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (client == Client.RESTEASY) {
+            result = resteasyClient.target(BASE_URI).path("backend/ok").request().get().readEntity(String.class);
+        } else if (client == Client.RESTEASY_PROXY) {
+            result = resteasyProxyClient.ok().readEntity(String.class);
+        }
+        return Response.ok(result).build();
+    }
+
+    @Override
     public Response badRequestFromBackend(Client client) {
         try {
             if (client == null || client == Client.MICROPROFILE) {
