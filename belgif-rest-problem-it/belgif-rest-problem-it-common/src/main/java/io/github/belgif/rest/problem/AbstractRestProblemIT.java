@@ -61,6 +61,15 @@ abstract class AbstractRestProblemIT {
 
     @ParameterizedTest
     @MethodSource("getClients")
+    void okFromBackend(String client) {
+        getSpec().when().queryParam("client", client)
+                .get("/okFromBackend").then().assertThat()
+                .statusCode(200)
+                .body(containsString("OK"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getClients")
     void badRequestFromBackend(String client) {
         getSpec().when().queryParam("client", client)
                 .get("/badRequestFromBackend").then().assertThat()
