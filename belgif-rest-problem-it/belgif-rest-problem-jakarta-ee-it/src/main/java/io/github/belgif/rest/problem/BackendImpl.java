@@ -13,6 +13,11 @@ import io.github.belgif.rest.problem.api.Problem;
 public class BackendImpl implements Backend {
 
     @Override
+    public Response ok() {
+        return Response.ok("OK").build();
+    }
+
+    @Override
     public Response badRequest() {
         BadRequestProblem problem = new BadRequestProblem();
         problem.setDetail("Bad Request from backend");

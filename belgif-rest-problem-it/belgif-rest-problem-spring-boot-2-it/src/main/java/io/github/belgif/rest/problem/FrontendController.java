@@ -3,14 +3,23 @@ package io.github.belgif.rest.problem;
 import java.net.URI;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -81,6 +90,17 @@ public class FrontendController implements ControllerInterface {
         ServiceUnavailableProblem problem = new ServiceUnavailableProblem();
         problem.setRetryAfterSec(10000L);
         throw problem;
+    }
+
+    @GetMapping("/okFromBackend")
+    public ResponseEntity<String> okFromBackend(@RequestParam("client") Client client) {
+        String result = null;
+        if (client == Client.REST_TEMPLATE) {
+            result = restTemplate.getForObject("/ok", String.class);
+        } else if (client == Client.WEB_CLIENT) {
+            result = webClient.get().uri("/ok").retrieve().toEntity(String.class).block().getBody();
+        }
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/badRequestFromBackend")

@@ -8,6 +8,10 @@ import jakarta.ws.rs.core.Response;
 public interface Backend {
 
     @GET
+    @Path("/ok")
+    Response ok();
+
+    @GET
     @Path("/badRequest")
     Response badRequest();
 
