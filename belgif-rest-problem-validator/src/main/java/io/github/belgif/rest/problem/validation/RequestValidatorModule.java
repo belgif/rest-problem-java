@@ -3,16 +3,16 @@ package io.github.belgif.rest.problem.validation;
 /**
  * Interface for composable request validator modules.
  *
- * @param <V> self-referencing RequestValidatorModule type (for extensible builder pattern)
+ * @param <THIS> self-referencing RequestValidatorModule type (for extensible fluent builder pattern)
  */
-public interface RequestValidatorModule<V extends RequestValidatorModule<V>> {
+public interface RequestValidatorModule<THIS extends RequestValidatorModule<THIS>> {
 
     /**
-     * Return this self-referencing RequestValidatorModule type (for extensible builder pattern).
+     * Return this self-referencing RequestValidatorModule type (for extensible fluent builder pattern).
      *
      * @return this
      */
-    V getThis();
+    THIS getThis();
 
     /**
      * Add an input validator.

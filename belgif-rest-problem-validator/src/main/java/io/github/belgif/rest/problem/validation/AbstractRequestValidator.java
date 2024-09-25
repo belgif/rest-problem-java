@@ -20,10 +20,10 @@ import io.github.belgif.rest.problem.api.InputValidationIssue;
  * @see InputValidationIssue
  * @see InputValidator
  *
- * @param <V> self-referencing AbstractRequestValidator type (for extensible builder pattern)
+ * @param <SELF> self-referencing AbstractRequestValidator type (for extensible fluent builder pattern)
  */
-public abstract class AbstractRequestValidator<V extends AbstractRequestValidator<V>>
-        implements RequestValidatorModule<V> {
+public abstract class AbstractRequestValidator<SELF extends AbstractRequestValidator<SELF>>
+        implements RequestValidatorModule<SELF> {
 
     private final List<InputValidator> validators = new ArrayList<>();
 
@@ -45,6 +45,12 @@ public abstract class AbstractRequestValidator<V extends AbstractRequestValidato
 
     public void addValidator(InputValidator validator) {
         this.validators.add(validator);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public SELF getThis() {
+        return (SELF) this;
     }
 
 }

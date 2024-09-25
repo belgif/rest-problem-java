@@ -475,10 +475,6 @@ class RequestValidatorTest {
                 RequestValidatorModuleA<MyRequestValidator>,
                 RequestValidatorModuleB<MyRequestValidator> {
 
-            @Override
-            public MyRequestValidator getThis() {
-                return this;
-            }
         }
 
         new MyRequestValidator()

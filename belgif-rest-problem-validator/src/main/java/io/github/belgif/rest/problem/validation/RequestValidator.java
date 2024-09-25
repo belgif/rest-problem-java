@@ -22,9 +22,4 @@ import io.github.belgif.rest.problem.api.InputValidationIssue;
 public final class RequestValidator extends AbstractRequestValidator<RequestValidator>
         implements StandardRequestValidatorModule<RequestValidator> {
 
-    @Override
-    public RequestValidator getThis() {
-        return this;
-    }
-
 }

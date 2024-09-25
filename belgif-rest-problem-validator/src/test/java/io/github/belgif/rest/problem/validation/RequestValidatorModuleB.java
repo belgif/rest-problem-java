@@ -1,8 +1,9 @@
 package io.github.belgif.rest.problem.validation;
 
-public interface RequestValidatorModuleB<V extends RequestValidatorModuleB<V>> extends RequestValidatorModule<V> {
+public interface RequestValidatorModuleB<THIS extends RequestValidatorModuleB<THIS>>
+        extends RequestValidatorModule<THIS> {
 
-    default V b() {
+    default THIS b() {
         return getThis();
     }
 
