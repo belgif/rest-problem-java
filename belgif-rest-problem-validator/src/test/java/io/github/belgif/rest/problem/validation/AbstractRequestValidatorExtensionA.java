@@ -1,9 +1,9 @@
 package io.github.belgif.rest.problem.validation;
 
-public abstract class AbstractRequestValidatorExtensionA<V extends AbstractRequestValidatorExtensionA<V>>
-        extends AbstractRequestValidator<V> {
+public abstract class AbstractRequestValidatorExtensionA<SELF extends AbstractRequestValidatorExtensionA<SELF>>
+        extends AbstractRequestValidator<SELF> {
 
-    public V a() {
+    public SELF a() {
         return getThis();
     }
 
