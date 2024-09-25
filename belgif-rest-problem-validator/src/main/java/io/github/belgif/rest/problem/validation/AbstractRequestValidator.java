@@ -33,11 +33,6 @@ import io.github.belgif.rest.problem.api.InputValidationIssue;
 public abstract class AbstractRequestValidator<V extends AbstractRequestValidator<V>> {
 
     private final List<InputValidator> validators = new ArrayList<>();
-    private final Class<V> validatorClass;
-
-    protected AbstractRequestValidator(Class<V> validatorClass) {
-        this.validatorClass = validatorClass;
-    }
 
     /**
      * Perform all configured validations.
@@ -443,8 +438,9 @@ public abstract class AbstractRequestValidator<V extends AbstractRequestValidato
         return getThis();
     }
 
+    @SuppressWarnings("unchecked")
     protected V getThis() {
-        return validatorClass.cast(this);
+        return (V) this;
     }
 
     protected void addValidator(InputValidator validator) {

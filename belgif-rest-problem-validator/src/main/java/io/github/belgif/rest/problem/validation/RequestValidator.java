@@ -21,8 +21,4 @@ import io.github.belgif.rest.problem.api.InputValidationIssue;
  */
 public final class RequestValidator extends AbstractRequestValidator<RequestValidator> {
 
-    public RequestValidator() {
-        super(RequestValidator.class);
-    }
-
 }
