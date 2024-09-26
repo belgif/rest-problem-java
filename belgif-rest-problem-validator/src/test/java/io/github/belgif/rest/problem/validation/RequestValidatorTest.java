@@ -468,6 +468,20 @@ class RequestValidatorTest {
                 InputValidationIssues.invalidEnterpriseNumber(BODY, "enterpriseNumber", "2111111112"));
     }
 
+    @Test
+    void extension() {
+        new RequestValidatorExtensionB()
+                .require(Input.body("test", "value"))
+                .b()
+                .a()
+                .validate();
+        new RequestValidatorExtensionB()
+                .a()
+                .b()
+                .require(Input.body("test", "value"))
+                .validate();
+    }
+
     private void assertValid(RequestValidator validator) {
         assertThatNoException().isThrownBy(validator::validate);
     }

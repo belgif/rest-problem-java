@@ -31,6 +31,10 @@ The library consists of these modules:
 
 === Version 0.7
 
+*belgif-rest-problem-validator:*
+
+* Make RequestValidator <<extending-request-validator, extensible>> by introducing AbstractRequestValidator base class
+
 *belgif-rest-problem-spring:*
 
 * Extract ProblemWebClientCustomizer to belgif-rest-problem-spring-boot-2 and belgif-rest-problem-spring-boot-3 to fix NoSuchMethodError compatibility issue
@@ -285,6 +289,33 @@ include::../../../belgif-rest-problem-validator/src/test/java/adoc/CodeSamples.j
 }
 ----
 ====
+
+[discrete]
+[[extending-request-validator]]
+=== Extending the RequestValidator
+
+You may have a need to extend the RequestValidator with custom organization- or domain-specific validations. +
+This is possible by extending the AbstractRequestValidator base class.
+
+If in turn, you want your own validator implementation to be extensible as well, you can propagate the extensible fluent builder pattern as follows:
+
+[source,java]
+.Extensible request validator
+----
+ public abstract class AbstractMyRequestValidator<SELF extends AbstractMyRequestValidator<SELF>>
+         extends AbstractRequestValidator<SELF> {
+
+     public SELF something(Input<String> input) {
+         addValidator(new SomethingValidator(input));
+         return getThis();
+     }
+
+ }
+
+ public final class MyRequestValidator extends AbstractMyRequestValidator<MyRequestValidator> {
+
+ }
+----
 
 [[belgif-rest-problem-java-ee]]
 == belgif-rest-problem-java-ee
