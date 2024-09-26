@@ -27,16 +27,16 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public class JaxRsParameterNameProvider implements ParameterNameProvider {
 
-    private final ConcurrentHashMap<Executable, List<String>> parameterNameCache = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Executable, List<String>> PARAMETER_NAME_CACHE = new ConcurrentHashMap<>();
 
     @Override
     public List<String> getParameterNames(Constructor<?> constructor) {
-        return parameterNameCache.computeIfAbsent(constructor, this::getParameterNames);
+        return PARAMETER_NAME_CACHE.computeIfAbsent(constructor, this::getParameterNames);
     }
 
     @Override
     public List<String> getParameterNames(Method method) {
-        return parameterNameCache.computeIfAbsent(method, this::getParameterNames);
+        return PARAMETER_NAME_CACHE.computeIfAbsent(method, this::getParameterNames);
     }
 
     private List<String> getParameterNames(Executable executable) {
