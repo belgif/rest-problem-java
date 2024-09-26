@@ -171,8 +171,8 @@ public class FrontendController implements ControllerInterface {
     @GetMapping("/beanValidation/queryParameter")
     public ResponseEntity<String> beanValidationQueryParameter(
             @RequestParam("param") @Positive @NotNull Integer p,
-            @RequestParam("other") @Size(max = 5) String o) {
-        return ResponseEntity.ok("param: " + p + ", other: " + o);
+            @RequestParam @Size(max = 5) String other) {
+        return ResponseEntity.ok("param: " + p + ", other: " + other);
     }
 
     @GetMapping("/beanValidation/headerParameter")
