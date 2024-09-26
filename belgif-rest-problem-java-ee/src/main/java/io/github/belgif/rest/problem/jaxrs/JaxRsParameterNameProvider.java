@@ -5,9 +5,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import javax.validation.ParameterNameProvider;
 import javax.ws.rs.CookieParam;
@@ -39,12 +40,9 @@ public class JaxRsParameterNameProvider implements ParameterNameProvider {
     }
 
     private List<String> getParameterNames(Executable executable) {
-        Parameter[] parameters = executable.getParameters();
-        List<String> parameterNames = new ArrayList<>(parameters.length);
-        for (Parameter parameter : parameters) {
-            parameterNames.add(getParameterName(parameter));
-        }
-        return parameterNames;
+        return Arrays.stream(executable.getParameters())
+                .map(this::getParameterName)
+                .collect(Collectors.toList());
     }
 
     private String getParameterName(Parameter parameter) {

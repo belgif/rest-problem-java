@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.core.ParameterNameDiscoverer;
@@ -32,12 +33,9 @@ public class AnnotationParameterNameDiscoverer implements ParameterNameDiscovere
     }
 
     private String[] getParameterNames(Executable executable) {
-        Parameter[] parameters = executable.getParameters();
-        String[] parameterNames = new String[parameters.length];
-        for (int i = 0; i < parameters.length; i++) {
-            parameterNames[i] = getParameterName(parameters[i]);
-        }
-        return parameterNames;
+        return Arrays.stream(executable.getParameters())
+                .map(this::getParameterName)
+                .toArray(String[]::new);
     }
 
     private String getParameterName(Parameter parameter) {

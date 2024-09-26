@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class JaxRsParameterNameProviderTest {
 
-    private JaxRsParameterNameProvider provider = new JaxRsParameterNameProvider();
+    private final JaxRsParameterNameProvider provider = new JaxRsParameterNameProvider();
 
     @Test
     void getParameterNameConstructor() throws Exception {

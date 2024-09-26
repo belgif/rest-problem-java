@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 class AnnotationParameterNameDiscovererTest {
 
-    private AnnotationParameterNameDiscoverer discoverer = new AnnotationParameterNameDiscoverer();
+    private final AnnotationParameterNameDiscoverer discoverer = new AnnotationParameterNameDiscoverer();
 
     @Test
     void getParameterNameConstructor() throws Exception {
