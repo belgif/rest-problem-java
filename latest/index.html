@@ -637,6 +637,19 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li>
 <p>Extract ProblemWebClientCustomizer to belgif-rest-problem-spring-boot-2 and belgif-rest-problem-spring-boot-3 to fix NoSuchMethodError compatibility issue</p>
 </li>
+<li>
+<p>Add AnnotationParameterNameDiscoverer to retrieve parameter names from Spring MVC annotations for bean validation</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-java-ee:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add JaxRsParameterNameProvider to retrieve parameter names from JAX-RS annotations for bean validation</p>
+</li>
 </ul>
 </div>
 </div>
@@ -1152,6 +1165,9 @@ Its priority of "Priorities.USER + 200" allows it to be overridden if needed by 
 <p><strong>DefaultExceptionMapper:</strong> a JAX-RS ExceptionMapper that converts any other uncaught exception to an HTTP 500 InternalServerErrorProblem.</p>
 </li>
 <li>
+<p><strong>JaxRsParameterNameProvider</strong>: a bean validation ParameterNameProvider that retrieves parameter names from JAX-RS annotations</p>
+</li>
+<li>
 <p><strong>JAX-RS Client integration:</strong></p>
 <div class="ulist">
 <ul>
@@ -1304,6 +1320,23 @@ Additional packages to scan can be configured in your application.properties:</p
 </li>
 <li>
 <p><strong>ProblemRestTemplateCustomizer:</strong> a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.</p>
+</li>
+<li>
+<p><strong>AnnotationParameterNameDiscoverer:</strong> a bean validation ParameterNameDiscoverer that retrieves parameter names from Spring MVC annotations</p>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+When using a Spring MVC annotation without name (e.g. <code>@RequestParam String name</code> instead of <code>@RequestParam("name") String name</code>), the parameter name is retrieved via reflection as fallback.
+For this to work, your application code must be compiled with the <a href="https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html#option-parameters">-parameters</a> flag (see <a href="https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#parameters">maven-compiler-plugin</a>).
+Otherwise, you will see parameter names like <code>arg0</code>.
+</td>
+</tr>
+</table>
+</div>
 </li>
 </ul>
 </div>
