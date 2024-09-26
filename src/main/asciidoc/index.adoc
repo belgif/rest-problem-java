@@ -29,6 +29,21 @@ The library consists of these modules:
 
 == Release notes
 
+=== Version 0.7
+
+*belgif-rest-problem-validator:*
+
+* Make RequestValidator <<extending-request-validator, extensible>> by introducing AbstractRequestValidator base class
+
+*belgif-rest-problem-spring:*
+
+* Extract ProblemWebClientCustomizer to belgif-rest-problem-spring-boot-2 and belgif-rest-problem-spring-boot-3 to fix NoSuchMethodError compatibility issue
+* Add AnnotationParameterNameDiscoverer to retrieve parameter names from Spring MVC annotations for bean validation
+
+*belgif-rest-problem-java-ee:*
+
+* Add JaxRsParameterNameProvider to retrieve parameter names from JAX-RS annotations for bean validation
+
 === Version 0.6
 
 *belgif-rest-problem-validator:*
@@ -275,6 +290,33 @@ include::../../../belgif-rest-problem-validator/src/test/java/adoc/CodeSamples.j
 ----
 ====
 
+[discrete]
+[[extending-request-validator]]
+=== Extending the RequestValidator
+
+You may have a need to extend the RequestValidator with custom organization- or domain-specific validations. +
+This is possible by extending the AbstractRequestValidator base class.
+
+If in turn, you want your own validator implementation to be extensible as well, you can propagate the extensible fluent builder pattern as follows:
+
+[source,java]
+.Extensible request validator
+----
+ public abstract class AbstractMyRequestValidator<SELF extends AbstractMyRequestValidator<SELF>>
+         extends AbstractRequestValidator<SELF> {
+
+     public SELF something(Input<String> input) {
+         addValidator(new SomethingValidator(input));
+         return getThis();
+     }
+
+ }
+
+ public final class MyRequestValidator extends AbstractMyRequestValidator<MyRequestValidator> {
+
+ }
+----
+
 [[belgif-rest-problem-java-ee]]
 == belgif-rest-problem-java-ee
 
@@ -288,6 +330,7 @@ Its priority of "Priorities.USER + 200" allows it to be overridden if needed by 
 * *ProblemExceptionMapper:* a JAX-RS ExceptionMapper that converts Problem exceptions to a proper application/problem+json response.
 * *WebApplicationExceptionMapper:* a JAX-RS ExceptionMapper that handles WebApplicationExceptions thrown by the JAX-RS runtime itself, to prevent them from being handled by the DefaultExceptionMapper.
 * *DefaultExceptionMapper:* a JAX-RS ExceptionMapper that converts any other uncaught exception to an HTTP 500 InternalServerErrorProblem.
+* *JaxRsParameterNameProvider*: a bean validation ParameterNameProvider that retrieves parameter names from JAX-RS annotations
 
 * *JAX-RS Client integration:*
 ** *ProblemClientResponseFilter:* JAX-RS ClientResponseFilter that converts problem response to a ProblemWrapper exception.
@@ -360,21 +403,29 @@ io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
 * *RoutingExceptionsHandler:* an exception handler for RestControllers that converts routing related validation exceptions to HTTP 400 BadRequestProblem.
 * *ProblemResponseErrorHandler:* a RestTemplate error handler that converts problem responses to Problem exceptions.
 * *ProblemRestTemplateCustomizer:* a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.
-* *ProblemWebClientCustomizer:* a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
-This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
+* *AnnotationParameterNameDiscoverer:* a bean validation ParameterNameDiscoverer that retrieves parameter names from Spring MVC annotations
++
+WARNING: When using a Spring MVC annotation without name (e.g. `@RequestParam String name` instead of `@RequestParam("name") String name`), the parameter name is retrieved via reflection as fallback.
+For this to work, your application code must be compiled with the https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html#option-parameters[-parameters] flag (see https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#parameters[maven-compiler-plugin]).
+Otherwise, you will see parameter names like `arg0`.
 
 In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.
 
 [[belgif-rest-problem-spring-boot-2]]
 === belgif-rest-problem-spring-boot-2
 
-Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 2.x users are recommended to depend on `belgif-rest-problem-spring-boot-2`, which adds some Spring Boot 2.x specific integrations.
+Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 2.x users are recommended to depend on `belgif-rest-problem-spring-boot-2`, which adds some Spring Boot 2.x specific integrations:
+
+* *ProblemWebClientCustomizer:* a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
+This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
 
 [[belgif-rest-problem-spring-boot-3]]
 === belgif-rest-problem-spring-boot-3
 
 Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 3.x users are recommended to depend on `belgif-rest-problem-spring-boot-3`, which adds some Spring Boot 3.x specific integrations:
 
+* *ProblemWebClientCustomizer:* a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
+This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
 * *NoResourceFoundExceptionHandler:* an exception handler for RestControllers that converts NoResourceFoundException to HTTP 404 ResourceNotFoundProblem.
 * *ProblemRestClientCustomizer:* a RestClientCustomizer that registers the ProblemResponseErrorHandler.
 

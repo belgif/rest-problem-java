@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem;
 
 import java.net.URI;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,11 @@ import io.github.belgif.rest.problem.api.Problem;
 @RestController
 @RequestMapping("/backend")
 public class BackendController {
+
+    @GetMapping("/ok")
+    public ResponseEntity<String> ok() {
+        return ResponseEntity.ok("OK");
+    }
 
     @GetMapping("/badRequest")
     public void badRequest() {

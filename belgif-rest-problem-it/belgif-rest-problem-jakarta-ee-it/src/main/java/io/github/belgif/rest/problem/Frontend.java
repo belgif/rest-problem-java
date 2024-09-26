@@ -4,7 +4,12 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
 
 import io.github.belgif.rest.problem.model.ChildModel;
@@ -34,6 +39,10 @@ public interface Frontend {
     Response retryAfter();
 
     @GET
+    @Path("/okFromBackend")
+    Response okFromBackend(@QueryParam("client") Client client);
+
+    @GET
     @Path("/badRequestFromBackend")
     Response badRequestFromBackend(@QueryParam("client") Client client);
 
@@ -47,20 +56,20 @@ public interface Frontend {
 
     @GET
     @Path("/beanValidation/queryParameter")
-    Response beanValidationQueryParameter(@QueryParam("param") @NotNull @Positive Integer param,
-            @QueryParam("other") @Size(max = 5) String other);
+    Response beanValidationQueryParameter(@QueryParam("param") @NotNull @Positive Integer p,
+            @QueryParam("other") @Size(max = 5) String o);
 
     @GET
     @Path("/beanValidation/headerParameter")
-    Response beanValidationHeaderParameter(@HeaderParam("param") @NotNull @Positive Integer param);
+    Response beanValidationHeaderParameter(@HeaderParam("param") @NotNull @Positive Integer p);
 
     @GET
     @Path("/beanValidation/pathParameter/inherited/{param}")
-    Response beanValidationPathParameterInherited(@PathParam("param") @NotNull @Positive Integer param);
+    Response beanValidationPathParameterInherited(@PathParam("param") @NotNull @Positive Integer p);
 
     @GET
     @Path("/beanValidation/pathParameter/overridden/{param}")
-    Response beanValidationPathParameterOverridden(@PathParam("param") @NotNull @Positive Integer param);
+    Response beanValidationPathParameterOverridden(@PathParam("param") @NotNull @Positive Integer p);
 
     @POST
     @Path("/beanValidation/body")

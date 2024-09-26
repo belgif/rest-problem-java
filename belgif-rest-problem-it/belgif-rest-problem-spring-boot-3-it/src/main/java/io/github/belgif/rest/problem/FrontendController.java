@@ -3,14 +3,23 @@ package io.github.belgif.rest.problem;
 import java.net.URI;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -95,6 +104,19 @@ public class FrontendController implements ControllerInterface {
         throw problem;
     }
 
+    @GetMapping("/okFromBackend")
+    public ResponseEntity<String> okFromBackend(@RequestParam("client") Client client) {
+        String result = null;
+        if (client == Client.REST_TEMPLATE) {
+            result = restTemplate.getForObject("/ok", String.class);
+        } else if (client == Client.WEB_CLIENT) {
+            result = webClient.get().uri("/ok").retrieve().toEntity(String.class).block().getBody();
+        } else if (client == Client.REST_CLIENT) {
+            result = restClient.get().uri("/ok").retrieve().toEntity(String.class).getBody();
+        }
+        return ResponseEntity.ok(result);
+    }
+
     @GetMapping("/badRequestFromBackend")
     public void badRequestFromBackend(@RequestParam("client") Client client) {
         try {
@@ -148,32 +170,32 @@ public class FrontendController implements ControllerInterface {
 
     @GetMapping("/beanValidation/queryParameter")
     public ResponseEntity<String> beanValidationQueryParameter(
-            @RequestParam("param") @Positive @NotNull Integer param,
-            @RequestParam("other") @Size(max = 5) String other) {
-        return ResponseEntity.ok("param: " + param + ", other: " + other);
+            @RequestParam("param") @Positive @NotNull Integer p,
+            @RequestParam @Size(max = 5) String other) {
+        return ResponseEntity.ok("param: " + p + ", other: " + other);
     }
 
     @GetMapping("/beanValidation/headerParameter")
     public ResponseEntity<String> beanValidationHeaderParameter(
-            @RequestHeader("param") @Positive @NotNull Integer param) {
-        return ResponseEntity.ok("param: " + param);
+            @RequestHeader("param") @Positive @NotNull Integer p) {
+        return ResponseEntity.ok("param: " + p);
     }
 
     @GetMapping("/beanValidation/pathParameter/class/{param}")
     public ResponseEntity<String> beanValidationPathParameter(
-            @PathVariable("param") @Positive @NotNull Integer param) {
-        return ResponseEntity.ok("param: " + param);
+            @PathVariable("param") @Positive @NotNull Integer p) {
+        return ResponseEntity.ok("param: " + p);
     }
 
     @Override
-    public ResponseEntity<String> beanValidationPathParameterInherited(Integer param) {
-        return ResponseEntity.ok("param: " + param);
+    public ResponseEntity<String> beanValidationPathParameterInherited(Integer p) {
+        return ResponseEntity.ok("param: " + p);
     }
 
     @Override
     @GetMapping("/beanValidation/pathParameter/overridden")
-    public ResponseEntity<String> beanValidationPathParameterOverridden(@RequestParam Integer param) {
-        return ResponseEntity.ok("param: " + param);
+    public ResponseEntity<String> beanValidationPathParameterOverridden(@RequestParam("param") Integer p) {
+        return ResponseEntity.ok("param: " + p);
     }
 
     @PostMapping("/beanValidation/body")
@@ -192,8 +214,8 @@ public class FrontendController implements ControllerInterface {
     }
 
     @PostMapping("/beanValidation/queryParameter/nested")
-    public ResponseEntity<String> beanValidationQueryParameterNested(@Valid Model param) {
-        return ResponseEntity.ok("param: " + param);
+    public ResponseEntity<String> beanValidationQueryParameterNested(@Valid Model p) {
+        return ResponseEntity.ok("param: " + p);
     }
 
 }

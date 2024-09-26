@@ -15,6 +15,10 @@ With this library, RFC 9457 Problems can be treated as standard java exceptions:
 * the client side can catch `io.github.belgif.rest.problem.api.Problem` exceptions (or subclasses), which are
   transparently thrown when an RFC 9457 compliant "application/problem+json" response is received
 
-## build process
+## Documentation
+
+Documentation on how to use this library is available on https://belgif.github.io/rest-problem-java.
+
+## Build Process
 
 The build process is documented [here](https://github.com/belgif/rest-problem-java/blob/master/BUILDING.md).

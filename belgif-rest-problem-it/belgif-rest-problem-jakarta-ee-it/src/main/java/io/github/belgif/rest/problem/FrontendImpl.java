@@ -81,6 +81,31 @@ public class FrontendImpl implements Frontend {
     }
 
     @Override
+    public Response okFromBackend(Client client) {
+        String result = null;
+        if (client == null || client == Client.MICROPROFILE) {
+            result = microprofileClient.ok().readEntity(String.class);
+        } else if (client == Client.JAXRS) {
+            result = jaxRsClient.target(BASE_URI).path("backend/ok").request().get().readEntity(String.class);
+        } else if (client == Client.JAXRS_ASYNC) {
+            try {
+                result = jaxRsClient.target(BASE_URI).path("backend/ok").request().async().get().get()
+                        .readEntity(String.class);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (client == Client.RESTEASY) {
+            result = resteasyClient.target(BASE_URI).path("backend/ok").request().get().readEntity(String.class);
+        } else if (client == Client.RESTEASY_PROXY) {
+            result = resteasyProxyClient.ok().readEntity(String.class);
+        }
+        return Response.ok(result).build();
+    }
+
+    @Override
     public Response badRequestFromBackend(Client client) {
         try {
             if (client == null || client == Client.MICROPROFILE) {
@@ -165,31 +190,31 @@ public class FrontendImpl implements Frontend {
     }
 
     @Override
-    public Response beanValidationQueryParameter(Integer param, String other) {
-        return Response.ok("param: " + param + ", other: " + other).build();
+    public Response beanValidationQueryParameter(Integer p, String o) {
+        return Response.ok("param: " + p + ", other: " + o).build();
     }
 
     @Override
-    public Response beanValidationHeaderParameter(Integer param) {
-        return Response.ok("param: " + param).build();
+    public Response beanValidationHeaderParameter(Integer p) {
+        return Response.ok("param: " + p).build();
     }
 
     @GET
     @Path("/beanValidation/pathParameter/class/{param}")
-    public Response beanValidationPathParameter(@PathParam("param") @NotNull @Positive Integer param) {
-        return Response.ok("param: " + param).build();
+    public Response beanValidationPathParameter(@PathParam("param") @NotNull @Positive Integer p) {
+        return Response.ok("param: " + p).build();
     }
 
     @Override
-    public Response beanValidationPathParameterInherited(Integer param) {
-        return Response.ok("param: " + param).build();
+    public Response beanValidationPathParameterInherited(Integer p) {
+        return Response.ok("param: " + p).build();
     }
 
     @Override
     @GET
     @Path("/beanValidation/pathParameter/overridden")
-    public Response beanValidationPathParameterOverridden(@QueryParam("param") @NotNull @Positive Integer param) {
-        return Response.ok("param: " + param).build();
+    public Response beanValidationPathParameterOverridden(@QueryParam("param") @NotNull @Positive Integer p) {
+        return Response.ok("param: " + p).build();
     }
 
     @Override

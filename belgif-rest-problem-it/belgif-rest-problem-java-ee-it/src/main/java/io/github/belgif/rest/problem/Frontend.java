@@ -4,7 +4,12 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import io.github.belgif.rest.problem.model.ChildModel;
@@ -34,6 +39,10 @@ public interface Frontend {
     Response retryAfter();
 
     @GET
+    @Path("/okFromBackend")
+    Response okFromBackend(@QueryParam("client") Client client);
+
+    @GET
     @Path("/badRequestFromBackend")
     Response badRequestFromBackend(@QueryParam("client") Client client);
 
@@ -47,20 +56,20 @@ public interface Frontend {
 
     @GET
     @Path("/beanValidation/queryParameter")
-    Response beanValidationQueryParameter(@QueryParam("param") @NotNull @Positive Integer param,
-            @QueryParam("other") @Size(max = 5) String other);
+    Response beanValidationQueryParameter(@QueryParam("param") @NotNull @Positive Integer p,
+            @QueryParam("other") @Size(max = 5) String o);
 
     @GET
     @Path("/beanValidation/headerParameter")
-    Response beanValidationHeaderParameter(@HeaderParam("param") @NotNull @Positive Integer param);
+    Response beanValidationHeaderParameter(@HeaderParam("param") @NotNull @Positive Integer p);
 
     @GET
     @Path("/beanValidation/pathParameter/inherited/{param}")
-    Response beanValidationPathParameterInherited(@PathParam("param") @NotNull @Positive Integer param);
+    Response beanValidationPathParameterInherited(@PathParam("param") @NotNull @Positive Integer p);
 
     @GET
     @Path("/beanValidation/pathParameter/overridden/{param}")
-    Response beanValidationPathParameterOverridden(@PathParam("param") @NotNull @Positive Integer param);
+    Response beanValidationPathParameterOverridden(@PathParam("param") @NotNull @Positive Integer p);
 
     @POST
     @Path("/beanValidation/body")

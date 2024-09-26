@@ -15,10 +15,10 @@ public interface ControllerInterface {
 
     @GetMapping("/beanValidation/pathParameter/inherited/{param}")
     ResponseEntity<String> beanValidationPathParameterInherited(
-            @PathVariable("param") @Positive @NotNull Integer param);
+            @PathVariable("param") @Positive @NotNull Integer p);
 
     @GetMapping("/beanValidation/pathParameter/overridden/{param}")
     ResponseEntity<String> beanValidationPathParameterOverridden(
-            @PathVariable("param") @Positive @NotNull Integer param);
+            @PathVariable("param") @Positive @NotNull Integer p);
 
 }
