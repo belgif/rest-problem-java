@@ -190,31 +190,31 @@ public class FrontendImpl implements Frontend {
     }
 
     @Override
-    public Response beanValidationQueryParameter(Integer param, String other) {
-        return Response.ok("param: " + param + ", other: " + other).build();
+    public Response beanValidationQueryParameter(Integer p, String o) {
+        return Response.ok("param: " + p + ", other: " + o).build();
     }
 
     @Override
-    public Response beanValidationHeaderParameter(Integer param) {
-        return Response.ok("param: " + param).build();
+    public Response beanValidationHeaderParameter(Integer p) {
+        return Response.ok("param: " + p).build();
     }
 
     @GET
     @Path("/beanValidation/pathParameter/class/{param}")
-    public Response beanValidationPathParameter(@PathParam("param") @NotNull @Positive Integer param) {
-        return Response.ok("param: " + param).build();
+    public Response beanValidationPathParameter(@PathParam("param") @NotNull @Positive Integer p) {
+        return Response.ok("param: " + p).build();
     }
 
     @Override
-    public Response beanValidationPathParameterInherited(Integer param) {
-        return Response.ok("param: " + param).build();
+    public Response beanValidationPathParameterInherited(Integer p) {
+        return Response.ok("param: " + p).build();
     }
 
     @Override
     @GET
     @Path("/beanValidation/pathParameter/overridden")
-    public Response beanValidationPathParameterOverridden(@QueryParam("param") @NotNull @Positive Integer param) {
-        return Response.ok("param: " + param).build();
+    public Response beanValidationPathParameterOverridden(@QueryParam("param") @NotNull @Positive Integer p) {
+        return Response.ok("param: " + p).build();
     }
 
     @Override

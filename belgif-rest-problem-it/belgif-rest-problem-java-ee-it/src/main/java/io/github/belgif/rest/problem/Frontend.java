@@ -56,20 +56,20 @@ public interface Frontend {
 
     @GET
     @Path("/beanValidation/queryParameter")
-    Response beanValidationQueryParameter(@QueryParam("param") @NotNull @Positive Integer param,
-            @QueryParam("other") @Size(max = 5) String other);
+    Response beanValidationQueryParameter(@QueryParam("param") @NotNull @Positive Integer p,
+            @QueryParam("other") @Size(max = 5) String o);
 
     @GET
     @Path("/beanValidation/headerParameter")
-    Response beanValidationHeaderParameter(@HeaderParam("param") @NotNull @Positive Integer param);
+    Response beanValidationHeaderParameter(@HeaderParam("param") @NotNull @Positive Integer p);
 
     @GET
     @Path("/beanValidation/pathParameter/inherited/{param}")
-    Response beanValidationPathParameterInherited(@PathParam("param") @NotNull @Positive Integer param);
+    Response beanValidationPathParameterInherited(@PathParam("param") @NotNull @Positive Integer p);
 
     @GET
     @Path("/beanValidation/pathParameter/overridden/{param}")
-    Response beanValidationPathParameterOverridden(@PathParam("param") @NotNull @Positive Integer param);
+    Response beanValidationPathParameterOverridden(@PathParam("param") @NotNull @Positive Integer p);
 
     @POST
     @Path("/beanValidation/body")
