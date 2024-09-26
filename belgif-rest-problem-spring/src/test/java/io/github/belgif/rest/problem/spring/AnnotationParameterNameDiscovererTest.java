@@ -29,7 +29,8 @@ class AnnotationParameterNameDiscovererTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "requestParam", "pathVariable", "requestHeader", "cookieValue", "matrixVariable" })
+    @ValueSource(
+            strings = { "requestParam", "pathVariable", "requestHeader", "cookieValue", "matrixVariable", "fallback" })
     void getParameterNamesMethodWithJaxRsAnnotation(String method) throws Exception {
         assertThat(discoverer.getParameterNames(Tested.class.getDeclaredMethod(method, String.class)))
                 .containsExactly("name");
@@ -56,6 +57,10 @@ class AnnotationParameterNameDiscovererTest {
 
         void matrixVariable(@MatrixVariable("name") String x) {
         }
+
+        void fallback(@RequestParam String name) {
+        }
+
     }
 
 }

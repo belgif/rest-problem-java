@@ -40,20 +40,24 @@ public class AnnotationParameterNameDiscoverer implements ParameterNameDiscovere
 
     private String getParameterName(Parameter parameter) {
         Annotation[] annotations = parameter.getAnnotations();
+        String parameterName = null;
         for (Annotation annotation : annotations) {
             if (annotation instanceof RequestParam) {
-                return ((RequestParam) annotation).value();
+                parameterName = ((RequestParam) annotation).value();
             } else if (annotation instanceof PathVariable) {
-                return ((PathVariable) annotation).value();
+                parameterName = ((PathVariable) annotation).value();
             } else if (annotation instanceof RequestHeader) {
-                return ((RequestHeader) annotation).value();
+                parameterName = ((RequestHeader) annotation).value();
             } else if (annotation instanceof CookieValue) {
-                return ((CookieValue) annotation).value();
+                parameterName = ((CookieValue) annotation).value();
             } else if (annotation instanceof MatrixVariable) {
-                return ((MatrixVariable) annotation).value();
+                parameterName = ((MatrixVariable) annotation).value();
             }
         }
-        return parameter.getName();
+        if (parameterName == null || parameterName.isEmpty()) {
+            parameterName = parameter.getName();
+        }
+        return parameterName;
     }
 
 }
