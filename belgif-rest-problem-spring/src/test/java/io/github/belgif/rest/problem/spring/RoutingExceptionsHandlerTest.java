@@ -4,13 +4,20 @@ import static io.github.belgif.rest.problem.api.InputValidationIssues.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.mock.http.MockHttpInputMessage;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 
@@ -69,6 +76,29 @@ class RoutingExceptionsHandlerTest {
             assertThat(problem.getIssues().get(0).getName()).isNull();
             assertThat(problem.getIssues().get(0).getDetail()).isEqualTo("message");
         });
+    }
+
+    @Test
+    void handleHttpRequestMethodNotSupported() {
+        ResponseEntity<Void> response = handler.handleHttpRequestMethodNotSupported(
+                new HttpRequestMethodNotSupportedException("POST", Arrays.asList("GET", "PUT")));
+        assertThat(response.getStatusCodeValue()).isEqualTo(405);
+        assertThat(response.getHeaders().getAllow()).containsExactly(HttpMethod.GET, HttpMethod.PUT);
+    }
+
+    @Test
+    void handleHttpMediaTypeNotAcceptable() {
+        ResponseEntity<Void> response = handler.handleHttpMediaTypeNotAcceptable(
+                new HttpMediaTypeNotAcceptableException(Collections.singletonList(MediaType.APPLICATION_JSON)));
+        assertThat(response.getStatusCodeValue()).isEqualTo(406);
+    }
+
+    @Test
+    void handleHttpMediaTypeNotSupported() {
+        ResponseEntity<Void> response = handler.handleHttpMediaTypeNotSupported(
+                new HttpMediaTypeNotSupportedException(MediaType.APPLICATION_XML,
+                        Collections.singletonList(MediaType.APPLICATION_JSON)));
+        assertThat(response.getStatusCodeValue()).isEqualTo(415);
     }
 
 }

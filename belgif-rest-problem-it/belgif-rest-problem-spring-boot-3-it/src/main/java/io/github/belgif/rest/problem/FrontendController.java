@@ -2,11 +2,6 @@ package io.github.belgif.rest.problem;
 
 import java.net.URI;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
-
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.event.EventListener;
@@ -30,6 +25,11 @@ import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.model.ChildModel;
 import io.github.belgif.rest.problem.model.Model;
 import io.github.belgif.rest.problem.model.NestedModel;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 @RestController
 @RequestMapping("/frontend")
@@ -104,7 +104,7 @@ public class FrontendController implements ControllerInterface {
         throw problem;
     }
 
-    @GetMapping("/okFromBackend")
+    @GetMapping(value = "/okFromBackend", produces = "application/json")
     public ResponseEntity<String> okFromBackend(@RequestParam("client") Client client) {
         String result = null;
         if (client == Client.REST_TEMPLATE) {
