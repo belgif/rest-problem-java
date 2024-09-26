@@ -39,25 +39,29 @@ public class AnnotationParameterNameDiscoverer implements ParameterNameDiscovere
     }
 
     private String getParameterName(Parameter parameter) {
-        Annotation[] annotations = parameter.getAnnotations();
-        String parameterName = null;
-        for (Annotation annotation : annotations) {
-            if (annotation instanceof RequestParam) {
-                parameterName = ((RequestParam) annotation).value();
-            } else if (annotation instanceof PathVariable) {
-                parameterName = ((PathVariable) annotation).value();
-            } else if (annotation instanceof RequestHeader) {
-                parameterName = ((RequestHeader) annotation).value();
-            } else if (annotation instanceof CookieValue) {
-                parameterName = ((CookieValue) annotation).value();
-            } else if (annotation instanceof MatrixVariable) {
-                parameterName = ((MatrixVariable) annotation).value();
-            }
-        }
+        String parameterName = getParameterNameFromAnnotations(parameter);
         if (parameterName == null || parameterName.isEmpty()) {
             parameterName = parameter.getName();
         }
         return parameterName;
+    }
+
+    private String getParameterNameFromAnnotations(Parameter parameter) {
+        Annotation[] annotations = parameter.getAnnotations();
+        for (Annotation annotation : annotations) {
+            if (annotation instanceof RequestParam) {
+                return ((RequestParam) annotation).value();
+            } else if (annotation instanceof PathVariable) {
+                return ((PathVariable) annotation).value();
+            } else if (annotation instanceof RequestHeader) {
+                return ((RequestHeader) annotation).value();
+            } else if (annotation instanceof CookieValue) {
+                return ((CookieValue) annotation).value();
+            } else if (annotation instanceof MatrixVariable) {
+                return ((MatrixVariable) annotation).value();
+            }
+        }
+        return null;
     }
 
 }
