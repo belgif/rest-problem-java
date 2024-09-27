@@ -57,9 +57,11 @@ public class RoutingExceptionsHandler {
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<Void> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException exception) {
-        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
-                .allow(exception.getSupportedHttpMethods().toArray(new HttpMethod[0]))
-                .build();
+        ResponseEntity.BodyBuilder response = ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED);
+        if (exception.getSupportedHttpMethods() != null && !exception.getSupportedHttpMethods().isEmpty()) {
+            response.allow(exception.getSupportedHttpMethods().toArray(new HttpMethod[0]));
+        }
+        return response.build();
     }
 
     @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
