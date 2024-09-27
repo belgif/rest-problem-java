@@ -29,6 +29,14 @@ The library consists of these modules:
 
 == Release notes
 
+=== Version 0.8
+
+*belgif-rest-problem-spring:*
+
+* Map HttpRequestMethodNotSupportedException to HTTP 405 "Method Not Allowed" + Allow HTTP header
+* Map HttpMediaTypeNotAcceptableException to HTTP 406 "Not Acceptable"
+* Map HttpMediaTypeNotSupportedException to HTTP 415 "Unsupported Media Type"
+
 === Version 0.7
 
 *belgif-rest-problem-validator:*

@@ -104,7 +104,7 @@ public class FrontendController implements ControllerInterface {
         throw problem;
     }
 
-    @GetMapping("/okFromBackend")
+    @GetMapping(value = "/okFromBackend", produces = "application/json")
     public ResponseEntity<String> okFromBackend(@RequestParam("client") Client client) {
         String result = null;
         if (client == Client.REST_TEMPLATE) {
