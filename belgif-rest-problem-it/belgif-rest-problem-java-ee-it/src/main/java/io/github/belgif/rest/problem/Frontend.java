@@ -9,6 +9,7 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
@@ -40,6 +41,7 @@ public interface Frontend {
 
     @GET
     @Path("/okFromBackend")
+    @Produces("application/json")
     Response okFromBackend(@QueryParam("client") Client client);
 
     @GET
