@@ -1,5 +1,7 @@
 package io.github.belgif.rest.problem.spring;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
@@ -27,6 +29,8 @@ import io.github.belgif.rest.problem.api.Problem;
 @ConditionalOnWebApplication
 public class RoutingExceptionsHandler {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoutingExceptionsHandler.class);
+
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<Problem> handleMissingServletRequestParameterException(
             MissingServletRequestParameterException exception) {
@@ -48,11 +52,24 @@ public class RoutingExceptionsHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Problem> handleHttpMessageNotReadable(HttpMessageNotReadableException exception) {
-        InEnum in = InEnum.BODY;
-        String detail = exception.getMessage();
+        LOGGER.info("Transforming HttpMessageNotReadableException " +
+                "to a BadRequestProblem with sanitized detail message", exception);
         return ProblemMediaType.INSTANCE
-                .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(in, null, null,
-                        detail)));
+                .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(InEnum.BODY, null, null,
+                        getSanitizedProblemDetailMessage(exception))));
+    }
+
+    private String getSanitizedProblemDetailMessage(HttpMessageNotReadableException exception) {
+        if (exception.getMessage() != null) {
+            String message = exception.getMessage();
+            if (message.startsWith("Required request body is missing")) {
+                return "Required request body is missing";
+            }
+            if (message.startsWith("JSON parse error")) {
+                return "JSON parse error";
+            }
+        }
+        return null;
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
