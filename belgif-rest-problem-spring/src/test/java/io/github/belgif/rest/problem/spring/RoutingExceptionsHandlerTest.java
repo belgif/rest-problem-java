@@ -63,9 +63,12 @@ class RoutingExceptionsHandlerTest {
     }
 
     @Test
-    void handleHttpMessageNotReadable() {
+    void handleHttpMessageNotReadableRequiredRequestBodyIsMissing() {
         ResponseEntity<Problem> entity = handler.handleHttpMessageNotReadable(
-                new HttpMessageNotReadableException("message",
+                new HttpMessageNotReadableException("Required request body is missing: " +
+                        "public org.springframework.http.ResponseEntity<java.lang.String> " +
+                        "io.github.belgif.rest.problem.FrontendController.beanValidationBody" +
+                        "(io.github.belgif.rest.problem.model.Model)",
                         new MockHttpInputMessage("dummy".getBytes(StandardCharsets.UTF_8))));
         assertThat(entity.getStatusCodeValue()).isEqualTo(400);
         assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
@@ -74,7 +77,42 @@ class RoutingExceptionsHandlerTest {
             assertThat(problem.getIssues().get(0).getType()).isEqualTo(ISSUE_TYPE_SCHEMA_VIOLATION);
             assertThat(problem.getIssues().get(0).getIn()).isEqualTo(InEnum.BODY);
             assertThat(problem.getIssues().get(0).getName()).isNull();
-            assertThat(problem.getIssues().get(0).getDetail()).isEqualTo("message");
+            assertThat(problem.getIssues().get(0).getDetail()).isEqualTo("Required request body is missing");
+        });
+    }
+
+    @Test
+    void handleHttpMessageNotReadableJsonParseError() {
+        ResponseEntity<Problem> entity = handler.handleHttpMessageNotReadable(
+                new HttpMessageNotReadableException("JSON parse error: " +
+                        "Cannot deserialize value of type `java.time.LocalDate` " +
+                        "from String \"12/07/1991\": Failed to deserialize java.time.LocalDate: " +
+                        "(java.time.format.DateTimeParseException) Text '12/07/1991' could not be parsed at index 0",
+                        new MockHttpInputMessage("dummy".getBytes(StandardCharsets.UTF_8))));
+        assertThat(entity.getStatusCodeValue()).isEqualTo(400);
+        assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
+        assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
+            assertThat(problem.getIssues()).hasSize(1);
+            assertThat(problem.getIssues().get(0).getType()).isEqualTo(ISSUE_TYPE_SCHEMA_VIOLATION);
+            assertThat(problem.getIssues().get(0).getIn()).isEqualTo(InEnum.BODY);
+            assertThat(problem.getIssues().get(0).getName()).isNull();
+            assertThat(problem.getIssues().get(0).getDetail()).isEqualTo("JSON parse error");
+        });
+    }
+
+    @Test
+    void handleHttpMessageNotReadableOther() {
+        ResponseEntity<Problem> entity = handler.handleHttpMessageNotReadable(
+                new HttpMessageNotReadableException("Other non-sanitized message",
+                        new MockHttpInputMessage("dummy".getBytes(StandardCharsets.UTF_8))));
+        assertThat(entity.getStatusCodeValue()).isEqualTo(400);
+        assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
+        assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
+            assertThat(problem.getIssues()).hasSize(1);
+            assertThat(problem.getIssues().get(0).getType()).isEqualTo(ISSUE_TYPE_SCHEMA_VIOLATION);
+            assertThat(problem.getIssues().get(0).getIn()).isEqualTo(InEnum.BODY);
+            assertThat(problem.getIssues().get(0).getName()).isNull();
+            assertThat(problem.getIssues().get(0).getDetail()).isNull();
         });
     }
 
