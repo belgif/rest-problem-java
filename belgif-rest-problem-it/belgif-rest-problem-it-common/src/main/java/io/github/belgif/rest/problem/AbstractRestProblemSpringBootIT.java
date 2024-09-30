@@ -58,9 +58,7 @@ abstract class AbstractRestProblemSpringBootIT extends AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("body"))
-                .body("issues[0].detail", containsString(
-                        "JSON parse error: Unexpected character ('m' (code 109)): "
-                                + "was expecting a colon to separate field name and value"));
+                .body("issues[0].detail", equalTo("JSON parse error"));
     }
 
     @Test

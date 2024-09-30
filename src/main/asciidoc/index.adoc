@@ -36,6 +36,7 @@ The library consists of these modules:
 * Map HttpRequestMethodNotSupportedException to HTTP 405 "Method Not Allowed" + Allow HTTP header
 * Map HttpMediaTypeNotAcceptableException to HTTP 406 "Not Acceptable"
 * Map HttpMediaTypeNotSupportedException to HTTP 415 "Unsupported Media Type"
+* Sanitize BadRequestProblem detail message for HttpMessageNotReadableException
 
 === Version 0.7
 
