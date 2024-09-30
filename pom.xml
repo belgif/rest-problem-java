@@ -21,6 +21,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Aligns with version used on JBoss EAP 7.4 -->
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
+    <version.spring.boot.2>2.7.18</version.spring.boot.2>
+    <version.spring.boot.3>3.3.4</version.spring.boot.3>
   </properties>
 
   <dependencyManagement>
