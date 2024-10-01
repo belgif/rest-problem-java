@@ -68,6 +68,7 @@
     <module>belgif-rest-problem-spring-boot-2</module>
     <module>belgif-rest-problem-spring-boot-3</module>
     <module>belgif-rest-problem-it</module>
+    <module>belgif-rest-problem-bom</module>
   </modules>
 
   <build>
@@ -420,6 +421,7 @@
         <module>belgif-rest-problem-spring-boot-2</module>
         <module>belgif-rest-problem-spring-boot-3</module>
         <module>belgif-rest-problem-it</module>
+        <module>belgif-rest-problem-bom</module>
         <module>jacoco-aggregator</module>
       </modules>
       <build>
