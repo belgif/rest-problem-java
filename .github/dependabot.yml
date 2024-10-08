@@ -8,6 +8,7 @@ updates:
       - dependency-name: "jakarta.platform:jakarta.jakartaee-api"
         update-types: ["version-update:semver-major"]
       - dependency-name: "jakarta.enterprise:jakarta.enterprise.cdi-api"
+      - dependency-name: "javax.enterprise:cdi-api"
       - dependency-name: "jakarta.ejb:jakarta.ejb-api"
         update-types: ["version-update:semver-major"]
       - dependency-name: "org.springframework.boot:spring-boot-dependencies"
