@@ -3,21 +3,15 @@ package adoc;
 import java.net.URI;
 import java.util.List;
 
-import javax.ws.rs.WebApplicationException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.ResourceNotFoundProblem;
 import io.github.belgif.rest.problem.api.ClientProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
+import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.api.ProblemType;
 
 public class CodeSamples {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CodeSamples.class);
 
     // tag::api-local-problem[]
     @ProblemType(TooManyResultsProblem.TYPE)
@@ -55,14 +49,14 @@ public class CodeSamples {
     }
 
     public void catchProblem() {
-        class Service {
-            void call() {
+        class API {
+            void someOperation() {
             }
         }
-        Service service = new Service();
+        API api = new API();
         // tag::catch-problem[]
         try {
-            service.call();
+            api.someOperation();
         } catch (BadRequestProblem p) {
             String detail = p.getDetail();
             List<InputValidationIssue> issues = p.getIssues();
@@ -71,9 +65,8 @@ public class CodeSamples {
             String detail = p.getDetail();
             List<InputValidationIssue> issues = p.getIssues();
             // handle the ResourceNotFoundProblem
-        } catch (WebApplicationException e) {
-            LOGGER.info(e.getMessage());
-            // handle all other WebApplicationException
+        } catch (Problem e) {
+            // handle all other problems
         }
         // end::catch-problem[]
     }

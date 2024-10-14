@@ -2,7 +2,7 @@
 :caption:
 :sectanchors:
 :toc: left
-:toclevels: 3
+:toclevels: 2
 :numbered:
 :icons: font
 :imagesdir: images
@@ -39,10 +39,11 @@ See xref:release-notes.adoc[Release Notes].
 [[getting-started]]
 == Getting started
 
-[[getting-started-spring-boot]]
-=== Spring Boot
+[[dependencies]]
+=== Dependencies
 
-==== Dependencies
+[[dependencies-spring-boot]]
+==== Spring Boot
 
 [source,xml,role="primary",subs="attributes+"]
 .Spring Boot 3 (Maven)
@@ -76,12 +77,10 @@ compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:{revnum
 compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-2:{revnumber}'
 ----
 
-[[getting-started-java-ee]]
-=== Java EE
+[[dependencies-java-ee]]
+==== Java EE
 
 WARNING: While this library may work on other application servers, it has only been thoroughly tested on *JBoss EAP 7.4* (with MicroProfile XP 4.0) and *WildFly 31*.
-
-==== Dependencies
 
 [source,xml,role="primary",subs="attributes+"]
 .Jakarta EE 9+ (Maven)
@@ -114,6 +113,106 @@ compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:{revnumber}:j
 .Java EE 8- (Gradle)
 ----
 compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:{revnumber}'
+----
+
+[[getting-started-usage]]
+=== Usage
+
+At the core of this library is an exception hierarchy of Belgif-standardized problem types, with the possibility to define your own custom problem types.
+Integration with Spring Boot and Java EE works out of the box.
+
+==== Returning a problem from a REST API
+
+When implementing a REST service, returning a problem is as simple as throwing the problem exception from your application code:
+
+[source,java,indent=0]
+.Throwing a problem
+----
+include::../../../belgif-rest-problem-java-ee/src/test/java/adoc/CodeSamples.java[tag=throw-problem]
+----
+
+==== Catching problems when calling a REST API
+
+When calling a REST API, handling a problem is as simple as catching the problem exception in your application code:
+
+[source,java,indent=0]
+.Handling a problem on the client
+----
+include::../../../belgif-rest-problem-java-ee/src/test/java/adoc/CodeSamples.java[tag=catch-problem]
+----
+
+[[getting-started-spring-boot]]
+=== Spring Boot
+
+[WARNING]
+====
+As of version 6.0, Spring Framework also contains basic integration for RFC 9475 problem types.
+This is disabled by default, and MUST NOT be enabled.
+
+* https://docs.spring.io/spring-boot/reference/web/servlet.html#web.servlet.spring-mvc.error-handling[spring.mvc.problemdetails.enabled]=false
+* https://docs.spring.io/spring-boot/reference/web/reactive.html#web.reactive.webflux.error-handling[spring.webflux.problemdetails.enabled]=false
+====
+
+==== RestController
+
+Problem exceptions and framework exceptions (including bean validation) thrown by RestController components are automatically converted to a proper RFC 9457 `application/problem+json` response.
+
+WARNING: When using a Spring MVC annotation without name (e.g. `@RequestParam String name` instead of `@RequestParam("name") String name`), the parameter name for Bean Validation errors is retrieved via reflection as fallback.
+For this to work, your application code must be compiled with the https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html#option-parameters[-parameters] flag (see https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#parameters[maven-compiler-plugin]).
+Otherwise, you will see parameter names like `arg0`.
+
+==== RestTemplate
+
+Problem support is automatically enabled when constructing your RestTemplate through an autowired https://docs.spring.io/spring-boot/api/java/org/springframework/boot/web/client/RestTemplateBuilder.html[RestTemplateBuilder].
+
+When manually constructing a RestTemplate instance, you'll need to apply the link:apidocs/io/github/belgif/rest/problem/spring/ProblemRestTemplateCustomizer.html[ProblemRestTemplateCustomizer] yourself.
+
+==== Reactive WebClient
+
+Problem support is automatically enabled when constructing your WebClient through an autowired https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/reactive/function/client/WebClient.Builder.html[WebClient.Builder].
+
+When manually constructing a WebClient instance, you'll need to apply the link:apidocs/io/github/belgif/rest/problem/spring/ProblemWebClientCustomizer.html[ProblemWebClientCustomizer] yourself.
+
+==== RestClient
+
+Problem support is automatically enabled when constructing your RestClient through an autowired https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestClient.Builder.html[RestClient.Builder].
+
+When manually constructing a RestClient instance, you'll need to apply the link:apidocs/io/github/belgif/rest/problem/spring/ProblemRestClientCustomizer.html[ProblemRestClientCustomizer] yourself.
+
+[[getting-started-java-ee]]
+=== Java EE
+
+==== JAX-RS service
+
+Problem exceptions and framework exceptions (including bean validation) thrown by JAX-RS service components are automatically converted to a proper RFC 9457 `application/problem+json` response.
+
+==== JAX-RS client
+
+==== MicroProfile REST Client
+
+[[code-generators]]
+=== Code generators
+
+Code generators should be configured to use the belgif-rest-problem types for problem-related model classes, instead of generating them.
+
+[[openapi-generator-maven-plugin]]
+==== openapi-generator-maven-plugin
+
+When using https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin[openapi-generator-maven-plugin], configure `<schemaMappings>` as follows:
+
+[source,xml,indent=0]
+----
+include::../../../belgif-rest-problem-it/belgif-rest-problem-codegen-it/pom.xml[tag=openapi-generator-maven-plugin]
+----
+
+[[swagger-codegen-maven-plugin]]
+==== swagger-codegen-maven-plugin
+
+When using https://github.com/swagger-api/swagger-codegen/tree/3.0.0/modules/swagger-codegen-maven-plugin[swagger-codegen-maven-plugin], configure `<importMappings>` as follows:
+
+[source,xml,indent=0]
+----
+include::../../../belgif-rest-problem-it/belgif-rest-problem-codegen-it/pom.xml[tag=swagger-codegen-maven-plugin]
 ----
 
 [[belgif-rest-problem]]
@@ -430,28 +529,3 @@ Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 3.
 This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
 * *NoResourceFoundExceptionHandler:* an exception handler for RestControllers that converts NoResourceFoundException to HTTP 404 ResourceNotFoundProblem.
 * *ProblemRestClientCustomizer:* a RestClientCustomizer that registers the ProblemResponseErrorHandler.
-
-[[code-generators]]
-== Code generators
-
-Code generators should be configured to use the belgif-rest-problem types for problem-related model classes, instead of generating them.
-
-[[openapi-generator-maven-plugin]]
-=== openapi-generator-maven-plugin
-
-When using https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin[openapi-generator-maven-plugin], configure `<schemaMappings>` as follows:
-
-[source,xml,indent=0]
-----
-include::../../../belgif-rest-problem-it/belgif-rest-problem-codegen-it/pom.xml[tag=openapi-generator-maven-plugin]
-----
-
-[[swagger-codegen-maven-plugin]]
-=== swagger-codegen-maven-plugin
-
-When using https://github.com/swagger-api/swagger-codegen/tree/3.0.0/modules/swagger-codegen-maven-plugin[swagger-codegen-maven-plugin], configure `<importMappings>` as follows:
-
-[source,xml,indent=0]
-----
-include::../../../belgif-rest-problem-it/belgif-rest-problem-codegen-it/pom.xml[tag=swagger-codegen-maven-plugin]
-----
