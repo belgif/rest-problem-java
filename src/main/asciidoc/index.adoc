@@ -15,7 +15,7 @@
 
 Java library for working with https://www.belgif.be/specification/rest/api-guide/#error-handling[RFC 9457 standardized Belgif problems].
 
-With this library, RFC 9457 Problems can be treated as standard java exceptions:
+With this library, RFC 9457 Problems can be *automagically* treated as standard java exceptions:
 
 * the server side can throw `io.github.belgif.rest.problem.api.Problem` exceptions (or subclasses), which are transparently converted to RFC 9457 compliant "application/problem+json" responses
 * the client side can catch `io.github.belgif.rest.problem.api.Problem` exceptions (or subclasses), which are transparently thrown when an RFC 9457 compliant "application/problem+json" response is received
@@ -35,6 +35,86 @@ include::release-notes.adoc[tag=recent-versions,leveloffset=1]
 === Older versions
 
 See xref:release-notes.adoc[Release Notes].
+
+[[getting-started]]
+== Getting started
+
+[[getting-started-spring-boot]]
+=== Spring Boot
+
+==== Dependencies
+
+[source,xml,role="primary",subs="attributes+"]
+.Spring Boot 3 (Maven)
+----
+<dependency>
+  <groupId>io.github.belgif.rest.problem</groupId>
+  <artifactId>belgif-rest-problem-spring-boot-3</artifactId>
+  <version>{revnumber}</version>
+</dependency>
+----
+
+[source,role="secondary",subs="attributes+"]
+.Spring Boot 3 (Gradle)
+----
+compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:{revnumber}'
+----
+
+[source,xml,role="secondary",subs="attributes+"]
+.Spring Boot 2 (Maven)
+----
+<dependency>
+  <groupId>io.github.belgif.rest.problem</groupId>
+  <artifactId>belgif-rest-problem-spring-boot-2</artifactId>
+  <version>{revnumber}</version>
+</dependency>
+----
+
+[source,role="secondary",subs="attributes+"]
+.Spring Boot 2 (Gradle)
+----
+compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-2:{revnumber}'
+----
+
+[[getting-started-java-ee]]
+=== Java EE
+
+WARNING: While this library may work on other application servers, it has only been thoroughly tested on *JBoss EAP 7.4* (with MicroProfile XP 4.0) and *WildFly 31*.
+
+==== Dependencies
+
+[source,xml,role="primary",subs="attributes+"]
+.Jakarta EE 9+ (Maven)
+----
+<dependency>
+  <groupId>io.github.belgif.rest.problem</groupId>
+  <artifactId>belgif-rest-problem-java-ee</artifactId>
+  <version>{revnumber}</version>
+  <classifier>jakarta</classifier>
+</dependency>
+----
+
+[source,role="secondary",subs="attributes+"]
+.Jakarta EE 9+ (Gradle)
+----
+compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:{revnumber}:jakarta'
+----
+
+[source,xml,role="secondary",subs="attributes+"]
+.Java EE 8- (Maven)
+----
+<dependency>
+  <groupId>io.github.belgif.rest.problem</groupId>
+  <artifactId>belgif-rest-problem-java-ee</artifactId>
+  <version>{revnumber}</version>
+</dependency>
+----
+
+[source,role="secondary",subs="attributes+"]
+.Java EE 8- (Gradle)
+----
+compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:{revnumber}'
+----
 
 [[belgif-rest-problem]]
 == belgif-rest-problem
