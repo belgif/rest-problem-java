@@ -67,7 +67,6 @@
     <module>belgif-rest-problem-spring</module>
     <module>belgif-rest-problem-spring-boot-2</module>
     <module>belgif-rest-problem-spring-boot-3</module>
-    <module>belgif-rest-problem-openapi-validation-spring</module>
     <module>belgif-rest-problem-it</module>
     <module>belgif-rest-problem-bom</module>
   </modules>
