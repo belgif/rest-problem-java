@@ -2,7 +2,6 @@ package io.github.belgif.rest.problem.spring;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +30,7 @@ import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.ResourceNotFoundProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
+import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
 import io.swagger.v3.oas.models.parameters.Parameter;
 
@@ -44,10 +44,6 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 @Order(1)
 @ConditionalOnClass(InvalidRequestException.class)
 public class OpenApiRequestViolationProblemAdvice {
-
-    private static final URI SCHEMA_VIOLATION_URI =
-            URI.create("urn:problem-type:belgif:input-validation:schemaViolation");
-    private static final String ISSUE_TITLE = "Input value is invalid with respect to the schema.";
     private static final Logger log = LoggerFactory.getLogger(OpenApiRequestViolationProblemAdvice.class);
 
     private final ObjectMapper mapper;
@@ -74,7 +70,7 @@ public class OpenApiRequestViolationProblemAdvice {
                 issues.add(issue);
                 continue;
             }
-            issue = getBasicIssue(message);
+            issue = getIssueWithCorrectType(message);
             issue.setIn(getIn(message));
             issue.setName(getName(message));
             issue.setValue(getValue(message, issue.getIn(), issue.getName(), request));
@@ -154,44 +150,24 @@ public class OpenApiRequestViolationProblemAdvice {
         switch (message.getKey()) {
             case "validation.schema.invalidJson":
             case "validation.request.body.schema.invalidJson": {
-                InputValidationIssue issue = getBasicIssue();
-                issue.setDetail("Unable to parse JSON");
-                issue.setIn(InEnum.BODY);
-                return issue;
+                return InputValidationIssues.schemaViolation(InEnum.BODY, null, null, "Unable to parse JSON");
             }
             case "validation.schema.unknownError": {
-                return unknownError(message);
+                log.error("An unknown error occured during schema validation: {}", message.getMessage());
+                return InputValidationIssues.schemaViolation(null, null, null,
+                        "An error occurred during schema validation");
             }
             default:
                 return null;
         }
     }
 
-    private InputValidationIssue unknownError(ValidationReport.Message message) {
-        log.error("An unknown error occured during schema validation: {}", message.getMessage());
-        InputValidationIssue issue = getBasicIssue();
-        issue.setDetail("An error occurred during schema validation");
-        return issue;
-    }
-
-    private InputValidationIssue getBasicIssue() {
-        InputValidationIssue issue = new InputValidationIssue();
-        issue.setType(SCHEMA_VIOLATION_URI);
-        issue.setTitle(ISSUE_TITLE);
-        return issue;
-    }
-
-    private InputValidationIssue getBasicIssue(ValidationReport.Message message) {
-        InputValidationIssue issue;
+    private InputValidationIssue getIssueWithCorrectType(ValidationReport.Message message) {
         switch (message.getKey()) {
-            case "validation.request.parameter.query.unexpected": {
-                issue = new InputValidationIssue();
-                issue.setType(URI.create("urn:problem-type:belgif:input-validation:unknownInput"));
-                issue.setTitle("Unknown query parameter.");
-                return issue;
-            }
+            case "validation.request.parameter.query.unexpected":
+                return InputValidationIssues.unknownInput(null, null, null);
             default:
-                return getBasicIssue();
+                return InputValidationIssues.schemaViolation(null, null, null, null);
         }
     }
 
