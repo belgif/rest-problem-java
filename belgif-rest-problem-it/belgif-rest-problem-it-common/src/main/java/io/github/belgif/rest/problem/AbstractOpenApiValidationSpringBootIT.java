@@ -21,6 +21,13 @@ abstract class AbstractOpenApiValidationSpringBootIT {
     }
 
     @Test
+    void notFound() {
+        getSpec().when().get("/not/found").then().assertThat()
+                .statusCode(404).log().all()
+                .body("type", equalTo("urn:problem-type:belgif:resourceNotFound"));
+    }
+
+    @Test
     void unknownQueryParamTest() {
         getSpec().when().get("/myFirstPath?myUnknownParam=123").then().assertThat()
                 .statusCode(400).log().all()
