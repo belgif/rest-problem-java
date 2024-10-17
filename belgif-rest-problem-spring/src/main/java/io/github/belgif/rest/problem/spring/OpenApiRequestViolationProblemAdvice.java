@@ -34,6 +34,11 @@ import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.Problem;
 import io.swagger.v3.oas.models.parameters.Parameter;
 
+/**
+ * This class is only active when Spring-Boot applications implemented the Atlassian swagger-request-validator.
+ * Maps the InvalidRequestException thrown by the swagger-request-validator to belgif problems.
+ * Order(1) to make sure it is passed through this class before ProblemExceptionHandler is invoked.
+ */
 @RestControllerAdvice
 @ConditionalOnWebApplication
 @Order(1)
