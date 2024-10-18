@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.*;
 
 import org.junit.jupiter.api.Test;
 
+import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
 abstract class AbstractOpenApiValidationSpringBootIT {
@@ -134,7 +135,7 @@ abstract class AbstractOpenApiValidationSpringBootIT {
 
     @Test
     void requestBodyJsonParseErrorTest() {
-        getSpec().contentType("application/json").body("{" +
+        getSpec().contentType(ContentType.JSON).body("{" +
                 "\"name\" ; this is my name" +
                 "}").when().post("/myFirstPath").then().assertThat()
                 .statusCode(400)
@@ -149,7 +150,7 @@ abstract class AbstractOpenApiValidationSpringBootIT {
 
     @Test
     void missingRequestBodyTest() {
-        getSpec().contentType("application/json").when().post("/myFirstPath").then().assertThat()
+        getSpec().contentType(ContentType.JSON).when().post("/myFirstPath").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo(BAD_REQUEST_URN))
                 .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
@@ -162,7 +163,7 @@ abstract class AbstractOpenApiValidationSpringBootIT {
 
     @Test
     void invalidRequestBodyTest() {
-        getSpec().contentType("application/json").body("{" +
+        getSpec().contentType(ContentType.JSON).body("{" +
                 "\"myFirstProperty\": \"yes\"," +
                 "\"myInnerObject\": {" +
                 "\"myParam\": \"abc\"" +
