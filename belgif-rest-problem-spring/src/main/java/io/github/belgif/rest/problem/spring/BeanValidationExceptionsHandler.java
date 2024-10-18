@@ -8,6 +8,7 @@ import javax.validation.ConstraintViolationException;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -30,6 +31,8 @@ import io.github.belgif.rest.problem.internal.DetermineSourceUtil;
 @RestControllerAdvice
 @ConditionalOnClass(ConstraintViolationException.class)
 @ConditionalOnWebApplication
+@Order(1)
+// @Order(1) to take precedence over io.github.belgif.rest.problem.spring.ProblemExceptionHandler
 public class BeanValidationExceptionsHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
