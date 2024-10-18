@@ -25,8 +25,8 @@ import io.github.belgif.rest.problem.api.Problem;
  * RestController exception handler for routing-related exceptions.
  */
 @RestControllerAdvice
-@Order(1)
 @ConditionalOnWebApplication
+@Order(1) // to take precedence over org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver
 public class RoutingExceptionsHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoutingExceptionsHandler.class);

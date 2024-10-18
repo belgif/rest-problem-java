@@ -8,7 +8,6 @@ import javax.validation.ConstraintViolationException;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,7 +28,6 @@ import io.github.belgif.rest.problem.internal.DetermineSourceUtil;
  * RestController exception handler for exceptions related to bean validation.
  */
 @RestControllerAdvice
-@Order(1)
 @ConditionalOnClass(ConstraintViolationException.class)
 @ConditionalOnWebApplication
 public class BeanValidationExceptionsHandler {

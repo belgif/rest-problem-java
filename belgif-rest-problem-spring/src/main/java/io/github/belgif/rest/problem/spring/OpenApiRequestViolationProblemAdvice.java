@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -37,14 +36,13 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 /**
  * This class is only active when Spring-Boot applications implemented the Atlassian swagger-request-validator.
  * Maps the InvalidRequestException thrown by the swagger-request-validator to belgif problems.
- * Order(1) to make sure it is passed through this class before ProblemExceptionHandler is invoked.
  */
 @RestControllerAdvice
 @ConditionalOnWebApplication
-@Order(1)
 @ConditionalOnClass(InvalidRequestException.class)
 public class OpenApiRequestViolationProblemAdvice {
-    private static final Logger log = LoggerFactory.getLogger(OpenApiRequestViolationProblemAdvice.class);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiRequestViolationProblemAdvice.class);
 
     private final ObjectMapper mapper;
 
@@ -120,7 +118,7 @@ public class OpenApiRequestViolationProblemAdvice {
             JsonNode valueNode = node.at(JsonPointer.compile(name));
             return valueNode.asText().isEmpty() ? null : valueNode.asText();
         } catch (IOException e) {
-            log.error("Error reading input stream", e);
+            LOGGER.error("Error reading input stream", e);
         }
         return null;
     }
@@ -153,7 +151,7 @@ public class OpenApiRequestViolationProblemAdvice {
                 return InputValidationIssues.schemaViolation(InEnum.BODY, null, null, "Unable to parse JSON");
             }
             case "validation.schema.unknownError": {
-                log.error("An unknown error occured during schema validation: {}", message.getMessage());
+                LOGGER.error("An unknown error occured during schema validation: {}", message.getMessage());
                 return InputValidationIssues.schemaViolation(null, null, null,
                         "An error occurred during schema validation");
             }
