@@ -43,6 +43,20 @@ abstract class AbstractOpenApiValidationSpringBootIT {
     }
 
     @Test
+    void missingQueryParamTest() {
+        getSpec().when().get("/myQueryPath").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo(BAD_REQUEST_URN))
+                .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
+                .body("issues[0].title", not(empty()))
+                .body("issues[0].in", equalTo("query"))
+                .body("issues[0].name", equalTo("myParam"))
+                .body("issues[0].value", nullValue())
+                .body("issues[0].detail",
+                        not(empty()));
+    }
+
+    @Test
     void invalidPathParamTest() {
         getSpec().when().get("/myFirstPath/a1a1234567").then().assertThat()
                 .statusCode(400)

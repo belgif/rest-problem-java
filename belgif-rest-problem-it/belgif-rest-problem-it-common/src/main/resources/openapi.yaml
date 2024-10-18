@@ -58,6 +58,20 @@ paths:
         200:
           $ref: '#/components/responses/MyDummyResponse'
 
+  /myQueryPath:
+    get:
+      operationId: myQueryParamOperation
+      parameters:
+        - name: myParam
+          in: query
+          description: My Query Param
+          required: true
+          schema:
+            $ref: '#/components/schemas/MyParameterSchema'
+      responses:
+        200:
+          $ref: '#/components/responses/MyDummyResponse'
+
 components:
   responses:
     MyDummyResponse:
