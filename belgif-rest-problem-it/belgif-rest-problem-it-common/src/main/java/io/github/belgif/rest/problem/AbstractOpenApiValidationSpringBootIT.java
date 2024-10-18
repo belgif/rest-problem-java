@@ -16,21 +16,21 @@ abstract class AbstractOpenApiValidationSpringBootIT {
     @Test
     void validPathParamWorksTest() {
         getSpec().when().get("/myFirstPath/abc1234567").then().assertThat()
-                .statusCode(200).log().all()
+                .statusCode(200)
                 .body(equalTo("All good!"));
     }
 
     @Test
     void notFound() {
         getSpec().when().get("/not/found").then().assertThat()
-                .statusCode(404).log().all()
+                .statusCode(404)
                 .body("type", equalTo("urn:problem-type:belgif:resourceNotFound"));
     }
 
     @Test
     void unknownQueryParamTest() {
         getSpec().when().get("/myFirstPath?myUnknownParam=123").then().assertThat()
-                .statusCode(400).log().all()
+                .statusCode(400)
                 .body("type", equalTo(BAD_REQUEST_URN))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:unknownInput"))
                 .body("issues[0].title", not(empty()))
@@ -44,7 +44,7 @@ abstract class AbstractOpenApiValidationSpringBootIT {
     @Test
     void invalidPathParamTest() {
         getSpec().when().get("/myFirstPath/a1a1234567").then().assertThat()
-                .statusCode(400).log().all()
+                .statusCode(400)
                 .body("type", equalTo(BAD_REQUEST_URN))
                 .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
                 .body("issues[0].title", not(empty()))
@@ -58,7 +58,7 @@ abstract class AbstractOpenApiValidationSpringBootIT {
     @Test
     void pathParamTooShortTest() {
         getSpec().when().get("/myFirstPath/abc").then().assertThat()
-                .statusCode(400).log().all()
+                .statusCode(400)
                 .body("type", equalTo(BAD_REQUEST_URN))
                 .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
                 .body("issues[0].title", not(empty()))
@@ -72,14 +72,14 @@ abstract class AbstractOpenApiValidationSpringBootIT {
     @Test
     void validQueryParamWorksTest() {
         getSpec().when().get("/myFirstPath?myParam=abc1234567").then().assertThat()
-                .statusCode(200).log().all()
+                .statusCode(200)
                 .body(equalTo("All good!"));
     }
 
     @Test
     void invalidQueryParamTest() {
         getSpec().when().get("/myFirstPath?myParam=a1a1234567").then().assertThat()
-                .statusCode(400).log().all()
+                .statusCode(400)
                 .body("type", equalTo(BAD_REQUEST_URN))
                 .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
                 .body("issues[0].title", not(empty()))
@@ -93,7 +93,7 @@ abstract class AbstractOpenApiValidationSpringBootIT {
     @Test
     void queryParamTooShortTest() {
         getSpec().when().get("/myFirstPath?myParam=abc").then().assertThat()
-                .statusCode(400).log().all()
+                .statusCode(400)
                 .body("type", equalTo(BAD_REQUEST_URN))
                 .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
                 .body("issues[0].title", not(empty()))
@@ -107,7 +107,7 @@ abstract class AbstractOpenApiValidationSpringBootIT {
     @Test
     void absentHeaderParamTest() {
         getSpec().when().get("/myHeaderPath").then().assertThat()
-                .statusCode(400).log().all()
+                .statusCode(400)
                 .body("type", equalTo(BAD_REQUEST_URN))
                 .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
                 .body("issues[0].title", not(empty()))
@@ -121,7 +121,7 @@ abstract class AbstractOpenApiValidationSpringBootIT {
     @Test
     void headerParamTooShortTest() {
         getSpec().when().header("MyHeader", "abc").get("/myHeaderPath").then().assertThat()
-                .statusCode(400).log().all()
+                .statusCode(400)
                 .body("type", equalTo(BAD_REQUEST_URN))
                 .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
                 .body("issues[0].title", not(empty()))
@@ -137,7 +137,7 @@ abstract class AbstractOpenApiValidationSpringBootIT {
         getSpec().contentType("application/json").body("{" +
                 "\"name\" ; this is my name" +
                 "}").when().post("/myFirstPath").then().assertThat()
-                .statusCode(400).log().all()
+                .statusCode(400)
                 .body("type", equalTo(BAD_REQUEST_URN))
                 .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
                 .body("issues[0].title", not(empty()))
@@ -150,7 +150,7 @@ abstract class AbstractOpenApiValidationSpringBootIT {
     @Test
     void missingRequestBodyTest() {
         getSpec().contentType("application/json").when().post("/myFirstPath").then().assertThat()
-                .statusCode(400).log().all()
+                .statusCode(400)
                 .body("type", equalTo(BAD_REQUEST_URN))
                 .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
                 .body("issues[0].title", not(empty()))
@@ -168,7 +168,7 @@ abstract class AbstractOpenApiValidationSpringBootIT {
                 "\"myParam\": \"abc\"" +
                 "}" +
                 "}").when().post("/myFirstPath").then().assertThat()
-                .statusCode(400).log().all()
+                .statusCode(400)
                 .body("type", equalTo(BAD_REQUEST_URN))
                 .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
                 .body("issues[0].title", not(empty()))
