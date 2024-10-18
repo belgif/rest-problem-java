@@ -29,7 +29,7 @@ abstract class AbstractOpenApiValidationSpringBootIT {
 
     @Test
     void unknownQueryParamTest() {
-        getSpec().when().get("/myFirstPath?myUnknownParam=123").then().assertThat()
+        getSpec().when().queryParam("myUnknownParam", 123).get("/myFirstPath").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo(BAD_REQUEST_URN))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:unknownInput"))
@@ -71,14 +71,14 @@ abstract class AbstractOpenApiValidationSpringBootIT {
 
     @Test
     void validQueryParamWorksTest() {
-        getSpec().when().get("/myFirstPath?myParam=abc1234567").then().assertThat()
+        getSpec().when().queryParam("myParam", "abc1234567").get("/myFirstPath").then().assertThat()
                 .statusCode(200)
                 .body(equalTo("All good!"));
     }
 
     @Test
     void invalidQueryParamTest() {
-        getSpec().when().get("/myFirstPath?myParam=a1a1234567").then().assertThat()
+        getSpec().when().queryParam("myParam", "a1a1234567").get("/myFirstPath").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo(BAD_REQUEST_URN))
                 .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
@@ -92,7 +92,7 @@ abstract class AbstractOpenApiValidationSpringBootIT {
 
     @Test
     void queryParamTooShortTest() {
-        getSpec().when().get("/myFirstPath?myParam=abc").then().assertThat()
+        getSpec().when().queryParam("myParam", "abc").get("/myFirstPath").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo(BAD_REQUEST_URN))
                 .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
