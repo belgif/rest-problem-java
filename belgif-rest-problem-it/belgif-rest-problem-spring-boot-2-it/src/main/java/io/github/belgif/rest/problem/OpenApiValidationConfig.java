@@ -16,7 +16,7 @@ import com.atlassian.oai.validator.springmvc.OpenApiValidationFilter;
 import com.atlassian.oai.validator.springmvc.OpenApiValidationInterceptor;
 
 @Configuration
-public class OpenApiValidationConfig {
+public class OpenApiValidationConfig implements WebMvcConfigurer {
 
     @Bean
     public FilterRegistrationBean<OpenApiValidationFilter> validationFilter() {
@@ -26,8 +26,8 @@ public class OpenApiValidationConfig {
         return filterRegistration;
     }
 
-    @Bean
-    public WebMvcConfigurer addOpenApiValidationInterceptor() {
+    @Override
+    public void addInterceptors(@NonNull InterceptorRegistry registry) {
         OpenApiInteractionValidator validator = OpenApiInteractionValidator
                 .createForSpecificationUrl("/openapi.yaml")
                 .withLevelResolver(LevelResolver.create()
@@ -38,13 +38,7 @@ public class OpenApiValidationConfig {
                         .build())
                 .withBasePathOverride("/openapi-validation")
                 .build();
-        OpenApiValidationInterceptor openApiValidationInterceptor = new OpenApiValidationInterceptor(validator);
-        return new WebMvcConfigurer() {
-            @Override
-            public void addInterceptors(@NonNull InterceptorRegistry registry) {
-                registry.addInterceptor(openApiValidationInterceptor);
-            }
-        };
+        registry.addInterceptor(new OpenApiValidationInterceptor(validator));
     }
 
 }
