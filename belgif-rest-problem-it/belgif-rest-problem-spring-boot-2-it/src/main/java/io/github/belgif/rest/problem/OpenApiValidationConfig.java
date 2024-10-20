@@ -2,7 +2,6 @@ package io.github.belgif.rest.problem;
 
 import java.util.Collections;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,10 +27,9 @@ public class OpenApiValidationConfig {
     }
 
     @Bean
-    public WebMvcConfigurer addOpenApiValidationInterceptor(@Value("/openapi.yaml") final String apiSpecification,
-            @Value("server.servlet.context-path") String contextPath) {
-        final OpenApiInteractionValidator validator = OpenApiInteractionValidator
-                .createForSpecificationUrl(apiSpecification)
+    public WebMvcConfigurer addOpenApiValidationInterceptor() {
+        OpenApiInteractionValidator validator = OpenApiInteractionValidator
+                .createForSpecificationUrl("/openapi.yaml")
                 .withLevelResolver(LevelResolver.create()
                         // Accept additionalProperties even if they're not defined in the schema
                         .withLevel("validation.schema.additionalProperties", ValidationReport.Level.IGNORE)
@@ -40,10 +38,10 @@ public class OpenApiValidationConfig {
                         .build())
                 .withBasePathOverride("/openapi-validation")
                 .build();
-        final OpenApiValidationInterceptor openApiValidationInterceptor = new OpenApiValidationInterceptor(validator);
+        OpenApiValidationInterceptor openApiValidationInterceptor = new OpenApiValidationInterceptor(validator);
         return new WebMvcConfigurer() {
             @Override
-            public void addInterceptors(@NonNull final InterceptorRegistry registry) {
+            public void addInterceptors(@NonNull InterceptorRegistry registry) {
                 registry.addInterceptor(openApiValidationInterceptor);
             }
         };
