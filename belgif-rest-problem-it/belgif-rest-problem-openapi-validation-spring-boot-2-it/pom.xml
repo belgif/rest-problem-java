@@ -38,38 +38,22 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>org.openapitools</groupId>
-      <artifactId>jackson-databind-nullable</artifactId>
-      <version>0.2.6</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.swagger.core.v3</groupId>
-      <artifactId>swagger-annotations</artifactId>
-      <version>2.2.25</version>
-    </dependency>
-
     <dependency>
       <groupId>com.atlassian.oai</groupId>
       <artifactId>swagger-request-validator-springmvc</artifactId>
       <version>2.43.0</version>
     </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
       <version>4.5.1</version>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>io.github.belgif.rest.problem</groupId>
       <artifactId>belgif-rest-problem-it-common</artifactId>
@@ -93,12 +77,15 @@
               <apiPackage>io.github.belgif.rest.problem.openapi.validation.sb2.api</apiPackage>
               <modelPackage>io.github.belgif.rest.problem.openapi.validation.sb2.model</modelPackage>
               <openapiNormalizer>REF_AS_PARENT_IN_ALLOF=true</openapiNormalizer>
+              <generateSupportingFiles>false</generateSupportingFiles>
               <configOptions>
-                <unhandledException>true</unhandledException>
-                <interfaceOnly>true</interfaceOnly>
                 <useSpringBoot3>false</useSpringBoot3>
-                <useSpringController>true</useSpringController>
+                <interfaceOnly>true</interfaceOnly>
                 <skipDefaultInterface>true</skipDefaultInterface>
+                <openApiNullable>false</openApiNullable>
+                <annotationLibrary>none</annotationLibrary>
+                <documentationProvider>none</documentationProvider>
+                <useBeanValidation>false</useBeanValidation>
               </configOptions>
             </configuration>
           </execution>
