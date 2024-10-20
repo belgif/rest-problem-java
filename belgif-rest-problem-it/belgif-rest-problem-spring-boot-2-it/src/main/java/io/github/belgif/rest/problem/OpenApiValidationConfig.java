@@ -1,8 +1,9 @@
 package io.github.belgif.rest.problem;
 
-import jakarta.servlet.Filter;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
@@ -19,8 +20,11 @@ import com.atlassian.oai.validator.springmvc.OpenApiValidationInterceptor;
 public class OpenApiValidationConfig {
 
     @Bean
-    public Filter validationFilter() {
-        return new OpenApiValidationFilter(true, false);
+    public FilterRegistrationBean<OpenApiValidationFilter> validationFilter() {
+        FilterRegistrationBean<OpenApiValidationFilter> filterRegistration = new FilterRegistrationBean<>();
+        filterRegistration.setFilter(new OpenApiValidationFilter(true, false));
+        filterRegistration.setUrlPatterns(Collections.singletonList("/openapi-validation/*"));
+        return filterRegistration;
     }
 
     @Bean
@@ -31,8 +35,10 @@ public class OpenApiValidationConfig {
                 .withLevelResolver(LevelResolver.create()
                         // Accept additionalProperties even if they're not defined in the schema
                         .withLevel("validation.schema.additionalProperties", ValidationReport.Level.IGNORE)
+                        // Ignores validation when a path is not in the openapi and let Spring handle the error
+                        .withLevel("validation.request.path.missing", ValidationReport.Level.INFO)
                         .build())
-                .withBasePathOverride(contextPath)
+                .withBasePathOverride("/openapi-validation")
                 .build();
         final OpenApiValidationInterceptor openApiValidationInterceptor = new OpenApiValidationInterceptor(validator);
         return new WebMvcConfigurer() {

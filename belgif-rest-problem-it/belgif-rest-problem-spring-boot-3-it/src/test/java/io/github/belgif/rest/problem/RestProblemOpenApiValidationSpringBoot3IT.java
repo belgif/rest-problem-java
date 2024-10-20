@@ -7,13 +7,13 @@ import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class RestProblemOpenapiValidationSpringBoot3IT extends AbstractOpenApiValidationSpringBootIT {
+class RestProblemOpenApiValidationSpringBoot3IT extends AbstractOpenApiValidationSpringBootIT {
 
     @LocalServerPort
     private int port;
 
     @Override
     protected RequestSpecification getSpec() {
-        return RestAssured.with().baseUri("http://localhost").port(port).basePath("/spring");
+        return RestAssured.with().baseUri("http://localhost").port(port).basePath("/spring/openapi-validation");
     }
 }
