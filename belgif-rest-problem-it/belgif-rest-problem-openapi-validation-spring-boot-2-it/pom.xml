@@ -80,33 +80,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>unpack</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>io.github.belgif.rest.problem</groupId>
-                  <artifactId>belgif-rest-problem-it-common</artifactId>
-                  <includes>openapi.yaml</includes>
-                  <outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
-                </artifactItem>
-              </artifactItems>
-              <outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
-              <overWriteReleases>false</overWriteReleases>
-              <overWriteSnapshots>true</overWriteSnapshots>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
         <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
         <executions>
@@ -115,7 +88,7 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-              <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+              <inputSpec>${project.basedir}/../belgif-rest-problem-it-common/src/main/resources/openapi.yaml</inputSpec>
               <generatorName>spring</generatorName>
               <apiPackage>io.github.belgif.rest.problem.openapi.validation.sb2.api</apiPackage>
               <modelPackage>io.github.belgif.rest.problem.openapi.validation.sb2.model</modelPackage>
@@ -130,21 +103,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-clean-plugin</artifactId>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>${project.basedir}/src/main/resources</directory>
-              <excludes>
-                <exclude>application.properties</exclude>
-              </excludes>
-            </fileset>
-          </filesets>
-        </configuration>
       </plugin>
     </plugins>
   </build>
