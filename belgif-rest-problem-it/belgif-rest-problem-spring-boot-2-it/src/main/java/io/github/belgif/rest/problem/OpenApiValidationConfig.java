@@ -1,8 +1,8 @@
 package io.github.belgif.rest.problem;
 
-import javax.servlet.Filter;
+import java.util.Collections;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
@@ -16,33 +16,29 @@ import com.atlassian.oai.validator.springmvc.OpenApiValidationFilter;
 import com.atlassian.oai.validator.springmvc.OpenApiValidationInterceptor;
 
 @Configuration
-public class OpenApiValidationConfig {
+public class OpenApiValidationConfig implements WebMvcConfigurer {
 
     @Bean
-    public Filter validationFilter() {
-        return new OpenApiValidationFilter(true, false);
+    public FilterRegistrationBean<OpenApiValidationFilter> validationFilter() {
+        FilterRegistrationBean<OpenApiValidationFilter> filterRegistration = new FilterRegistrationBean<>();
+        filterRegistration.setFilter(new OpenApiValidationFilter(true, false));
+        filterRegistration.setUrlPatterns(Collections.singletonList("/openapi-validation/*"));
+        return filterRegistration;
     }
 
-    @Bean
-    public WebMvcConfigurer addOpenApiValidationInterceptor(@Value("/openapi.yaml") final String apiSpecification,
-            @Value("server.servlet.context-path") String contextPath) {
-        final OpenApiInteractionValidator validator = OpenApiInteractionValidator
-                .createForSpecificationUrl(apiSpecification)
+    @Override
+    public void addInterceptors(@NonNull InterceptorRegistry registry) {
+        OpenApiInteractionValidator validator = OpenApiInteractionValidator
+                .createForSpecificationUrl("/openapi.yaml")
                 .withLevelResolver(LevelResolver.create()
                         // Accept additionalProperties even if they're not defined in the schema
                         .withLevel("validation.schema.additionalProperties", ValidationReport.Level.IGNORE)
                         // Ignores validation when a path is not in the openapi and let Spring handle the error
                         .withLevel("validation.request.path.missing", ValidationReport.Level.INFO)
                         .build())
-                .withBasePathOverride(contextPath)
+                .withBasePathOverride("/openapi-validation")
                 .build();
-        final OpenApiValidationInterceptor openApiValidationInterceptor = new OpenApiValidationInterceptor(validator);
-        return new WebMvcConfigurer() {
-            @Override
-            public void addInterceptors(@NonNull final InterceptorRegistry registry) {
-                registry.addInterceptor(openApiValidationInterceptor);
-            }
-        };
+        registry.addInterceptor(new OpenApiValidationInterceptor(validator));
     }
 
 }

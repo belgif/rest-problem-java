@@ -54,7 +54,7 @@ public class OpenApiRequestViolationProblemAdvice {
     }
 
     @ExceptionHandler(value = InvalidRequestException.class)
-    public ResponseEntity<Problem> handleInvalidRequestException(final InvalidRequestException ex,
+    public ResponseEntity<Problem> handleInvalidRequestException(InvalidRequestException ex,
             HttpServletRequest request) {
         if (isNonExistingPath(ex)) {
             return ProblemMediaType.INSTANCE.toResponse(new ResourceNotFoundProblem());
