@@ -2,7 +2,7 @@
 :caption:
 :sectanchors:
 :toc: left
-:toclevels: 3
+:toclevels: 2
 :numbered:
 :icons: font
 :imagesdir: images
@@ -13,125 +13,232 @@
 
 == Context
 
-Java library for working with https://www.belgif.be/specification/rest/api-guide/#error-handling[RFC 9457 standardized Belgif problems].
+This is a Java library for working with https://www.belgif.be/specification/rest/api-guide/#error-handling[RFC 9457 standardized Belgif problems].
 
-With this library, RFC 9457 Problems can be treated as standard java exceptions:
+With this library, RFC 9457 Problems can be *automagically* treated as standard java exceptions:
 
 * the server side can throw `io.github.belgif.rest.problem.api.Problem` exceptions (or subclasses), which are transparently converted to RFC 9457 compliant "application/problem+json" responses
 * the client side can catch `io.github.belgif.rest.problem.api.Problem` exceptions (or subclasses), which are transparently thrown when an RFC 9457 compliant "application/problem+json" response is received
 
 The library consists of these modules:
 
-* <<belgif-rest-problem>>: library for RFC 9457 standardized Belgif problems
-* <<belgif-rest-problem-java-ee>>: Java EE / Jakarta EE integration for belgif-rest-problem
-* <<belgif-rest-problem-spring-boot-2>>: Spring Boot 2.x integration for belgif-rest-problem
-* <<belgif-rest-problem-spring-boot-3>>: Spring Boot 3.x integration for belgif-rest-problem
-* <<belgif-rest-problem-validator>>: validation library that generates Belgif-compliant BadRequestProblem with InputValidationIssues
+* *belgif-rest-problem*: library for RFC 9457 standardized Belgif problems
+* *belgif-rest-problem-java-ee*: Java EE / Jakarta EE integration for belgif-rest-problem
+* *belgif-rest-problem-spring-boot-2*: Spring Boot 2.x integration for belgif-rest-problem
+* *belgif-rest-problem-spring-boot-3*: Spring Boot 3.x integration for belgif-rest-problem
+* *belgif-rest-problem-validator*: validation library that generates Belgif-compliant BadRequestProblem with InputValidationIssues
 
 == Release notes
 
-=== Version 0.9
+include::release-notes.adoc[tag=recent-versions,leveloffset=1]
 
-*belgif-rest-problem-bom:*
+=== Older versions
 
-* Added Maven BOM (Bill of Materials) for dependency versions of belgif-rest-problem modules
+See xref:release-notes.adoc[Release Notes].
 
-=== Version 0.8
+[[getting-started]]
+== Getting started
 
-*belgif-rest-problem-spring:*
+[[dependencies]]
+=== Dependencies
 
-* Map HttpRequestMethodNotSupportedException to HTTP 405 "Method Not Allowed" + Allow HTTP header
-* Map HttpMediaTypeNotAcceptableException to HTTP 406 "Not Acceptable"
-* Map HttpMediaTypeNotSupportedException to HTTP 415 "Unsupported Media Type"
-* Sanitize BadRequestProblem detail message for HttpMessageNotReadableException
+[[dependencies-spring-boot]]
+==== Spring Boot
 
-=== Version 0.7
+[source,xml,role="primary",subs="attributes+"]
+.Spring Boot 3 (Maven)
+----
+<dependency>
+  <groupId>io.github.belgif.rest.problem</groupId>
+  <artifactId>belgif-rest-problem-spring-boot-3</artifactId>
+  <version>{revnumber}</version>
+</dependency>
+----
 
-*belgif-rest-problem-validator:*
+[source,role="secondary",subs="attributes+"]
+.Spring Boot 3 (Gradle)
+----
+compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:{revnumber}'
+----
 
-* Make RequestValidator <<extending-request-validator, extensible>> by introducing AbstractRequestValidator base class
+[source,xml,role="secondary",subs="attributes+"]
+.Spring Boot 2 (Maven)
+----
+<dependency>
+  <groupId>io.github.belgif.rest.problem</groupId>
+  <artifactId>belgif-rest-problem-spring-boot-2</artifactId>
+  <version>{revnumber}</version>
+</dependency>
+----
 
-*belgif-rest-problem-spring:*
+[source,role="secondary",subs="attributes+"]
+.Spring Boot 2 (Gradle)
+----
+compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-2:{revnumber}'
+----
 
-* Extract ProblemWebClientCustomizer to belgif-rest-problem-spring-boot-2 and belgif-rest-problem-spring-boot-3 to fix NoSuchMethodError compatibility issue
-* Add AnnotationParameterNameDiscoverer to retrieve parameter names from Spring MVC annotations for bean validation
+[[dependencies-jakarta-ee]]
+==== Jakarta EE
 
-*belgif-rest-problem-java-ee:*
+[source,xml,role="primary",subs="attributes+"]
+.Jakarta EE 9+ (Maven)
+----
+<dependency>
+  <groupId>io.github.belgif.rest.problem</groupId>
+  <artifactId>belgif-rest-problem-java-ee</artifactId>
+  <version>{revnumber}</version>
+  <classifier>jakarta</classifier>
+</dependency>
+----
 
-* Add JaxRsParameterNameProvider to retrieve parameter names from JAX-RS annotations for bean validation
+[source,role="secondary",subs="attributes+"]
+.Jakarta EE 9+ (Gradle)
+----
+compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:{revnumber}:jakarta'
+----
 
-=== Version 0.6
+[source,xml,role="secondary",subs="attributes+"]
+.Java EE 8- (Maven)
+----
+<dependency>
+  <groupId>io.github.belgif.rest.problem</groupId>
+  <artifactId>belgif-rest-problem-java-ee</artifactId>
+  <version>{revnumber}</version>
+</dependency>
+----
 
-*belgif-rest-problem-validator:*
+[source,role="secondary",subs="attributes+"]
+.Java EE 8- (Gradle)
+----
+compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:{revnumber}'
+----
 
-* Fix validation for "overflow" SSINs
+[[getting-started-usage]]
+=== Usage
 
-*belgif-rest-problem-spring:*
+At the core of this library lies an <<belgif-problem-types,exception hierarchy>> of Belgif-standardized problem types, with the possibility to define your own <<custom-problem-types,custom problem types>>.
+Integration with Spring Boot and Jakarta EE works out of the box.
 
-* Make RestControllerAdvice components @ConditionalOnWebApplication
+==== Returning a problem from a REST API
 
-=== Version 0.5
+When implementing a REST API, returning a problem is as simple as throwing the problem exception from your application code:
 
-*belgif-rest-problem-spring:*
+[source,java,indent=0]
+.Throwing a problem
+----
+include::../../../belgif-rest-problem/src/test/java/adoc/CodeSamples.java[tag=throw-problem]
+----
 
-Split into <<belgif-rest-problem-spring-boot-2>> and <<belgif-rest-problem-spring-boot-3>>.
-To benefit from Spring Boot 2.x or 3.x specific features, replace dependencies to belgif-rest-problem-spring by the version-specific variant.
+==== Catching problems when calling a REST API
 
-*belgif-rest-problem-spring-boot-3:*
+When calling a REST API, handling a problem is as simple as catching the problem exception in your application code:
 
-* Map NoResourceFoundException to 404 `urn:problem-type:belgif:resourceNotFound`
-* Added support for https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-restclient[RestClient] API
+[source,java,indent=0]
+.Handling a problem on the client
+----
+include::../../../belgif-rest-problem/src/test/java/adoc/CodeSamples.java[tag=catch-problem]
+----
 
-=== Version 0.4
+NOTE: If the REST API returns a problem type for which you do not have a corresponding `@ProblemType` on your classpath, a link:apidocs/io/github/belgif/rest/problem/DefaultProblem.html[DefaultProblem] is thrown instead as fallback. See <<problem-type-registry>> for more details.
 
-*belgif-rest-problem:*
+[[getting-started-spring-boot]]
+=== Spring Boot
 
-* Removed deprecated InvalidParamProblem: use InputValidationProblem, which supports both the legacy invalidParams[] and the new issues[] structure
-* Replace specific `urn:problem-type:cbss:input-validation:unknownSsin` issue type by generic  `urn:problem-type:cbss:input-validation:referencedResourceNotFound`
-* Added optional replacedByHref property to replacedSsin issue type
+[WARNING]
+====
+As of version 6.0, Spring Framework also contains basic integration for RFC 9475 problem types. +
+This is disabled by default, and MUST NOT be enabled.
 
-*belgif-rest-problem-validator:*
+* https://docs.spring.io/spring-boot/reference/web/servlet.html#web.servlet.spring-mvc.error-handling[spring.mvc.problemdetails.enabled]=false
+* https://docs.spring.io/spring-boot/reference/web/reactive.html#web.reactive.webflux.error-handling[spring.webflux.problemdetails.enabled]=false
+====
 
-* Added requireIfPresent check for validating input(s) that must be present when a given target input is present
+==== RestController
 
-=== Version 0.3
+Problem exceptions and framework exceptions (including bean validation) thrown by RestController components are automatically converted to a proper RFC 9457 `application/problem+json` response.
 
-*belgif-rest-problem:*
+WARNING: When using a Spring MVC annotation without name (e.g. `@RequestParam String name` instead of `@RequestParam("name") String name`), the parameter name for Bean Validation errors is retrieved via reflection as fallback.
+For this to work, your application code must be compiled with the https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html#option-parameters[-parameters] flag (see https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#parameters[maven-compiler-plugin]).
+Otherwise, you will see parameter names like `arg0`.
 
-* Removed deprecated "status" and "instance" properties from InputValidationIssue
+==== RestTemplate
 
-*belgif-rest-problem-spring:*
+Problem support is automatically enabled when constructing your RestTemplate through an autowired https://docs.spring.io/spring-boot/api/java/org/springframework/boot/web/client/RestTemplateBuilder.html[RestTemplateBuilder].
 
-* Added support for bean validation
-* Added Jakarta EE 9/10 support: use `<classifier>jakarta</classifier>`
+When manually constructing a RestTemplate instance, you'll need to apply the link:apidocs/io/github/belgif/rest/problem/spring/ProblemRestTemplateCustomizer.html[ProblemRestTemplateCustomizer] yourself.
 
-=== Version 0.2
+==== Reactive WebClient
 
-*belgif-rest-problem:*
+Problem support is automatically enabled when constructing your WebClient through an autowired https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/reactive/function/client/WebClient.Builder.html[WebClient.Builder].
 
-* Extracted RequestValidator to separate <<belgif-rest-problem-validator>> module.
-* Added equals() and hashCode() to all Problem classes
-* Move additionalProperties from DefaultProblem to Problem
+When manually constructing a WebClient instance, you'll need to apply the link:apidocs/io/github/belgif/rest/problem/spring/ProblemWebClientCustomizer.html[ProblemWebClientCustomizer] yourself.
 
-*belgif-rest-problem-java-ee:*
+==== RestClient
 
-* Added Jakarta EE 9/10 support: use `<classifier>jakarta</classifier>`
+Problem support is automatically enabled when constructing your RestClient through an autowired https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestClient.Builder.html[RestClient.Builder].
 
-*belgif-rest-problem-spring:*
+When manually constructing a RestClient instance, you'll need to apply the link:apidocs/io/github/belgif/rest/problem/spring/ProblemRestClientCustomizer.html[ProblemRestClientCustomizer] yourself.
 
-* Remove `be.fgov.kszbcss` from default scanned problem type packages
-* Rename `io.github.belgif.rest.problem.spring.scan-additional-problem-packages` configuration property to `io.github.belgif.rest.problem.scan-additional-problem-packages`
+[[getting-started-jakarta-ee]]
+=== Jakarta EE
 
-*documentation:*
+[WARNING]
+====
+While this library may work on other application servers, it has only been thoroughly tested on *JBoss EAP 7.4* (with MicroProfile XP 4.0) and *WildFly 31*.
 
-* Add chapter on <<code-generators>>
+Furthermore, the following dependencies are expected to be *"provided"* by the application server. If not, you'll need to add these dependencies to your application:
 
-=== Version 0.1
+* com.fasterxml.jackson.core:jackson-databind
+* org.slf4j:slf4j-api
+====
 
-Initial release under Belgif organization.
+==== JAX-RS service
 
-[[belgif-rest-problem]]
-== belgif-rest-problem
+Problem exceptions and framework exceptions (including bean validation) thrown by JAX-RS service components are automatically converted to a proper RFC 9457 `application/problem+json` response.
+
+==== JAX-RS client
+
+Problem support is automatically enabled for `@Inject`-ed `javax.ws.rs.client.Client(Builder)`.
+
+When manually constructing a JAX-RS client instance, you'll need to wrap it yourself with `client = ProblemSupport.enable(client)`.
+
+WARNING: JAX-RS async and reactive client API are https://github.com/belgif/rest-problem-java/issues/42[not fully supported] yet.
+
+==== MicroProfile REST Client
+
+Problem support is automatically enabled for MicroProfile REST Client.
+
+==== RESTEasy Proxy Framework
+
+Problem support must be manually enabled for https://docs.jboss.org/resteasy/docs/6.2.10.Final/userguide/#_client_proxies[RESTEasy Proxy Framework] by wrapping the proxy with `client = ProblemSupport.enable(client)`.
+
+[[code-generators]]
+=== Code generators
+
+Code generators should be configured to use the belgif-rest-problem types for problem-related model classes, instead of generating them.
+
+[[openapi-generator-maven-plugin]]
+==== openapi-generator-maven-plugin
+
+When using https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin[openapi-generator-maven-plugin], configure `<schemaMappings>` as follows:
+
+[source,xml,indent=0]
+----
+include::../../../belgif-rest-problem-it/belgif-rest-problem-codegen-it/pom.xml[tag=openapi-generator-maven-plugin]
+----
+
+[[swagger-codegen-maven-plugin]]
+==== swagger-codegen-maven-plugin
+
+When using https://github.com/swagger-api/swagger-codegen/tree/3.0.0/modules/swagger-codegen-maven-plugin[swagger-codegen-maven-plugin], configure `<importMappings>` as follows:
+
+[source,xml,indent=0]
+----
+include::../../../belgif-rest-problem-it/belgif-rest-problem-codegen-it/pom.xml[tag=swagger-codegen-maven-plugin]
+----
+
+[[problems]]
+== Problems
 
 The https://www.belgif.be/specification/rest/api-guide/#error-handling[Belgif REST Guidelines] define a standard error handling approach, based on https://www.rfc-editor.org/rfc/rfc9457[RFC 9457 "Problem Details for HTTP APIs"].
 
@@ -147,6 +254,7 @@ _Problem_
 └── DefaultProblem (fallback)
 ----
 
+[[belgif-problem-types]]
 === Belgif problem types
 
 The package `io.github.belgif.rest.problem`
@@ -177,10 +285,11 @@ _Problem_
 ====
 * The `BadRequestProblem` is backwards compatible with the deprecated `InvalidParamProblem` _(with invalidParams[] instead of issues[])_ of openapi-problem 1.1.
 * Besides the standard in/name/value properties for referencing a single input, the `InputValidationIssue` class also supports an inputs[] array for referencing multiple in/name/value inputs.
-This is https://github.com/belgif/rest-guide/issues/108[not standardized].
-* `MissingPermissionProblem` extending InputValidationProblem is https://github.com/belgif/rest-guide/issues/114[not standardized].
+This is https://github.com/belgif/rest-guide/issues/108[not currently standardized].
+* `MissingPermissionProblem` extending InputValidationProblem is https://github.com/belgif/rest-guide/issues/114[not currently standardized].
 ====
 
+[[custom-problem-types]]
 === Custom problem types
 
 Besides the standardized Belgif problem types, custom problem types can also be defined.
@@ -193,7 +302,7 @@ The https://www.belgif.be/specification/rest/api-guide/#rule-prb-type[naming con
 [source,java,indent=0]
 .Implementing an API-local custom problem type
 ----
-include::../../../belgif-rest-problem-java-ee/src/test/java/adoc/CodeSamples.java[tag=api-local-problem]
+include::../../../belgif-rest-problem/src/test/java/adoc/CodeSamples.java[tag=api-local-problem]
 ----
 
 Your custom problem type can define additional properties if necessary.
@@ -201,16 +310,15 @@ For problem types related to input parameters, you can extend from `InputValidat
 
 IMPORTANT: Don't forget to add the `@ProblemType` annotation.
 
-=== @ProblemType and ProblemTypeRegistry
+On *Jakarta EE* containers, custom problem types are discovered automagically through CDI.
 
-We make use of Jackson's polymorphic deserialization feature, so the Jackson ObjectMapper knows which problem type to instantiate when deserializing a problem.
-The problem subclasses have their problem type URI configured in the
-link:apidocs/io/github/belgif/rest/problem/api/ProblemType.html[`@ProblemType`] annotation.
+On *Spring Boot*, only package `io.github.belgif.rest.problem` is scanned for @ProblemType annotations. +
+Additional packages to scan can be configured in your application.properties:
 
-These are discovered automagically by a link:apidocs/io/github/belgif/rest/problem/registry/ProblemTypeRegistry.html[`ProblemTypeRegistry`] implementation.
-
-* in a Java EE container, this is done by the link:apidocs/io/github/belgif/rest/problem/registry/CdiProblemTypeRegistry.html[`CdiProblemTypeRegistry`] CDI extension, integrated with the Jackson ObjectMapper by the CdiProblemModule.
-* in a Spring Boot container, this is done by the link:apidocs/io/github/belgif/rest/problem/registry/SpringProblemTypeRegistry.html[`SpringProblemTypeRegistry`], integrated with the Jackson ObjectMapper by the SpringProblemModule.
+[source,properties]
+----
+io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
+----
 
 [[belgif-rest-problem-validator]]
 == belgif-rest-problem-validator
@@ -333,8 +441,27 @@ If in turn, you want your own validator implementation to be extensible as well,
  }
 ----
 
+[[implementation-details]]
+== Implementation details
+
+This section describes the internal implementation details of this library.
+
+[[problem-type-registry]]
+=== @ProblemType and ProblemTypeRegistry
+
+This library makes use of Jackson's https://github.com/FasterXML/jackson-docs/wiki/JacksonPolymorphicDeserialization[polymorphic deserialization] feature, so the Jackson ObjectMapper knows which problem type to instantiate when deserializing a problem.
+The problem subclasses have their problem type URI configured in the
+link:apidocs/io/github/belgif/rest/problem/api/ProblemType.html[`@ProblemType`] annotation.
+
+These are discovered automagically by a link:apidocs/io/github/belgif/rest/problem/registry/ProblemTypeRegistry.html[`ProblemTypeRegistry`] implementation.
+
+* in a *Jakarta EE* container, this is done by the link:apidocs/io/github/belgif/rest/problem/registry/CdiProblemTypeRegistry.html[`CdiProblemTypeRegistry`] CDI extension, integrated with the Jackson ObjectMapper by the CdiProblemModule.
+* in a *Spring Boot* container, this is done by the link:apidocs/io/github/belgif/rest/problem/registry/SpringProblemTypeRegistry.html[`SpringProblemTypeRegistry`], integrated with the Jackson ObjectMapper by the SpringProblemModule.
+
+When deserializing a problem for which no corresponding `@ProblemType` was found on the classpath, a link:apidocs/io/github/belgif/rest/problem/DefaultProblem.html[DefaultProblem] is used as fallback.
+
 [[belgif-rest-problem-java-ee]]
-== belgif-rest-problem-java-ee
+=== belgif-rest-problem-java-ee
 
 This module provides components that handle Java EE / Jakarta EE integration with the belgif-rest-problem library:
 
@@ -352,7 +479,7 @@ Its priority of "Priorities.USER + 200" allows it to be overridden if needed by 
 ** *ProblemClientResponseFilter:* JAX-RS ClientResponseFilter that converts problem response to a ProblemWrapper exception.
 +
 WARNING: In accordance with the spec, any exception thrown by a JAX-RS ClientResponseFilter gets wrapped in a ResponseProcessingException, unless the exception itself is a ResponseProcessingException.
-For that reason, the ProblemClientResponseFilter wraps the Problem exception in a "ProblemWrapper" class that extends ProblemClientResponseFilter.
+For that reason, the ProblemClientResponseFilter wraps the Problem exception in a "ProblemWrapper" class that extends ResponseProcessingException.
 
 ** *ProblemSupport:* for programmatically enabling unwrapping of ProblemWrapper to Problem exceptions on a JAX-RS Client (also works for RESTEasy Proxy Framework clients).
 +
@@ -377,30 +504,8 @@ public void setClient(Client client) {
 * *Jakarta EE 9+*: the main belgif-rest-problem-java-ee artifact targets Java EE (javax package namespace).
 A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is available with `<classifier>jakarta</classifier>`.
 
-=== Using rest-problem library for implementing REST services
-
-When implementing a REST service with JAX-RS, returning a problem is as simple as throwing the problem exception from your code:
-
-[source,java,indent=0]
-.Throwing a problem in a JAX-RS application
-----
-include::../../../belgif-rest-problem-java-ee/src/test/java/adoc/CodeSamples.java[tag=throw-problem]
-----
-
-=== Using rest-problem library for consuming REST services
-
-When using the MicroProfile REST Client API, handling a problem is as simple as catching the problem exception in your code:
-
-[source,java,indent=0]
-.Handling a problem on the client
-----
-include::../../../belgif-rest-problem-java-ee/src/test/java/adoc/CodeSamples.java[tag=catch-problem]
-----
-
-NOTE: If the service returns a problem type for which you do not have a corresponding `@ProblemType` on your classpath, a link:apidocs/io/github/belgif/rest/problem/DefaultProblem.html[DefaultProblem] is used instead.
-
 [[belgif-rest-problem-spring]]
-== belgif-rest-problem-spring
+=== belgif-rest-problem-spring
 
 This module provides auto-configuration for components that handle Spring Boot integration with the belgif-rest-problem library:
 
@@ -420,15 +525,11 @@ io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
 * *ProblemResponseErrorHandler:* a RestTemplate error handler that converts problem responses to Problem exceptions.
 * *ProblemRestTemplateCustomizer:* a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.
 * *AnnotationParameterNameDiscoverer:* a bean validation ParameterNameDiscoverer that retrieves parameter names from Spring MVC annotations
-+
-WARNING: When using a Spring MVC annotation without name (e.g. `@RequestParam String name` instead of `@RequestParam("name") String name`), the parameter name is retrieved via reflection as fallback.
-For this to work, your application code must be compiled with the https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html#option-parameters[-parameters] flag (see https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#parameters[maven-compiler-plugin]).
-Otherwise, you will see parameter names like `arg0`.
 
 In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.
 
 [[belgif-rest-problem-spring-boot-2]]
-=== belgif-rest-problem-spring-boot-2
+==== belgif-rest-problem-spring-boot-2
 
 Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 2.x users are recommended to depend on `belgif-rest-problem-spring-boot-2`, which adds some Spring Boot 2.x specific integrations:
 
@@ -436,7 +537,7 @@ Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 2.
 This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
 
 [[belgif-rest-problem-spring-boot-3]]
-=== belgif-rest-problem-spring-boot-3
+==== belgif-rest-problem-spring-boot-3
 
 Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 3.x users are recommended to depend on `belgif-rest-problem-spring-boot-3`, which adds some Spring Boot 3.x specific integrations:
 
@@ -444,28 +545,3 @@ Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 3.
 This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
 * *NoResourceFoundExceptionHandler:* an exception handler for RestControllers that converts NoResourceFoundException to HTTP 404 ResourceNotFoundProblem.
 * *ProblemRestClientCustomizer:* a RestClientCustomizer that registers the ProblemResponseErrorHandler.
-
-[[code-generators]]
-== Code generators
-
-Code generators should be configured to use the belgif-rest-problem types for problem-related model classes, instead of generating them.
-
-[[openapi-generator-maven-plugin]]
-=== openapi-generator-maven-plugin
-
-When using https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin[openapi-generator-maven-plugin], configure `<schemaMappings>` as follows:
-
-[source,xml,indent=0]
-----
-include::../../../belgif-rest-problem-it/belgif-rest-problem-codegen-it/pom.xml[tag=openapi-generator-maven-plugin]
-----
-
-[[swagger-codegen-maven-plugin]]
-=== swagger-codegen-maven-plugin
-
-When using https://github.com/swagger-api/swagger-codegen/tree/3.0.0/modules/swagger-codegen-maven-plugin[swagger-codegen-maven-plugin], configure `<importMappings>` as follows:
-
-[source,xml,indent=0]
-----
-include::../../../belgif-rest-problem-it/belgif-rest-problem-codegen-it/pom.xml[tag=swagger-codegen-maven-plugin]
-----
