@@ -33,8 +33,6 @@ public class OpenApiValidationConfig implements WebMvcConfigurer {
                 .withLevelResolver(LevelResolver.create()
                         // Accept additionalProperties even if they're not defined in the schema
                         .withLevel("validation.schema.additionalProperties", ValidationReport.Level.IGNORE)
-                        // Ignores validation when a path is not in the openapi and let Spring handle the error
-                        .withLevel("validation.request.path.missing", ValidationReport.Level.INFO)
                         .build())
                 .withBasePathOverride("/openapi-validation")
                 .build();
