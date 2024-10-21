@@ -1,0 +1,155 @@
+openapi: 3.0.3
+info:
+  title: Belgif REST problem IT
+  version: v1
+servers:
+  - url: /demo/v1
+paths:
+  /myFirstPath:
+    get:
+      operationId: myFirstGetOperation
+      parameters:
+        - name: myParam
+          in: query
+          description: My First Parameter
+          required: false
+          schema:
+            $ref: '#/components/schemas/MyParameterSchema'
+      responses:
+        200:
+          $ref: '#/components/responses/MyDummyResponse'
+    post:
+      operationId: myFirstPostOperation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MyRequestBodySchema'
+        required: true
+      responses:
+        200:
+          $ref: '#/components/responses/MyDummyResponse'
+
+  /myFirstPath/allOf:
+    post:
+      operationId: postOperationWithAllOfSchema
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                myFirstProperty:
+                  type: string
+                myInnerObject:
+                  allOf:
+                  - $ref: '#/components/schemas/MyInnerObject1'
+                  - $ref: '#/components/schemas/MyInnerObject2'
+              required:
+                - myFirstProperty
+                - myInnerObject
+      responses:
+        200:
+          $ref: '#/components/responses/MyDummyResponse'
+
+  /myFirstPath/oneOf:
+    post:
+      operationId: postOperationWithOneOfSchema
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                myFirstProperty:
+                  type: string
+                myInnerObject:
+                  oneOf:
+                    - $ref: '#/components/schemas/MyInnerObject1'
+                    - $ref: '#/components/schemas/MyInnerObject2'
+              required:
+                - myFirstProperty
+                - myInnerObject
+      responses:
+        200:
+          $ref: '#/components/responses/MyDummyResponse'
+
+  /myFirstPath/{pathParam}:
+    get:
+      operationId: mySecondGetOperation
+      parameters:
+        - name: pathParam
+          in: path
+          description: My Path Parameter
+          required: true
+          schema:
+            $ref: '#/components/schemas/MyParameterSchema'
+      responses:
+        200:
+          $ref: '#/components/responses/MyDummyResponse'
+
+  /myHeaderPath:
+    get:
+      operationId: myHeaderGetOperation
+      parameters:
+        - name: MyHeader
+          in: header
+          description: My Header Parameter
+          required: true
+          schema:
+            $ref: '#/components/schemas/MyParameterSchema'
+      responses:
+        200:
+          $ref: '#/components/responses/MyDummyResponse'
+
+  /myQueryPath:
+    get:
+      operationId: myQueryParamOperation
+      parameters:
+        - name: myParam
+          in: query
+          description: My Query Param
+          required: true
+          schema:
+            $ref: '#/components/schemas/MyParameterSchema'
+      responses:
+        200:
+          $ref: '#/components/responses/MyDummyResponse'
+
+components:
+  responses:
+    MyDummyResponse:
+      description: successful operation
+      content:
+        application/json:
+          schema:
+            type: string
+  schemas:
+    MyParameterSchema:
+      type: string
+      minLength: 10
+      pattern: ^[a-c]{3}\d*$
+    MyRequestBodySchema:
+      type: object
+      properties:
+        myFirstProperty:
+          type: string
+        myInnerObject:
+          $ref: '#/components/schemas/MyInnerObject1'
+      required:
+        - myFirstProperty
+        - myInnerObject
+    MyInnerObject1:
+      type: object
+      properties:
+        myParam:
+          $ref: '#/components/schemas/MyParameterSchema'
+      required:
+        - myParam
+    MyInnerObject2:
+      type: object
+      properties:
+        myOtherParam:
+          $ref: '#/components/schemas/MyParameterSchema'
+      required:
+        - myOtherParam
