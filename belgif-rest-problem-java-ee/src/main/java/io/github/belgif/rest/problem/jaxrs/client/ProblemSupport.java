@@ -35,6 +35,9 @@ public class ProblemSupport {
      * @return the problem-enabled JAX-RS Client
      */
     public static Client enable(Client client) {
+        if (!client.getConfiguration().isRegistered(ProblemClientResponseFilter.class)) {
+            client.register(ProblemClientResponseFilter.class);
+        }
         return createProxy(Client.class, new ClientInvocationHandler(client));
     }
 
