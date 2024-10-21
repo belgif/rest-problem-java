@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
@@ -95,6 +96,15 @@ class ProblemClientResponseFilterTest {
         when(responseContext.getStatus()).thenReturn(400);
         assertThatNoException().isThrownBy(
                 () -> filter.filter(requestContext, responseContext));
+    }
+
+    @Test
+    void microProfile() {
+        when(requestContext.getProperty("org.eclipse.microprofile.rest.client.invokedMethod"))
+                .thenReturn(mock(Method.class));
+        assertThatNoException().isThrownBy(
+                () -> filter.filter(requestContext, responseContext));
+        verifyNoMoreInteractions(requestContext, responseContext);
     }
 
 }

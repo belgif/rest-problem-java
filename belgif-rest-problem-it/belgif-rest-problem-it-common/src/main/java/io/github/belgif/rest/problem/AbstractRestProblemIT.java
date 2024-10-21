@@ -105,6 +105,30 @@ abstract class AbstractRestProblemIT {
     }
 
     @Test
+    void methodNotAllowed() {
+        getSpec().when().post("/custom").then().assertThat()
+                .statusCode(405)
+                .header("Allow", containsString("GET"));
+    }
+
+    @Test
+    void notAcceptable() {
+        getSpec()
+                .when()
+                .accept("application/xml")
+                .get("/okFromBackend").then().assertThat()
+                .statusCode(406);
+    }
+
+    @Test
+    void unsupportedMediaType() {
+        getSpec().when()
+                .contentType("application/xml")
+                .post("/beanValidation/body").then().assertThat()
+                .statusCode(415);
+    }
+
+    @Test
     void constraintViolationMissingRequiredQueryParameter() {
         getSpec().when()
                 .get("/beanValidation/queryParameter").then().assertThat()

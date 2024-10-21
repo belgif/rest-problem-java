@@ -26,8 +26,24 @@ The library consists of these modules:
 * <<belgif-rest-problem-java-ee>>: Java EE / Jakarta EE integration for belgif-rest-problem
 * <<belgif-rest-problem-spring-boot-2>>: Spring Boot 2.x integration for belgif-rest-problem
 * <<belgif-rest-problem-spring-boot-3>>: Spring Boot 3.x integration for belgif-rest-problem
+* <<belgif-rest-problem-validator>>: validation library that generates Belgif-compliant BadRequestProblem with InputValidationIssues
 
 == Release notes
+
+=== Version 0.9
+
+*belgif-rest-problem-bom:*
+
+* Added Maven BOM (Bill of Materials) for dependency versions of belgif-rest-problem modules
+
+=== Version 0.8
+
+*belgif-rest-problem-spring:*
+
+* Map HttpRequestMethodNotSupportedException to HTTP 405 "Method Not Allowed" + Allow HTTP header
+* Map HttpMediaTypeNotAcceptableException to HTTP 406 "Not Acceptable"
+* Map HttpMediaTypeNotSupportedException to HTTP 415 "Unsupported Media Type"
+* Sanitize BadRequestProblem detail message for HttpMessageNotReadableException
 
 === Version 0.7
 

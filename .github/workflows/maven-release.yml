@@ -41,8 +41,11 @@ jobs:
         full_commit_message: Publish ${{ github.ref_name }} doc
     - name: Create release
       run: |
-        gh release create ${GITHUB_REF} --draft --title "Release ${GITHUB_REF_NAME}" --notes "Changes:
-        - [placeholder]
+        gh release create ${GITHUB_REF} --draft --title "Release ${GITHUB_REF_NAME}" --notes "### Changes
+
+        #### belgif-rest-problem-<module>
+        
+        * <item>
 
         [Documentation](https://belgif.github.io/rest-problem-java/${GITHUB_REF_NAME}/) | [Javadoc](https://belgif.github.io/rest-problem-java/${GITHUB_REF_NAME}/apidocs/)"
       env:

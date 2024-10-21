@@ -42,6 +42,10 @@ public class ProblemClientResponseFilter implements ClientResponseFilter {
 
     @Override
     public void filter(ClientRequestContext request, ClientResponseContext response) throws IOException {
+        if (request.getProperty("org.eclipse.microprofile.rest.client.invokedMethod") != null) {
+            // Use io.github.belgif.rest.problem.jaxrs.client.ProblemResponseExceptionMapper on MicroProfile REST Client
+            return;
+        }
         if (ProblemMediaType.INSTANCE.isCompatible(response.getMediaType()) || (response.getStatus() >= 400
                 && MediaType.APPLICATION_JSON_TYPE.isCompatible(response.getMediaType()))) {
             Problem problem = objectMapper.readValue(response.getEntityStream(), Problem.class);
