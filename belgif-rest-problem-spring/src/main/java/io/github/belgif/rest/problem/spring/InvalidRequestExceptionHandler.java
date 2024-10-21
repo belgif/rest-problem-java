@@ -3,7 +3,7 @@ package io.github.belgif.rest.problem.spring;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -43,13 +43,13 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 @ConditionalOnClass(InvalidRequestException.class)
 @Order(1)
 // @Order(1) to take precedence over io.github.belgif.rest.problem.spring.ProblemExceptionHandler
-public class OpenApiRequestViolationProblemAdvice {
+public class InvalidRequestExceptionHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiRequestViolationProblemAdvice.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InvalidRequestExceptionHandler.class);
 
     private final ObjectMapper mapper;
 
-    public OpenApiRequestViolationProblemAdvice(ObjectMapper mapper) {
+    public InvalidRequestExceptionHandler(ObjectMapper mapper) {
         this.mapper = mapper;
     }
 
@@ -64,20 +64,20 @@ public class OpenApiRequestViolationProblemAdvice {
     }
 
     private List<InputValidationIssue> constructIssues(InvalidRequestException ex, HttpServletRequest request) {
-        Set<InputValidationIssue> issues = new HashSet<>();
-        for (ValidationReport.Message message : ex.getValidationReport().getMessages()) {
+        Set<InputValidationIssue> issues = new LinkedHashSet<>();
+        JsonNode requestBody = getRequestBody(request);
+        for (ValidationReport.Message message : getExplodedMessages(ex)) {
             InputValidationIssue issue = handleSpecialCases(message);
             if (issue != null) {
                 issues.add(issue);
                 continue;
             }
-            issue = getIssueWithCorrectType(message);
-            issue.setIn(getIn(message));
-            issue.setName(getName(message));
-            issue.setValue(getValue(message, issue.getIn(), issue.getName(), request));
-            issue.setDetail(message.getMessage());
+            InEnum in = getIn(message);
+            String name = getName(message);
+            String value = getValue(message, in, name, request, requestBody);
+            String detail = getDetail(message);
 
-            issues.add(issue);
+            issues.add(buildIssue(message, in, name, value, detail));
         }
         return new ArrayList<>(issues);
     }
@@ -99,7 +99,8 @@ public class OpenApiRequestViolationProblemAdvice {
                         .orElse(null));
     }
 
-    private String getValue(ValidationReport.Message message, InEnum in, String name, HttpServletRequest request) {
+    private String getValue(ValidationReport.Message message, InEnum in, String name, HttpServletRequest request,
+            JsonNode requestBody) {
         switch (in) {
             case PATH:
                 return getPathValue(message, name);
@@ -108,22 +109,32 @@ public class OpenApiRequestViolationProblemAdvice {
             case HEADER:
                 return request.getHeader(name);
             case BODY:
-                return getBodyValue(name, request);
+                return getBodyValue(name, requestBody);
             default:
                 return null;
         }
     }
 
-    private String getBodyValue(String name, HttpServletRequest request) {
-        try {
-            InputStream inputStream = request.getInputStream();
-            JsonNode node = mapper.readTree(inputStream);
-            JsonNode valueNode = node.at(JsonPointer.compile(name));
-            return valueNode.asText().isEmpty() ? null : valueNode.asText();
-        } catch (IOException e) {
-            LOGGER.error("Error reading input stream", e);
+    private String getDetail(ValidationReport.Message message) {
+        if ("validation.request.body.schema.oneOf".equals(message.getKey())
+                || "validation.request.body.schema.anyOf".equals(message.getKey())) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(message.getMessage()).append(" : ");
+            for (ValidationReport.Message nestedMessage : message.getNestedMessages()) {
+                stringBuilder.append(" -- ").append(nestedMessage.getMessage());
+            }
+            return stringBuilder.toString();
+        } else {
+            return message.getMessage();
         }
-        return null;
+    }
+
+    private String getBodyValue(String name, JsonNode requestBody) {
+        if (requestBody == null) {
+            return null;
+        }
+        JsonNode valueNode = requestBody.at(JsonPointer.compile(name));
+        return valueNode.asText().isEmpty() ? null : valueNode.asText();
     }
 
     private String getPathValue(ValidationReport.Message message, String name) {
@@ -163,18 +174,44 @@ public class OpenApiRequestViolationProblemAdvice {
         }
     }
 
-    private InputValidationIssue getIssueWithCorrectType(ValidationReport.Message message) {
+    private InputValidationIssue buildIssue(ValidationReport.Message message, InEnum in, String name,
+            String value, String detail) {
         switch (message.getKey()) {
             case "validation.request.parameter.query.unexpected":
-                return InputValidationIssues.unknownInput(null, null, null);
+                return InputValidationIssues.unknownInput(in, name, value);
             default:
-                return InputValidationIssues.schemaViolation(null, null, null, null);
+                return InputValidationIssues.schemaViolation(in, name, value, detail);
         }
     }
 
     private boolean isNonExistingPath(InvalidRequestException ex) {
         return ex.getValidationReport().getMessages().stream()
                 .anyMatch(m -> "validation.request.path.missing".equals(m.getKey()));
+    }
+
+    private List<ValidationReport.Message> getExplodedMessages(InvalidRequestException ex) {
+        List<ValidationReport.Message> messages = new ArrayList<>();
+        for (ValidationReport.Message message : ex.getValidationReport().getMessages()) {
+            if ("validation.request.body.schema.allOf".equals(message.getKey()) && message.getNestedMessages() != null
+                    && !message.getNestedMessages().isEmpty()) {
+                messages.addAll(message.getNestedMessages());
+            } else {
+                messages.add(message);
+            }
+        }
+        return messages;
+    }
+
+    private JsonNode getRequestBody(HttpServletRequest request) {
+        try {
+            InputStream inputStream = request.getInputStream();
+            return mapper.readTree(inputStream);
+        } catch (IOException ex) {
+            if (!"GET".equals(request.getMethod()) && !"HEAD".equals(request.getMethod())) {
+                LOGGER.error("Error reading input stream", ex);
+            }
+        }
+        return null;
     }
 
 }

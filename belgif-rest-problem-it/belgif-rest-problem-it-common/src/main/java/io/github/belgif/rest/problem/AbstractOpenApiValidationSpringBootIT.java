@@ -194,4 +194,115 @@ abstract class AbstractOpenApiValidationSpringBootIT {
                         not(empty()));
     }
 
+    @Test
+    void missingPropertiesInRequestBodyNestedSchemaTest() {
+        getSpec().contentType(ContentType.JSON).body("{" +
+                "\"myInnerObject\": {" +
+                "\"nonExistingParam\": \"abc\"" +
+                "}" +
+                "}").when().post("/myFirstPath").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo(BAD_REQUEST_URN))
+                .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
+                .body("issues[0].title", not(empty()))
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].name", equalTo("/"))
+                .body("issues[0].detail",
+                        containsString("myFirstProperty"))
+                .body("issues[1].type", equalTo(SCHEMA_VIOLATION_URN))
+                .body("issues[1].title", not(empty()))
+                .body("issues[1].in", equalTo("body"))
+                .body("issues[1].name", equalTo("/myInnerObject"))
+                .body("issues[1].detail",
+                        containsString("myParam"));
+    }
+
+    @Test
+    void missingPropertiesInRequestBodyTest() {
+        getSpec().contentType(ContentType.JSON).body("{" +
+                "}").when().post("/myFirstPath").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo(BAD_REQUEST_URN))
+                .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
+                .body("issues[0].title", not(empty()))
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].name", equalTo("/"))
+                .body("issues[0].detail",
+                        containsString("myFirstProperty"))
+                .body("issues[0].detail",
+                        containsString("myInnerObject"));
+    }
+
+    @Test
+    void nonCompliantRegexInAllOfRequestBodyTest() {
+        getSpec().contentType(ContentType.JSON).body("{\n" +
+                "    \"myFirstProperty\": \"yes\",\n" +
+                "    \"myInnerObject\": {\n" +
+                "        \"myParam\": \"abc\",\n" +
+                "        \"myOtherParam\": \"abc\"\n" +
+                "    }\n" +
+                "}").when().post("/myFirstPath/allOf").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo(BAD_REQUEST_URN))
+                .body("issues[1].type", equalTo(SCHEMA_VIOLATION_URN))
+                .body("issues[1].title", not(empty()))
+                .body("issues[1].in", equalTo("body"))
+                .body("issues[1].name", equalTo("/myInnerObject/myOtherParam"))
+                .body("issues[1].value", equalTo("abc"))
+                .body("issues[1].detail",
+                        not(empty()))
+                .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
+                .body("issues[0].title", not(empty()))
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].name", equalTo("/myInnerObject/myParam"))
+                .body("issues[0].value", equalTo("abc"))
+                .body("issues[0].detail",
+                        not(empty()));
+    }
+
+    @Test
+    void missingPropertiesInAllOfRequestBodyTest() {
+        getSpec().contentType(ContentType.JSON).body("{\n" +
+                "    \"myFirstProperty\": \"yes\",\n" +
+                "    \"myInnerObject\": {\n" +
+                "    }\n" +
+                "}").when().post("/myFirstPath/allOf").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo(BAD_REQUEST_URN))
+                .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
+                .body("issues[0].title", not(empty()))
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].name", equalTo("/myInnerObject"))
+                .body("issues[0].detail",
+                        containsString("myParam"))
+                .body("issues[1].type", equalTo(SCHEMA_VIOLATION_URN))
+                .body("issues[1].title", not(empty()))
+                .body("issues[1].in", equalTo("body"))
+                .body("issues[1].name", equalTo("/myInnerObject"))
+                .body("issues[1].detail",
+                        containsString("myOtherParam"));
+    }
+
+    @Test
+    void missingPropertiesInOneOfRequestBodyTest() {
+        getSpec().contentType(ContentType.JSON).body("{\n" +
+                "    \"myFirstProperty\": \"yes\",\n" +
+                "    \"myInnerObject\": {\n" +
+                "        \"myNonExistingParam\": \"abc\"\n" +
+                "    }\n" +
+                "}").when().post("/myFirstPath/oneOf").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo(BAD_REQUEST_URN))
+                .body("issues[0].type", equalTo(SCHEMA_VIOLATION_URN))
+                .body("issues[0].title", not(empty()))
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].name", equalTo("/myInnerObject"))
+                .body("issues[0].detail",
+                        containsString("exactly one schema"))
+                .body("issues[0].detail",
+                        containsString("myParam"))
+                .body("issues[0].detail",
+                        containsString("myOtherParam"));
+    }
+
 }

@@ -30,6 +30,50 @@ paths:
         200:
           $ref: '#/components/responses/MyDummyResponse'
 
+  /myFirstPath/allOf:
+    post:
+      operationId: postOperationWithAllOfSchema
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                myFirstProperty:
+                  type: string
+                myInnerObject:
+                  allOf:
+                  - $ref: '#/components/schemas/MyInnerObject1'
+                  - $ref: '#/components/schemas/MyInnerObject2'
+              required:
+                - myFirstProperty
+                - myInnerObject
+      responses:
+        200:
+          $ref: '#/components/responses/MyDummyResponse'
+
+  /myFirstPath/oneOf:
+    post:
+      operationId: postOperationWithOneOfSchema
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                myFirstProperty:
+                  type: string
+                myInnerObject:
+                  oneOf:
+                    - $ref: '#/components/schemas/MyInnerObject1'
+                    - $ref: '#/components/schemas/MyInnerObject2'
+              required:
+                - myFirstProperty
+                - myInnerObject
+      responses:
+        200:
+          $ref: '#/components/responses/MyDummyResponse'
+
   /myFirstPath/{pathParam}:
     get:
       operationId: mySecondGetOperation
@@ -91,9 +135,21 @@ components:
         myFirstProperty:
           type: string
         myInnerObject:
-          $ref: '#/components/schemas/MyInnerObject'
-    MyInnerObject:
+          $ref: '#/components/schemas/MyInnerObject1'
+      required:
+        - myFirstProperty
+        - myInnerObject
+    MyInnerObject1:
       type: object
       properties:
         myParam:
           $ref: '#/components/schemas/MyParameterSchema'
+      required:
+        - myParam
+    MyInnerObject2:
+      type: object
+      properties:
+        myOtherParam:
+          $ref: '#/components/schemas/MyParameterSchema'
+      required:
+        - myOtherParam
