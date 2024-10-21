@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Configuration;
 
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ import io.github.belgif.rest.problem.jaxrs.client.ProblemSupport.ClientInvocatio
 class ProblemClientBuilderTest {
 
     @Mock
-    private ProblemClientBuilder delegate;
+    private ClientBuilder delegate;
 
     @InjectMocks
     private ProblemClientBuilder builder;
@@ -37,10 +38,28 @@ class ProblemClientBuilderTest {
     void build() {
         Client client = mock(Client.class);
         when(delegate.build()).thenReturn(client);
+        Configuration configuration = mock(Configuration.class);
+        when(client.getConfiguration()).thenReturn(configuration);
+        when(configuration.isRegistered(ProblemClientResponseFilter.class)).thenReturn(false);
         Client result = builder.build();
         assertThat(result).isInstanceOf(Client.class);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
+        verify(client).register(ProblemClientResponseFilter.class);
+    }
+
+    @Test
+    void buildFilterAlreadyRegistered() {
+        Client client = mock(Client.class);
+        when(delegate.build()).thenReturn(client);
+        Configuration configuration = mock(Configuration.class);
+        when(client.getConfiguration()).thenReturn(configuration);
+        when(configuration.isRegistered(ProblemClientResponseFilter.class)).thenReturn(true);
+        Client result = builder.build();
+        assertThat(result).isInstanceOf(Client.class);
+        assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
+        assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
+        verifyNoMoreInteractions(client);
     }
 
     @Test

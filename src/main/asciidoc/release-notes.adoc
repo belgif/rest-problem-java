@@ -18,6 +18,10 @@
 
 * Added Maven BOM (Bill of Materials) for dependency versions of belgif-rest-problem modules
 
+*belgif-rest-problem-java-ee:*
+
+* Ensure ProblemClientResponseFilter gets registered for JAX-RS clients
+
 == Version 0.8
 
 *belgif-rest-problem-spring:*
