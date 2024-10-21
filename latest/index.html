@@ -522,6 +522,155 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 .CodeRay .change .change{color:#66f}
 .CodeRay .head .head{color:#f4f}
 </style>
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+
+</style>
+<script type="text/javascript">
+function addBlockSwitches() {
+	for (var primary of document.querySelectorAll('.primary')) {
+		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
+		switchItem.item.classList.add("selected");
+		var title = primary.querySelector('.title')
+		title.remove();
+	}
+	for (var secondary of document.querySelectorAll('.secondary')) {
+		var primary = findPrimary(secondary);
+		if (primary === null) {
+			console.error("Found secondary block with no primary sibling");
+		}
+		else {
+			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
+			switchItem.content.classList.add("hidden");
+			primary.append(switchItem.content);
+			secondary.remove();
+		}
+	}
+}
+
+function createElementFromHtml(html) {
+	var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
+}
+
+function createBlockSwitch(primary) {
+    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
+    primary.prepend(blockSwitch)
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	var candidate = secondary.previousElementSibling;
+	while (candidate != null && !candidate.classList.contains('primary')) {
+		candidate = candidate.previousElementSibling;
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	var blockName = block.querySelector('.title').textContent;
+	var content = block.querySelectorAll('.content').item(0);
+	var colist = nextSibling(block, '.colist');
+	if (colist != null) {
+		content.append(colist);
+	}
+	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
+	item.dataset.blockName = blockName;
+	content.dataset.blockName = blockName;
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+function nextSibling(element, selector) {
+	var sibling = element.nextElementSibling;
+	while (sibling) {
+		if (sibling.matches(selector)) {
+			return sibling;
+		}
+		sibling = sibling.nextElementSibling;
+	}
+}
+
+function globalSwitch() {
+	document.querySelectorAll(".switch--item").forEach(function(item) {
+		var blockId = blockIdForSwitchItem(item);
+		var handler = function(event) {
+			selectedText = event.target.textContent;
+			window.localStorage.setItem(blockId, selectedText);
+			for (var switchItem of document.querySelectorAll(".switch--item")) {
+				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
+					select(switchItem);
+				}
+			}
+		}
+		item.addEventListener("click", handler);
+		if (item.textContent === window.localStorage.getItem(blockId)) {
+			select(item);
+		}
+	});
+}
+
+function select(selected) {
+	for (var child of selected.parentNode.children) {
+		child.classList.remove("selected");
+	}
+	selected.classList.add("selected");
+	for (var child of selected.parentNode.parentNode.children) {
+		if (child.classList.contains("content")) {
+			if (selected.dataset.blockName === child.dataset.blockName) {
+				child.classList.remove("hidden");
+			}
+			else {
+				child.classList.add("hidden");
+			}
+		}
+	}	
+}
+
+function blockIdForSwitchItem(item) {
+	idComponents = []
+	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
+		idComponents.push(switchItem.textContent.toLowerCase());
+	}
+	return idComponents.sort().join("-")
+}
+
+window.onload = function() {
+	addBlockSwitches();
+	globalSwitch();
+};
+
+</script>
+
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
@@ -538,38 +687,30 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#_version_0_9">2.1. Version 0.9</a></li>
 <li><a href="#_version_0_8">2.2. Version 0.8</a></li>
 <li><a href="#_version_0_7">2.3. Version 0.7</a></li>
-<li><a href="#_version_0_6">2.4. Version 0.6</a></li>
-<li><a href="#_version_0_5">2.5. Version 0.5</a></li>
-<li><a href="#_version_0_4">2.6. Version 0.4</a></li>
-<li><a href="#_version_0_3">2.7. Version 0.3</a></li>
-<li><a href="#_version_0_2">2.8. Version 0.2</a></li>
-<li><a href="#_version_0_1">2.9. Version 0.1</a></li>
+<li><a href="#_older_versions">2.4. Older versions</a></li>
 </ul>
 </li>
-<li><a href="#belgif-rest-problem">3. belgif-rest-problem</a>
+<li><a href="#getting-started">3. Getting started</a>
 <ul class="sectlevel2">
-<li><a href="#_belgif_problem_types">3.1. Belgif problem types</a></li>
-<li><a href="#_custom_problem_types">3.2. Custom problem types</a></li>
-<li><a href="#_problemtype_and_problemtyperegistry">3.3. @ProblemType and ProblemTypeRegistry</a></li>
+<li><a href="#dependencies">3.1. Dependencies</a></li>
+<li><a href="#getting-started-usage">3.2. Usage</a></li>
+<li><a href="#getting-started-spring-boot">3.3. Spring Boot</a></li>
+<li><a href="#getting-started-jakarta-ee">3.4. Jakarta EE</a></li>
+<li><a href="#code-generators">3.5. Code generators</a></li>
 </ul>
 </li>
-<li><a href="#belgif-rest-problem-validator">4. belgif-rest-problem-validator</a></li>
-<li><a href="#belgif-rest-problem-java-ee">5. belgif-rest-problem-java-ee</a>
+<li><a href="#problems">4. Problems</a>
 <ul class="sectlevel2">
-<li><a href="#_using_rest_problem_library_for_implementing_rest_services">5.1. Using rest-problem library for implementing REST services</a></li>
-<li><a href="#_using_rest_problem_library_for_consuming_rest_services">5.2. Using rest-problem library for consuming REST services</a></li>
+<li><a href="#belgif-problem-types">4.1. Belgif problem types</a></li>
+<li><a href="#custom-problem-types">4.2. Custom problem types</a></li>
 </ul>
 </li>
-<li><a href="#belgif-rest-problem-spring">6. belgif-rest-problem-spring</a>
+<li><a href="#belgif-rest-problem-validator">5. belgif-rest-problem-validator</a></li>
+<li><a href="#implementation-details">6. Implementation details</a>
 <ul class="sectlevel2">
-<li><a href="#belgif-rest-problem-spring-boot-2">6.1. belgif-rest-problem-spring-boot-2</a></li>
-<li><a href="#belgif-rest-problem-spring-boot-3">6.2. belgif-rest-problem-spring-boot-3</a></li>
-</ul>
-</li>
-<li><a href="#code-generators">7. Code generators</a>
-<ul class="sectlevel2">
-<li><a href="#openapi-generator-maven-plugin">7.1. openapi-generator-maven-plugin</a></li>
-<li><a href="#swagger-codegen-maven-plugin">7.2. swagger-codegen-maven-plugin</a></li>
+<li><a href="#problem-type-registry">6.1. @ProblemType and ProblemTypeRegistry</a></li>
+<li><a href="#belgif-rest-problem-java-ee">6.2. belgif-rest-problem-java-ee</a></li>
+<li><a href="#belgif-rest-problem-spring">6.3. belgif-rest-problem-spring</a></li>
 </ul>
 </li>
 </ul>
@@ -580,10 +721,10 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h2 id="_context"><a class="anchor" href="#_context"></a>1. Context</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Java library for working with <a href="https://www.belgif.be/specification/rest/api-guide/#error-handling">RFC 9457 standardized Belgif problems</a>.</p>
+<p>This is a Java library for working with <a href="https://www.belgif.be/specification/rest/api-guide/#error-handling">RFC 9457 standardized Belgif problems</a>.</p>
 </div>
 <div class="paragraph">
-<p>With this library, RFC 9457 Problems can be treated as standard java exceptions:</p>
+<p>With this library, RFC 9457 Problems can be <strong>automagically</strong> treated as standard java exceptions:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -601,19 +742,19 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="ulist">
 <ul>
 <li>
-<p><a href="#belgif-rest-problem">belgif-rest-problem</a>: library for RFC 9457 standardized Belgif problems</p>
+<p><strong>belgif-rest-problem</strong>: library for RFC 9457 standardized Belgif problems</p>
 </li>
 <li>
-<p><a href="#belgif-rest-problem-java-ee">belgif-rest-problem-java-ee</a>: Java EE / Jakarta EE integration for belgif-rest-problem</p>
+<p><strong>belgif-rest-problem-java-ee</strong>: Java EE / Jakarta EE integration for belgif-rest-problem</p>
 </li>
 <li>
-<p><a href="#belgif-rest-problem-spring-boot-2">belgif-rest-problem-spring-boot-2</a>: Spring Boot 2.x integration for belgif-rest-problem</p>
+<p><strong>belgif-rest-problem-spring-boot-2</strong>: Spring Boot 2.x integration for belgif-rest-problem</p>
 </li>
 <li>
-<p><a href="#belgif-rest-problem-spring-boot-3">belgif-rest-problem-spring-boot-3</a>: Spring Boot 3.x integration for belgif-rest-problem</p>
+<p><strong>belgif-rest-problem-spring-boot-3</strong>: Spring Boot 3.x integration for belgif-rest-problem</p>
 </li>
 <li>
-<p><a href="#belgif-rest-problem-validator">belgif-rest-problem-validator</a>: validation library that generates Belgif-compliant BadRequestProblem with InputValidationIssues</p>
+<p><strong>belgif-rest-problem-validator</strong>: validation library that generates Belgif-compliant BadRequestProblem with InputValidationIssues</p>
 </li>
 </ul>
 </div>
@@ -694,168 +835,335 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_6"><a class="anchor" href="#_version_0_6"></a>2.4. Version 0.6</h3>
+<h3 id="_older_versions"><a class="anchor" href="#_older_versions"></a>2.4. Older versions</h3>
 <div class="paragraph">
-<p><strong>belgif-rest-problem-validator:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Fix validation for "overflow" SSINs</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>belgif-rest-problem-spring:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Make RestControllerAdvice components @ConditionalOnWebApplication</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_version_0_5"><a class="anchor" href="#_version_0_5"></a>2.5. Version 0.5</h3>
-<div class="paragraph">
-<p><strong>belgif-rest-problem-spring:</strong></p>
-</div>
-<div class="paragraph">
-<p>Split into <a href="#belgif-rest-problem-spring-boot-2">belgif-rest-problem-spring-boot-2</a> and <a href="#belgif-rest-problem-spring-boot-3">belgif-rest-problem-spring-boot-3</a>.
-To benefit from Spring Boot 2.x or 3.x specific features, replace dependencies to belgif-rest-problem-spring by the version-specific variant.</p>
-</div>
-<div class="paragraph">
-<p><strong>belgif-rest-problem-spring-boot-3:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Map NoResourceFoundException to 404 <code>urn:problem-type:belgif:resourceNotFound</code></p>
-</li>
-<li>
-<p>Added support for <a href="https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-restclient">RestClient</a> API</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_version_0_4"><a class="anchor" href="#_version_0_4"></a>2.6. Version 0.4</h3>
-<div class="paragraph">
-<p><strong>belgif-rest-problem:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Removed deprecated InvalidParamProblem: use InputValidationProblem, which supports both the legacy invalidParams[] and the new issues[] structure</p>
-</li>
-<li>
-<p>Replace specific <code>urn:problem-type:cbss:input-validation:unknownSsin</code> issue type by generic  <code>urn:problem-type:cbss:input-validation:referencedResourceNotFound</code></p>
-</li>
-<li>
-<p>Added optional replacedByHref property to replacedSsin issue type</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>belgif-rest-problem-validator:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Added requireIfPresent check for validating input(s) that must be present when a given target input is present</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_version_0_3"><a class="anchor" href="#_version_0_3"></a>2.7. Version 0.3</h3>
-<div class="paragraph">
-<p><strong>belgif-rest-problem:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Removed deprecated "status" and "instance" properties from InputValidationIssue</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>belgif-rest-problem-spring:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Added support for bean validation</p>
-</li>
-<li>
-<p>Added Jakarta EE 9/10 support: use <code>&lt;classifier&gt;jakarta&lt;/classifier&gt;</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_version_0_2"><a class="anchor" href="#_version_0_2"></a>2.8. Version 0.2</h3>
-<div class="paragraph">
-<p><strong>belgif-rest-problem:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Extracted RequestValidator to separate <a href="#belgif-rest-problem-validator">belgif-rest-problem-validator</a> module.</p>
-</li>
-<li>
-<p>Added equals() and hashCode() to all Problem classes</p>
-</li>
-<li>
-<p>Move additionalProperties from DefaultProblem to Problem</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>belgif-rest-problem-java-ee:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Added Jakarta EE 9/10 support: use <code>&lt;classifier&gt;jakarta&lt;/classifier&gt;</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>belgif-rest-problem-spring:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Remove <code>be.fgov.kszbcss</code> from default scanned problem type packages</p>
-</li>
-<li>
-<p>Rename <code>io.github.belgif.rest.problem.spring.scan-additional-problem-packages</code> configuration property to <code>io.github.belgif.rest.problem.scan-additional-problem-packages</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>documentation:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Add chapter on <a href="#code-generators">Code generators</a></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_version_0_1"><a class="anchor" href="#_version_0_1"></a>2.9. Version 0.1</h3>
-<div class="paragraph">
-<p>Initial release under Belgif organization.</p>
+<p>See <a href="release-notes.html">Release Notes</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="belgif-rest-problem"><a class="anchor" href="#belgif-rest-problem"></a>3. belgif-rest-problem</h2>
+<h2 id="getting-started"><a class="anchor" href="#getting-started"></a>3. Getting started</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="dependencies"><a class="anchor" href="#dependencies"></a>3.1. Dependencies</h3>
+<div class="sect3">
+<h4 id="dependencies-spring-boot"><a class="anchor" href="#dependencies-spring-boot"></a>3.1.1. Spring Boot</h4>
+<div class="listingblock primary">
+<div class="title">Spring Boot 3 (Maven)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
+  <span class="tag">&lt;groupId&gt;</span>io.github.belgif.rest.problem<span class="tag">&lt;/groupId&gt;</span>
+  <span class="tag">&lt;artifactId&gt;</span>belgif-rest-problem-spring-boot-3<span class="tag">&lt;/artifactId&gt;</span>
+  <span class="tag">&lt;version&gt;</span>latest<span class="tag">&lt;/version&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Spring Boot 3 (Gradle)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code>compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:latest'</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Spring Boot 2 (Maven)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
+  <span class="tag">&lt;groupId&gt;</span>io.github.belgif.rest.problem<span class="tag">&lt;/groupId&gt;</span>
+  <span class="tag">&lt;artifactId&gt;</span>belgif-rest-problem-spring-boot-2<span class="tag">&lt;/artifactId&gt;</span>
+  <span class="tag">&lt;version&gt;</span>latest<span class="tag">&lt;/version&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Spring Boot 2 (Gradle)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code>compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-2:latest'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="dependencies-jakarta-ee"><a class="anchor" href="#dependencies-jakarta-ee"></a>3.1.2. Jakarta EE</h4>
+<div class="listingblock primary">
+<div class="title">Jakarta EE 9+ (Maven)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
+  <span class="tag">&lt;groupId&gt;</span>io.github.belgif.rest.problem<span class="tag">&lt;/groupId&gt;</span>
+  <span class="tag">&lt;artifactId&gt;</span>belgif-rest-problem-java-ee<span class="tag">&lt;/artifactId&gt;</span>
+  <span class="tag">&lt;version&gt;</span>latest<span class="tag">&lt;/version&gt;</span>
+  <span class="tag">&lt;classifier&gt;</span>jakarta<span class="tag">&lt;/classifier&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Jakarta EE 9+ (Gradle)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code>compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:latest:jakarta'</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Java EE 8- (Maven)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
+  <span class="tag">&lt;groupId&gt;</span>io.github.belgif.rest.problem<span class="tag">&lt;/groupId&gt;</span>
+  <span class="tag">&lt;artifactId&gt;</span>belgif-rest-problem-java-ee<span class="tag">&lt;/artifactId&gt;</span>
+  <span class="tag">&lt;version&gt;</span>latest<span class="tag">&lt;/version&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Java EE 8- (Gradle)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code>compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:latest'</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="getting-started-usage"><a class="anchor" href="#getting-started-usage"></a>3.2. Usage</h3>
+<div class="paragraph">
+<p>At the core of this library lies an <a href="#belgif-problem-types">exception hierarchy</a> of Belgif-standardized problem types, with the possibility to define your own <a href="#custom-problem-types">custom problem types</a>.
+Integration with Spring Boot and Jakarta EE works out of the box.</p>
+</div>
+<div class="sect3">
+<h4 id="_returning_a_problem_from_a_rest_api"><a class="anchor" href="#_returning_a_problem_from_a_rest_api"></a>3.2.1. Returning a problem from a REST API</h4>
+<div class="paragraph">
+<p>When implementing a REST API, returning a problem is as simple as throwing the problem exception from your application code:</p>
+</div>
+<div class="listingblock">
+<div class="title">Throwing a problem</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">throw</span> <span class="keyword">new</span> BadRequestProblem(
+        <span class="keyword">new</span> InputValidationIssue(InEnum.PATH, <span class="string"><span class="delimiter">&quot;</span><span class="content">sectorCode</span><span class="delimiter">&quot;</span></span>, sectorCode)
+                .title(<span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid sector code</span><span class="delimiter">&quot;</span></span>));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_catching_problems_when_calling_a_rest_api"><a class="anchor" href="#_catching_problems_when_calling_a_rest_api"></a>3.2.2. Catching problems when calling a REST API</h4>
+<div class="paragraph">
+<p>When calling a REST API, handling a problem is as simple as catching the problem exception in your application code:</p>
+</div>
+<div class="listingblock">
+<div class="title">Handling a problem on the client</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">try</span> {
+    api.someOperation();
+} <span class="keyword">catch</span> (BadRequestProblem p) {
+    <span class="predefined-type">String</span> detail = p.getDetail();
+    <span class="predefined-type">List</span>&lt;InputValidationIssue&gt; issues = p.getIssues();
+    <span class="comment">// handle the BadRequestProblem</span>
+} <span class="keyword">catch</span> (ResourceNotFoundProblem p) {
+    <span class="predefined-type">String</span> detail = p.getDetail();
+    <span class="predefined-type">List</span>&lt;InputValidationIssue&gt; issues = p.getIssues();
+    <span class="comment">// handle the ResourceNotFoundProblem</span>
+} <span class="keyword">catch</span> (Problem e) {
+    <span class="comment">// handle all other problems</span>
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the REST API returns a problem type for which you do not have a corresponding <code>@ProblemType</code> on your classpath, a <a href="apidocs/io/github/belgif/rest/problem/DefaultProblem.html">DefaultProblem</a> is thrown instead as fallback. See <a href="#problem-type-registry">@ProblemType and ProblemTypeRegistry</a> for more details.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="getting-started-spring-boot"><a class="anchor" href="#getting-started-spring-boot"></a>3.3. Spring Boot</h3>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>As of version 6.0, Spring Framework also contains basic integration for RFC 9475 problem types.<br>
+This is disabled by default, and MUST NOT be enabled.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.spring.io/spring-boot/reference/web/servlet.html#web.servlet.spring-mvc.error-handling">spring.mvc.problemdetails.enabled</a>=false</p>
+</li>
+<li>
+<p><a href="https://docs.spring.io/spring-boot/reference/web/reactive.html#web.reactive.webflux.error-handling">spring.webflux.problemdetails.enabled</a>=false</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_restcontroller"><a class="anchor" href="#_restcontroller"></a>3.3.1. RestController</h4>
+<div class="paragraph">
+<p>Problem exceptions and framework exceptions (including bean validation) thrown by RestController components are automatically converted to a proper RFC 9457 <code>application/problem+json</code> response.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+When using a Spring MVC annotation without name (e.g. <code>@RequestParam String name</code> instead of <code>@RequestParam("name") String name</code>), the parameter name for Bean Validation errors is retrieved via reflection as fallback.
+For this to work, your application code must be compiled with the <a href="https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html#option-parameters">-parameters</a> flag (see <a href="https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#parameters">maven-compiler-plugin</a>).
+Otherwise, you will see parameter names like <code>arg0</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_resttemplate"><a class="anchor" href="#_resttemplate"></a>3.3.2. RestTemplate</h4>
+<div class="paragraph">
+<p>Problem support is automatically enabled when constructing your RestTemplate through an autowired <a href="https://docs.spring.io/spring-boot/api/java/org/springframework/boot/web/client/RestTemplateBuilder.html">RestTemplateBuilder</a>.</p>
+</div>
+<div class="paragraph">
+<p>When manually constructing a RestTemplate instance, you&#8217;ll need to apply the <a href="apidocs/io/github/belgif/rest/problem/spring/ProblemRestTemplateCustomizer.html">ProblemRestTemplateCustomizer</a> yourself.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_reactive_webclient"><a class="anchor" href="#_reactive_webclient"></a>3.3.3. Reactive WebClient</h4>
+<div class="paragraph">
+<p>Problem support is automatically enabled when constructing your WebClient through an autowired <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/reactive/function/client/WebClient.Builder.html">WebClient.Builder</a>.</p>
+</div>
+<div class="paragraph">
+<p>When manually constructing a WebClient instance, you&#8217;ll need to apply the <a href="apidocs/io/github/belgif/rest/problem/spring/ProblemWebClientCustomizer.html">ProblemWebClientCustomizer</a> yourself.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_restclient"><a class="anchor" href="#_restclient"></a>3.3.4. RestClient</h4>
+<div class="paragraph">
+<p>Problem support is automatically enabled when constructing your RestClient through an autowired <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestClient.Builder.html">RestClient.Builder</a>.</p>
+</div>
+<div class="paragraph">
+<p>When manually constructing a RestClient instance, you&#8217;ll need to apply the <a href="apidocs/io/github/belgif/rest/problem/spring/ProblemRestClientCustomizer.html">ProblemRestClientCustomizer</a> yourself.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="getting-started-jakarta-ee"><a class="anchor" href="#getting-started-jakarta-ee"></a>3.4. Jakarta EE</h3>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>While this library may work on other application servers, it has only been thoroughly tested on <strong>JBoss EAP 7.4</strong> (with MicroProfile XP 4.0) and <strong>WildFly 31</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Furthermore, the following dependencies are expected to be <strong>"provided"</strong> by the application server. If not, you&#8217;ll need to add these dependencies to your application:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>com.fasterxml.jackson.core:jackson-databind</p>
+</li>
+<li>
+<p>org.slf4j:slf4j-api</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_jax_rs_service"><a class="anchor" href="#_jax_rs_service"></a>3.4.1. JAX-RS service</h4>
+<div class="paragraph">
+<p>Problem exceptions and framework exceptions (including bean validation) thrown by JAX-RS service components are automatically converted to a proper RFC 9457 <code>application/problem+json</code> response.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_jax_rs_client"><a class="anchor" href="#_jax_rs_client"></a>3.4.2. JAX-RS client</h4>
+<div class="paragraph">
+<p>Problem support is automatically enabled for <code>@Inject</code>-ed <code>javax.ws.rs.client.Client(Builder)</code>.</p>
+</div>
+<div class="paragraph">
+<p>When manually constructing a JAX-RS client instance, you&#8217;ll need to wrap it yourself with <code>client = ProblemSupport.enable(client)</code>.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+JAX-RS async and reactive client API are <a href="https://github.com/belgif/rest-problem-java/issues/42">not fully supported</a> yet.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_microprofile_rest_client"><a class="anchor" href="#_microprofile_rest_client"></a>3.4.3. MicroProfile REST Client</h4>
+<div class="paragraph">
+<p>Problem support is automatically enabled for MicroProfile REST Client.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_resteasy_proxy_framework"><a class="anchor" href="#_resteasy_proxy_framework"></a>3.4.4. RESTEasy Proxy Framework</h4>
+<div class="paragraph">
+<p>Problem support must be manually enabled for <a href="https://docs.jboss.org/resteasy/docs/6.2.10.Final/userguide/#_client_proxies">RESTEasy Proxy Framework</a> by wrapping the proxy with <code>client = ProblemSupport.enable(client)</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="code-generators"><a class="anchor" href="#code-generators"></a>3.5. Code generators</h3>
+<div class="paragraph">
+<p>Code generators should be configured to use the belgif-rest-problem types for problem-related model classes, instead of generating them.</p>
+</div>
+<div class="sect3">
+<h4 id="openapi-generator-maven-plugin"><a class="anchor" href="#openapi-generator-maven-plugin"></a>3.5.1. openapi-generator-maven-plugin</h4>
+<div class="paragraph">
+<p>When using <a href="https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin">openapi-generator-maven-plugin</a>, configure <code>&lt;schemaMappings&gt;</code> as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;schemaMappings&gt;</span>
+  Problem=io.github.belgif.rest.problem.api.Problem,
+  InputValidationProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
+  InputValidationIssue=io.github.belgif.rest.problem.api.InputValidationIssue,
+  InvalidParamProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
+  InvalidParam=io.github.belgif.rest.problem.api.InvalidParam
+<span class="tag">&lt;/schemaMappings&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="swagger-codegen-maven-plugin"><a class="anchor" href="#swagger-codegen-maven-plugin"></a>3.5.2. swagger-codegen-maven-plugin</h4>
+<div class="paragraph">
+<p>When using <a href="https://github.com/swagger-api/swagger-codegen/tree/3.0.0/modules/swagger-codegen-maven-plugin">swagger-codegen-maven-plugin</a>, configure <code>&lt;importMappings&gt;</code> as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;importMappings&gt;</span>
+  Problem=io.github.belgif.rest.problem.api.Problem,
+  InputValidationProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
+  InputValidationIssue=io.github.belgif.rest.problem.api.InputValidationIssue,
+  InvalidParamProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
+  InvalidParam=io.github.belgif.rest.problem.api.InvalidParam
+<span class="tag">&lt;/importMappings&gt;</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="problems"><a class="anchor" href="#problems"></a>4. Problems</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The <a href="https://www.belgif.be/specification/rest/api-guide/#error-handling">Belgif REST Guidelines</a> define a standard error handling approach, based on <a href="https://www.rfc-editor.org/rfc/rfc9457">RFC 9457 "Problem Details for HTTP APIs"</a>.</p>
@@ -874,7 +1182,7 @@ To benefit from Spring Boot 2.x or 3.x specific features, replace dependencies t
 </div>
 </div>
 <div class="sect2">
-<h3 id="_belgif_problem_types"><a class="anchor" href="#_belgif_problem_types"></a>3.1. Belgif problem types</h3>
+<h3 id="belgif-problem-types"><a class="anchor" href="#belgif-problem-types"></a>4.1. Belgif problem types</h3>
 <div class="paragraph">
 <p>The package <code>io.github.belgif.rest.problem</code>
 contains all problem types defined in the <a href="https://www.belgif.be/specification/rest/api-guide/#standardized-problem-types">Belgif REST Guidelines</a>.</p>
@@ -914,10 +1222,10 @@ contains all problem types defined in the <a href="https://www.belgif.be/specifi
 </li>
 <li>
 <p>Besides the standard in/name/value properties for referencing a single input, the <code>InputValidationIssue</code> class also supports an inputs[] array for referencing multiple in/name/value inputs.
-This is <a href="https://github.com/belgif/rest-guide/issues/108">not standardized</a>.</p>
+This is <a href="https://github.com/belgif/rest-guide/issues/108">not currently standardized</a>.</p>
 </li>
 <li>
-<p><code>MissingPermissionProblem</code> extending InputValidationProblem is <a href="https://github.com/belgif/rest-guide/issues/114">not standardized</a>.</p>
+<p><code>MissingPermissionProblem</code> extending InputValidationProblem is <a href="https://github.com/belgif/rest-guide/issues/114">not currently standardized</a>.</p>
 </li>
 </ul>
 </div>
@@ -927,7 +1235,7 @@ This is <a href="https://github.com/belgif/rest-guide/issues/108">not standardiz
 </div>
 </div>
 <div class="sect2">
-<h3 id="_custom_problem_types"><a class="anchor" href="#_custom_problem_types"></a>3.2. Custom problem types</h3>
+<h3 id="custom-problem-types"><a class="anchor" href="#custom-problem-types"></a>4.2. Custom problem types</h3>
 <div class="paragraph">
 <p>Besides the standardized Belgif problem types, custom problem types can also be defined.</p>
 </div>
@@ -988,32 +1296,23 @@ Don&#8217;t forget to add the <code>@ProblemType</code> annotation.
 </tr>
 </table>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_problemtype_and_problemtyperegistry"><a class="anchor" href="#_problemtype_and_problemtyperegistry"></a>3.3. @ProblemType and ProblemTypeRegistry</h3>
 <div class="paragraph">
-<p>We make use of Jackson&#8217;s polymorphic deserialization feature, so the Jackson ObjectMapper knows which problem type to instantiate when deserializing a problem.
-The problem subclasses have their problem type URI configured in the
-<a href="apidocs/io/github/belgif/rest/problem/api/ProblemType.html"><code>@ProblemType</code></a> annotation.</p>
+<p>On <strong>Jakarta EE</strong> containers, custom problem types are discovered automagically through CDI.</p>
 </div>
 <div class="paragraph">
-<p>These are discovered automagically by a <a href="apidocs/io/github/belgif/rest/problem/registry/ProblemTypeRegistry.html"><code>ProblemTypeRegistry</code></a> implementation.</p>
+<p>On <strong>Spring Boot</strong>, only package <code>io.github.belgif.rest.problem</code> is scanned for @ProblemType annotations.<br>
+Additional packages to scan can be configured in your application.properties:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>in a Java EE container, this is done by the <a href="apidocs/io/github/belgif/rest/problem/registry/CdiProblemTypeRegistry.html"><code>CdiProblemTypeRegistry</code></a> CDI extension, integrated with the Jackson ObjectMapper by the CdiProblemModule.</p>
-</li>
-<li>
-<p>in a Spring Boot container, this is done by the <a href="apidocs/io/github/belgif/rest/problem/registry/SpringProblemTypeRegistry.html"><code>SpringProblemTypeRegistry</code></a>, integrated with the Jackson ObjectMapper by the SpringProblemModule.</p>
-</li>
-</ul>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="properties">io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom</code></pre>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="belgif-rest-problem-validator"><a class="anchor" href="#belgif-rest-problem-validator"></a>4. belgif-rest-problem-validator</h2>
+<h2 id="belgif-rest-problem-validator"><a class="anchor" href="#belgif-rest-problem-validator"></a>5. belgif-rest-problem-validator</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The <code>io.github.belgif.rest.problem.validation.RequestValidator</code> can be used to perform validations on the input parameters of an API request.
@@ -1175,8 +1474,37 @@ This is possible by extending the AbstractRequestValidator base class.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="belgif-rest-problem-java-ee"><a class="anchor" href="#belgif-rest-problem-java-ee"></a>5. belgif-rest-problem-java-ee</h2>
+<h2 id="implementation-details"><a class="anchor" href="#implementation-details"></a>6. Implementation details</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>This section describes the internal implementation details of this library.</p>
+</div>
+<div class="sect2">
+<h3 id="problem-type-registry"><a class="anchor" href="#problem-type-registry"></a>6.1. @ProblemType and ProblemTypeRegistry</h3>
+<div class="paragraph">
+<p>This library makes use of Jackson&#8217;s <a href="https://github.com/FasterXML/jackson-docs/wiki/JacksonPolymorphicDeserialization">polymorphic deserialization</a> feature, so the Jackson ObjectMapper knows which problem type to instantiate when deserializing a problem.
+The problem subclasses have their problem type URI configured in the
+<a href="apidocs/io/github/belgif/rest/problem/api/ProblemType.html"><code>@ProblemType</code></a> annotation.</p>
+</div>
+<div class="paragraph">
+<p>These are discovered automagically by a <a href="apidocs/io/github/belgif/rest/problem/registry/ProblemTypeRegistry.html"><code>ProblemTypeRegistry</code></a> implementation.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>in a <strong>Jakarta EE</strong> container, this is done by the <a href="apidocs/io/github/belgif/rest/problem/registry/CdiProblemTypeRegistry.html"><code>CdiProblemTypeRegistry</code></a> CDI extension, integrated with the Jackson ObjectMapper by the CdiProblemModule.</p>
+</li>
+<li>
+<p>in a <strong>Spring Boot</strong> container, this is done by the <a href="apidocs/io/github/belgif/rest/problem/registry/SpringProblemTypeRegistry.html"><code>SpringProblemTypeRegistry</code></a>, integrated with the Jackson ObjectMapper by the SpringProblemModule.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When deserializing a problem for which no corresponding <code>@ProblemType</code> was found on the classpath, a <a href="apidocs/io/github/belgif/rest/problem/DefaultProblem.html">DefaultProblem</a> is used as fallback.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="belgif-rest-problem-java-ee"><a class="anchor" href="#belgif-rest-problem-java-ee"></a>6.2. belgif-rest-problem-java-ee</h3>
 <div class="paragraph">
 <p>This module provides components that handle Java EE / Jakarta EE integration with the belgif-rest-problem library:</p>
 </div>
@@ -1221,7 +1549,7 @@ Its priority of "Priorities.USER + 200" allows it to be overridden if needed by 
 </td>
 <td class="content">
 In accordance with the spec, any exception thrown by a JAX-RS ClientResponseFilter gets wrapped in a ResponseProcessingException, unless the exception itself is a ResponseProcessingException.
-For that reason, the ProblemClientResponseFilter wraps the Problem exception in a "ProblemWrapper" class that extends ProblemClientResponseFilter.
+For that reason, the ProblemClientResponseFilter wraps the Problem exception in a "ProblemWrapper" class that extends ResponseProcessingException.
 </td>
 </tr>
 </table>
@@ -1268,62 +1596,9 @@ A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is a
 </li>
 </ul>
 </div>
-<div class="sect2">
-<h3 id="_using_rest_problem_library_for_implementing_rest_services"><a class="anchor" href="#_using_rest_problem_library_for_implementing_rest_services"></a>5.1. Using rest-problem library for implementing REST services</h3>
-<div class="paragraph">
-<p>When implementing a REST service with JAX-RS, returning a problem is as simple as throwing the problem exception from your code:</p>
-</div>
-<div class="listingblock">
-<div class="title">Throwing a problem in a JAX-RS application</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">throw</span> <span class="keyword">new</span> BadRequestProblem(
-        <span class="keyword">new</span> InputValidationIssue(InEnum.PATH, <span class="string"><span class="delimiter">&quot;</span><span class="content">sectorCode</span><span class="delimiter">&quot;</span></span>, sectorCode)
-                .title(<span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid sector code</span><span class="delimiter">&quot;</span></span>));</code></pre>
-</div>
-</div>
 </div>
 <div class="sect2">
-<h3 id="_using_rest_problem_library_for_consuming_rest_services"><a class="anchor" href="#_using_rest_problem_library_for_consuming_rest_services"></a>5.2. Using rest-problem library for consuming REST services</h3>
-<div class="paragraph">
-<p>When using the MicroProfile REST Client API, handling a problem is as simple as catching the problem exception in your code:</p>
-</div>
-<div class="listingblock">
-<div class="title">Handling a problem on the client</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">try</span> {
-    service.call();
-} <span class="keyword">catch</span> (BadRequestProblem p) {
-    <span class="predefined-type">String</span> detail = p.getDetail();
-    <span class="predefined-type">List</span>&lt;InputValidationIssue&gt; issues = p.getIssues();
-    <span class="comment">// handle the BadRequestProblem</span>
-} <span class="keyword">catch</span> (ResourceNotFoundProblem p) {
-    <span class="predefined-type">String</span> detail = p.getDetail();
-    <span class="predefined-type">List</span>&lt;InputValidationIssue&gt; issues = p.getIssues();
-    <span class="comment">// handle the ResourceNotFoundProblem</span>
-} <span class="keyword">catch</span> (WebApplicationException e) {
-    LOGGER.info(e.getMessage());
-    <span class="comment">// handle all other WebApplicationException</span>
-}</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If the service returns a problem type for which you do not have a corresponding <code>@ProblemType</code> on your classpath, a <a href="apidocs/io/github/belgif/rest/problem/DefaultProblem.html">DefaultProblem</a> is used instead.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="belgif-rest-problem-spring"><a class="anchor" href="#belgif-rest-problem-spring"></a>6. belgif-rest-problem-spring</h2>
-<div class="sectionbody">
+<h3 id="belgif-rest-problem-spring"><a class="anchor" href="#belgif-rest-problem-spring"></a>6.3. belgif-rest-problem-spring</h3>
 <div class="paragraph">
 <p>This module provides auto-configuration for components that handle Spring Boot integration with the belgif-rest-problem library:</p>
 </div>
@@ -1363,28 +1638,14 @@ Additional packages to scan can be configured in your application.properties:</p
 </li>
 <li>
 <p><strong>AnnotationParameterNameDiscoverer:</strong> a bean validation ParameterNameDiscoverer that retrieves parameter names from Spring MVC annotations</p>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-When using a Spring MVC annotation without name (e.g. <code>@RequestParam String name</code> instead of <code>@RequestParam("name") String name</code>), the parameter name is retrieved via reflection as fallback.
-For this to work, your application code must be compiled with the <a href="https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html#option-parameters">-parameters</a> flag (see <a href="https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#parameters">maven-compiler-plugin</a>).
-Otherwise, you will see parameter names like <code>arg0</code>.
-</td>
-</tr>
-</table>
-</div>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p>In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.</p>
 </div>
-<div class="sect2">
-<h3 id="belgif-rest-problem-spring-boot-2"><a class="anchor" href="#belgif-rest-problem-spring-boot-2"></a>6.1. belgif-rest-problem-spring-boot-2</h3>
+<div class="sect3">
+<h4 id="belgif-rest-problem-spring-boot-2"><a class="anchor" href="#belgif-rest-problem-spring-boot-2"></a>6.3.1. belgif-rest-problem-spring-boot-2</h4>
 <div class="paragraph">
 <p>Rather than depending on <a href="#belgif-rest-problem-spring">belgif-rest-problem-spring</a> directly, Spring Boot 2.x users are recommended to depend on <code>belgif-rest-problem-spring-boot-2</code>, which adds some Spring Boot 2.x specific integrations:</p>
 </div>
@@ -1397,8 +1658,8 @@ This handles integration with the <a href="https://docs.spring.io/spring-framewo
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="belgif-rest-problem-spring-boot-3"><a class="anchor" href="#belgif-rest-problem-spring-boot-3"></a>6.2. belgif-rest-problem-spring-boot-3</h3>
+<div class="sect3">
+<h4 id="belgif-rest-problem-spring-boot-3"><a class="anchor" href="#belgif-rest-problem-spring-boot-3"></a>6.3.2. belgif-rest-problem-spring-boot-3</h4>
 <div class="paragraph">
 <p>Rather than depending on <a href="#belgif-rest-problem-spring">belgif-rest-problem-spring</a> directly, Spring Boot 3.x users are recommended to depend on <code>belgif-rest-problem-spring-boot-3</code>, which adds some Spring Boot 3.x specific integrations:</p>
 </div>
@@ -1415,47 +1676,6 @@ This handles integration with the <a href="https://docs.spring.io/spring-framewo
 <p><strong>ProblemRestClientCustomizer:</strong> a RestClientCustomizer that registers the ProblemResponseErrorHandler.</p>
 </li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="code-generators"><a class="anchor" href="#code-generators"></a>7. Code generators</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Code generators should be configured to use the belgif-rest-problem types for problem-related model classes, instead of generating them.</p>
-</div>
-<div class="sect2">
-<h3 id="openapi-generator-maven-plugin"><a class="anchor" href="#openapi-generator-maven-plugin"></a>7.1. openapi-generator-maven-plugin</h3>
-<div class="paragraph">
-<p>When using <a href="https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin">openapi-generator-maven-plugin</a>, configure <code>&lt;schemaMappings&gt;</code> as follows:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;schemaMappings&gt;</span>
-  Problem=io.github.belgif.rest.problem.api.Problem,
-  InputValidationProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
-  InputValidationIssue=io.github.belgif.rest.problem.api.InputValidationIssue,
-  InvalidParamProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
-  InvalidParam=io.github.belgif.rest.problem.api.InvalidParam
-<span class="tag">&lt;/schemaMappings&gt;</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="swagger-codegen-maven-plugin"><a class="anchor" href="#swagger-codegen-maven-plugin"></a>7.2. swagger-codegen-maven-plugin</h3>
-<div class="paragraph">
-<p>When using <a href="https://github.com/swagger-api/swagger-codegen/tree/3.0.0/modules/swagger-codegen-maven-plugin">swagger-codegen-maven-plugin</a>, configure <code>&lt;importMappings&gt;</code> as follows:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;importMappings&gt;</span>
-  Problem=io.github.belgif.rest.problem.api.Problem,
-  InputValidationProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
-  InputValidationIssue=io.github.belgif.rest.problem.api.InputValidationIssue,
-  InvalidParamProblem=io.github.belgif.rest.problem.api.InputValidationProblem,
-  InvalidParam=io.github.belgif.rest.problem.api.InvalidParam
-<span class="tag">&lt;/importMappings&gt;</span></code></pre>
 </div>
 </div>
 </div>
