@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 import io.github.belgif.rest.problem.api.ClientProblem;
+import io.github.belgif.rest.problem.api.HttpResponseHeaders;
 import io.github.belgif.rest.problem.api.ProblemType;
 
 /**
@@ -19,7 +21,7 @@ import io.github.belgif.rest.problem.api.ProblemType;
  *      https://www.belgif.be/specification/rest/api-guide/#missing-scope</a>
  */
 @ProblemType(MissingScopeProblem.TYPE)
-public class MissingScopeProblem extends ClientProblem {
+public class MissingScopeProblem extends ClientProblem implements HttpResponseHeaders {
 
     /**
      * The problem type.
@@ -97,6 +99,11 @@ public class MissingScopeProblem extends ClientProblem {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), requiredScopes);
+    }
+
+    @Override
+    public Map<String, Object> getHttpResponseHeaders() {
+        return Collections.singletonMap(WWW_AUTHENTICATE, "Bearer error=\"insufficient_scope\"");
     }
 
 }

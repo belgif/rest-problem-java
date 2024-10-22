@@ -1,8 +1,11 @@
 package io.github.belgif.rest.problem;
 
 import java.net.URI;
+import java.util.Collections;
+import java.util.Map;
 
 import io.github.belgif.rest.problem.api.ClientProblem;
+import io.github.belgif.rest.problem.api.HttpResponseHeaders;
 import io.github.belgif.rest.problem.api.ProblemType;
 
 /**
@@ -12,7 +15,7 @@ import io.github.belgif.rest.problem.api.ProblemType;
  *      https://www.belgif.be/specification/rest/api-guide/#invalid-access-token</a>
  */
 @ProblemType(InvalidAccessTokenProblem.TYPE)
-public class InvalidAccessTokenProblem extends ClientProblem {
+public class InvalidAccessTokenProblem extends ClientProblem implements HttpResponseHeaders {
 
     /**
      * The problem type.
@@ -47,9 +50,23 @@ public class InvalidAccessTokenProblem extends ClientProblem {
 
     private static final long serialVersionUID = 1L;
 
+    private String reason = "The access token is invalid";
+
     public InvalidAccessTokenProblem() {
         super(TYPE_URI, HREF, TITLE, STATUS);
         setDetail(DETAIL);
+    }
+
+    public InvalidAccessTokenProblem(String reason) {
+        this();
+        setDetail(DETAIL + ": " + reason);
+        this.reason = reason;
+    }
+
+    @Override
+    public Map<String, Object> getHttpResponseHeaders() {
+        return Collections.singletonMap(WWW_AUTHENTICATE,
+                String.format("Bearer error=\"invalid_token\", error_description=\"%s\"", reason));
     }
 
 }
