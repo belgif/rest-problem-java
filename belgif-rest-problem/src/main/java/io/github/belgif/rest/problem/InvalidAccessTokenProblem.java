@@ -3,6 +3,7 @@ package io.github.belgif.rest.problem;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 
 import io.github.belgif.rest.problem.api.ClientProblem;
 import io.github.belgif.rest.problem.api.HttpResponseHeaders;
@@ -67,6 +68,26 @@ public class InvalidAccessTokenProblem extends ClientProblem implements HttpResp
     public Map<String, Object> getHttpResponseHeaders() {
         return Collections.singletonMap(WWW_AUTHENTICATE,
                 String.format("Bearer error=\"invalid_token\", error_description=\"%s\"", reason));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        InvalidAccessTokenProblem that = (InvalidAccessTokenProblem) o;
+        return Objects.equals(reason, that.reason);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), reason);
     }
 
 }

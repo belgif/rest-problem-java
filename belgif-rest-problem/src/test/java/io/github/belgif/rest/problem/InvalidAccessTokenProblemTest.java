@@ -44,4 +44,23 @@ class InvalidAccessTokenProblemTest {
                 .isEqualTo("urn:problem-type:belgif:invalidAccessToken");
     }
 
+    @Test
+    void equalsAndHashCode() {
+        InvalidAccessTokenProblem problem = new InvalidAccessTokenProblem("A");
+        InvalidAccessTokenProblem equal = new InvalidAccessTokenProblem("A");
+        InvalidAccessTokenProblem other = new InvalidAccessTokenProblem("B");
+        InvalidAccessTokenProblem otherBis = new InvalidAccessTokenProblem();
+        otherBis.setDetail("other");
+
+        assertThat(problem).isEqualTo(problem);
+        assertThat(problem).hasSameHashCodeAs(problem);
+        assertThat(problem).isEqualTo(equal);
+        assertThat(problem).hasSameHashCodeAs(equal);
+        assertThat(problem).hasToString(equal.toString());
+        assertThat(problem).isNotEqualTo(other);
+        assertThat(problem).isNotEqualTo(otherBis);
+        assertThat(problem).doesNotHaveSameHashCodeAs(other);
+        assertThat(problem).isNotEqualTo("other type");
+    }
+
 }
