@@ -17,6 +17,12 @@
 *belgif-rest-problem-bom:*
 
 * Added Maven BOM (Bill of Materials) for dependency versions of belgif-rest-problem modules
+* Ensure ProblemClientResponseFilter gets registered on JAX-RS Client
+* Add https://www.rfc-editor.org/rfc/rfc6750#section-3[WWW-Authenticate] HTTP response header to token-related problem types
+
+*belgif-rest-problem-java-ee:*
+
+* Ensure ProblemClientResponseFilter gets registered for JAX-RS clients
 
 == Version 0.8
 

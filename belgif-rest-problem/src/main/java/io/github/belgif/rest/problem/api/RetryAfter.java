@@ -12,13 +12,6 @@ import java.util.Map;
  */
 public interface RetryAfter extends HttpResponseHeaders {
 
-    /**
-     * The Retry-After HTTP header.
-     *
-     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After">Retry-After</a>
-     */
-    String RETRY_AFTER = "Retry-After";
-
     OffsetDateTime getRetryAfter();
 
     Long getRetryAfterSec();
