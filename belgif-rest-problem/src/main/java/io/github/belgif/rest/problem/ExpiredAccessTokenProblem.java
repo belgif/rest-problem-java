@@ -1,8 +1,11 @@
 package io.github.belgif.rest.problem;
 
 import java.net.URI;
+import java.util.Collections;
+import java.util.Map;
 
 import io.github.belgif.rest.problem.api.ClientProblem;
+import io.github.belgif.rest.problem.api.HttpResponseHeaders;
 import io.github.belgif.rest.problem.api.ProblemType;
 
 /**
@@ -12,7 +15,7 @@ import io.github.belgif.rest.problem.api.ProblemType;
  *      https://www.belgif.be/specification/rest/api-guide/#expired-access-token</a>
  */
 @ProblemType(ExpiredAccessTokenProblem.TYPE)
-public class ExpiredAccessTokenProblem extends ClientProblem {
+public class ExpiredAccessTokenProblem extends ClientProblem implements HttpResponseHeaders {
 
     /**
      * The problem type.
@@ -50,6 +53,12 @@ public class ExpiredAccessTokenProblem extends ClientProblem {
     public ExpiredAccessTokenProblem() {
         super(TYPE_URI, HREF, TITLE, STATUS);
         setDetail(DETAIL);
+    }
+
+    @Override
+    public Map<String, Object> getHttpResponseHeaders() {
+        return Collections.singletonMap(WWW_AUTHENTICATE,
+                "Bearer error=\"invalid_token\", error_description=\"The access token expired\"");
     }
 
 }

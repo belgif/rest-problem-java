@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import io.github.belgif.rest.problem.api.HttpResponseHeaders;
 import io.github.belgif.rest.problem.api.ProblemType;
 
 class ExpiredAccessTokenProblemTest {
@@ -18,6 +19,8 @@ class ExpiredAccessTokenProblemTest {
         assertThat(problem.getStatus()).isEqualTo(401);
         assertThat(problem.getDetail())
                 .isEqualTo("The Bearer access token found in the Authorization HTTP header has expired");
+        assertThat(problem.getHttpResponseHeaders()).containsEntry(HttpResponseHeaders.WWW_AUTHENTICATE,
+                "Bearer error=\"invalid_token\", error_description=\"The access token expired\"");
     }
 
     @Test

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import io.github.belgif.rest.problem.api.HttpResponseHeaders;
 import io.github.belgif.rest.problem.api.ProblemType;
 
 class NoAccessTokenProblemTest {
@@ -18,6 +19,7 @@ class NoAccessTokenProblemTest {
         assertThat(problem.getStatus()).isEqualTo(401);
         assertThat(problem.getDetail())
                 .isEqualTo("No Bearer access token found in Authorization HTTP header");
+        assertThat(problem.getHttpResponseHeaders()).containsEntry(HttpResponseHeaders.WWW_AUTHENTICATE, "Bearer");
     }
 
     @Test

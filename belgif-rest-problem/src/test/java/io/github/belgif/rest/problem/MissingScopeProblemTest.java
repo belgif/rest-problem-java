@@ -6,6 +6,7 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
+import io.github.belgif.rest.problem.api.HttpResponseHeaders;
 import io.github.belgif.rest.problem.api.ProblemType;
 
 class MissingScopeProblemTest {
@@ -18,6 +19,8 @@ class MissingScopeProblemTest {
                 .hasToString("https://www.belgif.be/specification/rest/api-guide/problems/missingScope.html");
         assertThat(problem.getTitle()).isEqualTo("Missing Scope");
         assertThat(problem.getStatus()).isEqualTo(403);
+        assertThat(problem.getHttpResponseHeaders()).containsEntry(HttpResponseHeaders.WWW_AUTHENTICATE,
+                "Bearer error=\"insufficient_scope\"");
     }
 
     @Test
