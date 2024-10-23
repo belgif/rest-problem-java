@@ -1,0 +1,121 @@
+:data-uri:
+:caption:
+:sectanchors:
+:toc: left
+:toclevels: 3
+:icons: font
+:imagesdir: images
+:last-update-label!:
+:revnumber: {version}
+
+= Release Notes
+
+// tag::recent-versions[]
+
+== Version 0.9
+
+*belgif-rest-problem-bom:*
+
+* Added Maven BOM (Bill of Materials) for dependency versions of belgif-rest-problem modules
+* Ensure ProblemClientResponseFilter gets registered on JAX-RS Client
+* Add https://www.rfc-editor.org/rfc/rfc6750#section-3[WWW-Authenticate] HTTP response header to token-related problem types
+
+*belgif-rest-problem-java-ee:*
+
+* Ensure ProblemClientResponseFilter gets registered for JAX-RS clients
+
+== Version 0.8
+
+*belgif-rest-problem-spring:*
+
+* Map HttpRequestMethodNotSupportedException to HTTP 405 "Method Not Allowed" + Allow HTTP header
+* Map HttpMediaTypeNotAcceptableException to HTTP 406 "Not Acceptable"
+* Map HttpMediaTypeNotSupportedException to HTTP 415 "Unsupported Media Type"
+* Sanitize BadRequestProblem detail message for HttpMessageNotReadableException
+
+== Version 0.7
+
+*belgif-rest-problem-validator:*
+
+* Make RequestValidator xref:index.adoc#extending-request-validator[extensible] by introducing AbstractRequestValidator base class
+
+*belgif-rest-problem-spring:*
+
+* Extract ProblemWebClientCustomizer to belgif-rest-problem-spring-boot-2 and belgif-rest-problem-spring-boot-3 to fix NoSuchMethodError compatibility issue
+* Add AnnotationParameterNameDiscoverer to retrieve parameter names from Spring MVC annotations for bean validation
+
+*belgif-rest-problem-java-ee:*
+
+* Add JaxRsParameterNameProvider to retrieve parameter names from JAX-RS annotations for bean validation
+
+// end::recent-versions[]
+
+== Version 0.6
+
+*belgif-rest-problem-validator:*
+
+* Fix validation for "overflow" SSINs
+
+*belgif-rest-problem-spring:*
+
+* Make RestControllerAdvice components @ConditionalOnWebApplication
+
+== Version 0.5
+
+*belgif-rest-problem-spring:*
+
+Split into xref:index.adoc#belgif-rest-problem-spring-boot-2[belgif-rest-problem-spring-boot-2] and xref:index.adoc#belgif-rest-problem-spring-boot-3[belgif-rest-problem-spring-boot-3].
+To benefit from Spring Boot 2.x or 3.x specific features, replace dependencies to belgif-rest-problem-spring by the version-specific variant.
+
+*belgif-rest-problem-spring-boot-3:*
+
+* Map NoResourceFoundException to 404 `urn:problem-type:belgif:resourceNotFound`
+* Added support for https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-restclient[RestClient] API
+
+== Version 0.4
+
+*belgif-rest-problem:*
+
+* Removed deprecated InvalidParamProblem: use InputValidationProblem, which supports both the legacy invalidParams[] and the new issues[] structure
+* Replace specific `urn:problem-type:cbss:input-validation:unknownSsin` issue type by generic  `urn:problem-type:cbss:input-validation:referencedResourceNotFound`
+* Added optional replacedByHref property to replacedSsin issue type
+
+*belgif-rest-problem-validator:*
+
+* Added requireIfPresent check for validating input(s) that must be present when a given target input is present
+
+== Version 0.3
+
+*belgif-rest-problem:*
+
+* Removed deprecated "status" and "instance" properties from InputValidationIssue
+
+*belgif-rest-problem-spring:*
+
+* Added support for bean validation
+* Added Jakarta EE 9/10 support: use `<classifier>jakarta</classifier>`
+
+== Version 0.2
+
+*belgif-rest-problem:*
+
+* Extracted RequestValidator to separate xref:index.adoc#belgif-rest-problem-validator[belgif-rest-problem-validator] module.
+* Added equals() and hashCode() to all Problem classes
+* Move additionalProperties from DefaultProblem to Problem
+
+*belgif-rest-problem-java-ee:*
+
+* Added Jakarta EE 9/10 support: use `<classifier>jakarta</classifier>`
+
+*belgif-rest-problem-spring:*
+
+* Remove `be.fgov.kszbcss` from default scanned problem type packages
+* Rename `io.github.belgif.rest.problem.spring.scan-additional-problem-packages` configuration property to `io.github.belgif.rest.problem.scan-additional-problem-packages`
+
+*documentation:*
+
+* Add chapter on xref:index.adoc#code-generators[Code generators].
+
+== Version 0.1
+
+Initial release under Belgif organization.

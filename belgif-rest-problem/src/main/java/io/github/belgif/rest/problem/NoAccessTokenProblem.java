@@ -1,8 +1,11 @@
 package io.github.belgif.rest.problem;
 
 import java.net.URI;
+import java.util.Collections;
+import java.util.Map;
 
 import io.github.belgif.rest.problem.api.ClientProblem;
+import io.github.belgif.rest.problem.api.HttpResponseHeaders;
 import io.github.belgif.rest.problem.api.ProblemType;
 
 /**
@@ -12,7 +15,7 @@ import io.github.belgif.rest.problem.api.ProblemType;
  *      https://www.belgif.be/specification/rest/api-guide/#no-access-token</a>
  */
 @ProblemType(NoAccessTokenProblem.TYPE)
-public class NoAccessTokenProblem extends ClientProblem {
+public class NoAccessTokenProblem extends ClientProblem implements HttpResponseHeaders {
 
     /**
      * The problem type.
@@ -50,6 +53,11 @@ public class NoAccessTokenProblem extends ClientProblem {
     public NoAccessTokenProblem() {
         super(TYPE_URI, HREF, TITLE, STATUS);
         setDetail(DETAIL);
+    }
+
+    @Override
+    public Map<String, Object> getHttpResponseHeaders() {
+        return Collections.singletonMap(WWW_AUTHENTICATE, "Bearer");
     }
 
 }

@@ -11,24 +11,66 @@ import javax.ws.rs.client.AsyncInvoker;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Configuration;
 import javax.ws.rs.core.Response;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import io.github.belgif.rest.problem.BadGatewayProblem;
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.jaxrs.client.ProblemSupport.ClientInvocationHandler;
 import io.github.belgif.rest.problem.jaxrs.client.ProblemSupport.ProxyInvocationHandler;
 
+@ExtendWith(MockitoExtension.class)
 class ProblemSupportTest {
+
+    @Mock(strictness = Mock.Strictness.LENIENT)
+    private Client client;
+
+    @Mock(strictness = Mock.Strictness.LENIENT)
+    private Configuration configuration;
 
     interface Service {
         String test();
     }
 
+    @BeforeEach
+    public void mockConfiguration() {
+        when(client.getConfiguration()).thenReturn(configuration);
+        when(configuration.isRegistered(ProblemClientResponseFilter.class)).thenReturn(true);
+    }
+
+    @Test
+    void registerProblemClientResponseFilter() {
+        reset(configuration);
+        when(configuration.isRegistered(ProblemClientResponseFilter.class)).thenReturn(false);
+        Client result = ProblemSupport.enable(client);
+        assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
+        assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
+
+        WebTarget target = mock(WebTarget.class);
+        when(client.target("https://www.belgif.be")).thenReturn(target);
+
+        Invocation.Builder builder = mock(Invocation.Builder.class);
+        when(target.request()).thenReturn(builder);
+
+        Invocation invocation = mock(Invocation.class);
+        when(builder.buildGet()).thenReturn(invocation);
+
+        when(invocation.invoke()).thenThrow(new ProblemWrapper(new BadRequestProblem()));
+
+        assertThatExceptionOfType(BadRequestProblem.class)
+                .isThrownBy(() -> result.target("https://www.belgif.be").request().buildGet().invoke());
+
+        verify(client).register(ProblemClientResponseFilter.class);
+    }
+
     @Test
     void unwrapProblemWrapperInJaxRsClient() {
-        Client client = mock(Client.class);
         Client result = ProblemSupport.enable(client);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
@@ -50,7 +92,6 @@ class ProblemSupportTest {
 
     @Test
     void normalResponseFromJaxRsClient() {
-        Client client = mock(Client.class);
         Client result = ProblemSupport.enable(client);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
@@ -72,7 +113,6 @@ class ProblemSupportTest {
 
     @Test
     void unwrapProblemWrapperInAsyncJaxRsClient() throws Exception {
-        Client client = mock(Client.class);
         Client result = ProblemSupport.enable(client);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
@@ -97,7 +137,6 @@ class ProblemSupportTest {
 
     @Test
     void normalResponseFromAsyncJaxRsClient() throws Exception {
-        Client client = mock(Client.class);
         Client result = ProblemSupport.enable(client);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
@@ -122,7 +161,6 @@ class ProblemSupportTest {
 
     @Test
     void otherExceptionInAsyncJaxRsClient() throws Exception {
-        Client client = mock(Client.class);
         Client result = ProblemSupport.enable(client);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
@@ -149,7 +187,6 @@ class ProblemSupportTest {
 
     @Test
     void otherExceptionInJaxRsClient() {
-        Client client = mock(Client.class);
         Client result = ProblemSupport.enable(client);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
@@ -169,7 +206,6 @@ class ProblemSupportTest {
 
     @Test
     void exceptionCreatingProxiedReturnType() {
-        Client client = mock(Client.class);
         Client result = ProblemSupport.enable(client);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
@@ -219,7 +255,6 @@ class ProblemSupportTest {
 
     @Test
     void configurable() {
-        Client client = mock(Client.class);
         Client result = ProblemSupport.enable(client);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
