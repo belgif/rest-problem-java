@@ -51,16 +51,19 @@ public class InvalidAccessTokenProblem extends ClientProblem implements HttpResp
 
     private static final long serialVersionUID = 1L;
 
-    private String reason = "The access token is invalid";
+    private final String reason;
 
     public InvalidAccessTokenProblem() {
-        super(TYPE_URI, HREF, TITLE, STATUS);
-        setDetail(DETAIL);
+        this(DETAIL, "The access token is invalid");
     }
 
     public InvalidAccessTokenProblem(String reason) {
-        this();
-        setDetail(DETAIL + ": " + reason);
+        this(DETAIL + ": " + reason, reason);
+    }
+
+    private InvalidAccessTokenProblem(String detail, String reason) {
+        super(TYPE_URI, HREF, TITLE, STATUS);
+        setDetail(detail);
         this.reason = reason;
     }
 
