@@ -26,6 +26,10 @@
 
 * Ensure ProblemClientResponseFilter gets registered for JAX-RS clients
 
+*belgif-rest-problem-spring:*
+
+* Added support for InvalidRequestException thrown by the Atlassian swagger-request-validator.
+
 == Version 0.8
 
 *belgif-rest-problem-spring:*

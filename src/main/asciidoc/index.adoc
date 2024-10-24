@@ -161,6 +161,10 @@ WARNING: When using a Spring MVC annotation without name (e.g. `@RequestParam St
 For this to work, your application code must be compiled with the https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html#option-parameters[-parameters] flag (see https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#parameters[maven-compiler-plugin]).
 Otherwise, you will see parameter names like `arg0`.
 
+InvalidRequestExceptions thrown by the link:https://bitbucket.org/atlassian/swagger-request-validator/src/master/[Atlassian swagger-request-validator] are also converted to a proper RFC 9457 `application/problem+json` response. Should this library be implemented in the same application.
+
+WARNING: When this library is used in Spring Boot 2, `validation.request.path.missing` should be set to level IGNORE in order to return a 404 error for a missing path. (See documentation of the Atlassian library for more information.)
+
 ==== RestTemplate
 
 Problem support is automatically enabled when constructing your RestTemplate through an autowired https://docs.spring.io/spring-boot/api/java/org/springframework/boot/web/client/RestTemplateBuilder.html[RestTemplateBuilder].
@@ -521,6 +525,7 @@ io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
 * *SpringProblemModule:* a Jackson Module that registers the SpringProblemTypeRegistry.
 * *ProblemExceptionHandler:* an exception handler for RestControllers that handles the response serialization for Problem exceptions, and converts all other uncaught exceptions to an InternalServerErrorProblem.
 * *BeanValidationExceptionsHandler:* an exception handler for RestControllers that converts bean validation related exceptions to HTTP 400 BadRequestProblem.
+* *InvalidRequestExceptionHandler:* an exception handler for the link:https://bitbucket.org/atlassian/swagger-request-validator/src/master/[Atlassian swagger-request-validator] that converts InvalidRequestException to the correct Problem type.
 * *RoutingExceptionsHandler:* an exception handler for RestControllers that converts routing related validation exceptions to HTTP 400 BadRequestProblem.
 * *ProblemResponseErrorHandler:* a RestTemplate error handler that converts problem responses to Problem exceptions.
 * *ProblemRestTemplateCustomizer:* a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.
