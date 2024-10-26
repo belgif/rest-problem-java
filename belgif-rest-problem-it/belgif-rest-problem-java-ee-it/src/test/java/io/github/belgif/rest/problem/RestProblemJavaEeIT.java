@@ -31,7 +31,7 @@ class RestProblemJavaEeIT extends AbstractRestProblemEEIT {
                             "-javaagent:/deployments/jacocoagent.jar=destfile=/tmp/jacoco-it.exec," +
                                     "includes=io.github.belgif.rest.problem.*")
                     .withCopyFileToContainer(
-                            MountableFile.forHostPath("src/test/resources/standalone-openshift.xml"),
+                            MountableFile.forHostPath("src/test/resources/standalone-openshift.xml", 777),
                             "/opt/eap/standalone/configuration/standalone-openshift.xml")
                     .withCopyFileToContainer(
                             MountableFile.forHostPath("target/dependency/jacocoagent.jar"),
