@@ -473,6 +473,9 @@ Its priority of "Priorities.USER + 200" allows it to be overridden if needed by 
 * *ProblemExceptionMapper:* a JAX-RS ExceptionMapper that converts Problem exceptions to a proper application/problem+json response.
 * *WebApplicationExceptionMapper:* a JAX-RS ExceptionMapper that handles WebApplicationExceptions thrown by the JAX-RS runtime itself, to prevent them from being handled by the DefaultExceptionMapper.
 * *DefaultExceptionMapper:* a JAX-RS ExceptionMapper that converts any other uncaught exception to an HTTP 500 InternalServerErrorProblem.
+* *EJBExceptionMapper:* a JAX-RS ExceptionMapper that handles EJBExceptions.
+Routes to ProblemExceptionMapper when the EJBException is caused by a Problem exception.
+Otherwise, routes to DefaultExceptionMapper.
 * *JaxRsParameterNameProvider*: a bean validation ParameterNameProvider that retrieves parameter names from JAX-RS annotations
 
 * *JAX-RS Client integration:*
