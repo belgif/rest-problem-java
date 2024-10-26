@@ -12,9 +12,115 @@
   <artifactId>belgif-rest-problem-java-ee-it</artifactId>
   <packaging>war</packaging>
 
+  <properties>
+    <docker.image>registry.redhat.io/jboss-eap-7/eap-xp4-openjdk17-openshift-rhel8:4.0-40</docker.image>
+  </properties>
+
   <build>
     <finalName>belgif-rest-problem-java-ee-it</finalName>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>src/test/resources</directory>
+              <includes>
+                <include>standalone-openshift.xml</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>pull-eap-xp4</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>docker</executable>
+              <arguments>
+                <argument>pull</argument>
+                <argument>${docker.image}</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>extract-eap-xp4-config</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>docker</executable>
+              <arguments>
+                <argument>run</argument>
+                <argument>--rm</argument>
+                <argument>${docker.image}</argument>
+                <argument>cat</argument>
+                <argument>/opt/eap/standalone/configuration/standalone-openshift.xml</argument>
+              </arguments>
+              <outputFile>src/test/resources/standalone-openshift.xml</outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enable-ejb-subsystem</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <replace file="src/test/resources/standalone-openshift.xml">
+                  <replacetoken>
+                    <![CDATA[
+                    <extension module="org.jboss.as.ee"/>
+                    ]]>
+                  </replacetoken>
+                  <replacevalue>
+                    <![CDATA[
+                    <extension module="org.jboss.as.ee"/>
+                    <extension module="org.jboss.as.ejb3"/>
+                    ]]>
+                  </replacevalue>
+                </replace>
+                <replace file="src/test/resources/standalone-openshift.xml">
+                  <replacetoken>
+                    <![CDATA[
+                    <subsystem xmlns="urn:jboss:domain:ee-security:1.0"/>
+                    ]]>
+                  </replacetoken>
+                  <replacevalue>
+                    <![CDATA[
+                    <subsystem xmlns="urn:jboss:domain:ee-security:1.0"/>
+                    <subsystem xmlns="urn:jboss:domain:ejb3:9.0">
+                      <thread-pools>
+                        <thread-pool name="default">
+                          <max-threads count="10"/>
+                          <keepalive-time time="60" unit="seconds"/>
+                        </thread-pool>
+                      </thread-pools>
+                    </subsystem>
+                    ]]>
+                  </replacevalue>
+                </replace>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
