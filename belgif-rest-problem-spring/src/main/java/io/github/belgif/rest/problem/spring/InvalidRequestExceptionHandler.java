@@ -211,9 +211,7 @@ public class InvalidRequestExceptionHandler {
                 InputStream inputStream = request.getInputStream();
                 requestBodyReference.set(mapper.readTree(inputStream));
             } catch (IOException ex) {
-                if (!"GET".equals(request.getMethod()) && !"HEAD".equals(request.getMethod())) {
-                    LOGGER.error("Error reading input stream", ex);
-                }
+                LOGGER.error("Error reading input stream", ex);
             }
         }
         return requestBodyReference.get();
