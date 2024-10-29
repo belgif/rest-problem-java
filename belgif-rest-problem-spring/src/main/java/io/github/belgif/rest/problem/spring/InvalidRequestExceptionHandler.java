@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,7 +66,7 @@ public class InvalidRequestExceptionHandler {
 
     private List<InputValidationIssue> constructIssues(InvalidRequestException ex, HttpServletRequest request) {
         Set<InputValidationIssue> issues = new LinkedHashSet<>();
-        JsonNode requestBody = getRequestBody(request);
+        AtomicReference<JsonNode> requestBody = new AtomicReference<>(null);
         for (ValidationReport.Message message : getExplodedMessages(ex)) {
             InputValidationIssue issue = handleSpecialCases(message);
             if (issue != null) {
@@ -100,7 +101,7 @@ public class InvalidRequestExceptionHandler {
     }
 
     private String getValue(ValidationReport.Message message, InEnum in, String name, HttpServletRequest request,
-            JsonNode requestBody) {
+            AtomicReference<JsonNode> requestBody) {
         switch (in) {
             case PATH:
                 return getPathValue(message, name);
@@ -109,7 +110,7 @@ public class InvalidRequestExceptionHandler {
             case HEADER:
                 return request.getHeader(name);
             case BODY:
-                return getBodyValue(name, requestBody);
+                return getBodyValue(name, requestBody, request);
             default:
                 return null;
         }
@@ -129,7 +130,9 @@ public class InvalidRequestExceptionHandler {
         }
     }
 
-    private String getBodyValue(String name, JsonNode requestBody) {
+    private String getBodyValue(String name, AtomicReference<JsonNode> requestBodyReference,
+            HttpServletRequest request) {
+        JsonNode requestBody = getRequestBody(requestBodyReference, request);
         if (requestBody == null) {
             return null;
         }
@@ -202,16 +205,18 @@ public class InvalidRequestExceptionHandler {
         return messages;
     }
 
-    private JsonNode getRequestBody(HttpServletRequest request) {
-        try {
-            InputStream inputStream = request.getInputStream();
-            return mapper.readTree(inputStream);
-        } catch (IOException ex) {
-            if (!"GET".equals(request.getMethod()) && !"HEAD".equals(request.getMethod())) {
-                LOGGER.error("Error reading input stream", ex);
+    private JsonNode getRequestBody(AtomicReference<JsonNode> requestBodyReference, HttpServletRequest request) {
+        if (requestBodyReference.get() == null) {
+            try {
+                InputStream inputStream = request.getInputStream();
+                requestBodyReference.set(mapper.readTree(inputStream));
+            } catch (IOException ex) {
+                if (!"GET".equals(request.getMethod()) && !"HEAD".equals(request.getMethod())) {
+                    LOGGER.error("Error reading input stream", ex);
+                }
             }
         }
-        return null;
+        return requestBodyReference.get();
     }
 
 }
