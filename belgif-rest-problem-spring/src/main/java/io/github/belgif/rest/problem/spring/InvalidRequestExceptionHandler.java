@@ -1,14 +1,10 @@
 package io.github.belgif.rest.problem.spring;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,7 +19,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.atlassian.oai.validator.report.ValidationReport;
 import com.atlassian.oai.validator.springmvc.InvalidRequestException;
-import com.fasterxml.jackson.core.JsonPointer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -33,7 +28,7 @@ import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
-import io.swagger.v3.oas.models.parameters.Parameter;
+import io.github.belgif.rest.problem.internal.InvalidRequestExceptionUtil;
 
 /**
  * This class is only active when Spring-Boot applications implemented the Atlassian swagger-request-validator.
@@ -73,92 +68,30 @@ public class InvalidRequestExceptionHandler {
                 issues.add(issue);
                 continue;
             }
-            InEnum in = getIn(message);
-            String name = getName(message);
+            InEnum in = InvalidRequestExceptionUtil.getIn(message);
+            String name = InvalidRequestExceptionUtil.getName(message);
             String value = getValue(message, in, name, request, requestBody);
-            String detail = getDetail(message);
+            String detail = InvalidRequestExceptionUtil.getDetail(message);
 
             issues.add(buildIssue(message, in, name, value, detail));
         }
         return new ArrayList<>(issues);
     }
 
-    private InEnum getIn(ValidationReport.Message message) {
-        return message.getContext()
-                .flatMap(ValidationReport.MessageContext::getParameter)
-                .map(parameter -> InEnum.fromValue(parameter.getIn()))
-                .orElse(InEnum.BODY);
-    }
-
-    private String getName(ValidationReport.Message message) {
-        return message.getContext()
-                .flatMap(ValidationReport.MessageContext::getParameter)
-                .map(Parameter::getName)
-                .orElseGet(() -> message.getContext()
-                        .flatMap(ValidationReport.MessageContext::getPointers)
-                        .map(ValidationReport.MessageContext.Pointers::getInstance)
-                        .orElse(null));
-    }
-
     private String getValue(ValidationReport.Message message, InEnum in, String name, HttpServletRequest request,
             AtomicReference<JsonNode> requestBody) {
         switch (in) {
             case PATH:
-                return getPathValue(message, name);
+                return InvalidRequestExceptionUtil.getPathValue(message, name);
             case QUERY:
                 return request.getParameter(name);
             case HEADER:
                 return request.getHeader(name);
             case BODY:
-                return getBodyValue(name, requestBody, request);
+                return InvalidRequestExceptionUtil.getBodyValue(name, requestBody, request, mapper);
             default:
                 return null;
         }
-    }
-
-    private String getDetail(ValidationReport.Message message) {
-        if ("validation.request.body.schema.oneOf".equals(message.getKey())
-                || "validation.request.body.schema.anyOf".equals(message.getKey())) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(message.getMessage()).append(" : ");
-            for (ValidationReport.Message nestedMessage : message.getNestedMessages()) {
-                stringBuilder.append(" -- ").append(nestedMessage.getMessage());
-            }
-            return stringBuilder.toString();
-        } else {
-            return message.getMessage();
-        }
-    }
-
-    private String getBodyValue(String name, AtomicReference<JsonNode> requestBodyReference,
-            HttpServletRequest request) {
-        JsonNode requestBody = getRequestBody(requestBodyReference, request);
-        if (requestBody == null) {
-            return null;
-        }
-        JsonNode valueNode = requestBody.at(JsonPointer.compile(name));
-        return valueNode.asText().isEmpty() ? null : valueNode.asText();
-    }
-
-    private String getPathValue(ValidationReport.Message message, String name) {
-        String original = message.getContext().flatMap(ValidationReport.MessageContext::getApiOperation)
-                .map(p -> p.getApiPath().original()).orElse(null);
-        if (original != null) {
-            String actual = message.getContext()
-                    .flatMap(ValidationReport.MessageContext::getRequestPath)
-                    .orElse("");
-
-            String regex = original.replace("{" + name + "}", "(.*)").replaceAll("/\\{.*}", "/.*");
-
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(actual);
-
-            if (matcher.find()) {
-                return matcher.group(1);
-            }
-        }
-
-        return null;
     }
 
     private InputValidationIssue handleSpecialCases(ValidationReport.Message message) {
@@ -168,7 +101,7 @@ public class InvalidRequestExceptionHandler {
                 return InputValidationIssues.schemaViolation(InEnum.BODY, null, null, "Unable to parse JSON");
             }
             case "validation.schema.unknownError": {
-                LOGGER.error("An unknown error occured during schema validation: {}", message.getMessage());
+                LOGGER.error("An unknown error occurred during schema validation: {}", message.getMessage());
                 return InputValidationIssues.schemaViolation(null, null, null,
                         "An error occurred during schema validation");
             }
@@ -203,18 +136,6 @@ public class InvalidRequestExceptionHandler {
             }
         }
         return messages;
-    }
-
-    private JsonNode getRequestBody(AtomicReference<JsonNode> requestBodyReference, HttpServletRequest request) {
-        if (requestBodyReference.get() == null) {
-            try {
-                InputStream inputStream = request.getInputStream();
-                requestBodyReference.set(mapper.readTree(inputStream));
-            } catch (IOException ex) {
-                LOGGER.error("Error reading input stream", ex);
-            }
-        }
-        return requestBodyReference.get();
     }
 
 }
