@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 
 class InputValidationIssueTest {
@@ -158,62 +159,24 @@ class InputValidationIssueTest {
         Input<?> input = Input.query("name", "value");
         List<Input<?>> inputs = Arrays.asList(input, input);
 
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().in(InEnum.QUERY).inputs(input))
-                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().name("name").inputs(input)).withMessageContaining(
-                        MUTUALLY_EXCLUSIVE_EXC);
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().value("value").inputs(input))
-                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().inputs(input, input).in(InEnum.QUERY))
-                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().inputs(input, input).name("name"))
-                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().inputs(input, input).value("value"))
-                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
-
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().in(InEnum.QUERY).inputs(inputs))
-                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().name("name").inputs(inputs)).withMessageContaining(
-                        MUTUALLY_EXCLUSIVE_EXC);
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().value("value").inputs(inputs))
-                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().inputs(inputs).in(InEnum.QUERY))
-                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().inputs(inputs).name("name")).withMessageContaining(
-                        MUTUALLY_EXCLUSIVE_EXC);
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().inputs(inputs).value("value"))
-                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
-
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().in(InEnum.QUERY).inputs(input, input))
-                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().name("name").inputs(input, input))
-                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().value("value").inputs(input, input))
-                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().inputs(input, input).in(InEnum.QUERY))
-                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().inputs(input, input).name("name"))
-                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> new InputValidationIssue().inputs(input, input).value("value"))
-                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().in(InEnum.QUERY).inputs(input));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().name("name").inputs(input));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().value("value").inputs(input));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().inputs(input, input).in(InEnum.QUERY));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().inputs(input, input).name("name"));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().inputs(input, input).value("value"));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().inputs(input, input).value("value"));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().in(InEnum.QUERY).inputs(inputs));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().name("name").inputs(inputs));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().value("value").inputs(inputs));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().inputs(inputs).in(InEnum.QUERY));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().inputs(inputs).name("name"));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().inputs(inputs).value("value"));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().name("name").inputs(input, input));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().value("value").inputs(input, input));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().inputs(input, input).in(InEnum.QUERY));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().inputs(input, input).name("name"));
+        assertMutuallyExclusiveException(() -> new InputValidationIssue().inputs(input, input).value("value"));
     }
 
     @Test
@@ -252,24 +215,12 @@ class InputValidationIssueTest {
 
     @Test
     void input() {
-        Input<?> input = null;
-        List<Input<?>> inputs = null;
         InputValidationIssue issue = new InputValidationIssue();
 
-        issue.addInput(input);
-        assertThat(issue.getInputs()).isEmpty();
-        issue.addInput();
-        assertThat(issue.getInputs()).isEmpty();
-        issue.addInput(null, null);
-        assertThat(issue.getInputs()).isEmpty();
-        issue.addInputs(inputs);
-        assertThat(issue.getInputs()).isEmpty();
-        issue.addInputs(Arrays.asList(null, null));
-        assertThat(issue.getInputs()).isEmpty();
-        issue.addInputs(new ArrayList<>());
+        issue.addInput(null);
         assertThat(issue.getInputs()).isEmpty();
 
-        input = Input.query("name", "value");
+        Input<?> input = Input.query("name", "value");
         issue = new InputValidationIssue();
         issue.addInput(input);
         assertThat(issue.getInputs()).isEmpty();
@@ -282,27 +233,6 @@ class InputValidationIssueTest {
         assertThat(issue.getIn()).isNull();
         assertThat(issue.getValue()).isNull();
         assertThat(issue.getInputs()).containsExactly(input, input);
-
-        issue = new InputValidationIssue();
-        issue.addInputs(Collections.singletonList((input)));
-        assertThat(issue.getInputs()).isEmpty();
-        assertThat(issue.getName()).isEqualTo(input.getName());
-        assertThat(issue.getIn()).isEqualTo(input.getIn());
-        assertThat(issue.getValue()).isEqualTo(input.getValue());
-
-        issue.addInputs(Arrays.asList(input, input));
-        assertThat(issue.getName()).isNull();
-        assertThat(issue.getIn()).isNull();
-        assertThat(issue.getValue()).isNull();
-        assertThat(issue.getInputs()).containsExactly(input, input, input);
-
-        issue = new InputValidationIssue();
-        issue.addInput(input, input);
-        assertThat(issue.getName()).isNull();
-        assertThat(issue.getIn()).isNull();
-        assertThat(issue.getValue()).isNull();
-        assertThat(issue.getInputs()).containsExactly(input, input);
-
     }
 
     @Test
@@ -320,7 +250,7 @@ class InputValidationIssueTest {
         InputValidationIssue equal = new InputValidationIssue().detail("ok");
         InputValidationIssue other = new InputValidationIssue().detail("other");
 
-        assertThat(issue).isEqualTo(issue);
+        assertThat(issue).isEqualTo(issue).hasSameHashCodeAs(issue);
         assertThat(issue).hasSameHashCodeAs(issue);
         assertThat(issue).isEqualTo(equal);
         assertThat(issue).hasSameHashCodeAs(equal);
@@ -328,6 +258,12 @@ class InputValidationIssueTest {
         assertThat(issue).isNotEqualTo(other);
         assertThat(issue).doesNotHaveSameHashCodeAs(other);
         assertThat(issue).isNotEqualTo("other type");
+    }
+
+    private void assertMutuallyExclusiveException(ThrowableAssert.ThrowingCallable throwingCallable) {
+        assertThatIllegalArgumentException()
+                .isThrownBy(throwingCallable)
+                .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
     }
 
 }

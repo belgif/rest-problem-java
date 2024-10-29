@@ -165,20 +165,6 @@ public class InputValidationIssue {
         }
     }
 
-    public void addInput(Input<?>... input) {
-        if (input == null) {
-            return;
-        }
-        addInputs(Arrays.asList(input));
-    }
-
-    public void addInputs(List<Input<?>> input) {
-        if (input == null || input.isEmpty()) {
-            return;
-        }
-        input.forEach(this::addInput);
-    }
-
     private void verifyNoInputs(Object valueToUpdate) {
         if (valueToUpdate == null) {
             return;
@@ -321,8 +307,16 @@ public class InputValidationIssue {
         return this;
     }
 
+    /**
+     *
+     * @param inputs list with input items to initialize the inputs parameter. Any previous inputs are erased from the
+     *        parameter
+     * @return this
+     *
+     * @throws IllegalArgumentException if in/name/value parameters are not null (because it's mutually exclusive). This
+     *         exception is also thrown if the list contains only one non-null item.
+     */
     public InputValidationIssue inputs(List<Input<?>> inputs) {
-        this.inputs.clear();
 
         if (inputs == null) {
             return this;
@@ -338,6 +332,7 @@ public class InputValidationIssue {
             throw new IllegalArgumentException(INPUTS_SETTER_ONE_ITEM);
         }
 
+        this.inputs.clear();
         this.inputs.addAll(filteredInputs);
         return this;
     }
