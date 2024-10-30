@@ -684,10 +684,11 @@ window.onload = function() {
 <li><a href="#_context">1. Context</a></li>
 <li><a href="#_release_notes">2. Release notes</a>
 <ul class="sectlevel2">
-<li><a href="#_version_0_9">2.1. Version 0.9</a></li>
-<li><a href="#_version_0_8">2.2. Version 0.8</a></li>
-<li><a href="#_version_0_7">2.3. Version 0.7</a></li>
-<li><a href="#_older_versions">2.4. Older versions</a></li>
+<li><a href="#_version_0_10">2.1. Version 0.10</a></li>
+<li><a href="#_version_0_9">2.2. Version 0.9</a></li>
+<li><a href="#_version_0_8">2.3. Version 0.8</a></li>
+<li><a href="#_version_0_7">2.4. Version 0.7</a></li>
+<li><a href="#_older_versions">2.5. Older versions</a></li>
 </ul>
 </li>
 <li><a href="#getting-started">3. Getting started</a>
@@ -764,7 +765,30 @@ window.onload = function() {
 <h2 id="_release_notes"><a class="anchor" href="#_release_notes"></a>2. Release notes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_version_0_9"><a class="anchor" href="#_version_0_9"></a>2.1. Version 0.9</h3>
+<h3 id="_version_0_10"><a class="anchor" href="#_version_0_10"></a>2.1. Version 0.10</h3>
+<div class="paragraph">
+<p><strong>belgif-rest-problem:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove @ApplicationException annotation on Problem, because it could potentially cause compilation errors when used in combination with annotation processors</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-java-ee:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add EJBExceptionMapper that unwraps Problem cause, to address the removed @ApplicationException annotation</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_version_0_9"><a class="anchor" href="#_version_0_9"></a>2.2. Version 0.9</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem-bom:</strong></p>
 </div>
@@ -797,7 +821,7 @@ window.onload = function() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_8"><a class="anchor" href="#_version_0_8"></a>2.2. Version 0.8</h3>
+<h3 id="_version_0_8"><a class="anchor" href="#_version_0_8"></a>2.3. Version 0.8</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem-spring:</strong></p>
 </div>
@@ -819,7 +843,7 @@ window.onload = function() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_7"><a class="anchor" href="#_version_0_7"></a>2.3. Version 0.7</h3>
+<h3 id="_version_0_7"><a class="anchor" href="#_version_0_7"></a>2.4. Version 0.7</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem-validator:</strong></p>
 </div>
@@ -855,7 +879,7 @@ window.onload = function() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_older_versions"><a class="anchor" href="#_older_versions"></a>2.4. Older versions</h3>
+<h3 id="_older_versions"><a class="anchor" href="#_older_versions"></a>2.5. Older versions</h3>
 <div class="paragraph">
 <p>See <a href="release-notes.html">Release Notes</a>.</p>
 </div>
@@ -1551,6 +1575,11 @@ Its priority of "Priorities.USER + 200" allows it to be overridden if needed by 
 </li>
 <li>
 <p><strong>DefaultExceptionMapper:</strong> a JAX-RS ExceptionMapper that converts any other uncaught exception to an HTTP 500 InternalServerErrorProblem.</p>
+</li>
+<li>
+<p><strong>EJBExceptionMapper:</strong> a JAX-RS ExceptionMapper that handles EJBExceptions.
+Routes to ProblemExceptionMapper when the EJBException is caused by a Problem exception.
+Otherwise, routes to DefaultExceptionMapper.</p>
 </li>
 <li>
 <p><strong>JaxRsParameterNameProvider</strong>: a bean validation ParameterNameProvider that retrieves parameter names from JAX-RS annotations</p>

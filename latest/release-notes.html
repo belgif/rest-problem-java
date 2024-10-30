@@ -592,6 +592,7 @@ window.onload = function() {
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
+<li><a href="#_version_0_10">Version 0.10</a></li>
 <li><a href="#_version_0_9">Version 0.9</a></li>
 <li><a href="#_version_0_8">Version 0.8</a></li>
 <li><a href="#_version_0_7">Version 0.7</a></li>
@@ -605,6 +606,31 @@ window.onload = function() {
 </div>
 </div>
 <div id="content">
+<div class="sect1">
+<h2 id="_version_0_10"><a class="anchor" href="#_version_0_10"></a>Version 0.10</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>belgif-rest-problem:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove @ApplicationException annotation on Problem, because it could potentially cause compilation errors when used in combination with annotation processors</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-java-ee:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add EJBExceptionMapper that unwraps Problem cause, to address the removed @ApplicationException annotation</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="_version_0_9"><a class="anchor" href="#_version_0_9"></a>Version 0.9</h2>
 <div class="sectionbody">
