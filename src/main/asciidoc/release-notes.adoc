@@ -25,6 +25,10 @@ WARNING: *Potentially breaking:* removed InputValidationIssue.setInputs()
 
 * Add EJBExceptionMapper that unwraps Problem cause, to address the removed @ApplicationException annotation
 
+*belgif-rest-problem-spring:*
+
+* Added support for InvalidRequestException thrown by the https://bitbucket.org/atlassian/swagger-request-validator[Atlassian swagger-request-validator]
+
 == Version 0.9
 
 *belgif-rest-problem-bom:*
