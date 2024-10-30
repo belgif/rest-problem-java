@@ -12,6 +12,23 @@
 
 // tag::recent-versions[]
 
+== Version 0.10
+
+*belgif-rest-problem:*
+
+* Remove @ApplicationException annotation on Problem, because it could potentially cause compilation errors when used in combination with annotation processors
+* Disallow creation of InputValidationIssue with inputs[] of size 1
++
+WARNING: *Potentially breaking:* removed InputValidationIssue.setInputs()
+
+*belgif-rest-problem-java-ee:*
+
+* Add EJBExceptionMapper that unwraps Problem cause, to address the removed @ApplicationException annotation
+
+*belgif-rest-problem-spring:*
+
+* Added support for InvalidRequestException thrown by the https://bitbucket.org/atlassian/swagger-request-validator[Atlassian swagger-request-validator]
+
 == Version 0.9
 
 *belgif-rest-problem-bom:*

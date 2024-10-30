@@ -3,6 +3,7 @@ package io.github.belgif.rest.problem.api;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -38,6 +40,9 @@ public class InputValidationIssue {
 
     private static final String INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE =
             "inputs[] and in/name/value are mutually exclusive";
+
+    private static final String INPUTS_SETTER_ONE_ITEM =
+            "inputs[] can not be set with a single item, use in(in, name, value) instead";
 
     private URI type;
     private URI href;
@@ -105,7 +110,7 @@ public class InputValidationIssue {
     }
 
     public void setIn(InEnum in) {
-        verifyNoInputs();
+        verifyNoInputs(in);
         this.in = in;
     }
 
@@ -114,7 +119,7 @@ public class InputValidationIssue {
     }
 
     public void setName(String name) {
-        verifyNoInputs();
+        verifyNoInputs(name);
         this.name = name;
     }
 
@@ -124,7 +129,7 @@ public class InputValidationIssue {
     }
 
     public void setValue(Object value) {
-        verifyNoInputs();
+        verifyNoInputs(value);
         this.value = value;
     }
 
@@ -132,33 +137,41 @@ public class InputValidationIssue {
         return Collections.unmodifiableList(inputs);
     }
 
-    public void setInputs(List<Input<?>> inputs) {
-        verifyNoInNameValue();
-        this.inputs.clear();
-        this.inputs.addAll(inputs);
-    }
-
-    public void setInputs(Input<?>... inputs) {
-        verifyNoInNameValue();
-        this.inputs.clear();
-        this.inputs.addAll(Arrays.asList(inputs));
+    private void clearInNameValue() {
+        this.in = null;
+        this.name = null;
+        this.value = null;
     }
 
     public void addInput(Input<?> input) {
-        verifyNoInNameValue();
-        inputs.add(input);
+
+        if (input == null) {
+            return;
+        }
+
+        if (hasInNameValue()) {
+            this.inputs.add(new Input<>(in, name, value));
+            this.inputs.add(input);
+            clearInNameValue();
+        } else if (!inputs.isEmpty()) {
+            this.inputs.add(input);
+        } else {
+            in(input.getIn(), input.getName(), input.getValue());
+        }
     }
 
-    private void verifyNoInputs() {
+    private void verifyNoInputs(Object valueToUpdate) {
+        if (valueToUpdate == null) {
+            return;
+        }
+
         if (!inputs.isEmpty()) {
             throw new IllegalArgumentException(INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE);
         }
     }
 
-    private void verifyNoInNameValue() {
-        if (in != null || name != null || value != null) {
-            throw new IllegalArgumentException(INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE);
-        }
+    private boolean hasInNameValue() {
+        return in != null || name != null || value != null;
     }
 
     @JsonAnyGetter
@@ -271,7 +284,9 @@ public class InputValidationIssue {
      * @param key the key
      * @param value the value
      * @return this InputValidationIssue
-     * @deprecated use {@link InputValidationIssue#input(Input)} to reference multiple input values
+     * @deprecated use {@link InputValidationIssue#inputs(Collection)} or
+     *             {@link InputValidationIssue#inputs(Input, Input, Input[])} to
+     *             reference multiple input values
      */
     @SuppressWarnings("unchecked")
     @Deprecated
@@ -288,18 +303,57 @@ public class InputValidationIssue {
         return this;
     }
 
-    public InputValidationIssue input(Input<?> input) {
-        addInput(input);
+    /**
+     * Set the inputs[] to the given collection.
+     *
+     * @param inputs collection with input items to initialize the inputs[] array. Any previous inputs are removed.
+     * @return this InputValidationIssue
+     *
+     * @throws IllegalArgumentException if in/name/value properties are not null (mutually exclusive with inputs[]),
+     *         or when the collection only contains one non-null item.
+     */
+    public InputValidationIssue inputs(Collection<Input<?>> inputs) {
+
+        if (inputs == null) {
+            return this;
+        }
+
+        if (hasInNameValue()) {
+            throw new IllegalArgumentException(INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE);
+        }
+
+        List<Input<?>> filteredInputs = inputs.stream().filter(Objects::nonNull).collect(Collectors.toList());
+
+        if (filteredInputs.size() == 1) {
+            throw new IllegalArgumentException(INPUTS_SETTER_ONE_ITEM);
+        }
+
+        this.inputs.clear();
+        this.inputs.addAll(filteredInputs);
         return this;
     }
 
-    public InputValidationIssue inputs(List<Input<?>> inputs) {
-        setInputs(inputs);
-        return this;
-    }
+    /**
+     * Set the inputs[] to the given inputs.
+     *
+     * @param firstInput the first input
+     * @param secondInput the second input
+     * @param otherInputs the varargs array with other inputs
+     * @return this InputValidationIssue
+     *
+     * @throws IllegalArgumentException if in/name/value properties are not null (mutually exclusive with inputs[]),
+     *         or when the parameters only contain one non-null item.
+     */
+    public InputValidationIssue inputs(Input<?> firstInput, Input<?> secondInput, Input<?>... otherInputs) {
+        if (firstInput == null && secondInput == null && otherInputs == null) {
+            return this;
+        }
 
-    public InputValidationIssue inputs(Input<?>... inputs) {
-        setInputs(inputs);
+        List<Input<?>> inputsToAdd = new ArrayList<>(Arrays.asList(firstInput, secondInput));
+        Collections.addAll(inputsToAdd, otherInputs);
+
+        inputs(inputsToAdd);
+
         return this;
     }
 

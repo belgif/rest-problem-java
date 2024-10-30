@@ -45,28 +45,6 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>javax.ejb</groupId>
-      <artifactId>javax.ejb-api</artifactId>
-      <version>3.2.2</version>
-      <scope>provided</scope>
-      <!--
-        Used for @javax.ejb.ApplicationException annotation on Problem.
-        Dependency is not required in non-EJB environments (e.g. Spring Boot).
-      -->
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>jakarta.ejb</groupId>
-      <artifactId>jakarta.ejb-api</artifactId>
-      <version>4.0.1</version>
-      <scope>provided</scope>
-      <!--
-        Used for @jakarta.ejb.ApplicationException annotation on Problem.
-        Dependency is not required in non-EJB environments (e.g. Spring Boot).
-      -->
-      <optional>true</optional>
-    </dependency>
-    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>

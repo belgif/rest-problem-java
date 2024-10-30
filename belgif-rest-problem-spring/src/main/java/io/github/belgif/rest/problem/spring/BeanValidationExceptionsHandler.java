@@ -29,9 +29,10 @@ import io.github.belgif.rest.problem.internal.DetermineSourceUtil;
  * RestController exception handler for exceptions related to bean validation.
  */
 @RestControllerAdvice
-@Order(1)
 @ConditionalOnClass(ConstraintViolationException.class)
 @ConditionalOnWebApplication
+@Order(1)
+// @Order(1) to take precedence over io.github.belgif.rest.problem.spring.ProblemExceptionHandler
 public class BeanValidationExceptionsHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
