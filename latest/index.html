@@ -786,6 +786,16 @@ window.onload = function() {
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-spring:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Added support for InvalidRequestException thrown by the <a href="https://bitbucket.org/atlassian/swagger-request-validator">Atlassian swagger-request-validator</a></p>
+</li>
+</ul>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_version_0_9"><a class="anchor" href="#_version_0_9"></a>2.2. Version 0.9</h3>
@@ -1013,7 +1023,8 @@ Integration with Spring Boot and Jakarta EE works out of the box.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If the REST API returns a problem type for which you do not have a corresponding <code>@ProblemType</code> on your classpath, a <a href="apidocs/io/github/belgif/rest/problem/DefaultProblem.html">DefaultProblem</a> is thrown instead as fallback. See <a href="#problem-type-registry">@ProblemType and ProblemTypeRegistry</a> for more details.
+If the REST API returns a problem type for which you do not have a corresponding <code>@ProblemType</code> on your classpath, a <a href="apidocs/io/github/belgif/rest/problem/DefaultProblem.html">DefaultProblem</a> is thrown instead as fallback.
+See <a href="#problem-type-registry">@ProblemType and ProblemTypeRegistry</a> for more details.
 </td>
 </tr>
 </table>
@@ -1050,7 +1061,12 @@ This is disabled by default, and MUST NOT be enabled.</p>
 <div class="sect3">
 <h4 id="_restcontroller"><a class="anchor" href="#_restcontroller"></a>3.3.1. RestController</h4>
 <div class="paragraph">
-<p>Problem exceptions and framework exceptions (including bean validation) thrown by RestController components are automatically converted to a proper RFC 9457 <code>application/problem+json</code> response.</p>
+<p>Problem exceptions and framework exceptions thrown by RestController components are automatically converted to a proper RFC 9457 <code>application/problem+json</code> response.</p>
+</div>
+<div class="sect4">
+<h5 id="_bean_validation"><a class="anchor" href="#_bean_validation"></a>Bean validation</h5>
+<div class="paragraph">
+<p>Exceptions thrown by the Java Bean Validation Framework are automatically converted to a proper RFC 9457 <code>application/problem+json</code> response.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1065,6 +1081,36 @@ Otherwise, you will see parameter names like <code>arg0</code>.
 </td>
 </tr>
 </table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_atlassian_swagger_request_validator"><a class="anchor" href="#_atlassian_swagger_request_validator"></a>Atlassian swagger-request-validator</h5>
+<div class="paragraph">
+<p>InvalidRequestExceptions thrown by the <a href="https://bitbucket.org/atlassian/swagger-request-validator">Atlassian swagger-request-validator</a> are automatically converted to a proper RFC 9457 <code>application/problem+json</code> response.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>For Spring Boot 3, use <a href="https://bitbucket.org/atlassian/swagger-request-validator/src/master/swagger-request-validator-spring-webmvc">swagger-request-validator-spring-webmvc</a>.</p>
+</li>
+<li>
+<p>For Spring Boot 2, use <a href="https://bitbucket.org/atlassian/swagger-request-validator/src/master/swagger-request-validator-springmvc">swagger-request-validator-springmvc</a>.</p>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+On Spring Boot 2, <code>validation.request.path.missing</code> should be set to level IGNORE in order to return a 404 error for a missing path.
+See <a href="https://bitbucket.org/atlassian/swagger-request-validator/src/master/swagger-request-validator-core/README.md">documentation</a> of the Atlassian library for more information.
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
 </div>
 </div>
 <div class="sect3">
@@ -1108,7 +1154,8 @@ Otherwise, you will see parameter names like <code>arg0</code>.
 <p>While this library may work on other application servers, it has only been thoroughly tested on <strong>JBoss EAP 7.4</strong> (with MicroProfile XP 4.0) and <strong>WildFly 31</strong>.</p>
 </div>
 <div class="paragraph">
-<p>Furthermore, the following dependencies are expected to be <strong>"provided"</strong> by the application server. If not, you&#8217;ll need to add these dependencies to your application:</p>
+<p>Furthermore, the following dependencies are expected to be <strong>"provided"</strong> by the application server.
+If not, you&#8217;ll need to add these dependencies to your application:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1675,6 +1722,9 @@ Additional packages to scan can be configured in your application.properties:</p
 </li>
 <li>
 <p><strong>BeanValidationExceptionsHandler:</strong> an exception handler for RestControllers that converts bean validation related exceptions to HTTP 400 BadRequestProblem.</p>
+</li>
+<li>
+<p><strong>InvalidRequestExceptionHandler:</strong> an exception handler for the <a href="https://bitbucket.org/atlassian/swagger-request-validator/src/master/">Atlassian swagger-request-validator</a> that converts InvalidRequestException to the correct Problem type.</p>
 </li>
 <li>
 <p><strong>RoutingExceptionsHandler:</strong> an exception handler for RestControllers that converts routing related validation exceptions to HTTP 400 BadRequestProblem.</p>
