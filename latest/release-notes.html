@@ -617,6 +617,21 @@ window.onload = function() {
 <li>
 <p>Remove @ApplicationException annotation on Problem, because it could potentially cause compilation errors when used in combination with annotation processors</p>
 </li>
+<li>
+<p>Disallow creation of InputValidationIssue with inputs[] of size 1</p>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<strong>Potentially breaking:</strong> removed InputValidationIssue.setInputs()
+</td>
+</tr>
+</table>
+</div>
+</li>
 </ul>
 </div>
 <div class="paragraph">
