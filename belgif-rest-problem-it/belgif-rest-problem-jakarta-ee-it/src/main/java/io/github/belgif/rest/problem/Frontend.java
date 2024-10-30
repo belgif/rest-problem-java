@@ -36,6 +36,10 @@ public interface Frontend {
     Response unmapped();
 
     @GET
+    @Path("/ejb")
+    Response ejb();
+
+    @GET
     @Path("/retryAfter")
     Response retryAfter();
 
