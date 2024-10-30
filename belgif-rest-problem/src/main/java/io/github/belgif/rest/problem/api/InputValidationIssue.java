@@ -304,13 +304,13 @@ public class InputValidationIssue {
     }
 
     /**
+     * Set the inputs[] to the given collection.
      *
-     * @param inputs list with input items to initialize the inputs parameter. Any previous inputs are erased from the
-     *        parameter
-     * @return this
+     * @param inputs collection with input items to initialize the inputs[] array. Any previous inputs are removed.
+     * @return this InputValidationIssue
      *
-     * @throws IllegalArgumentException if in/name/value parameters are not null (because it's mutually exclusive). This
-     *         exception is also thrown if the list contains only one non-null item.
+     * @throws IllegalArgumentException if in/name/value properties are not null (mutually exclusive with inputs[]),
+     *         or when the collection only contains one non-null item.
      */
     public InputValidationIssue inputs(Collection<Input<?>> inputs) {
 
@@ -333,6 +333,17 @@ public class InputValidationIssue {
         return this;
     }
 
+    /**
+     * Set the inputs[] to the given inputs.
+     *
+     * @param firstInput the first input
+     * @param secondInput the second input
+     * @param otherInputs the varargs array with other inputs
+     * @return this InputValidationIssue
+     *
+     * @throws IllegalArgumentException if in/name/value properties are not null (mutually exclusive with inputs[]),
+     *         or when the parameters only contain one non-null item.
+     */
     public InputValidationIssue inputs(Input<?> firstInput, Input<?> secondInput, Input<?>... otherInputs) {
         if (firstInput == null && secondInput == null && otherInputs == null) {
             return this;
