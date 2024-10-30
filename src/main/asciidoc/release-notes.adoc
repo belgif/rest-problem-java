@@ -22,6 +22,10 @@
 
 * Add EJBExceptionMapper that unwraps Problem cause, to address the removed @ApplicationException annotation
 
+*belgif-rest-problem-spring:*
+
+* Added support for InvalidRequestException thrown by the https://bitbucket.org/atlassian/swagger-request-validator[Atlassian swagger-request-validator]
+
 == Version 0.9
 
 *belgif-rest-problem-bom:*
@@ -35,10 +39,6 @@
 *belgif-rest-problem-java-ee:*
 
 * Ensure ProblemClientResponseFilter gets registered for JAX-RS clients
-
-*belgif-rest-problem-spring:*
-
-* Added support for InvalidRequestException thrown by the Atlassian swagger-request-validator.
 
 == Version 0.8
 

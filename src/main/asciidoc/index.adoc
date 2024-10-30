@@ -139,7 +139,8 @@ When calling a REST API, handling a problem is as simple as catching the problem
 include::../../../belgif-rest-problem/src/test/java/adoc/CodeSamples.java[tag=catch-problem]
 ----
 
-NOTE: If the REST API returns a problem type for which you do not have a corresponding `@ProblemType` on your classpath, a link:apidocs/io/github/belgif/rest/problem/DefaultProblem.html[DefaultProblem] is thrown instead as fallback. See <<problem-type-registry>> for more details.
+NOTE: If the REST API returns a problem type for which you do not have a corresponding `@ProblemType` on your classpath, a link:apidocs/io/github/belgif/rest/problem/DefaultProblem.html[DefaultProblem] is thrown instead as fallback.
+See <<problem-type-registry>> for more details.
 
 [[getting-started-spring-boot]]
 === Spring Boot
@@ -155,15 +156,25 @@ This is disabled by default, and MUST NOT be enabled.
 
 ==== RestController
 
-Problem exceptions and framework exceptions (including bean validation) thrown by RestController components are automatically converted to a proper RFC 9457 `application/problem+json` response.
+Problem exceptions and framework exceptions thrown by RestController components are automatically converted to a proper RFC 9457 `application/problem+json` response.
+
+===== Bean validation
+
+Exceptions thrown by the Java Bean Validation Framework are automatically converted to a proper RFC 9457 `application/problem+json` response.
 
 WARNING: When using a Spring MVC annotation without name (e.g. `@RequestParam String name` instead of `@RequestParam("name") String name`), the parameter name for Bean Validation errors is retrieved via reflection as fallback.
 For this to work, your application code must be compiled with the https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html#option-parameters[-parameters] flag (see https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#parameters[maven-compiler-plugin]).
 Otherwise, you will see parameter names like `arg0`.
 
-InvalidRequestExceptions thrown by the link:https://bitbucket.org/atlassian/swagger-request-validator/src/master/[Atlassian swagger-request-validator] are also converted to a proper RFC 9457 `application/problem+json` response. Should this library be implemented in the same application.
+===== Atlassian swagger-request-validator
 
-WARNING: When this library is used in Spring Boot 2, `validation.request.path.missing` should be set to level IGNORE in order to return a 404 error for a missing path. (See documentation of the Atlassian library for more information.)
+InvalidRequestExceptions thrown by the https://bitbucket.org/atlassian/swagger-request-validator[Atlassian swagger-request-validator] are automatically converted to a proper RFC 9457 `application/problem+json` response.
+
+* For Spring Boot 3, use https://bitbucket.org/atlassian/swagger-request-validator/src/master/swagger-request-validator-spring-webmvc[swagger-request-validator-spring-webmvc].
+* For Spring Boot 2, use https://bitbucket.org/atlassian/swagger-request-validator/src/master/swagger-request-validator-springmvc[swagger-request-validator-springmvc].
++
+WARNING: On Spring Boot 2, `validation.request.path.missing` should be set to level IGNORE in order to return a 404 error for a missing path.
+See https://bitbucket.org/atlassian/swagger-request-validator/src/master/swagger-request-validator-core/README.md[documentation] of the Atlassian library for more information.
 
 ==== RestTemplate
 
@@ -190,7 +201,8 @@ When manually constructing a RestClient instance, you'll need to apply the link:
 ====
 While this library may work on other application servers, it has only been thoroughly tested on *JBoss EAP 7.4* (with MicroProfile XP 4.0) and *WildFly 31*.
 
-Furthermore, the following dependencies are expected to be *"provided"* by the application server. If not, you'll need to add these dependencies to your application:
+Furthermore, the following dependencies are expected to be *"provided"* by the application server.
+If not, you'll need to add these dependencies to your application:
 
 * com.fasterxml.jackson.core:jackson-databind
 * org.slf4j:slf4j-api

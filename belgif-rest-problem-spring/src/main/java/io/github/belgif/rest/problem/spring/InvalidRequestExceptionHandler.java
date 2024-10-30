@@ -31,8 +31,7 @@ import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.internal.InvalidRequestExceptionUtil;
 
 /**
- * This class is only active when Spring-Boot applications implemented the Atlassian swagger-request-validator.
- * Maps the InvalidRequestException thrown by the swagger-request-validator to belgif problems.
+ * RestController exception handler for InvalidRequestException thrown by Atlassian swagger-request-validator library.
  */
 @RestControllerAdvice
 @ConditionalOnWebApplication

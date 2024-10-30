@@ -19,6 +19,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.swagger.v3.oas.models.parameters.Parameter;
 
+/**
+ * Internal utility class for parsing validation report message from Atlassian swagger-request-validator library.
+ *
+ * @see ValidationReport.Message
+ */
 public class InvalidRequestExceptionUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InvalidRequestExceptionUtil.class);
