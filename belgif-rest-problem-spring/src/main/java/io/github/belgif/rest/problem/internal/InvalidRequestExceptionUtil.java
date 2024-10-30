@@ -56,7 +56,7 @@ public class InvalidRequestExceptionUtil {
                     .flatMap(ValidationReport.MessageContext::getRequestPath)
                     .orElse("");
 
-            String regex = original.replace("{" + name + "}", "(.*)").replaceAll("/\\{.*?}", "/.*?");
+            String regex = original.replace("{" + name + "}", "(.*)").replaceAll("/\\{[^}]*}", "/.*");
 
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(actual);
