@@ -3,6 +3,7 @@ package io.github.belgif.rest.problem;
 import java.net.URI;
 import java.util.concurrent.ExecutionException;
 
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
@@ -43,6 +44,9 @@ public class FrontendImpl implements Frontend {
     private final Backend resteasyProxyClient = ProblemSupport.enable(
             new ResteasyClientBuilderImpl().build().target(BASE_URI).proxy(Backend.class));
 
+    @EJB
+    private EJBService ejb;
+
     @Inject
     public void setJaxRsClient(jakarta.ws.rs.client.Client jaxRsClient) {
         this.jaxRsClient = jaxRsClient;
@@ -71,6 +75,12 @@ public class FrontendImpl implements Frontend {
         };
         unmapped.setDetail("Unmapped problem from frontend");
         throw unmapped;
+    }
+
+    @Override
+    public Response ejb() {
+        ejb.throwPoblem();
+        return Response.ok().build();
     }
 
     @Override

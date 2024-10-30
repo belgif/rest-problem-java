@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.github.belgif.rest.problem</groupId>
+    <artifactId>belgif-rest-problem-it</artifactId>
+    <version>${revision}</version>
+  </parent>
+
+  <artifactId>belgif-rest-problem-apt</artifactId>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.auto.service</groupId>
+      <artifactId>auto-service</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+  </dependencies>
+
+</project>

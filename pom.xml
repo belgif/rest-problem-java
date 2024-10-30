@@ -184,6 +184,16 @@
             <classifier>jakarta</classifier>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>3.5.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -307,6 +317,7 @@
               <excludes>
                 <exclude>**/target/**</exclude>
                 <exclude>**/.idea/**</exclude>
+                <exclude>**/standalone-openshift.xml</exclude>
               </excludes>
               <eclipseWtp>
                 <type>XML</type>
@@ -416,7 +427,8 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.projectName>rest-problem-java</sonar.projectName>
         <sonar.projectKey>belgif_rest-problem-java</sonar.projectKey>
-        <sonar.coverage.jacoco.xmlReportPaths>${maven.multiModuleProjectDirectory}/jacoco-aggregator/target/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>${maven.multiModuleProjectDirectory}/jacoco-aggregator/target/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
         <sonar.coverage.exclusions>**/belgif-rest-problem-it/**</sonar.coverage.exclusions>
         <sonar.cpd.exclusions>**/belgif-rest-problem-it/**,**/src/test/java/**</sonar.cpd.exclusions>
       </properties>

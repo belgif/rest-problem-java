@@ -22,11 +22,6 @@ import io.github.belgif.rest.problem.DefaultProblem;
  *
  * Maps to Problem in belgif/problem/v1/problem-v1.yaml.
  */
-@javax.ejb.ApplicationException
-@jakarta.ejb.ApplicationException
-// This @ApplicationException annotation is required for EJB integration (prevents wrapping in javax.ejb.EJBException).
-// Given that annotations that are not found on the classpath are ignored,
-// no EJB-api runtime dependency is required (e.g. for Spring Boot).
 @JsonTypeInfo(
         // this configures the existing "type" property as discriminator for polymorphic deserialization
         use = Id.NAME, include = As.EXISTING_PROPERTY, property = "type", visible = true,

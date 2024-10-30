@@ -5,3 +5,4 @@ target
 .idea
 *.iml
 belgif-rest-problem-it/belgif-rest-problem-codegen-it/src/main/resources/belgif
+belgif-rest-problem-it/belgif-rest-problem-java-ee-it/src/test/resources/standalone-openshift.xml
