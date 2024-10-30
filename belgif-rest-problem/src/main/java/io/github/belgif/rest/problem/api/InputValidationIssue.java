@@ -284,7 +284,8 @@ public class InputValidationIssue {
      * @param key the key
      * @param value the value
      * @return this InputValidationIssue
-     * @deprecated use {@link InputValidationIssue#inputs(List)} or {@link InputValidationIssue#inputs(Input[])} to
+     * @deprecated use {@link InputValidationIssue#inputs(Collection)} or
+     *             {@link InputValidationIssue#inputs(Input, Input, Input[])} to
      *             reference multiple input values
      */
     @SuppressWarnings("unchecked")
