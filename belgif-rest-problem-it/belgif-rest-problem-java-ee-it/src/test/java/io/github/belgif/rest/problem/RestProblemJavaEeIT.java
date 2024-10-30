@@ -26,10 +26,13 @@ class RestProblemJavaEeIT extends AbstractRestProblemEEIT {
     @Container
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static final GenericContainer JBOSS_CONTAINER =
-            new GenericContainer("registry.redhat.io/jboss-eap-7/eap-xp4-openjdk17-openshift-rhel8:4.0-29")
+            new GenericContainer("registry.redhat.io/jboss-eap-7/eap-xp4-openjdk17-openshift-rhel8:4.0-40")
                     .withEnv("JAVA_OPTS_APPEND",
                             "-javaagent:/deployments/jacocoagent.jar=destfile=/tmp/jacoco-it.exec," +
                                     "includes=io.github.belgif.rest.problem.*")
+                    .withCopyFileToContainer(
+                            MountableFile.forHostPath("src/test/resources/standalone-openshift.xml", 0777),
+                            "/opt/eap/standalone/configuration/standalone-openshift.xml")
                     .withCopyFileToContainer(
                             MountableFile.forHostPath("target/dependency/jacocoagent.jar"),
                             "/deployments/jacocoagent.jar")

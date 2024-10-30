@@ -12,6 +12,16 @@
 
 // tag::recent-versions[]
 
+== Version 0.10
+
+*belgif-rest-problem:*
+
+* Remove @ApplicationException annotation on Problem, because it could potentially cause compilation errors when used in combination with annotation processors
+
+*belgif-rest-problem-java-ee:*
+
+* Add EJBExceptionMapper that unwraps Problem cause, to address the removed @ApplicationException annotation
+
 == Version 0.9
 
 *belgif-rest-problem-bom:*
