@@ -3,6 +3,7 @@ package io.github.belgif.rest.problem.api;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -70,12 +71,6 @@ public class InputValidationIssue {
     public InputValidationIssue(InEnum in, String name) {
         this.in = in;
         this.name = name;
-    }
-
-    public InputValidationIssue(Input<?> input) {
-        this.in = input.getIn();
-        this.name = input.getName();
-        this.value = input.getValue();
     }
 
     public URI getType() {
@@ -316,7 +311,7 @@ public class InputValidationIssue {
      * @throws IllegalArgumentException if in/name/value parameters are not null (because it's mutually exclusive). This
      *         exception is also thrown if the list contains only one non-null item.
      */
-    public InputValidationIssue inputs(List<Input<?>> inputs) {
+    public InputValidationIssue inputs(Collection<Input<?>> inputs) {
 
         if (inputs == null) {
             return this;
@@ -337,11 +332,15 @@ public class InputValidationIssue {
         return this;
     }
 
-    public InputValidationIssue inputs(Input<?>... inputs) {
-        if (inputs == null) {
+    public InputValidationIssue inputs(Input<?> firstInput, Input<?> secondInput, Input<?>... otherInputs) {
+        if (firstInput == null && secondInput == null && otherInputs == null) {
             return this;
         }
-        inputs(Arrays.asList(inputs));
+
+        List<Input<?>> inputsToAdd = new ArrayList<>(Arrays.asList(firstInput, secondInput));
+        Collections.addAll(inputsToAdd, otherInputs);
+
+        inputs(inputsToAdd);
 
         return this;
     }
