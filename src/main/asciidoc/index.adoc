@@ -457,6 +457,24 @@ If in turn, you want your own validator implementation to be extensible as well,
  }
 ----
 
+[[i18n]]
+== Internationalization (I18N)
+
+The detail messages of Belgif problem and issue types can be localized to the language requested in the https://www.belgif.be/specification/rest/api-guide/#i18n-negotiation[Accept-Language HTTP request header].
+
+The default language is English, and translations are available in the 3 official Belgian languages (Dutch, French and German).
+
+An link:apidocs/io/github/belgif/rest/problem/i18n/I18N.html[I18N] helper class is available in case you want to provide localized messages for your own custom problem and issue types.
+
+The I18N feature of the problem library can be disabled by configuring property:
+
+[source,properties]
+----
+io.github.belgif.rest.problem.i18n=false
+----
+
+This can be configured in application.properties (Spring Boot), web.xml context-param (Jakarta EE), System property or environment property.
+
 [[implementation-details]]
 == Implementation details
 

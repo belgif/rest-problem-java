@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.github.belgif.rest.problem.i18n.I18N;
+
 /**
  * Helper class for creating InputValidationIssues for common request validations.
  *
@@ -67,7 +69,7 @@ public class InputValidationIssues {
 
     public static InputValidationIssue unknownInput(InEnum in, String name, Object value) {
         return new InputValidationIssue(ISSUE_TYPE_UNKNOWN_INPUT, "Unknown input")
-                .detail(String.format("Input %s is unknown", name))
+                .detail(I18N.getLocalizedString("unknownInput.detail", name))
                 .in(in, name, value);
     }
 
@@ -87,14 +89,14 @@ public class InputValidationIssues {
                 new InputValidationIssue(ISSUE_TYPE_OUT_OF_RANGE, "Input value is out of range")
                         .in(in, name, value);
         if (min != null && max != null) {
-            issue.detail(String.format("Input value %s = %s is out of range [%s, %s]", name, value, min, max))
+            issue.detail(I18N.getLocalizedString("outOfRange.minmax.detail", name, value, min, max))
                     .additionalProperty("minimum", min.toString())
                     .additionalProperty("maximum", max.toString());
         } else if (min != null) {
-            issue.detail(String.format("Input value %s = %s should be at least %s", name, value, min))
+            issue.detail(I18N.getLocalizedString("outOfRange.min.detail", name, value, min))
                     .additionalProperty("minimum", min.toString());
         } else {
-            issue.detail(String.format("Input value %s = %s should not exceed %s", name, value, max))
+            issue.detail(I18N.getLocalizedString("outOfRange.max.detail", name, value, max))
                     .additionalProperty("maximum", max.toString());
         }
         return issue;
@@ -102,26 +104,26 @@ public class InputValidationIssues {
 
     public static InputValidationIssue referencedResourceNotFound(InEnum in, String name, Object value) {
         return new InputValidationIssue(ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND, "Referenced resource not found")
-                .detail(String.format("Referenced resource %s = '%s' does not exist", name, value))
+                .detail(I18N.getLocalizedString("referencedResourceNotFound.detail", name, value))
                 .in(in, name, value);
     }
 
     public static InputValidationIssue rejectedInput(InEnum in, String name, Object value) {
         return new InputValidationIssue(ISSUE_TYPE_REJECTED_INPUT, "Input is not allowed in this context")
-                .detail(String.format("Input %s is not allowed in this context", name))
+                .detail(I18N.getLocalizedString("rejectedInput.detail", name))
                 .in(in, name, value);
     }
 
     public static InputValidationIssue requiredInput(InEnum in, String name) {
         return new InputValidationIssue(ISSUE_TYPE_REQUIRED_INPUT, "Input is required in this context")
-                .detail(String.format("Input %s is required in this context", name))
+                .detail(I18N.getLocalizedString("requiredInput.detail", name))
                 .in(in, name, null);
     }
 
     public static InputValidationIssue requiredInputsIfPresent(Input<?> target, List<Input<?>> inputs) {
         InputValidationIssue issue =
                 new InputValidationIssue(ISSUE_TYPE_REQUIRED_INPUT, "Input is required in this context")
-                        .detail(String.format("All of these inputs must be present if %s is present: %s",
+                        .detail(I18N.getLocalizedString("requiredInput.ifPresent.detail",
                                 target.getName(), getJoinedNames(inputs)));
         issue.addInput(target);
 
@@ -134,7 +136,7 @@ public class InputValidationIssues {
 
     public static InputValidationIssue replacedSsin(InEnum in, String name, String ssin, String newSsin) {
         return new InputValidationIssue(ISSUE_TYPE_REPLACED_SSIN, "SSIN has been replaced, use new SSIN")
-                .detail(String.format("SSIN %s has been replaced by %s", ssin, newSsin))
+                .detail(I18N.getLocalizedString("replacedSsin.detail", ssin, newSsin))
                 .in(in, name, ssin)
                 .additionalProperty("replacedBy", newSsin);
     }
@@ -145,69 +147,71 @@ public class InputValidationIssues {
 
     public static InputValidationIssue canceledSsin(InEnum in, String name, String ssin) {
         return new InputValidationIssue(ISSUE_TYPE_CANCELED_SSIN, "SSIN has been canceled")
-                .detail(String.format("SSIN %s has been canceled", ssin))
+                .detail(I18N.getLocalizedString("canceledSsin.detail", ssin))
                 .in(in, name, ssin);
     }
 
     public static InputValidationIssue invalidSsin(InEnum in, String name, String ssin) {
-        return invalidStructure(in, name, ssin, String.format("SSIN %s is invalid", ssin));
+        return invalidStructure(in, name, ssin, I18N.getLocalizedString("invalidStructure.ssin.detail", ssin));
     }
 
     public static InputValidationIssue unknownSsin(InEnum in, String name, String ssin) {
-        return referencedResourceNotFound(in, name, ssin).detail(String.format("SSIN %s does not exist", ssin));
+        return referencedResourceNotFound(in, name, ssin)
+                .detail(I18N.getLocalizedString("referencedResourceNotFound.ssin.detail", ssin));
     }
 
     public static InputValidationIssue invalidPeriod(InEnum in, String name, Object period) {
         return new InputValidationIssue(ISSUE_TYPE_INVALID_PERIOD, "Period is invalid")
-                .detail("endDate should not precede startDate")
+                .detail(I18N.getLocalizedString("invalidPeriod.detail", "endDate", "startDate"))
                 .in(in, name, period);
     }
 
     public static <T extends Temporal & Comparable<? super T>> InputValidationIssue invalidPeriod(
             Input<T> start, Input<T> end) {
         return new InputValidationIssue(ISSUE_TYPE_INVALID_PERIOD, "Period is invalid")
-                .detail(String.format("%s should not precede %s", end.getName(), start.getName()))
+                .detail(I18N.getLocalizedString("invalidPeriod.detail", end.getName(), start.getName()))
                 .inputs(Arrays.asList(start, end));
     }
 
     public static InputValidationIssue invalidIncompleteDate(InEnum in, String name, String incompleteDate) {
         return invalidStructure(in, name, incompleteDate,
-                String.format("Incomplete date %s is invalid", incompleteDate));
+                I18N.getLocalizedString("invalidStructure.incompleteDate.detail", incompleteDate));
     }
 
     public static InputValidationIssue invalidYearMonth(InEnum in, String name, String yearMonth) {
-        return invalidStructure(in, name, yearMonth, String.format("Year month %s is invalid", yearMonth));
+        return invalidStructure(in, name, yearMonth,
+                I18N.getLocalizedString("invalidStructure.yearMonth.detail", yearMonth));
     }
 
     public static InputValidationIssue invalidEnterpriseNumber(InEnum in, String name, String enterpriseNumber) {
         return invalidStructure(in, name, enterpriseNumber,
-                String.format("Enterprise number %s is invalid", enterpriseNumber));
+                I18N.getLocalizedString("invalidStructure.enterpriseNumber.detail", enterpriseNumber));
     }
 
     public static InputValidationIssue invalidEstablishmentUnitNumber(InEnum in, String name,
             String establishmentUnitNumber) {
         return invalidStructure(in, name, establishmentUnitNumber,
-                String.format("Establishment unit number %s is invalid", establishmentUnitNumber));
+                I18N.getLocalizedString("invalidStructure.establishmentUnitNumber.detail", establishmentUnitNumber));
     }
 
     public static InputValidationIssue exactlyOneOfExpected(List<Input<?>> inputs) {
         return new InputValidationIssue(ISSUE_TYPE_EXACTLY_ONE_OF_EXPECTED,
                 "Exactly one of these inputs must be present")
-                        .detail(String.format("Exactly one of these inputs must be present: %s",
+                        .detail(I18N.getLocalizedString("exactlyOneOfExpected.detail",
                                 getJoinedNames(inputs)))
                         .inputs(inputs);
     }
 
     public static InputValidationIssue anyOfExpected(List<Input<?>> inputs) {
         return new InputValidationIssue(ISSUE_TYPE_ANY_OF_EXPECTED, "Any of these inputs must be present")
-                .detail(String.format("Any of these inputs must be present: %s", getJoinedNames(inputs)))
+                .detail(I18N.getLocalizedString("anyOfExpected.detail", getJoinedNames(inputs)))
                 .inputs(inputs);
     }
 
     public static InputValidationIssue zeroOrExactlyOneOfExpected(List<Input<?>> inputs) {
         return new InputValidationIssue(ISSUE_TYPE_ZERO_OR_EXACTLY_ONE_OF_EXPECTED,
                 "Exactly one or none of these inputs must be present")
-                        .detail(String.format("Exactly one or none of these inputs must be present: %s",
+                        .detail(I18N.getLocalizedString("zeroOrExactlyOneOfExpected.detail",
                                 getJoinedNames(inputs)))
                         .inputs(inputs);
     }
@@ -215,14 +219,14 @@ public class InputValidationIssues {
     public static InputValidationIssue zeroOrAllOfExpected(List<Input<?>> inputs) {
         return new InputValidationIssue(ISSUE_TYPE_ZERO_OR_ALL_OF_EXPECTED,
                 "All or none of these inputs must be present")
-                        .detail(String.format("All or none of these inputs must be present: %s",
+                        .detail(I18N.getLocalizedString("zeroOrAllOfExpected.detail",
                                 getJoinedNames(inputs)))
                         .inputs(inputs);
     }
 
     public static InputValidationIssue equalExpected(List<Input<?>> inputs) {
         return new InputValidationIssue(ISSUE_TYPE_EQUAL_EXPECTED, "These inputs must be equal")
-                .detail(String.format("These inputs must be equal: %s", getJoinedNames(inputs)))
+                .detail(I18N.getLocalizedString("equalExpected.detail", getJoinedNames(inputs)))
                 .inputs(inputs);
     }
 

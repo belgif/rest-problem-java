@@ -12,6 +12,12 @@
 
 // tag::recent-versions[]
 
+== Version 0.11
+
+*belgif-rest-problem:*
+
+* Add internationalization support for localized detail messages based on Accept-Language HTTP request header
+
 == Version 0.10
 
 *belgif-rest-problem:*
