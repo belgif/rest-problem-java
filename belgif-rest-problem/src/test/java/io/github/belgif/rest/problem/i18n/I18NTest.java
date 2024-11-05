@@ -52,7 +52,7 @@ class I18NTest {
 
     @Test
     void getLocalizedMessageFromDefaultBelgifResourceBundleUnsupportedLanguage() {
-        TestLocaleResolver.setLocale(new Locale("es"));
+        TestLocaleResolver.setLocale(Locale.forLanguageTag("es"));
         assertThat(I18N.getLocalizedString("BadGatewayProblem.detail"))
                 .isEqualTo("Error in communication with upstream service");
     }
@@ -84,16 +84,16 @@ class I18NTest {
     @Test
     @SetSystemProperty(key = I18N.I18N_FLAG, value = "false")
     void disabledViaSystemProperty() {
-        I18N.init();
-        assertThat(I18N.isEnabled()).isFalse();
-        TestLocaleResolver.setLocale(Locale.forLanguageTag("nl-BE"));
-        assertThat(I18N.getLocalizedString("BadGatewayProblem.detail"))
-                .isEqualTo("Error in communication with upstream service");
+        assertDisabled();
     }
 
     @Test
     @SetEnvironmentVariable(key = I18N.I18N_FLAG, value = "false")
     void disabledViaEnvironmentVariable() {
+        assertDisabled();
+    }
+
+    private void assertDisabled() {
         I18N.init();
         assertThat(I18N.isEnabled()).isFalse();
         TestLocaleResolver.setLocale(Locale.forLanguageTag("nl-BE"));
