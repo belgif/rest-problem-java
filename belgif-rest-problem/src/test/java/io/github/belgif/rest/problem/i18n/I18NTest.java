@@ -28,13 +28,13 @@ class I18NTest {
 
     @Test
     void getRequestLocaleDefault() {
-        assertThat(I18N.getRequestLocale()).isEqualTo(new Locale("en"));
+        assertThat(I18N.getRequestLocale()).isEqualTo(Locale.forLanguageTag("en"));
     }
 
     @Test
     void setRequestLocale() {
-        TestLocaleResolver.setLocale(new Locale("nl", "BE"));
-        assertThat(I18N.getRequestLocale()).isEqualTo(new Locale("nl", "BE"));
+        TestLocaleResolver.setLocale(Locale.forLanguageTag("nl-BE"));
+        assertThat(I18N.getRequestLocale()).isEqualTo(Locale.forLanguageTag("nl-BE"));
     }
 
     @Test
@@ -45,7 +45,7 @@ class I18NTest {
 
     @Test
     void getLocalizedMessageFromDefaultBelgifResourceBundleNl() {
-        TestLocaleResolver.setLocale(new Locale("nl", "BE"));
+        TestLocaleResolver.setLocale(Locale.forLanguageTag("nl-BE"));
         assertThat(I18N.getLocalizedString("BadGatewayProblem.detail"))
                 .isEqualTo("Probleem in communicatie met upstream service");
     }
@@ -86,7 +86,7 @@ class I18NTest {
     void disabledViaSystemProperty() {
         I18N.init();
         assertThat(I18N.isEnabled()).isFalse();
-        TestLocaleResolver.setLocale(new Locale("nl", "BE"));
+        TestLocaleResolver.setLocale(Locale.forLanguageTag("nl-BE"));
         assertThat(I18N.getLocalizedString("BadGatewayProblem.detail"))
                 .isEqualTo("Error in communication with upstream service");
     }
@@ -96,7 +96,7 @@ class I18NTest {
     void disabledViaEnvironmentVariable() {
         I18N.init();
         assertThat(I18N.isEnabled()).isFalse();
-        TestLocaleResolver.setLocale(new Locale("nl", "BE"));
+        TestLocaleResolver.setLocale(Locale.forLanguageTag("nl-BE"));
         assertThat(I18N.getLocalizedString("BadGatewayProblem.detail"))
                 .isEqualTo("Error in communication with upstream service");
     }

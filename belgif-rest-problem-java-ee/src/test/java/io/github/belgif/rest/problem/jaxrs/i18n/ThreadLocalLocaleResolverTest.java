@@ -18,22 +18,22 @@ class ThreadLocalLocaleResolverTest {
 
     @Test
     void defaultLocale() {
-        assertThat(resolver.getLocale()).isEqualTo(new Locale("en"));
+        assertThat(resolver.getLocale()).isEqualTo(Locale.forLanguageTag("en"));
     }
 
     @Test
     void setAndGetLocale() {
-        Locale locale = new Locale("nl", "BE");
+        Locale locale = Locale.forLanguageTag("nl-BE");
         ThreadLocalLocaleResolver.setLocale(locale);
         assertThat(resolver.getLocale()).isEqualTo(locale);
     }
 
     @Test
     void clear() {
-        Locale locale = new Locale("nl", "BE");
+        Locale locale = Locale.forLanguageTag("nl-BE");
         ThreadLocalLocaleResolver.setLocale(locale);
         ThreadLocalLocaleResolver.clear();
-        assertThat(resolver.getLocale()).isEqualTo(new Locale("en"));
+        assertThat(resolver.getLocale()).isEqualTo(Locale.forLanguageTag("en"));
     }
 
 }

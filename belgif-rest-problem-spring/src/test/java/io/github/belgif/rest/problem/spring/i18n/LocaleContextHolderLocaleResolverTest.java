@@ -14,7 +14,7 @@ class LocaleContextHolderLocaleResolverTest {
     @Test
     void getLocale() {
         try {
-            Locale locale = new Locale("nl", "BE");
+            Locale locale = Locale.forLanguageTag("nl-BE");
             LocaleContextHolder.setLocale(locale);
             assertThat(localeResolver.getLocale()).isEqualTo(locale);
         } finally {

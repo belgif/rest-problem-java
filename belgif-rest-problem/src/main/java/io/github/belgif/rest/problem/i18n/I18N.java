@@ -17,7 +17,7 @@ public class I18N {
     /**
      * The default locale: English.
      */
-    public static final Locale DEFAULT_LOCALE = new Locale("en");
+    public static final Locale DEFAULT_LOCALE = Locale.forLanguageTag("en");
 
     /**
      * The Belgif default resource bundle.
