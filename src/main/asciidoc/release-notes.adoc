@@ -19,7 +19,15 @@
 * Remove @ApplicationException annotation on Problem, because it could potentially cause compilation errors when used in combination with annotation processors
 * Disallow creation of InputValidationIssue with inputs[] of size 1
 +
-WARNING: *Potentially breaking:* removed `InputValidationIssue.setInputs(List<Input<?>> inputs)` and `InputValidationIssue.input(Input<?> input)`
+[WARNING]
+====
+*Potentially breaking:*
+
+* removed `InputValidationIssue.setInputs(List<Input<?>> inputs)`
+* removed `InputValidationIssue.setInputs(Input<?>... inputs)`
+* removed `InputValidationIssue.input(Input<?> input)`
+
+====
 
 *belgif-rest-problem-java-ee:*
 
