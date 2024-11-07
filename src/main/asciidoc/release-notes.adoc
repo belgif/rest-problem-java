@@ -12,6 +12,12 @@
 
 // tag::recent-versions[]
 
+== Version 0.11
+
+*belgif-rest-problem-spring:*
+
+* Fix non-deterministic configuration for retrieving parameter names from Spring MVC annotations
+
 == Version 0.10
 
 *belgif-rest-problem:*
