@@ -157,12 +157,12 @@
         <plugin>
           <groupId>io.swagger.codegen.v3</groupId>
           <artifactId>swagger-codegen-maven-plugin</artifactId>
-          <version>3.0.63</version>
+          <version>3.0.64</version>
         </plugin>
         <plugin>
           <groupId>org.sonarsource.scanner.maven</groupId>
           <artifactId>sonar-maven-plugin</artifactId>
-          <version>4.0.0.4121</version>
+          <version>5.0.0.4389</version>
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
