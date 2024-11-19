@@ -17,6 +17,7 @@
 *belgif-rest-problem:*
 
 * Add internationalization support for localized detail messages based on Accept-Language HTTP request header
+* Add in(Input<?>) to InputValidationIssue for a fluent single input setter
 
 == Version 0.10
 

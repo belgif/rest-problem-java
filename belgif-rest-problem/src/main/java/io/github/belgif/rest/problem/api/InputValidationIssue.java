@@ -263,6 +263,14 @@ public class InputValidationIssue {
         return in(in).name(name).value(value);
     }
 
+    public InputValidationIssue in(Input<?> input) {
+        if (input != null) {
+            return in(input.getIn(), input.getName(), input.getValue());
+        } else {
+            return this;
+        }
+    }
+
     public InputValidationIssue in(InEnum in) {
         setIn(in);
         return this;
