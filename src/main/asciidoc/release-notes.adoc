@@ -12,6 +12,12 @@
 
 // tag::recent-versions[]
 
+== Version 0.11
+
+*belgif-rest-problem:*
+
+* Add in(Input<?>) in InputValidationIssue for a fluent single input setter
+
 == Version 0.10
 
 *belgif-rest-problem:*
