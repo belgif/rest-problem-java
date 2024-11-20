@@ -774,7 +774,17 @@ window.onload = function() {
 <div class="ulist">
 <ul>
 <li>
-<p>Add in(Input&lt;?&gt;) in InputValidationIssue for a fluent single input setter</p>
+<p>Add in(Input&lt;?&gt;) to InputValidationIssue for a fluent single input setter</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-spring:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Fix non-deterministic configuration for retrieving parameter names from Spring MVC annotations</p>
 </li>
 </ul>
 </div>
@@ -1780,9 +1790,6 @@ Additional packages to scan can be configured in your application.properties:</p
 <li>
 <p><strong>ProblemRestTemplateCustomizer:</strong> a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.</p>
 </li>
-<li>
-<p><strong>AnnotationParameterNameDiscoverer:</strong> a bean validation ParameterNameDiscoverer that retrieves parameter names from Spring MVC annotations</p>
-</li>
 </ul>
 </div>
 <div class="paragraph">
@@ -1798,6 +1805,12 @@ Additional packages to scan can be configured in your application.properties:</p
 <li>
 <p><strong>ProblemWebClientCustomizer:</strong> a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
 This handles integration with the <a href="https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html">Reactive WebClient</a>.</p>
+</li>
+<li>
+<p><strong>AnnotationParameterNameDiscoverer:</strong> a bean validation ParameterNameDiscoverer that retrieves parameter names from Spring MVC annotations</p>
+</li>
+<li>
+<p><strong>ProblemValidatorConfiguration:</strong> registers a LocalValidatorFactoryBean with the AnnotationParameterNameDiscoverer</p>
 </li>
 </ul>
 </div>
@@ -1818,6 +1831,12 @@ This handles integration with the <a href="https://docs.spring.io/spring-framewo
 </li>
 <li>
 <p><strong>ProblemRestClientCustomizer:</strong> a RestClientCustomizer that registers the ProblemResponseErrorHandler.</p>
+</li>
+<li>
+<p><strong>AnnotationParameterNameProvider:</strong> a bean validation ParameterNameProvider that retrieves parameter names from Spring MVC annotations</p>
+</li>
+<li>
+<p><strong>ProblemValidationConfigurationCustomizer:</strong> a ValidationConfigurationCustomizer that registers the AnnotationParameterNameProvider</p>
 </li>
 </ul>
 </div>
