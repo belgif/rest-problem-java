@@ -1,6 +1,10 @@
-package io.github.belgif.rest.problem.spring;
+package io.github.belgif.rest.problem.internal;
 
 import static org.assertj.core.api.Assertions.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,20 +15,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-class AnnotationParameterNameDiscovererTest {
+class CachedAnnotationParameterNameSupportTest {
 
-    private final AnnotationParameterNameDiscoverer discoverer = new AnnotationParameterNameDiscoverer();
+    private final CachedAnnotationParameterNameSupport<List<String>> support =
+            new CachedAnnotationParameterNameSupport<List<String>>() {
+                @Override
+                protected List<String> toResult(Stream<String> parameterNames) {
+                    return parameterNames.collect(Collectors.toList());
+                }
+            };
 
     @Test
     void getParameterNameConstructor() throws Exception {
-        assertThat(discoverer.getParameterNames(Tested.class.getDeclaredConstructor(String.class, Long.class)))
+        assertThat(support.getParameterNames(Tested.class.getDeclaredConstructor(String.class, Long.class)))
                 .containsExactly("name", "other");
     }
 
     @Test
     void getParameterNamesMethod() throws Exception {
         assertThat(
-                discoverer.getParameterNames(Tested.class.getDeclaredMethod("plainMethod", String.class, Long.class)))
+                support.getParameterNames(Tested.class.getDeclaredMethod("plainMethod", String.class, Long.class)))
                         .containsExactly("name", "other");
     }
 
@@ -32,7 +42,7 @@ class AnnotationParameterNameDiscovererTest {
     @ValueSource(
             strings = { "requestParam", "pathVariable", "requestHeader", "cookieValue", "matrixVariable", "fallback" })
     void getParameterNamesMethodWithJaxRsAnnotation(String method) throws Exception {
-        assertThat(discoverer.getParameterNames(Tested.class.getDeclaredMethod(method, String.class)))
+        assertThat(support.getParameterNames(Tested.class.getDeclaredMethod(method, String.class)))
                 .containsExactly("name");
     }
 

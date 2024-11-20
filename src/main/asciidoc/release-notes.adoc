@@ -16,7 +16,11 @@
 
 *belgif-rest-problem:*
 
-* Add in(Input<?>) in InputValidationIssue for a fluent single input setter
+* Add in(Input<?>) to InputValidationIssue for a fluent single input setter
+
+*belgif-rest-problem-spring:*
+
+* Fix non-deterministic configuration for retrieving parameter names from Spring MVC annotations
 
 == Version 0.10
 
