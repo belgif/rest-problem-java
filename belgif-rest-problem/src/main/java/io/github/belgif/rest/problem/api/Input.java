@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  *
  * @param <V> the input value type
  */
+@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 @JsonPropertyOrder({ "in", "name", "value" })
 public class Input<V> {
 
@@ -52,7 +53,6 @@ public class Input<V> {
         this.name = name;
     }
 
-    @JsonInclude(value = JsonInclude.Include.ALWAYS, content = JsonInclude.Include.ALWAYS)
     public V getValue() {
         return value;
     }
