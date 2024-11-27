@@ -12,6 +12,12 @@
 
 // tag::recent-versions[]
 
+== Version 0.12
+
+*belgif-rest-problem:*
+
+* Don't include null (issue) input values when serializing
+
 == Version 0.11
 
 *belgif-rest-problem:*
