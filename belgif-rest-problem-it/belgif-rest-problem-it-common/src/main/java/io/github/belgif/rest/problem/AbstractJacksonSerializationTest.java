@@ -224,6 +224,24 @@ abstract class AbstractJacksonSerializationTest {
         assertSerializationRoundtrip(problem);
     }
 
+    @Test
+    void issueWithNullValue() throws JsonProcessingException {
+        BadRequestProblem problem = new BadRequestProblem(
+                new InputValidationIssue(InEnum.BODY, "id", null));
+        String json = mapper.writeValueAsString(problem);
+        assertThat(json).doesNotContain("null");
+        assertSerializationRoundtrip(problem);
+    }
+
+    @Test
+    void issueWithNullInputValue() throws JsonProcessingException {
+        BadRequestProblem problem = new BadRequestProblem(new InputValidationIssue()
+                .inputs(Input.body("a", null), Input.body("b", null)));
+        String json = mapper.writeValueAsString(problem);
+        assertThat(json).doesNotContain("null");
+        assertSerializationRoundtrip(problem);
+    }
+
     void assertSerializationRoundtrip(Problem problem) throws JsonProcessingException {
         String json = mapper.writeValueAsString(problem);
         print(json);

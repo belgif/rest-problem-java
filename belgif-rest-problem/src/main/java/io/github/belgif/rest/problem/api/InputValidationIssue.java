@@ -32,7 +32,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  *
  * @see InputValidationProblem
  */
-@JsonInclude(value = Include.NON_DEFAULT)
+@JsonInclude(value = Include.NON_EMPTY)
 @JsonPropertyOrder(value = { "type", "href", "title", "detail", "in", "name", "value", "inputs" })
 public class InputValidationIssue {
 
@@ -123,7 +123,6 @@ public class InputValidationIssue {
         this.name = name;
     }
 
-    @JsonInclude(value = Include.NON_NULL, content = Include.ALWAYS)
     public Object getValue() {
         return value;
     }
