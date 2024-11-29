@@ -63,11 +63,28 @@ class I18NAcceptLanguageFilterTest {
     }
 
     @Test
+    void enabledViaInitParam() {
+        I18N.setEnabled(false);
+        when(servletContext.getInitParameter(I18N.I18N_FLAG)).thenReturn("true");
+        filter.initialize();
+        assertThat(I18N.isEnabled()).isTrue();
+    }
+
+    @Test
     void disabledViaInitParam() {
         when(servletContext.getInitParameter(I18N.I18N_FLAG)).thenReturn("false");
         filter.initialize();
         filter.filter(requestContext);
         verifyNoInteractions(requestContext);
+        assertThat(I18N.isEnabled()).isFalse();
+    }
+
+    @Test
+    void withoutInitParam() {
+        I18N.setEnabled(true);
+        when(servletContext.getInitParameter(I18N.I18N_FLAG)).thenReturn(null);
+        filter.initialize();
+        assertThat(I18N.isEnabled()).isTrue();
     }
 
 }

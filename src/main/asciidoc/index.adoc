@@ -473,7 +473,9 @@ The I18N feature of the problem library can be disabled by configuring property:
 io.github.belgif.rest.problem.i18n=false
 ----
 
-This can be configured in application.properties (Spring Boot), web.xml context-param (Jakarta EE), System property or environment property.
+On Spring Boot, this can be configured via any of the standard https://docs.spring.io/spring-boot/reference/features/external-config.html[externalized configuration] mechanisms.
+
+On Jakarta EE, this can be configured as a web.xml context-param, system property or environment variable (in that order of precedence).
 
 [[implementation-details]]
 == Implementation details
