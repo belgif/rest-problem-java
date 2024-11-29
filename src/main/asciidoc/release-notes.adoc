@@ -12,11 +12,22 @@
 
 // tag::recent-versions[]
 
-== Version 0.11
+== Version 0.12
 
 *belgif-rest-problem:*
 
 * Add internationalization support for localized detail messages based on Accept-Language HTTP request header
+* Don't include null (issue) input values when serializing
+
+== Version 0.11
+
+*belgif-rest-problem:*
+
+* Add in(Input<?>) to InputValidationIssue for a fluent single input setter
+
+*belgif-rest-problem-spring:*
+
+* Fix non-deterministic configuration for retrieving parameter names from Spring MVC annotations
 
 == Version 0.10
 

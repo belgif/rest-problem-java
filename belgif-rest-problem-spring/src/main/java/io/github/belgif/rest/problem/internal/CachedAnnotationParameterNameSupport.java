@@ -1,4 +1,4 @@
-package io.github.belgif.rest.problem.spring;
+package io.github.belgif.rest.problem.internal;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -7,8 +7,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
-import org.springframework.core.ParameterNameDiscoverer;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,26 +17,25 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * ParameterNameDiscoverer that retrieves the parameter name from Spring MVC annotations (if present).
+ * Helper class for cached retrieval of parameter names from Spring MVC annotations.
+ *
+ * @param <T> the result type
  */
-public class AnnotationParameterNameDiscoverer implements ParameterNameDiscoverer {
+public abstract class CachedAnnotationParameterNameSupport<T> {
 
-    private final ConcurrentHashMap<Executable, String[]> parameterNameCache = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Executable, T> parameterNameCache = new ConcurrentHashMap<>();
 
-    @Override
-    public String[] getParameterNames(Constructor<?> constructor) {
+    public T getParameterNames(@NonNull Constructor<?> constructor) {
         return parameterNameCache.computeIfAbsent(constructor, this::getParameterNames);
     }
 
-    @Override
-    public String[] getParameterNames(Method method) {
+    public T getParameterNames(@NonNull Method method) {
         return parameterNameCache.computeIfAbsent(method, this::getParameterNames);
     }
 
-    private String[] getParameterNames(Executable executable) {
-        return Arrays.stream(executable.getParameters())
-                .map(this::getParameterName)
-                .toArray(String[]::new);
+    private T getParameterNames(Executable executable) {
+        return toResult(Arrays.stream(executable.getParameters())
+                .map(this::getParameterName));
     }
 
     private String getParameterName(Parameter parameter) {
@@ -63,5 +63,7 @@ public class AnnotationParameterNameDiscoverer implements ParameterNameDiscovere
         }
         return null;
     }
+
+    protected abstract T toResult(Stream<String> parameterNames);
 
 }

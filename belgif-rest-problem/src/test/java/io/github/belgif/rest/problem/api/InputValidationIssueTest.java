@@ -90,12 +90,27 @@ class InputValidationIssueTest {
 
         issue.setIn(null);
         assertThat(issue.getIn()).isNull();
-        issue.in(null);
+        issue.in((InEnum) null);
         assertThat(issue.getIn()).isNull();
 
         issue.setIn(InEnum.QUERY);
         assertThat(issue.getIn()).isEqualTo(InEnum.QUERY);
         assertThat(new InputValidationIssue().in(InEnum.QUERY).getIn()).isEqualTo(InEnum.QUERY);
+    }
+
+    @Test
+    void inInput() {
+        InputValidationIssue issue = new InputValidationIssue();
+
+        issue.in((Input<?>) null);
+        assertThat(issue.getIn()).isNull();
+        assertThat(issue.getName()).isNull();
+        assertThat(issue.getValue()).isNull();
+
+        issue = issue.in(Input.query("name", "value"));
+        assertThat(issue.getIn()).isEqualTo(InEnum.QUERY);
+        assertThat(issue.getName()).isEqualTo("name");
+        assertThat(issue.getValue()).isEqualTo("value");
     }
 
     @Test
