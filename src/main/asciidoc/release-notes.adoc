@@ -17,6 +17,8 @@
 *belgif-rest-problem:*
 
 * Don't include null (issue) input values when serializing
+* Replace `urn:problem-type:cbss:input-validation:referencedResourceNotFound`
+by standardized `urn:problem-type:belgif:input-validation:referencedResourceNotFound`
 
 == Version 0.11
 
