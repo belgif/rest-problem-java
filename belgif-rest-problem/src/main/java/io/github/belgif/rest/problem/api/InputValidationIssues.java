@@ -21,6 +21,8 @@ public class InputValidationIssues {
             URI.create("urn:problem-type:belgif:input-validation:schemaViolation");
     public static final URI ISSUE_TYPE_UNKNOWN_INPUT =
             URI.create("urn:problem-type:belgif:input-validation:unknownInput");
+    public static final URI ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND =
+            URI.create("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
 
     // CBSS input-validation issue types for Belgif openapi types
     // TODO: standardize @ Belgif: https://github.com/belgif/rest-guide/issues/126
@@ -29,8 +31,6 @@ public class InputValidationIssues {
             URI.create("urn:problem-type:cbss:input-validation:invalidStructure");
     public static final URI ISSUE_TYPE_OUT_OF_RANGE =
             URI.create("urn:problem-type:cbss:input-validation:outOfRange");
-    public static final URI ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND =
-            URI.create("urn:problem-type:cbss:input-validation:referencedResourceNotFound");
     public static final URI ISSUE_TYPE_REJECTED_INPUT =
             URI.create("urn:problem-type:cbss:input-validation:rejectedInput");
     public static final URI ISSUE_TYPE_REQUIRED_INPUT =
