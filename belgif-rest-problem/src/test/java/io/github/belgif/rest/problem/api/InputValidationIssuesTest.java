@@ -107,7 +107,7 @@ class InputValidationIssuesTest {
     void referencedResourceNotFound() {
         InputValidationIssue issue =
                 InputValidationIssues.referencedResourceNotFound(InEnum.BODY, "test", "value");
-        assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:referencedResourceNotFound");
+        assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
         assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("test");
@@ -216,7 +216,7 @@ class InputValidationIssuesTest {
     void unknownSsin() {
         InputValidationIssue issue =
                 InputValidationIssues.unknownSsin(InEnum.BODY, "ssin", "00000000196");
-        assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:referencedResourceNotFound");
+        assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
         assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("ssin");
