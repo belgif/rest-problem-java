@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterTypeDiscovery;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.WithAnnotations;
@@ -63,10 +62,6 @@ public class CdiProblemTypeRegistry implements Extension, ProblemTypeRegistry {
     @Override
     public NamedType[] getProblemTypes() {
         return problemTypes.clone();
-    }
-
-    public static CdiProblemTypeRegistry instance() {
-        return CDI.current().select(CdiProblemTypeRegistry.class).get();
     }
 
 }
