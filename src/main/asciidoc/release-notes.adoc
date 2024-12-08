@@ -20,6 +20,10 @@
 * Replace `urn:problem-type:cbss:input-validation:referencedResourceNotFound`
 by standardized `urn:problem-type:belgif:input-validation:referencedResourceNotFound`
 
+*belgif-rest-problem-quarkus:*
+
+* New module for https://quarkus.io/[Quarkus] support (only in JVM mode)
+
 == Version 0.11
 
 *belgif-rest-problem:*
