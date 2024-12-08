@@ -7,6 +7,7 @@ import java.util.Map;
 import io.github.belgif.rest.problem.api.ClientProblem;
 import io.github.belgif.rest.problem.api.HttpResponseHeaders;
 import io.github.belgif.rest.problem.api.ProblemType;
+import io.github.belgif.rest.problem.i18n.I18N;
 
 /**
  * HTTP 401: No Access Token (https://www.belgif.be/specification/rest/api-guide/problems/noAccessToken.html)
@@ -39,11 +40,6 @@ public class NoAccessTokenProblem extends ClientProblem implements HttpResponseH
     public static final String TITLE = "No Access Token";
 
     /**
-     * The detail.
-     */
-    public static final String DETAIL = "No Bearer access token found in Authorization HTTP header";
-
-    /**
      * The status.
      */
     public static final int STATUS = 401;
@@ -52,7 +48,7 @@ public class NoAccessTokenProblem extends ClientProblem implements HttpResponseH
 
     public NoAccessTokenProblem() {
         super(TYPE_URI, HREF, TITLE, STATUS);
-        setDetail(DETAIL);
+        setDetail(I18N.getLocalizedDetail(NoAccessTokenProblem.class));
     }
 
     @Override

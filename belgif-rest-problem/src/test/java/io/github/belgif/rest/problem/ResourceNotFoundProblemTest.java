@@ -32,7 +32,7 @@ class ResourceNotFoundProblemTest {
     @Test
     void constructWithResourceInNameValue() {
         ResourceNotFoundProblem problem = new ResourceNotFoundProblem("resource", InEnum.QUERY, "name", "value");
-        assertThat(problem.getDetail()).isEqualTo("No data found for the resource with name [value]");
+        assertThat(problem.getDetail()).isEqualTo("No data found for resource with name [value]");
         assertThat(problem.getInvalidParams()).isEmpty();
         assertThat(problem.getIssues()).hasSize(1);
         InputValidationIssue issue = problem.getIssues().get(0);
@@ -45,7 +45,7 @@ class ResourceNotFoundProblemTest {
     void constructWithResourceInvalidParam() {
         InvalidParam invalidParam = new InvalidParam(InEnum.QUERY, "test", "value");
         ResourceNotFoundProblem problem = new ResourceNotFoundProblem("resource", invalidParam);
-        assertThat(problem.getDetail()).isEqualTo("No data found for the resource with test [value]");
+        assertThat(problem.getDetail()).isEqualTo("No data found for resource with test [value]");
         assertThat(problem.getInvalidParams()).isEmpty();
         assertThat(problem.getIssues()).hasSize(1);
         InputValidationIssue issue = problem.getIssues().get(0);
