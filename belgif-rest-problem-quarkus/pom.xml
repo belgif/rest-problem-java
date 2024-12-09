@@ -59,6 +59,12 @@
 
   <build>
     <plugins>
+      <!-- Rather than adding a dependency on io.github.belgif.rest.problem:belgif-rest-problem-java-ee:jakarta,
+       we need to unpack and embed a filtered subset of the classes directly into belgif-rest-problem-quarkus:
+       * Quarkus does not support portable CDI extensions, only CDI 4.0 build compatible extensions
+       * Quarkus does not support EJB
+       * Using maven-dependency-plugin instead of maven-shade-plugin because the latter causes issues with Quarkus
+       -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
