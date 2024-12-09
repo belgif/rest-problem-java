@@ -60,6 +60,11 @@ public class FrontendController implements ControllerInterface {
                 .baseUrl("http://localhost:" + event.getWebServer().getPort() + "/spring/backend").build();
     }
 
+    @GetMapping("/ping")
+    public String ping() {
+        return "pong";
+    }
+
     @GetMapping("/badRequest")
     public void badRequest() {
         BadRequestProblem problem = new BadRequestProblem();

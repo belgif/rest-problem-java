@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.github.belgif.rest.problem</groupId>
+    <artifactId>belgif-rest-problem-parent</artifactId>
+    <version>${revision}</version>
+  </parent>
+
+  <artifactId>belgif-rest-problem-quarkus</artifactId>
+  <packaging>jar</packaging>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.quarkus.platform</groupId>
+        <artifactId>quarkus-bom</artifactId>
+        <version>3.17.3</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-rest-jackson-common</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.enterprise</groupId>
+      <artifactId>jakarta.enterprise.cdi-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Rather than adding a dependency on io.github.belgif.rest.problem:belgif-rest-problem-java-ee:jakarta,
+       we need to unpack and embed a filtered subset of the classes directly into belgif-rest-problem-quarkus:
+       * Quarkus does not support portable CDI extensions, only CDI 4.0 build compatible extensions
+       * Quarkus does not support EJB
+       * Using maven-dependency-plugin instead of maven-shade-plugin because the latter causes issues with Quarkus
+       -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>io.github.belgif.rest.problem</groupId>
+                  <artifactId>belgif-rest-problem-java-ee</artifactId>
+                  <classifier>jakarta</classifier>
+                  <version>${project.version}</version>
+                  <outputDirectory>target/classes</outputDirectory>
+                  <excludes>
+                    META-INF/MANIFEST.MF,
+                    META-INF/services/jakarta.enterprise.inject.spi.Extension,
+                    io/github/belgif/rest/problem/jaxrs/EJBExceptionMapper.class,
+                    io/github/belgif/rest/problem/registry/CdiProblemTypeRegistry.class
+                  </excludes>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

@@ -1,9 +1,9 @@
-package io.github.belgif.rest.problem;
+package io.github.belgif.rest.problem.quarkus.it;
 
 import java.net.URI;
 import java.util.concurrent.ExecutionException;
 
-import jakarta.ejb.EJB;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
@@ -12,40 +12,43 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
-import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 
 import com.acme.custom.CustomProblem;
 
+import io.github.belgif.rest.problem.BadRequestProblem;
+import io.github.belgif.rest.problem.DefaultProblem;
+import io.github.belgif.rest.problem.ServiceUnavailableProblem;
 import io.github.belgif.rest.problem.api.Problem;
-import io.github.belgif.rest.problem.jaxrs.client.ProblemSupport;
 import io.github.belgif.rest.problem.model.ChildModel;
 import io.github.belgif.rest.problem.model.Model;
 import io.github.belgif.rest.problem.model.NestedModel;
+import io.vertx.core.http.HttpServerRequest;
 
 @RequestScoped
 @Path("/frontend")
 public class FrontendImpl implements Frontend {
 
-    private static final URI BASE_URI =
-            URI.create("http://" + System.getProperty("jboss.bind.address") + ":8080/rest-problem");
+    @Context
+    private HttpServerRequest serverRequest;
 
-    private final Backend microprofileClient = RestClientBuilder.newBuilder()
-            .baseUri(BASE_URI)
-            .build(Backend.class);
+    private URI baseUri;
+
+    private Backend microprofileClient;
 
     private jakarta.ws.rs.client.Client jaxRsClient;
 
-    private final jakarta.ws.rs.client.Client resteasyClient =
-            ProblemSupport.enable(new ResteasyClientBuilderImpl().build());
-
-    private final Backend resteasyProxyClient = ProblemSupport.enable(
-            new ResteasyClientBuilderImpl().build().target(BASE_URI).proxy(Backend.class));
-
-    @EJB
-    private EJBService ejb;
+    @PostConstruct
+    public void initialize() {
+        this.baseUri = URI.create("http://" + serverRequest.localAddress().host() + ":"
+                + serverRequest.localAddress().port() + "/quarkus");
+        this.microprofileClient = RestClientBuilder.newBuilder()
+                .baseUri(baseUri)
+                .build(Backend.class);
+    }
 
     @Inject
     public void setJaxRsClient(jakarta.ws.rs.client.Client jaxRsClient) {
@@ -84,12 +87,6 @@ public class FrontendImpl implements Frontend {
     }
 
     @Override
-    public Response ejb() {
-        ejb.throwPoblem();
-        return Response.ok().build();
-    }
-
-    @Override
     public Response retryAfter() {
         ServiceUnavailableProblem problem = new ServiceUnavailableProblem();
         problem.setRetryAfterSec(10000L);
@@ -102,10 +99,10 @@ public class FrontendImpl implements Frontend {
         if (client == null || client == Client.MICROPROFILE) {
             result = microprofileClient.ok().readEntity(String.class);
         } else if (client == Client.JAXRS) {
-            result = jaxRsClient.target(BASE_URI).path("backend/ok").request().get().readEntity(String.class);
+            result = jaxRsClient.target(baseUri).path("backend/ok").request().get().readEntity(String.class);
         } else if (client == Client.JAXRS_ASYNC) {
             try {
-                result = jaxRsClient.target(BASE_URI).path("backend/ok").request().async().get().get()
+                result = jaxRsClient.target(baseUri).path("backend/ok").request().async().get().get()
                         .readEntity(String.class);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -113,10 +110,6 @@ public class FrontendImpl implements Frontend {
             } catch (ExecutionException e) {
                 throw new RuntimeException(e);
             }
-        } else if (client == Client.RESTEASY) {
-            result = resteasyClient.target(BASE_URI).path("backend/ok").request().get().readEntity(String.class);
-        } else if (client == Client.RESTEASY_PROXY) {
-            result = resteasyProxyClient.ok().readEntity(String.class);
         }
         return Response.ok(result).build();
     }
@@ -127,20 +120,16 @@ public class FrontendImpl implements Frontend {
             if (client == null || client == Client.MICROPROFILE) {
                 return microprofileClient.badRequest();
             } else if (client == Client.JAXRS) {
-                return jaxRsClient.target(BASE_URI).path("backend/badRequest").request().get();
+                return jaxRsClient.target(baseUri).path("backend/badRequest").request().get();
             } else if (client == Client.JAXRS_ASYNC) {
                 try {
-                    jaxRsClient.target(BASE_URI).path("backend/badRequest").request().async().get().get();
+                    jaxRsClient.target(baseUri).path("backend/badRequest").request().async().get().get();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     throw new RuntimeException(e);
                 } catch (ExecutionException e) {
                     throw new RuntimeException(e);
                 }
-            } else if (client == Client.RESTEASY) {
-                return resteasyClient.target(BASE_URI).path("backend/badRequest").request().get();
-            } else if (client == Client.RESTEASY_PROXY) {
-                return resteasyProxyClient.badRequest();
             }
             throw new IllegalStateException("Unsupported client " + client);
         } catch (BadRequestProblem e) {
@@ -155,20 +144,16 @@ public class FrontendImpl implements Frontend {
             if (client == null || client == Client.MICROPROFILE) {
                 return microprofileClient.custom();
             } else if (client == Client.JAXRS) {
-                return jaxRsClient.target(BASE_URI).path("backend/custom").request().buildGet().invoke();
+                return jaxRsClient.target(baseUri).path("backend/custom").request().buildGet().invoke();
             } else if (client == Client.JAXRS_ASYNC) {
                 try {
-                    jaxRsClient.target(BASE_URI).path("backend/custom").request().buildGet().submit().get();
+                    jaxRsClient.target(baseUri).path("backend/custom").request().buildGet().submit().get();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     throw new RuntimeException(e);
                 } catch (ExecutionException e) {
                     throw new RuntimeException(e);
                 }
-            } else if (client == Client.RESTEASY) {
-                return resteasyClient.target(BASE_URI).path("backend/custom").request().get();
-            } else if (client == Client.RESTEASY_PROXY) {
-                return resteasyProxyClient.custom();
             }
             throw new IllegalStateException("Unsupported client " + client);
         } catch (CustomProblem e) {
@@ -183,20 +168,16 @@ public class FrontendImpl implements Frontend {
             if (client == null || client == Client.MICROPROFILE) {
                 return microprofileClient.unmapped();
             } else if (client == Client.JAXRS) {
-                return jaxRsClient.target(BASE_URI).path("backend/unmapped").request().get();
+                return jaxRsClient.target(baseUri).path("backend/unmapped").request().get();
             } else if (client == Client.JAXRS_ASYNC) {
                 try {
-                    jaxRsClient.target(BASE_URI).path("backend/unmapped").request().async().get().get();
+                    jaxRsClient.target(baseUri).path("backend/unmapped").request().async().get().get();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     throw new RuntimeException(e);
                 } catch (ExecutionException e) {
                     throw new RuntimeException(e);
                 }
-            } else if (client == Client.RESTEASY) {
-                return resteasyClient.target(BASE_URI).path("backend/unmapped").request().get();
-            } else if (client == Client.RESTEASY_PROXY) {
-                return resteasyProxyClient.unmapped();
             }
             throw new IllegalStateException("Unsupported client " + client);
         } catch (DefaultProblem e) {
