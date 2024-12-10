@@ -16,6 +16,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import com.acme.custom.CustomProblem;
 
@@ -26,6 +27,7 @@ import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.model.ChildModel;
 import io.github.belgif.rest.problem.model.Model;
 import io.github.belgif.rest.problem.model.NestedModel;
+import io.quarkus.rest.client.reactive.QuarkusRestClientBuilder;
 import io.vertx.core.http.HttpServerRequest;
 
 @RequestScoped
@@ -39,6 +41,11 @@ public class FrontendImpl implements Frontend {
 
     private Backend microprofileClient;
 
+    @RestClient
+    private Backend restClientBuilderClient;
+
+    private Backend quarkusRestClientBuilderClient;
+
     private jakarta.ws.rs.client.Client jaxRsClient;
 
     @PostConstruct
@@ -46,6 +53,9 @@ public class FrontendImpl implements Frontend {
         this.baseUri = URI.create("http://" + serverRequest.localAddress().host() + ":"
                 + serverRequest.localAddress().port() + "/quarkus");
         this.microprofileClient = RestClientBuilder.newBuilder()
+                .baseUri(baseUri)
+                .build(Backend.class);
+        this.quarkusRestClientBuilderClient = QuarkusRestClientBuilder.newBuilder()
                 .baseUri(baseUri)
                 .build(Backend.class);
     }
@@ -98,6 +108,10 @@ public class FrontendImpl implements Frontend {
         String result = null;
         if (client == null || client == Client.MICROPROFILE) {
             result = microprofileClient.ok().readEntity(String.class);
+        } else if (client == Client.REGISTER_REST_CLIENT) {
+            result = restClientBuilderClient.ok().readEntity(String.class);
+        } else if (client == Client.QUARKUS_REST_CLIENT_BUILDER) {
+            result = quarkusRestClientBuilderClient.ok().readEntity(String.class);
         } else if (client == Client.JAXRS) {
             result = jaxRsClient.target(baseUri).path("backend/ok").request().get().readEntity(String.class);
         } else if (client == Client.JAXRS_ASYNC) {
@@ -119,6 +133,10 @@ public class FrontendImpl implements Frontend {
         try {
             if (client == null || client == Client.MICROPROFILE) {
                 return microprofileClient.badRequest();
+            } else if (client == Client.REGISTER_REST_CLIENT) {
+                return restClientBuilderClient.badRequest();
+            } else if (client == Client.QUARKUS_REST_CLIENT_BUILDER) {
+                return quarkusRestClientBuilderClient.badRequest();
             } else if (client == Client.JAXRS) {
                 return jaxRsClient.target(baseUri).path("backend/badRequest").request().get();
             } else if (client == Client.JAXRS_ASYNC) {
@@ -143,6 +161,10 @@ public class FrontendImpl implements Frontend {
         try {
             if (client == null || client == Client.MICROPROFILE) {
                 return microprofileClient.custom();
+            } else if (client == Client.REGISTER_REST_CLIENT) {
+                return restClientBuilderClient.custom();
+            } else if (client == Client.QUARKUS_REST_CLIENT_BUILDER) {
+                return quarkusRestClientBuilderClient.custom();
             } else if (client == Client.JAXRS) {
                 return jaxRsClient.target(baseUri).path("backend/custom").request().buildGet().invoke();
             } else if (client == Client.JAXRS_ASYNC) {
@@ -167,6 +189,10 @@ public class FrontendImpl implements Frontend {
         try {
             if (client == null || client == Client.MICROPROFILE) {
                 return microprofileClient.unmapped();
+            } else if (client == Client.REGISTER_REST_CLIENT) {
+                return restClientBuilderClient.unmapped();
+            } else if (client == Client.QUARKUS_REST_CLIENT_BUILDER) {
+                return quarkusRestClientBuilderClient.unmapped();
             } else if (client == Client.JAXRS) {
                 return jaxRsClient.target(baseUri).path("backend/unmapped").request().get();
             } else if (client == Client.JAXRS_ASYNC) {
