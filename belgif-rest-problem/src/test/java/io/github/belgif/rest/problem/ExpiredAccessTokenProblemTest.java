@@ -24,6 +24,20 @@ class ExpiredAccessTokenProblemTest {
     }
 
     @Test
+    void constructWithRealm() {
+        ExpiredAccessTokenProblem problem = new ExpiredAccessTokenProblem("test");
+        assertThat(problem.getHttpResponseHeaders()).containsEntry(HttpResponseHeaders.WWW_AUTHENTICATE,
+                "Bearer realm=\"test\", error=\"invalid_token\", error_description=\"The access token expired\"");
+    }
+
+    @Test
+    void realm() {
+        ExpiredAccessTokenProblem problem = new ExpiredAccessTokenProblem().realm("test");
+        assertThat(problem.getHttpResponseHeaders()).containsEntry(HttpResponseHeaders.WWW_AUTHENTICATE,
+                "Bearer realm=\"test\", error=\"invalid_token\", error_description=\"The access token expired\"");
+    }
+
+    @Test
     void problemTypeAnnotation() {
         assertThat(ExpiredAccessTokenProblem.class).hasAnnotation(ProblemType.class);
         assertThat(ExpiredAccessTokenProblem.class.getAnnotation(ProblemType.class).value())

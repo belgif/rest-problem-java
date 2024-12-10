@@ -24,6 +24,13 @@ class InvalidAccessTokenProblemTest {
     }
 
     @Test
+    void realm() {
+        InvalidAccessTokenProblem problem = new InvalidAccessTokenProblem().realm("test");
+        assertThat(problem.getHttpResponseHeaders()).containsEntry(HttpResponseHeaders.WWW_AUTHENTICATE,
+                "Bearer realm=\"test\", error=\"invalid_token\", error_description=\"The access token is invalid\"");
+    }
+
+    @Test
     void customReason() {
         InvalidAccessTokenProblem problem = new InvalidAccessTokenProblem("Custom reason");
         assertThat(problem.getType()).hasToString("urn:problem-type:belgif:invalidAccessToken");

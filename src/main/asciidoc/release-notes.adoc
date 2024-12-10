@@ -19,6 +19,9 @@
 * Don't include null (issue) input values when serializing
 * Replace `urn:problem-type:cbss:input-validation:referencedResourceNotFound`
 by standardized `urn:problem-type:belgif:input-validation:referencedResourceNotFound`
+* Improve WWW-Authenticate header for token-related problem types:
+** Support setting the "realm" attribute
+** Add "error_description" for missing_scope
 
 == Version 0.11
 

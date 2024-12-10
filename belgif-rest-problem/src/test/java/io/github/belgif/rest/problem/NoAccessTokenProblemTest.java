@@ -23,6 +23,20 @@ class NoAccessTokenProblemTest {
     }
 
     @Test
+    void constructWithRealm() {
+        NoAccessTokenProblem problem = new NoAccessTokenProblem("test");
+        assertThat(problem.getHttpResponseHeaders()).containsEntry(HttpResponseHeaders.WWW_AUTHENTICATE,
+                "Bearer realm=\"test\"");
+    }
+
+    @Test
+    void realm() {
+        NoAccessTokenProblem problem = new NoAccessTokenProblem().realm("test");
+        assertThat(problem.getHttpResponseHeaders()).containsEntry(HttpResponseHeaders.WWW_AUTHENTICATE,
+                "Bearer realm=\"test\"");
+    }
+
+    @Test
     void problemTypeAnnotation() {
         assertThat(NoAccessTokenProblem.class).hasAnnotation(ProblemType.class);
         assertThat(NoAccessTokenProblem.class.getAnnotation(ProblemType.class).value())
