@@ -6,18 +6,18 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 import io.github.belgif.rest.problem.AbstractRestProblemIT;
+import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
 @QuarkusTest
+@TestHTTPEndpoint(Frontend.class)
 class RestProblemQuarkusIT extends AbstractRestProblemIT {
 
     @Override
     protected RequestSpecification getSpec() {
-        return RestAssured.with().baseUri("http://localhost")
-                .port(8081)
-                .basePath("/quarkus/frontend");
+        return RestAssured.given();
     }
 
     @Test
