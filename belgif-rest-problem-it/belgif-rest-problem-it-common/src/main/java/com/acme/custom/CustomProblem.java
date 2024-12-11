@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.github.belgif.rest.problem.api.ClientProblem;
 import io.github.belgif.rest.problem.api.ProblemType;
+import io.github.belgif.rest.problem.i18n.I18N;
 
 @ProblemType(CustomProblem.TYPE)
 public class CustomProblem extends ClientProblem {
@@ -24,6 +25,7 @@ public class CustomProblem extends ClientProblem {
     @JsonCreator
     public CustomProblem(@JsonProperty("customField") String customField) {
         super(TYPE_URI, TITLE, STATUS);
+        setDetail(I18N.getLocalizedDetail(CustomProblem.class));
         this.customField = customField;
     }
 
