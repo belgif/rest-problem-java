@@ -53,6 +53,8 @@ public class MissingScopeProblem extends ClientProblem implements HttpResponseHe
 
     private final List<String> requiredScopes = new ArrayList<>();
 
+    private String realm;
+
     public MissingScopeProblem() {
         super(TYPE_URI, HREF, TITLE, STATUS);
     }
@@ -60,6 +62,11 @@ public class MissingScopeProblem extends ClientProblem implements HttpResponseHe
     public MissingScopeProblem(String... requiredScopes) {
         super(TYPE_URI, HREF, TITLE, STATUS);
         setRequiredScopes(requiredScopes);
+    }
+
+    public MissingScopeProblem realm(String realm) {
+        this.realm = realm;
+        return this;
     }
 
     public List<String> getRequiredScopes() {
@@ -93,17 +100,21 @@ public class MissingScopeProblem extends ClientProblem implements HttpResponseHe
             return false;
         }
         MissingScopeProblem that = (MissingScopeProblem) o;
-        return Objects.equals(requiredScopes, that.requiredScopes);
+        return Objects.equals(requiredScopes, that.requiredScopes) && Objects.equals(realm, that.realm);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), requiredScopes);
+        return Objects.hash(super.hashCode(), requiredScopes, realm);
     }
 
     @Override
     public Map<String, Object> getHttpResponseHeaders() {
-        return Collections.singletonMap(WWW_AUTHENTICATE, "Bearer error=\"insufficient_scope\"");
+        return Collections.singletonMap(WWW_AUTHENTICATE,
+                "Bearer " + (realm != null ? "realm=\"" + realm + "\", " : "")
+                        + "error=\"insufficient_scope\", error_description=\"Missing scope to perform request\""
+                        + (!requiredScopes.isEmpty()
+                                ? ", scope=\"" + String.join(" ", requiredScopes) + "\"" : ""));
     }
 
 }

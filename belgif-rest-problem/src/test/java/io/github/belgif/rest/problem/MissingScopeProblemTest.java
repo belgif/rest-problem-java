@@ -20,13 +20,24 @@ class MissingScopeProblemTest {
         assertThat(problem.getTitle()).isEqualTo("Missing Scope");
         assertThat(problem.getStatus()).isEqualTo(403);
         assertThat(problem.getHttpResponseHeaders()).containsEntry(HttpResponseHeaders.WWW_AUTHENTICATE,
-                "Bearer error=\"insufficient_scope\"");
+                "Bearer error=\"insufficient_scope\", error_description=\"Missing scope to perform request\"");
+    }
+
+    @Test
+    void realm() {
+        MissingScopeProblem problem = new MissingScopeProblem().realm("test");
+        assertThat(problem.getHttpResponseHeaders()).containsEntry(HttpResponseHeaders.WWW_AUTHENTICATE,
+                "Bearer realm=\"test\", error=\"insufficient_scope\", "
+                        + "error_description=\"Missing scope to perform request\"");
     }
 
     @Test
     void constructWithRequiredScopes() {
         MissingScopeProblem problem = new MissingScopeProblem("required-scope");
         assertThat(problem.getRequiredScopes()).isUnmodifiable().containsExactly("required-scope");
+        assertThat(problem.getHttpResponseHeaders()).containsEntry(HttpResponseHeaders.WWW_AUTHENTICATE,
+                "Bearer error=\"insufficient_scope\", error_description=\"Missing scope to perform request\"" +
+                        ", scope=\"required-scope\"");
     }
 
     @Test

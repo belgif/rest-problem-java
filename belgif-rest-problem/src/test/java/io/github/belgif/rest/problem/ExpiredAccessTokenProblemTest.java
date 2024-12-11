@@ -24,10 +24,43 @@ class ExpiredAccessTokenProblemTest {
     }
 
     @Test
+    void constructWithRealm() {
+        ExpiredAccessTokenProblem problem = new ExpiredAccessTokenProblem("test");
+        assertThat(problem.getHttpResponseHeaders()).containsEntry(HttpResponseHeaders.WWW_AUTHENTICATE,
+                "Bearer realm=\"test\", error=\"invalid_token\", error_description=\"The access token expired\"");
+    }
+
+    @Test
+    void realm() {
+        ExpiredAccessTokenProblem problem = new ExpiredAccessTokenProblem().realm("test");
+        assertThat(problem.getHttpResponseHeaders()).containsEntry(HttpResponseHeaders.WWW_AUTHENTICATE,
+                "Bearer realm=\"test\", error=\"invalid_token\", error_description=\"The access token expired\"");
+    }
+
+    @Test
     void problemTypeAnnotation() {
         assertThat(ExpiredAccessTokenProblem.class).hasAnnotation(ProblemType.class);
         assertThat(ExpiredAccessTokenProblem.class.getAnnotation(ProblemType.class).value())
                 .isEqualTo("urn:problem-type:belgif:expiredAccessToken");
+    }
+
+    @Test
+    void equalsAndHashCode() {
+        ExpiredAccessTokenProblem problem = new ExpiredAccessTokenProblem("A");
+        ExpiredAccessTokenProblem equal = new ExpiredAccessTokenProblem("A");
+        ExpiredAccessTokenProblem other = new ExpiredAccessTokenProblem("B");
+        ExpiredAccessTokenProblem otherBis = new ExpiredAccessTokenProblem();
+        otherBis.setDetail("other");
+
+        assertThat(problem).isEqualTo(problem);
+        assertThat(problem).hasSameHashCodeAs(problem);
+        assertThat(problem).isEqualTo(equal);
+        assertThat(problem).hasSameHashCodeAs(equal);
+        assertThat(problem).hasToString(equal.toString());
+        assertThat(problem).isNotEqualTo(other);
+        assertThat(problem).isNotEqualTo(otherBis);
+        assertThat(problem).doesNotHaveSameHashCodeAs(other);
+        assertThat(problem).isNotEqualTo("other type");
     }
 
 }
