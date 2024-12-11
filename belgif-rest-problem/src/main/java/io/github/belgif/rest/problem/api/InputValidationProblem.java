@@ -100,6 +100,42 @@ public abstract class InputValidationProblem extends ClientProblem {
         invalidParams.add(invalidParam);
     }
 
+    // fluent properties
+
+    @Override
+    public InputValidationProblem href(URI href) {
+        setHref(href);
+        return this;
+    }
+
+    @Override
+    public InputValidationProblem detail(String detail) {
+        setDetail(detail);
+        return this;
+    }
+
+    @Override
+    public InputValidationProblem instance(URI instance) {
+        setInstance(instance);
+        return this;
+    }
+
+    @Override
+    public InputValidationProblem additionalProperty(String name, Object value) {
+        setAdditionalProperty(name, value);
+        return this;
+    }
+
+    public InputValidationProblem issues(InputValidationIssue... issues) {
+        setIssues(issues);
+        return this;
+    }
+
+    public InputValidationProblem issues(List<InputValidationIssue> issues) {
+        setIssues(issues);
+        return this;
+    }
+
     @Override
     public String getMessage() {
         StringBuilder message = new StringBuilder(super.getMessage());
