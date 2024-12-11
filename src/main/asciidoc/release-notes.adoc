@@ -23,6 +23,10 @@ by standardized `urn:problem-type:belgif:input-validation:referencedResourceNotF
 ** Support setting the "realm" attribute
 ** Add "error_description" and "scope" attributes for missing_scope
 
+*belgif-rest-problem-quarkus:*
+
+* New module for https://quarkus.io/[Quarkus] support (only in JVM mode)
+
 == Version 0.11
 
 *belgif-rest-problem:*
