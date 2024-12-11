@@ -14,11 +14,18 @@ import io.restassured.specification.RequestSpecification;
 
 @TestInstance(PER_CLASS)
 // PER_CLASS because otherwise @MethodSource("getClients") requires a static getClients() method
-abstract class AbstractRestProblemIT {
+public abstract class AbstractRestProblemIT {
 
     protected abstract RequestSpecification getSpec();
 
     protected abstract Stream<String> getClients();
+
+    @Test
+    void ping() {
+        getSpec().when().get("/ping").then().assertThat()
+                .statusCode(200)
+                .body(is("pong"));
+    }
 
     @Test
     void badRequest() {

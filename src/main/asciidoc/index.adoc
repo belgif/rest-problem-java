@@ -26,6 +26,7 @@ The library consists of these modules:
 * *belgif-rest-problem-java-ee*: Java EE / Jakarta EE integration for belgif-rest-problem
 * *belgif-rest-problem-spring-boot-2*: Spring Boot 2.x integration for belgif-rest-problem
 * *belgif-rest-problem-spring-boot-3*: Spring Boot 3.x integration for belgif-rest-problem
+* *belgif-rest-problem-quarkus*: Quarkus integration for belgif-rest-problem (only in JVM mode)
 * *belgif-rest-problem-validator*: validation library that generates Belgif-compliant BadRequestProblem with InputValidationIssues
 
 == Release notes
@@ -111,6 +112,25 @@ compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:{revnumber}:j
 .Java EE 8- (Gradle)
 ----
 compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:{revnumber}'
+----
+
+[[dependencies-quarkus]]
+==== Quarkus
+
+[source,xml,role="primary",subs="attributes+"]
+.Maven
+----
+<dependency>
+  <groupId>io.github.belgif.rest.problem</groupId>
+  <artifactId>belgif-rest-problem-quarkus</artifactId>
+  <version>{revnumber}</version>
+</dependency>
+----
+
+[source,role="secondary",subs="attributes+"]
+.Gradle
+----
+compile 'io.github.belgif.rest.problem:belgif-rest-problem-quarkus:{revnumber}'
 ----
 
 [[getting-started-usage]]
@@ -227,6 +247,18 @@ Problem support is automatically enabled for MicroProfile REST Client.
 ==== RESTEasy Proxy Framework
 
 Problem support must be manually enabled for https://docs.jboss.org/resteasy/docs/6.2.10.Final/userguide/#_client_proxies[RESTEasy Proxy Framework] by wrapping the proxy with `client = ProblemSupport.enable(client)`.
+
+[[getting-started-quarkus]]
+=== Quarkus
+
+[WARNING]
+====
+Currently, Quarkus integration is only supported in *JVM mode*, and not in native mode.
+====
+
+Similar to <<getting-started-jakarta-ee>>, transparent problem support is provided for JAX-RS, Bean Validation and MicroProfile REST Client.
+
+Note that, in order for `@ProblemType` classes to be discovered on Quarkus, the standard https://quarkus.io/guides/cdi-reference#bean_discovery[bean discovery] constraints apply (e.g. beans.xml or jandex index).
 
 [[code-generators]]
 === Code generators
@@ -544,7 +576,6 @@ io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
 * *RoutingExceptionsHandler:* an exception handler for RestControllers that converts routing related validation exceptions to HTTP 400 BadRequestProblem.
 * *ProblemResponseErrorHandler:* a RestTemplate error handler that converts problem responses to Problem exceptions.
 * *ProblemRestTemplateCustomizer:* a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.
-* *AnnotationParameterNameDiscoverer:* a bean validation ParameterNameDiscoverer that retrieves parameter names from Spring MVC annotations
 
 In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.
 
@@ -555,6 +586,8 @@ Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 2.
 
 * *ProblemWebClientCustomizer:* a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
 This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
+* *AnnotationParameterNameDiscoverer:* a bean validation ParameterNameDiscoverer that retrieves parameter names from Spring MVC annotations
+* *ProblemValidatorConfiguration:* registers a LocalValidatorFactoryBean with the AnnotationParameterNameDiscoverer
 
 [[belgif-rest-problem-spring-boot-3]]
 ==== belgif-rest-problem-spring-boot-3
@@ -565,3 +598,5 @@ Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 3.
 This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
 * *NoResourceFoundExceptionHandler:* an exception handler for RestControllers that converts NoResourceFoundException to HTTP 404 ResourceNotFoundProblem.
 * *ProblemRestClientCustomizer:* a RestClientCustomizer that registers the ProblemResponseErrorHandler.
+* *AnnotationParameterNameProvider:* a bean validation ParameterNameProvider that retrieves parameter names from Spring MVC annotations
+* *ProblemValidationConfigurationCustomizer:* a ValidationConfigurationCustomizer that registers the AnnotationParameterNameProvider

@@ -12,6 +12,28 @@
 
 // tag::recent-versions[]
 
+== Version 0.12
+
+*belgif-rest-problem:*
+
+* Don't include null (issue) input values when serializing
+* Replace `urn:problem-type:cbss:input-validation:referencedResourceNotFound`
+by standardized `urn:problem-type:belgif:input-validation:referencedResourceNotFound`
+
+*belgif-rest-problem-quarkus:*
+
+* New module for https://quarkus.io/[Quarkus] support (only in JVM mode)
+
+== Version 0.11
+
+*belgif-rest-problem:*
+
+* Add in(Input<?>) to InputValidationIssue for a fluent single input setter
+
+*belgif-rest-problem-spring:*
+
+* Fix non-deterministic configuration for retrieving parameter names from Spring MVC annotations
+
 == Version 0.10
 
 *belgif-rest-problem:*

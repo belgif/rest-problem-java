@@ -52,6 +52,12 @@ public class FrontendImpl implements Frontend {
         this.jaxRsClient = jaxRsClient;
     }
 
+    @GET
+    @Path("/ping")
+    public Response ping() {
+        return Response.ok("pong").build();
+    }
+
     @Override
     public Response badRequest() {
         BadRequestProblem problem = new BadRequestProblem();
