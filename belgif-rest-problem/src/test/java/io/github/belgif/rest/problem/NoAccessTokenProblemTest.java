@@ -43,4 +43,23 @@ class NoAccessTokenProblemTest {
                 .isEqualTo("urn:problem-type:belgif:noAccessToken");
     }
 
+    @Test
+    void equalsAndHashCode() {
+        NoAccessTokenProblem problem = new NoAccessTokenProblem("A");
+        NoAccessTokenProblem equal = new NoAccessTokenProblem("A");
+        NoAccessTokenProblem other = new NoAccessTokenProblem("B");
+        NoAccessTokenProblem otherBis = new NoAccessTokenProblem();
+        otherBis.setDetail("other");
+
+        assertThat(problem).isEqualTo(problem);
+        assertThat(problem).hasSameHashCodeAs(problem);
+        assertThat(problem).isEqualTo(equal);
+        assertThat(problem).hasSameHashCodeAs(equal);
+        assertThat(problem).hasToString(equal.toString());
+        assertThat(problem).isNotEqualTo(other);
+        assertThat(problem).isNotEqualTo(otherBis);
+        assertThat(problem).doesNotHaveSameHashCodeAs(other);
+        assertThat(problem).isNotEqualTo("other type");
+    }
+
 }

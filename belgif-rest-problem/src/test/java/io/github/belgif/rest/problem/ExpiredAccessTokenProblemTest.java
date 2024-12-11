@@ -44,4 +44,23 @@ class ExpiredAccessTokenProblemTest {
                 .isEqualTo("urn:problem-type:belgif:expiredAccessToken");
     }
 
+    @Test
+    void equalsAndHashCode() {
+        ExpiredAccessTokenProblem problem = new ExpiredAccessTokenProblem("A");
+        ExpiredAccessTokenProblem equal = new ExpiredAccessTokenProblem("A");
+        ExpiredAccessTokenProblem other = new ExpiredAccessTokenProblem("B");
+        ExpiredAccessTokenProblem otherBis = new ExpiredAccessTokenProblem();
+        otherBis.setDetail("other");
+
+        assertThat(problem).isEqualTo(problem);
+        assertThat(problem).hasSameHashCodeAs(problem);
+        assertThat(problem).isEqualTo(equal);
+        assertThat(problem).hasSameHashCodeAs(equal);
+        assertThat(problem).hasToString(equal.toString());
+        assertThat(problem).isNotEqualTo(other);
+        assertThat(problem).isNotEqualTo(otherBis);
+        assertThat(problem).doesNotHaveSameHashCodeAs(other);
+        assertThat(problem).isNotEqualTo("other type");
+    }
+
 }
