@@ -72,6 +72,11 @@ public class FrontendController implements ControllerInterface {
                 .build();
     }
 
+    @GetMapping("/ping")
+    public String ping() {
+        return "pong";
+    }
+
     @GetMapping("/badRequest")
     public void badRequest() {
         BadRequestProblem problem = new BadRequestProblem();
