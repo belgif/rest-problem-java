@@ -73,6 +73,7 @@
     <module>belgif-rest-problem-spring</module>
     <module>belgif-rest-problem-spring-boot-2</module>
     <module>belgif-rest-problem-spring-boot-3</module>
+    <module>belgif-rest-problem-quarkus</module>
     <module>belgif-rest-problem-it</module>
     <module>belgif-rest-problem-bom</module>
   </modules>
@@ -199,6 +200,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
           <version>3.1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>io.smallrye</groupId>
+          <artifactId>jandex-maven-plugin</artifactId>
+          <version>3.2.3</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -445,6 +451,7 @@
         <module>belgif-rest-problem-spring</module>
         <module>belgif-rest-problem-spring-boot-2</module>
         <module>belgif-rest-problem-spring-boot-3</module>
+        <module>belgif-rest-problem-quarkus</module>
         <module>belgif-rest-problem-it</module>
         <module>belgif-rest-problem-bom</module>
         <module>jacoco-aggregator</module>
