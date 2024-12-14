@@ -28,7 +28,7 @@ class I18NTest {
 
     @Test
     void getRequestLocaleDefault() {
-        assertThat(I18N.getRequestLocale()).isEqualTo(Locale.forLanguageTag("en"));
+        assertThat(I18N.getRequestLocale()).isEqualTo(Locale.ENGLISH);
     }
 
     @Test
