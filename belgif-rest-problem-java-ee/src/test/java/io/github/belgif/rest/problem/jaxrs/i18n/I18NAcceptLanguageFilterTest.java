@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 import java.util.Collections;
 import java.util.Locale;
 
-import javax.servlet.ServletContext;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 
@@ -30,9 +29,6 @@ class I18NAcceptLanguageFilterTest {
 
     @Mock
     private ContainerResponseContext responseContext;
-
-    @Mock
-    private ServletContext servletContext;
 
     @AfterEach
     void cleanup() {
@@ -60,31 +56,6 @@ class I18NAcceptLanguageFilterTest {
         ThreadLocalLocaleResolver.setLocale(Locale.forLanguageTag("nl-BE"));
         filter.filter(requestContext, responseContext);
         assertThat(I18N.getRequestLocale()).isEqualTo(Locale.ENGLISH);
-    }
-
-    @Test
-    void enabledViaInitParam() {
-        I18N.setEnabled(false);
-        when(servletContext.getInitParameter(I18N.I18N_FLAG)).thenReturn("true");
-        filter.initialize();
-        assertThat(I18N.isEnabled()).isTrue();
-    }
-
-    @Test
-    void disabledViaInitParam() {
-        when(servletContext.getInitParameter(I18N.I18N_FLAG)).thenReturn("false");
-        filter.initialize();
-        filter.filter(requestContext);
-        verifyNoInteractions(requestContext);
-        assertThat(I18N.isEnabled()).isFalse();
-    }
-
-    @Test
-    void withoutInitParam() {
-        I18N.setEnabled(true);
-        when(servletContext.getInitParameter(I18N.I18N_FLAG)).thenReturn(null);
-        filter.initialize();
-        assertThat(I18N.isEnabled()).isTrue();
     }
 
 }

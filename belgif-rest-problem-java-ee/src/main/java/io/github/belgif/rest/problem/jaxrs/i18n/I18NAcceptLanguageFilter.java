@@ -1,13 +1,10 @@
 package io.github.belgif.rest.problem.jaxrs.i18n;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.container.PreMatching;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.ext.Provider;
 
 import io.github.belgif.rest.problem.i18n.I18N;
@@ -19,16 +16,6 @@ import io.github.belgif.rest.problem.i18n.I18N;
 @PreMatching
 @Provider
 public class I18NAcceptLanguageFilter implements ContainerRequestFilter, ContainerResponseFilter {
-
-    @Context
-    private ServletContext servletContext;
-
-    @PostConstruct
-    public void initialize() {
-        if (servletContext.getInitParameter(I18N.I18N_FLAG) != null) {
-            I18N.setEnabled(Boolean.parseBoolean(servletContext.getInitParameter(I18N.I18N_FLAG)));
-        }
-    }
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
@@ -42,10 +29,6 @@ public class I18NAcceptLanguageFilter implements ContainerRequestFilter, Contain
         if (I18N.isEnabled()) {
             ThreadLocalLocaleResolver.clear();
         }
-    }
-
-    protected void setServletContext(ServletContext servletContext) {
-        this.servletContext = servletContext;
     }
 
 }
