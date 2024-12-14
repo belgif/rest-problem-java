@@ -364,6 +364,19 @@ public abstract class AbstractRestProblemIT {
     }
 
     @Test
+    void i18nWeighted() {
+        getSpec().when()
+                .header("Accept-Language", "fr-BE;q=0.5, nl-BE;q=0.7")
+                .queryParam("param", -1)
+                .queryParam("other", "TOO_LONG")
+                .get("/beanValidation/queryParameter").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("detail", equalTo("Het input bericht is ongeldig"))
+                .body("issues[0].detail", equalTo("grootte moet tussen 0 en 5 liggen"));
+    }
+
+    @Test
     void i18nCustom() {
         getSpec().when()
                 .header("Accept-Language", "nl-BE")

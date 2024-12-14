@@ -34,6 +34,11 @@ class RestProblemQuarkusIT extends AbstractRestProblemIT {
 
     @Test
     @Disabled("I18N not currently supported on Quarkus")
+    void i18nWeighted() {
+    }
+
+    @Test
+    @Disabled("I18N not currently supported on Quarkus")
     void i18nCustom() {
     }
 
