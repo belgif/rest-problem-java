@@ -58,4 +58,16 @@ class I18NAcceptLanguageFilterTest {
         assertThat(I18N.getRequestLocale()).isEqualTo(Locale.ENGLISH);
     }
 
+    @Test
+    void i18nDisabled() {
+        I18N.setEnabled(false);
+        filter.filter(requestContext);
+        verifyNoInteractions(requestContext);
+
+        ThreadLocalLocaleResolver.setLocale(Locale.forLanguageTag("fr"));
+        filter.filter(requestContext, responseContext);
+        verifyNoInteractions(requestContext, responseContext);
+        assertThat(I18N.getRequestLocale()).isEqualTo(Locale.forLanguageTag("fr"));
+    }
+
 }
