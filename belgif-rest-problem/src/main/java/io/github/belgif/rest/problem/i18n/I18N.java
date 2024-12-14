@@ -28,25 +28,7 @@ public class I18N {
 
     private static boolean enabled = true;
 
-    static {
-        init();
-    }
-
     private I18N() {
-    }
-
-    /**
-     * Internal initialization logic. Package accessible for testing purpose.
-     * Checks whether I18N should be enabled, based on system property / environment variable.
-     */
-    static void init() {
-        if (System.getProperty(I18N_FLAG) != null) {
-            enabled = Boolean.parseBoolean(System.getProperty(I18N_FLAG));
-        } else if (System.getenv(I18N_FLAG) != null) {
-            enabled = Boolean.parseBoolean(System.getenv(I18N_FLAG));
-        } else {
-            enabled = true;
-        }
     }
 
     /**

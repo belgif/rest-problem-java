@@ -7,8 +7,6 @@ import java.util.Locale;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.junitpioneer.jupiter.SetEnvironmentVariable;
-import org.junitpioneer.jupiter.SetSystemProperty;
 
 import io.github.belgif.rest.problem.BadGatewayProblem;
 import io.github.belgif.rest.problem.api.ClientProblem;
@@ -79,26 +77,6 @@ class I18NTest {
     void getLocalizedMessageFromCustomResourceBundle() {
         assertThat(I18N.getLocalizedString(I18NTest.class, "CustomProblem.detail"))
                 .isEqualTo("Custom detail");
-    }
-
-    @Test
-    @SetSystemProperty(key = I18N.I18N_FLAG, value = "false")
-    void disabledViaSystemProperty() {
-        assertDisabled();
-    }
-
-    @Test
-    @SetEnvironmentVariable(key = I18N.I18N_FLAG, value = "false")
-    void disabledViaEnvironmentVariable() {
-        assertDisabled();
-    }
-
-    private void assertDisabled() {
-        I18N.init();
-        assertThat(I18N.isEnabled()).isFalse();
-        TestLocaleResolver.setLocale(Locale.forLanguageTag("nl-BE"));
-        assertThat(I18N.getLocalizedString("BadGatewayProblem.detail"))
-                .isEqualTo("Error in communication with upstream service");
     }
 
     private static class CustomProblem extends ClientProblem {
