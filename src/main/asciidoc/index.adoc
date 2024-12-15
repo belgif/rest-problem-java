@@ -509,6 +509,16 @@ On Spring Boot, this can be configured via any of the standard https://docs.spri
 
 On Jakarta EE, this can be configured as a system property, environment variable, or web.xml context-param (in that order of precedence).
 
+=== LocaleResolver
+
+The java ServiceLoader SPI is used to make the link:apidocs/io/github/belgif/rest/problem/i18n/LocaleResolver.html[LocaleResolver] implementation (used for retrieving the current request locale) pluggable.
+
+On Spring Boot, a default implementation is provided that retrieves the locale from the https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/i18n/LocaleContextHolder.html[LocaleContextHolder].
+
+On Jakarta EE, a default implementation is provided that retrieved the locale from a thread-local variable that gets initialized with the value from the Accept-Language header.
+
+Applications can provide and register their own LocaleResolver if needed (`/META-INF/services/io.github.belgif.rest.problem.i18n.LocaleResolver`).
+
 [[implementation-details]]
 == Implementation details
 
