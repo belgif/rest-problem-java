@@ -409,4 +409,20 @@ public abstract class AbstractRestProblemIT {
                 .body("detail", equalTo("NL detail"));
     }
 
+    @Test
+    void i18nDisabled() {
+        try {
+            getSpec().queryParam("enabled", "false").post("/i18n");
+            getSpec().when()
+                    .header("Accept-Language", "nl-BE")
+                    .queryParam("param", -1)
+                    .queryParam("other", "TOO_LONG")
+                    .get("/beanValidation/queryParameter").then().assertThat()
+                    .statusCode(400)
+                    .body("detail", equalTo("The input message is incorrect"));
+        } finally {
+            getSpec().queryParam("enabled", "true").post("/i18n");
+        }
+    }
+
 }
