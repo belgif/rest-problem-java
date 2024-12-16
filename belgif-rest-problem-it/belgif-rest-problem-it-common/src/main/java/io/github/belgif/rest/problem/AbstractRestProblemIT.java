@@ -364,6 +364,17 @@ public abstract class AbstractRestProblemIT {
     }
 
     @Test
+    void i18nUnsupportedLanguage() {
+        getSpec().when()
+                .header("Accept-Language", "es")
+                .queryParam("param", -1)
+                .queryParam("other", "TOO_LONG")
+                .get("/beanValidation/queryParameter").then().assertThat()
+                .statusCode(400)
+                .body("detail", equalTo("The input message is incorrect"));
+    }
+
+    @Test
     void i18nWeighted() {
         getSpec().when()
                 .header("Accept-Language", "fr-BE;q=0.5, nl-BE;q=0.7")
@@ -374,6 +385,17 @@ public abstract class AbstractRestProblemIT {
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("detail", equalTo("Het input bericht is ongeldig"))
                 .body("issues[0].detail", equalTo("grootte moet tussen 0 en 5 liggen"));
+    }
+
+    @Test
+    void i18nUnsupportedLanguageWeighted() {
+        getSpec().when()
+                .header("Accept-Language", "fr-BE;q=0.5, es;q=0.7")
+                .queryParam("param", -1)
+                .queryParam("other", "TOO_LONG")
+                .get("/beanValidation/queryParameter").then().assertThat()
+                .statusCode(400)
+                .body("detail", equalTo("The input message is incorrect"));
     }
 
     @Test
