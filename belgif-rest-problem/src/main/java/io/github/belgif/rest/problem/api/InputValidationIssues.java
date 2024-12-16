@@ -69,7 +69,7 @@ public class InputValidationIssues {
 
     public static InputValidationIssue unknownInput(InEnum in, String name, Object value) {
         return new InputValidationIssue(ISSUE_TYPE_UNKNOWN_INPUT, "Unknown input")
-                .detail(I18N.getLocalizedString("unknownInput.detail", name))
+                .localizedDetail("unknownInput", name)
                 .in(in, name, value);
     }
 
@@ -89,14 +89,14 @@ public class InputValidationIssues {
                 new InputValidationIssue(ISSUE_TYPE_OUT_OF_RANGE, "Input value is out of range")
                         .in(in, name, value);
         if (min != null && max != null) {
-            issue.detail(I18N.getLocalizedString("outOfRange.minmax.detail", name, value, min, max))
+            issue.localizedDetail("outOfRange.minmax", name, value, min, max)
                     .additionalProperty("minimum", min.toString())
                     .additionalProperty("maximum", max.toString());
         } else if (min != null) {
-            issue.detail(I18N.getLocalizedString("outOfRange.min.detail", name, value, min))
+            issue.localizedDetail("outOfRange.min", name, value, min)
                     .additionalProperty("minimum", min.toString());
         } else {
-            issue.detail(I18N.getLocalizedString("outOfRange.max.detail", name, value, max))
+            issue.localizedDetail("outOfRange.max", name, value, max)
                     .additionalProperty("maximum", max.toString());
         }
         return issue;
@@ -104,27 +104,26 @@ public class InputValidationIssues {
 
     public static InputValidationIssue referencedResourceNotFound(InEnum in, String name, Object value) {
         return new InputValidationIssue(ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND, "Referenced resource not found")
-                .detail(I18N.getLocalizedString("referencedResourceNotFound.detail", name, value))
+                .localizedDetail("referencedResourceNotFound", name, value)
                 .in(in, name, value);
     }
 
     public static InputValidationIssue rejectedInput(InEnum in, String name, Object value) {
         return new InputValidationIssue(ISSUE_TYPE_REJECTED_INPUT, "Input is not allowed in this context")
-                .detail(I18N.getLocalizedString("rejectedInput.detail", name))
+                .localizedDetail("rejectedInput", name)
                 .in(in, name, value);
     }
 
     public static InputValidationIssue requiredInput(InEnum in, String name) {
         return new InputValidationIssue(ISSUE_TYPE_REQUIRED_INPUT, "Input is required in this context")
-                .detail(I18N.getLocalizedString("requiredInput.detail", name))
+                .localizedDetail("requiredInput", name)
                 .in(in, name, null);
     }
 
     public static InputValidationIssue requiredInputsIfPresent(Input<?> target, List<Input<?>> inputs) {
         InputValidationIssue issue =
                 new InputValidationIssue(ISSUE_TYPE_REQUIRED_INPUT, "Input is required in this context")
-                        .detail(I18N.getLocalizedString("requiredInput.ifPresent.detail",
-                                target.getName(), getJoinedNames(inputs)));
+                        .localizedDetail("requiredInput.ifPresent", target.getName(), getJoinedNames(inputs));
         issue.addInput(target);
 
         if (inputs != null) {
@@ -136,7 +135,7 @@ public class InputValidationIssues {
 
     public static InputValidationIssue replacedSsin(InEnum in, String name, String ssin, String newSsin) {
         return new InputValidationIssue(ISSUE_TYPE_REPLACED_SSIN, "SSIN has been replaced, use new SSIN")
-                .detail(I18N.getLocalizedString("replacedSsin.detail", ssin, newSsin))
+                .localizedDetail("replacedSsin", ssin, newSsin)
                 .in(in, name, ssin)
                 .additionalProperty("replacedBy", newSsin);
     }
@@ -147,7 +146,7 @@ public class InputValidationIssues {
 
     public static InputValidationIssue canceledSsin(InEnum in, String name, String ssin) {
         return new InputValidationIssue(ISSUE_TYPE_CANCELED_SSIN, "SSIN has been canceled")
-                .detail(I18N.getLocalizedString("canceledSsin.detail", ssin))
+                .localizedDetail("canceledSsin", ssin)
                 .in(in, name, ssin);
     }
 
@@ -157,19 +156,19 @@ public class InputValidationIssues {
 
     public static InputValidationIssue unknownSsin(InEnum in, String name, String ssin) {
         return referencedResourceNotFound(in, name, ssin)
-                .detail(I18N.getLocalizedString("referencedResourceNotFound.ssin.detail", ssin));
+                .localizedDetail("referencedResourceNotFound.ssin", ssin);
     }
 
     public static InputValidationIssue invalidPeriod(InEnum in, String name, Object period) {
         return new InputValidationIssue(ISSUE_TYPE_INVALID_PERIOD, "Period is invalid")
-                .detail(I18N.getLocalizedString("invalidPeriod.detail", "endDate", "startDate"))
+                .localizedDetail("invalidPeriod", "endDate", "startDate")
                 .in(in, name, period);
     }
 
     public static <T extends Temporal & Comparable<? super T>> InputValidationIssue invalidPeriod(
             Input<T> start, Input<T> end) {
         return new InputValidationIssue(ISSUE_TYPE_INVALID_PERIOD, "Period is invalid")
-                .detail(I18N.getLocalizedString("invalidPeriod.detail", end.getName(), start.getName()))
+                .localizedDetail("invalidPeriod", end.getName(), start.getName())
                 .inputs(Arrays.asList(start, end));
     }
 
@@ -197,36 +196,33 @@ public class InputValidationIssues {
     public static InputValidationIssue exactlyOneOfExpected(List<Input<?>> inputs) {
         return new InputValidationIssue(ISSUE_TYPE_EXACTLY_ONE_OF_EXPECTED,
                 "Exactly one of these inputs must be present")
-                        .detail(I18N.getLocalizedString("exactlyOneOfExpected.detail",
-                                getJoinedNames(inputs)))
+                        .localizedDetail("exactlyOneOfExpected", getJoinedNames(inputs))
                         .inputs(inputs);
     }
 
     public static InputValidationIssue anyOfExpected(List<Input<?>> inputs) {
         return new InputValidationIssue(ISSUE_TYPE_ANY_OF_EXPECTED, "Any of these inputs must be present")
-                .detail(I18N.getLocalizedString("anyOfExpected.detail", getJoinedNames(inputs)))
+                .localizedDetail("anyOfExpected", getJoinedNames(inputs))
                 .inputs(inputs);
     }
 
     public static InputValidationIssue zeroOrExactlyOneOfExpected(List<Input<?>> inputs) {
         return new InputValidationIssue(ISSUE_TYPE_ZERO_OR_EXACTLY_ONE_OF_EXPECTED,
                 "Exactly one or none of these inputs must be present")
-                        .detail(I18N.getLocalizedString("zeroOrExactlyOneOfExpected.detail",
-                                getJoinedNames(inputs)))
+                        .localizedDetail("zeroOrExactlyOneOfExpected", getJoinedNames(inputs))
                         .inputs(inputs);
     }
 
     public static InputValidationIssue zeroOrAllOfExpected(List<Input<?>> inputs) {
         return new InputValidationIssue(ISSUE_TYPE_ZERO_OR_ALL_OF_EXPECTED,
                 "All or none of these inputs must be present")
-                        .detail(I18N.getLocalizedString("zeroOrAllOfExpected.detail",
-                                getJoinedNames(inputs)))
+                        .localizedDetail("zeroOrAllOfExpected", getJoinedNames(inputs))
                         .inputs(inputs);
     }
 
     public static InputValidationIssue equalExpected(List<Input<?>> inputs) {
         return new InputValidationIssue(ISSUE_TYPE_EQUAL_EXPECTED, "These inputs must be equal")
-                .detail(I18N.getLocalizedString("equalExpected.detail", getJoinedNames(inputs)))
+                .localizedDetail("equalExpected", getJoinedNames(inputs))
                 .inputs(inputs);
     }
 
