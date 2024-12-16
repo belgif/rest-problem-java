@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem;
 
 import java.net.URI;
 
+import io.github.belgif.rest.problem.api.FluentInputValidationProblem;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationProblem;
 import io.github.belgif.rest.problem.api.ProblemType;
@@ -13,7 +14,8 @@ import io.github.belgif.rest.problem.api.ProblemType;
  *      https://www.belgif.be/specification/rest/api-guide/#missing-permission</a>
  */
 @ProblemType(MissingPermissionProblem.TYPE)
-public class MissingPermissionProblem extends InputValidationProblem {
+public class MissingPermissionProblem extends InputValidationProblem
+        implements FluentInputValidationProblem<MissingPermissionProblem> {
 
     /**
      * The problem type.

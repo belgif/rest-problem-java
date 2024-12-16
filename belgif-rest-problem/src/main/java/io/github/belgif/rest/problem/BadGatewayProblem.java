@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem;
 
 import java.net.URI;
 
+import io.github.belgif.rest.problem.api.FluentProblem;
 import io.github.belgif.rest.problem.api.ProblemType;
 import io.github.belgif.rest.problem.api.ServerProblem;
 
@@ -12,7 +13,7 @@ import io.github.belgif.rest.problem.api.ServerProblem;
  *      https://www.belgif.be/specification/rest/api-guide/#bad-gateway</a>
  */
 @ProblemType(BadGatewayProblem.TYPE)
-public class BadGatewayProblem extends ServerProblem {
+public class BadGatewayProblem extends ServerProblem implements FluentProblem<BadGatewayProblem> {
 
     /**
      * The problem type.

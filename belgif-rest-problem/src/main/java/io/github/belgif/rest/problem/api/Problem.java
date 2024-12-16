@@ -118,28 +118,6 @@ public abstract class Problem extends RuntimeException {
         additionalProperties.put(name, value);
     }
 
-    // fluent properties
-
-    public Problem href(URI href) {
-        setHref(href);
-        return this;
-    }
-
-    public Problem detail(String detail) {
-        setDetail(detail);
-        return this;
-    }
-
-    public Problem instance(URI instance) {
-        setInstance(instance);
-        return this;
-    }
-
-    public Problem additionalProperty(String name, Object value) {
-        setAdditionalProperty(name, value);
-        return this;
-    }
-
     /**
      * Returns the problem message, consisting of the problem title, followed by the detail message (if present).
      *

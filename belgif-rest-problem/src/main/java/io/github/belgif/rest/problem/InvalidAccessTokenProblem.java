@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import io.github.belgif.rest.problem.api.ClientProblem;
+import io.github.belgif.rest.problem.api.FluentProblem;
 import io.github.belgif.rest.problem.api.HttpResponseHeaders;
 import io.github.belgif.rest.problem.api.ProblemType;
 
@@ -16,7 +17,8 @@ import io.github.belgif.rest.problem.api.ProblemType;
  *      https://www.belgif.be/specification/rest/api-guide/#invalid-access-token</a>
  */
 @ProblemType(InvalidAccessTokenProblem.TYPE)
-public class InvalidAccessTokenProblem extends ClientProblem implements HttpResponseHeaders {
+public class InvalidAccessTokenProblem extends ClientProblem
+        implements FluentProblem<InvalidAccessTokenProblem>, HttpResponseHeaders {
 
     /**
      * The problem type.

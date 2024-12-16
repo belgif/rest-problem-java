@@ -110,13 +110,6 @@ class InputValidationProblemTest {
     }
 
     @Test
-    void fluentProperties() {
-        InputValidationProblem problem = new MyInputValidationProblem()
-                .detail("detail message")
-                .issues(InputValidationIssues.requiredInput(InEnum.QUERY, "test"));
-    }
-
-    @Test
     void equalsHashCodeToString() {
         InputValidationIssue issue = new InputValidationIssue(InEnum.QUERY, "test");
         InputValidationIssue otherIssue = new InputValidationIssue(InEnum.QUERY, "other");
