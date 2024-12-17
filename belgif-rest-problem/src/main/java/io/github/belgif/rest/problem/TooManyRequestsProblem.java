@@ -3,6 +3,7 @@ package io.github.belgif.rest.problem;
 import java.net.URI;
 import java.util.Objects;
 
+import io.github.belgif.rest.problem.api.FluentRetryAfterProblem;
 import io.github.belgif.rest.problem.api.ProblemType;
 import io.github.belgif.rest.problem.api.RetryAfterClientProblem;
 
@@ -13,7 +14,8 @@ import io.github.belgif.rest.problem.api.RetryAfterClientProblem;
  *      https://www.belgif.be/specification/rest/api-guide/#too-many-requests</a>
  */
 @ProblemType(TooManyRequestsProblem.TYPE)
-public class TooManyRequestsProblem extends RetryAfterClientProblem {
+public class TooManyRequestsProblem extends RetryAfterClientProblem
+        implements FluentRetryAfterProblem<TooManyRequestsProblem> {
 
     /**
      * The problem type.

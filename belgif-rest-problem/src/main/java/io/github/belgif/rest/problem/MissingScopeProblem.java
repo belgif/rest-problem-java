@@ -11,6 +11,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 import io.github.belgif.rest.problem.api.ClientProblem;
+import io.github.belgif.rest.problem.api.FluentProblem;
 import io.github.belgif.rest.problem.api.HttpResponseHeaders;
 import io.github.belgif.rest.problem.api.ProblemType;
 
@@ -21,7 +22,8 @@ import io.github.belgif.rest.problem.api.ProblemType;
  *      https://www.belgif.be/specification/rest/api-guide/#missing-scope</a>
  */
 @ProblemType(MissingScopeProblem.TYPE)
-public class MissingScopeProblem extends ClientProblem implements HttpResponseHeaders {
+public class MissingScopeProblem extends ClientProblem
+        implements FluentProblem<MissingScopeProblem>, HttpResponseHeaders {
 
     /**
      * The problem type.

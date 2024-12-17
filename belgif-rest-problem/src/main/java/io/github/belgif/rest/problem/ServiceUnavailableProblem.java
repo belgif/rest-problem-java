@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem;
 
 import java.net.URI;
 
+import io.github.belgif.rest.problem.api.FluentRetryAfterProblem;
 import io.github.belgif.rest.problem.api.ProblemType;
 import io.github.belgif.rest.problem.api.RetryAfterServerProblem;
 
@@ -12,7 +13,8 @@ import io.github.belgif.rest.problem.api.RetryAfterServerProblem;
  *      https://www.belgif.be/specification/rest/api-guide/#service-unavailable</a>
  */
 @ProblemType(ServiceUnavailableProblem.TYPE)
-public class ServiceUnavailableProblem extends RetryAfterServerProblem {
+public class ServiceUnavailableProblem extends RetryAfterServerProblem
+        implements FluentRetryAfterProblem<ServiceUnavailableProblem> {
 
     /**
      * The problem type.

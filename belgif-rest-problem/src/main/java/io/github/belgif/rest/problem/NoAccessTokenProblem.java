@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import io.github.belgif.rest.problem.api.ClientProblem;
+import io.github.belgif.rest.problem.api.FluentProblem;
 import io.github.belgif.rest.problem.api.HttpResponseHeaders;
 import io.github.belgif.rest.problem.api.ProblemType;
 
@@ -15,7 +16,8 @@ import io.github.belgif.rest.problem.api.ProblemType;
  *      https://www.belgif.be/specification/rest/api-guide/#no-access-token</a>
  */
 @ProblemType(NoAccessTokenProblem.TYPE)
-public class NoAccessTokenProblem extends ClientProblem implements HttpResponseHeaders {
+public class NoAccessTokenProblem extends ClientProblem
+        implements FluentProblem<NoAccessTokenProblem>, HttpResponseHeaders {
 
     /**
      * The problem type.

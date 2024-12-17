@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem;
 
 import java.net.URI;
 
+import io.github.belgif.rest.problem.api.FluentProblem;
 import io.github.belgif.rest.problem.api.ProblemType;
 import io.github.belgif.rest.problem.api.ServerProblem;
 
@@ -13,7 +14,7 @@ import io.github.belgif.rest.problem.api.ServerProblem;
  *      https://www.belgif.be/specification/rest/api-guide/#internal-server-error</a>
  */
 @ProblemType(InternalServerErrorProblem.TYPE)
-public class InternalServerErrorProblem extends ServerProblem {
+public class InternalServerErrorProblem extends ServerProblem implements FluentProblem<InternalServerErrorProblem> {
 
     /**
      * The problem type.
