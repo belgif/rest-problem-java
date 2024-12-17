@@ -489,6 +489,42 @@ If in turn, you want your own validator implementation to be extensible as well,
  }
 ----
 
+[[i18n]]
+== Internationalization (I18N)
+
+The detail messages of Belgif problem and issue types can be localized to the language requested in the https://www.belgif.be/specification/rest/api-guide/#i18n-negotiation[Accept-Language HTTP request header].
+
+The default language is English, and translations are available in the 3 official Belgian languages (Dutch, French and German).
+
+An link:apidocs/io/github/belgif/rest/problem/i18n/I18N.html[I18N] helper class is available in case you want to provide localized messages for your own custom problem and issue types.
+
+The I18N feature of the problem library can be disabled by configuring property:
+
+[source,properties]
+----
+io.github.belgif.rest.problem.i18n=false
+----
+
+On Spring Boot, this can be configured via any of the standard https://docs.spring.io/spring-boot/reference/features/external-config.html[externalized configuration] mechanisms.
+
+On Jakarta EE, this can be configured as a system property, environment variable, or web.xml context-param (in that order of precedence).
+
+On Quarkus, this can be configured via any of the standard https://quarkus.io/guides/config-reference#configuration-sources[MicroProfile Config Sources].
+
+WARNING: On Quarkus, you also need to add the following configuration property if you want the https://quarkus.io/guides/validation#validation-and-localization[Bean Validation messages to be localized] too: `quarkus.locales=en,fr-BE,nl-BE,de-BE`.
+
+=== LocaleResolver
+
+The java ServiceLoader SPI is used to make the link:apidocs/io/github/belgif/rest/problem/i18n/LocaleResolver.html[LocaleResolver] implementation (used for retrieving the current request locale) pluggable.
+
+On Spring Boot, a default implementation is provided that retrieves the locale from the https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/i18n/LocaleContextHolder.html[LocaleContextHolder].
+
+On Jakarta EE, a default implementation is provided that retrieves the locale from a thread-local variable that gets initialized with the value from the Accept-Language header.
+
+On Quarkus, a default implementation is provided that retrieves the locale from a request-scoped CDI bean that gets initialized with the value from the Accept-Language header.
+
+Applications can provide and register their own LocaleResolver if needed (`/META-INF/services/io.github.belgif.rest.problem.i18n.LocaleResolver`).
+
 [[implementation-details]]
 == Implementation details
 

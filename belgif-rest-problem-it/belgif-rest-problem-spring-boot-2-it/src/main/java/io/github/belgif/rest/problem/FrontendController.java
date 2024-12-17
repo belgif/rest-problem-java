@@ -26,6 +26,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.acme.custom.CustomProblem;
 
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.i18n.I18N;
 import io.github.belgif.rest.problem.model.ChildModel;
 import io.github.belgif.rest.problem.model.Model;
 import io.github.belgif.rest.problem.model.NestedModel;
@@ -201,6 +202,12 @@ public class FrontendController implements ControllerInterface {
     @PostMapping("/beanValidation/queryParameter/nested")
     public ResponseEntity<String> beanValidationQueryParameterNested(@Valid Model p) {
         return ResponseEntity.ok("param: " + p);
+    }
+
+    @PostMapping("/i18n")
+    public ResponseEntity<Void> i18n(@RequestParam("enabled") boolean enabled) {
+        I18N.setEnabled(enabled);
+        return ResponseEntity.ok().build();
     }
 
 }

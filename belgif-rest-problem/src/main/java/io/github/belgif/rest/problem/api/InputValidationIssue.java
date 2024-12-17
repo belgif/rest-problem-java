@@ -20,6 +20,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
+import io.github.belgif.rest.problem.i18n.I18N;
+
 /**
  * Maps to InputValidationIssue in belgif/problem/v1/problem-v1.yaml.
  *
@@ -255,6 +257,33 @@ public class InputValidationIssue {
 
     public InputValidationIssue detail(String detail) {
         setDetail(detail);
+        return this;
+    }
+
+    /**
+     * Set a localized detail message.
+     *
+     * @param key the resource bundle key (without ".detail" suffix)
+     * @param args the optional arguments
+     * @return this InputValidationIssue
+     * @see I18N#getLocalizedString(String, Object...)
+     */
+    public InputValidationIssue localizedDetail(String key, Object... args) {
+        setDetail(I18N.getLocalizedString(key + ".detail", args));
+        return this;
+    }
+
+    /**
+     * Set a localized detail message.
+     *
+     * @param context the context class where the resource bundle is loaded from
+     * @param key the resource bundle key (without ".detail" suffix)
+     * @param args the optional arguments
+     * @return this InputValidationIssue
+     * @see I18N#getLocalizedString(Class, String, Object...)
+     */
+    public InputValidationIssue localizedDetail(Class<?> context, String key, Object... args) {
+        setDetail(I18N.getLocalizedString(context, key + ".detail", args));
         return this;
     }
 

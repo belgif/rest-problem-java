@@ -12,6 +12,8 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 
+import io.github.belgif.rest.problem.i18n.Context;
+
 class InputValidationIssueTest {
 
     private static final String MUTUALLY_EXCLUSIVE_EXC = "mutually exclusive";
@@ -82,6 +84,18 @@ class InputValidationIssueTest {
         issue.setDetail("Detail");
         assertThat(issue.getDetail()).isEqualTo("Detail");
         assertThat(new InputValidationIssue().detail("Detail").getDetail()).isEqualTo("Detail");
+    }
+
+    @Test
+    void localizedDetail() {
+        assertThat(new InputValidationIssue().localizedDetail("unknownInput", "test").getDetail())
+                .isEqualTo("Input test is unknown");
+    }
+
+    @Test
+    void localizedDetailFromCustomResourceBundle() {
+        assertThat(new InputValidationIssue().localizedDetail(Context.class, "customIssue").getDetail())
+                .isEqualTo("Custom issue");
     }
 
     @Test
