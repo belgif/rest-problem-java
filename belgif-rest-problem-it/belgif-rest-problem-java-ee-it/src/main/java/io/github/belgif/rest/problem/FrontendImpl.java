@@ -20,10 +20,10 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import com.acme.custom.CustomProblem;
 
 import io.github.belgif.rest.problem.api.Problem;
-import io.github.belgif.rest.problem.jaxrs.client.ProblemSupport;
-import io.github.belgif.rest.problem.model.ChildModel;
-import io.github.belgif.rest.problem.model.Model;
-import io.github.belgif.rest.problem.model.NestedModel;
+import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemSupport;
+import io.github.belgif.rest.problem.it.model.ChildModel;
+import io.github.belgif.rest.problem.it.model.Model;
+import io.github.belgif.rest.problem.it.model.NestedModel;
 
 @RequestScoped
 @Path("/frontend")

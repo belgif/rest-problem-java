@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 import jakarta.validation.ParameterNameProvider;
 
-import io.github.belgif.rest.problem.internal.CachedAnnotationParameterNameSupport;
+import io.github.belgif.rest.problem.spring.internal.CachedAnnotationParameterNameSupport;
 
 /**
  * ParameterNameProvider that retrieves the parameter name from Spring MVC annotations (if present).

@@ -22,8 +22,8 @@ import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
-import io.github.belgif.rest.problem.internal.BeanValidationExceptionUtil;
-import io.github.belgif.rest.problem.internal.DetermineSourceUtil;
+import io.github.belgif.rest.problem.spring.internal.BeanValidationExceptionUtil;
+import io.github.belgif.rest.problem.spring.internal.DetermineSourceUtil;
 
 /**
  * RestController exception handler for exceptions related to bean validation.

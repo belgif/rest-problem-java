@@ -26,9 +26,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.acme.custom.CustomProblem;
 
 import io.github.belgif.rest.problem.api.Problem;
-import io.github.belgif.rest.problem.model.ChildModel;
-import io.github.belgif.rest.problem.model.Model;
-import io.github.belgif.rest.problem.model.NestedModel;
+import io.github.belgif.rest.problem.it.model.ChildModel;
+import io.github.belgif.rest.problem.it.model.Model;
+import io.github.belgif.rest.problem.it.model.NestedModel;
 
 @RestController
 @RequestMapping("/frontend")

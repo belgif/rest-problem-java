@@ -5,7 +5,7 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 
-import io.github.belgif.rest.problem.AbstractRestProblemIT;
+import io.github.belgif.rest.problem.it.AbstractRestProblemIT;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
@@ -21,7 +21,8 @@ class RestProblemQuarkusIT extends AbstractRestProblemIT {
     }
 
     @Test
-    void methodNotAllowed() {
+    @Override
+    public void methodNotAllowed() {
         getSpec().when().post("/custom").then().assertThat()
                 .statusCode(405);
     }
