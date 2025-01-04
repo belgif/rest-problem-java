@@ -1,9 +1,11 @@
 package io.github.belgif.rest.problem.spring;
 
 import java.io.IOException;
+import java.net.URI;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
@@ -29,7 +31,7 @@ public class ProblemResponseErrorHandler extends DefaultResponseErrorHandler {
     }
 
     @Override
-    public void handleError(ClientHttpResponse response) throws IOException, Problem {
+    public void handleError(URI url, HttpMethod method, ClientHttpResponse response) throws IOException {
         if (ProblemMediaType.INSTANCE.isCompatibleWith(response.getHeaders().getContentType())
                 || response.getStatusCode().isError()
                         && MediaType.APPLICATION_JSON.isCompatibleWith(response.getHeaders().getContentType())) {
@@ -39,6 +41,6 @@ public class ProblemResponseErrorHandler extends DefaultResponseErrorHandler {
             }
             throw problem;
         }
-        super.handleError(response);
+        super.handleError(url, method, response);
     }
 }
