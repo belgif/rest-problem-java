@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -20,6 +21,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import com.acme.custom.CustomProblem;
 
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.i18n.I18N;
 import io.github.belgif.rest.problem.jaxrs.client.ProblemSupport;
 import io.github.belgif.rest.problem.model.ChildModel;
 import io.github.belgif.rest.problem.model.Model;
@@ -246,4 +248,12 @@ public class FrontendImpl implements Frontend {
     public Response beanValidationBodyInheritance(ChildModel body) {
         return Response.ok("body: " + body).build();
     }
+
+    @POST
+    @Path("/i18n")
+    public Response i18n(@QueryParam("enabled") boolean enabled) {
+        I18N.setEnabled(enabled);
+        return Response.ok().build();
+    }
+
 }

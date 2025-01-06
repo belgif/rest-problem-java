@@ -141,6 +141,7 @@ public abstract class AbstractRestProblemIT {
                 .get("/beanValidation/queryParameter").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("detail", equalTo("The input message is incorrect"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
                 .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[0].in", equalTo("query"))
@@ -336,6 +337,92 @@ public abstract class AbstractRestProblemIT {
                 .body("issues[1].name", equalTo("name"))
                 .body("issues[1].value", nullValue())
                 .body("issues[1].detail", equalTo("must not be blank"));
+    }
+
+    @Test
+    void i18n() {
+        getSpec().when()
+                .header("Accept-Language", "nl-BE")
+                .queryParam("param", -1)
+                .queryParam("other", "TOO_LONG")
+                .get("/beanValidation/queryParameter").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("detail", equalTo("Het input bericht is ongeldig"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[0].detail", equalTo("grootte moet tussen 0 en 5 liggen"))
+                .body("issues[0].in", equalTo("query"))
+                .body("issues[0].name", equalTo("other"))
+                .body("issues[0].value", equalTo("TOO_LONG"))
+                .body("issues[1].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[1].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[1].detail", equalTo("moet groter dan 0 zijn"))
+                .body("issues[1].in", equalTo("query"))
+                .body("issues[1].name", equalTo("param"))
+                .body("issues[1].value", equalTo(-1));
+    }
+
+    @Test
+    void i18nUnsupportedLanguage() {
+        getSpec().when()
+                .header("Accept-Language", "es")
+                .queryParam("param", -1)
+                .queryParam("other", "TOO_LONG")
+                .get("/beanValidation/queryParameter").then().assertThat()
+                .statusCode(400)
+                .body("detail", equalTo("The input message is incorrect"));
+    }
+
+    @Test
+    void i18nWeighted() {
+        getSpec().when()
+                .header("Accept-Language", "fr-BE;q=0.5, nl-BE;q=0.7")
+                .queryParam("param", -1)
+                .queryParam("other", "TOO_LONG")
+                .get("/beanValidation/queryParameter").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("detail", equalTo("Het input bericht is ongeldig"))
+                .body("issues[0].detail", equalTo("grootte moet tussen 0 en 5 liggen"));
+    }
+
+    @Test
+    void i18nUnsupportedLanguageWeighted() {
+        getSpec().when()
+                .header("Accept-Language", "fr-BE;q=0.5, es;q=0.7")
+                .queryParam("param", -1)
+                .queryParam("other", "TOO_LONG")
+                .get("/beanValidation/queryParameter").then().assertThat()
+                .statusCode(400)
+                .body("detail", equalTo("The input message is incorrect"));
+    }
+
+    @Test
+    void i18nCustom() {
+        getSpec().when()
+                .header("Accept-Language", "nl-BE")
+                .get("/custom").then().assertThat()
+                .statusCode(409)
+                .body("type", equalTo("urn:problem-type:acme:custom"))
+                .body("customField", equalTo("value from frontend"))
+                .body("detail", equalTo("NL detail"));
+    }
+
+    @Test
+    void i18nDisabled() {
+        try {
+            getSpec().queryParam("enabled", "false").post("/i18n");
+            getSpec().when()
+                    .header("Accept-Language", "nl-BE")
+                    .queryParam("param", -1)
+                    .queryParam("other", "TOO_LONG")
+                    .get("/beanValidation/queryParameter").then().assertThat()
+                    .statusCode(400)
+                    .body("detail", equalTo("The input message is incorrect"));
+        } finally {
+            getSpec().queryParam("enabled", "true").post("/i18n");
+        }
     }
 
 }
