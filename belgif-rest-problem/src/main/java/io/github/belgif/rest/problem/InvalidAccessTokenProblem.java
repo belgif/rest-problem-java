@@ -9,6 +9,7 @@ import io.github.belgif.rest.problem.api.ClientProblem;
 import io.github.belgif.rest.problem.api.FluentProblem;
 import io.github.belgif.rest.problem.api.HttpResponseHeaders;
 import io.github.belgif.rest.problem.api.ProblemType;
+import io.github.belgif.rest.problem.i18n.I18N;
 
 /**
  * HTTP 401: Invalid Access Token (https://www.belgif.be/specification/rest/api-guide/problems/invalidAccessToken.html)
@@ -42,11 +43,6 @@ public class InvalidAccessTokenProblem extends ClientProblem
     public static final String TITLE = "Invalid Access Token";
 
     /**
-     * The detail.
-     */
-    public static final String DETAIL = "The Bearer access token found in the Authorization HTTP header is invalid";
-
-    /**
      * The status.
      */
     public static final int STATUS = 401;
@@ -56,11 +52,11 @@ public class InvalidAccessTokenProblem extends ClientProblem
     private final String reason;
 
     public InvalidAccessTokenProblem() {
-        this(DETAIL, "The access token is invalid");
+        this(I18N.getLocalizedDetail(InvalidAccessTokenProblem.class), "The access token is invalid");
     }
 
     public InvalidAccessTokenProblem(String reason) {
-        this(DETAIL + ": " + reason, reason);
+        this(I18N.getLocalizedDetail(InvalidAccessTokenProblem.class) + ": " + reason, reason);
     }
 
     private InvalidAccessTokenProblem(String detail, String reason) {

@@ -8,6 +8,7 @@ import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationProblem;
 import io.github.belgif.rest.problem.api.InvalidParam;
 import io.github.belgif.rest.problem.api.ProblemType;
+import io.github.belgif.rest.problem.i18n.I18N;
 
 /**
  * HTTP 400: Bad Request (https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html)
@@ -46,11 +47,6 @@ public class BadRequestProblem extends InputValidationProblem
      */
     public static final int STATUS = 400;
 
-    /**
-     * The default detail message.
-     */
-    public static final String DEFAULT_DETAIL = "The input message is incorrect";
-
     private static final long serialVersionUID = 1L;
 
     public BadRequestProblem() {
@@ -59,13 +55,13 @@ public class BadRequestProblem extends InputValidationProblem
 
     public BadRequestProblem(InputValidationIssue issue) {
         this();
-        setDetail(DEFAULT_DETAIL);
+        setDetail(I18N.getLocalizedDetail(BadRequestProblem.class));
         addIssue(issue);
     }
 
     public BadRequestProblem(List<InputValidationIssue> issues) {
         this();
-        setDetail(DEFAULT_DETAIL);
+        setDetail(I18N.getLocalizedDetail(BadRequestProblem.class));
         issues.forEach(this::addIssue);
     }
 

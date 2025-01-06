@@ -8,6 +8,7 @@ import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationProblem;
 import io.github.belgif.rest.problem.api.InvalidParam;
 import io.github.belgif.rest.problem.api.ProblemType;
+import io.github.belgif.rest.problem.i18n.I18N;
 
 /**
  * HTTP 404: Resource Not Found (https://www.belgif.be/specification/rest/api-guide/problems/resourceNotFound.html)
@@ -53,7 +54,7 @@ public class ResourceNotFoundProblem extends InputValidationProblem
     }
 
     public ResourceNotFoundProblem(String resource, InEnum in, String name, Object value) {
-        this("No data found for the " + resource + " with " + name + " [" + value + "]",
+        this(I18N.getLocalizedDetail(ResourceNotFoundProblem.class, resource, name, value),
                 new InputValidationIssue(in, name, value));
     }
 
