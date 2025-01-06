@@ -16,6 +16,7 @@
 
 *belgif-rest-problem:*
 
+* Add internationalization support for localized detail messages based on Accept-Language HTTP request header
 * Don't include null (issue) input values when serializing
 * Replace `urn:problem-type:cbss:input-validation:referencedResourceNotFound`
 by standardized `urn:problem-type:belgif:input-validation:referencedResourceNotFound`
