@@ -41,6 +41,11 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>jakarta.ws.rs</groupId>
+      <artifactId>jakarta.ws.rs-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
@@ -85,8 +90,10 @@
                   <excludes>
                     META-INF/MANIFEST.MF,
                     META-INF/services/jakarta.enterprise.inject.spi.Extension,
+                    META-INF/services/io.github.belgif.rest.problem.i18n.LocaleResolver,
                     io/github/belgif/rest/problem/ee/jaxrs/EJBExceptionMapper.class,
-                    io/github/belgif/rest/problem/ee/CdiProblemTypeRegistry.class
+                    io/github/belgif/rest/problem/ee/registry/CdiProblemTypeRegistry.class,
+                    io/github/belgif/rest/problem/ee/jaxrs/i18n/*
                   </excludes>
                 </artifactItem>
               </artifactItems>

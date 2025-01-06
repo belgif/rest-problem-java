@@ -16,6 +16,7 @@
 
 *belgif-rest-problem:*
 
+* Add internationalization support for localized detail messages based on Accept-Language HTTP request header
 * Don't include null (issue) input values when serializing
 * Replace `urn:problem-type:cbss:input-validation:referencedResourceNotFound`
 by standardized `urn:problem-type:belgif:input-validation:referencedResourceNotFound`
@@ -23,6 +24,10 @@ by standardized `urn:problem-type:belgif:input-validation:referencedResourceNotF
 *belgif-rest-problem-quarkus:*
 
 * New module for https://quarkus.io/[Quarkus] support (only in JVM mode)
+
+*belgif-rest-problem-bom:*
+
+* Added jakarta classifier artifacts
 
 == Version 0.11
 
