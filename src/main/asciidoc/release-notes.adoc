@@ -25,6 +25,10 @@ by standardized `urn:problem-type:belgif:input-validation:referencedResourceNotF
 
 * New module for https://quarkus.io/[Quarkus] support (only in JVM mode)
 
+*belgif-rest-problem-bom:*
+
+* Added jakarta classifier artifacts
+
 == Version 0.11
 
 *belgif-rest-problem:*
