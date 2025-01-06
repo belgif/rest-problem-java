@@ -711,11 +711,16 @@ window.onload = function() {
 </ul>
 </li>
 <li><a href="#belgif-rest-problem-validator">5. belgif-rest-problem-validator</a></li>
-<li><a href="#implementation-details">6. Implementation details</a>
+<li><a href="#i18n">6. Internationalization (I18N)</a>
 <ul class="sectlevel2">
-<li><a href="#problem-type-registry">6.1. @ProblemType and ProblemTypeRegistry</a></li>
-<li><a href="#belgif-rest-problem-java-ee">6.2. belgif-rest-problem-java-ee</a></li>
-<li><a href="#belgif-rest-problem-spring">6.3. belgif-rest-problem-spring</a></li>
+<li><a href="#_localeresolver">6.1. LocaleResolver</a></li>
+</ul>
+</li>
+<li><a href="#implementation-details">7. Implementation details</a>
+<ul class="sectlevel2">
+<li><a href="#problem-type-registry">7.1. @ProblemType and ProblemTypeRegistry</a></li>
+<li><a href="#belgif-rest-problem-java-ee">7.2. belgif-rest-problem-java-ee</a></li>
+<li><a href="#belgif-rest-problem-spring">7.3. belgif-rest-problem-spring</a></li>
 </ul>
 </li>
 </ul>
@@ -778,6 +783,9 @@ window.onload = function() {
 </div>
 <div class="ulist">
 <ul>
+<li>
+<p>Add internationalization support for localized detail messages based on Accept-Language HTTP request header</p>
+</li>
 <li>
 <p>Don&#8217;t include null (issue) input values when serializing</p>
 </li>
@@ -1704,13 +1712,74 @@ This is possible by extending the AbstractRequestValidator base class.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="implementation-details"><a class="anchor" href="#implementation-details"></a>6. Implementation details</h2>
+<h2 id="i18n"><a class="anchor" href="#i18n"></a>6. Internationalization (I18N)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The detail messages of Belgif problem and issue types can be localized to the language requested in the <a href="https://www.belgif.be/specification/rest/api-guide/#i18n-negotiation">Accept-Language HTTP request header</a>.</p>
+</div>
+<div class="paragraph">
+<p>The default language is English, and translations are available in the 3 official Belgian languages (Dutch, French and German).</p>
+</div>
+<div class="paragraph">
+<p>An <a href="apidocs/io/github/belgif/rest/problem/i18n/I18N.html">I18N</a> helper class is available in case you want to provide localized messages for your own custom problem and issue types.</p>
+</div>
+<div class="paragraph">
+<p>The I18N feature of the problem library can be disabled by configuring property:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="properties">io.github.belgif.rest.problem.i18n=false</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>On Spring Boot, this can be configured via any of the standard <a href="https://docs.spring.io/spring-boot/reference/features/external-config.html">externalized configuration</a> mechanisms.</p>
+</div>
+<div class="paragraph">
+<p>On Jakarta EE, this can be configured as a system property, environment variable, or web.xml context-param (in that order of precedence).</p>
+</div>
+<div class="paragraph">
+<p>On Quarkus, this can be configured via any of the standard <a href="https://quarkus.io/guides/config-reference#configuration-sources">MicroProfile Config Sources</a>.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+On Quarkus, you also need to add the following configuration property if you want the <a href="https://quarkus.io/guides/validation#validation-and-localization">Bean Validation messages to be localized</a> too: <code>quarkus.locales=en,fr-BE,nl-BE,de-BE</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_localeresolver"><a class="anchor" href="#_localeresolver"></a>6.1. LocaleResolver</h3>
+<div class="paragraph">
+<p>The java ServiceLoader SPI is used to make the <a href="apidocs/io/github/belgif/rest/problem/i18n/LocaleResolver.html">LocaleResolver</a> implementation (used for retrieving the current request locale) pluggable.</p>
+</div>
+<div class="paragraph">
+<p>On Spring Boot, a default implementation is provided that retrieves the locale from the <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/i18n/LocaleContextHolder.html">LocaleContextHolder</a>.</p>
+</div>
+<div class="paragraph">
+<p>On Jakarta EE, a default implementation is provided that retrieves the locale from a thread-local variable that gets initialized with the value from the Accept-Language header.</p>
+</div>
+<div class="paragraph">
+<p>On Quarkus, a default implementation is provided that retrieves the locale from a request-scoped CDI bean that gets initialized with the value from the Accept-Language header.</p>
+</div>
+<div class="paragraph">
+<p>Applications can provide and register their own LocaleResolver if needed (<code>/META-INF/services/io.github.belgif.rest.problem.i18n.LocaleResolver</code>).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="implementation-details"><a class="anchor" href="#implementation-details"></a>7. Implementation details</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section describes the internal implementation details of this library.</p>
 </div>
 <div class="sect2">
-<h3 id="problem-type-registry"><a class="anchor" href="#problem-type-registry"></a>6.1. @ProblemType and ProblemTypeRegistry</h3>
+<h3 id="problem-type-registry"><a class="anchor" href="#problem-type-registry"></a>7.1. @ProblemType and ProblemTypeRegistry</h3>
 <div class="paragraph">
 <p>This library makes use of Jackson&#8217;s <a href="https://github.com/FasterXML/jackson-docs/wiki/JacksonPolymorphicDeserialization">polymorphic deserialization</a> feature, so the Jackson ObjectMapper knows which problem type to instantiate when deserializing a problem.
 The problem subclasses have their problem type URI configured in the
@@ -1734,7 +1803,7 @@ The problem subclasses have their problem type URI configured in the
 </div>
 </div>
 <div class="sect2">
-<h3 id="belgif-rest-problem-java-ee"><a class="anchor" href="#belgif-rest-problem-java-ee"></a>6.2. belgif-rest-problem-java-ee</h3>
+<h3 id="belgif-rest-problem-java-ee"><a class="anchor" href="#belgif-rest-problem-java-ee"></a>7.2. belgif-rest-problem-java-ee</h3>
 <div class="paragraph">
 <p>This module provides components that handle Java EE / Jakarta EE integration with the belgif-rest-problem library:</p>
 </div>
@@ -1833,7 +1902,7 @@ A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is a
 </div>
 </div>
 <div class="sect2">
-<h3 id="belgif-rest-problem-spring"><a class="anchor" href="#belgif-rest-problem-spring"></a>6.3. belgif-rest-problem-spring</h3>
+<h3 id="belgif-rest-problem-spring"><a class="anchor" href="#belgif-rest-problem-spring"></a>7.3. belgif-rest-problem-spring</h3>
 <div class="paragraph">
 <p>This module provides auto-configuration for components that handle Spring Boot integration with the belgif-rest-problem library:</p>
 </div>
@@ -1880,7 +1949,7 @@ Additional packages to scan can be configured in your application.properties:</p
 <p>In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.</p>
 </div>
 <div class="sect3">
-<h4 id="belgif-rest-problem-spring-boot-2"><a class="anchor" href="#belgif-rest-problem-spring-boot-2"></a>6.3.1. belgif-rest-problem-spring-boot-2</h4>
+<h4 id="belgif-rest-problem-spring-boot-2"><a class="anchor" href="#belgif-rest-problem-spring-boot-2"></a>7.3.1. belgif-rest-problem-spring-boot-2</h4>
 <div class="paragraph">
 <p>Rather than depending on <a href="#belgif-rest-problem-spring">belgif-rest-problem-spring</a> directly, Spring Boot 2.x users are recommended to depend on <code>belgif-rest-problem-spring-boot-2</code>, which adds some Spring Boot 2.x specific integrations:</p>
 </div>
@@ -1900,7 +1969,7 @@ This handles integration with the <a href="https://docs.spring.io/spring-framewo
 </div>
 </div>
 <div class="sect3">
-<h4 id="belgif-rest-problem-spring-boot-3"><a class="anchor" href="#belgif-rest-problem-spring-boot-3"></a>6.3.2. belgif-rest-problem-spring-boot-3</h4>
+<h4 id="belgif-rest-problem-spring-boot-3"><a class="anchor" href="#belgif-rest-problem-spring-boot-3"></a>7.3.2. belgif-rest-problem-spring-boot-3</h4>
 <div class="paragraph">
 <p>Rather than depending on <a href="#belgif-rest-problem-spring">belgif-rest-problem-spring</a> directly, Spring Boot 3.x users are recommended to depend on <code>belgif-rest-problem-spring-boot-3</code>, which adds some Spring Boot 3.x specific integrations:</p>
 </div>
