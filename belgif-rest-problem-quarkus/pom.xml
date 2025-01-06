@@ -17,7 +17,7 @@
       <dependency>
         <groupId>io.quarkus.platform</groupId>
         <artifactId>quarkus-bom</artifactId>
-        <version>3.17.3</version>
+        <version>3.17.5</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -38,6 +38,11 @@
     <dependency>
       <groupId>jakarta.enterprise</groupId>
       <artifactId>jakarta.enterprise.cdi-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.ws.rs</groupId>
+      <artifactId>jakarta.ws.rs-api</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -85,8 +90,10 @@
                   <excludes>
                     META-INF/MANIFEST.MF,
                     META-INF/services/jakarta.enterprise.inject.spi.Extension,
+                    META-INF/services/io.github.belgif.rest.problem.i18n.LocaleResolver,
                     io/github/belgif/rest/problem/jaxrs/EJBExceptionMapper.class,
-                    io/github/belgif/rest/problem/registry/CdiProblemTypeRegistry.class
+                    io/github/belgif/rest/problem/registry/CdiProblemTypeRegistry.class,
+                    io/github/belgif/rest/problem/jaxrs/i18n/*
                   </excludes>
                 </artifactItem>
               </artifactItems>

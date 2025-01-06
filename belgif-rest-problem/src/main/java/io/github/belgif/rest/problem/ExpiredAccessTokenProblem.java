@@ -8,6 +8,7 @@ import java.util.Objects;
 import io.github.belgif.rest.problem.api.ClientProblem;
 import io.github.belgif.rest.problem.api.HttpResponseHeaders;
 import io.github.belgif.rest.problem.api.ProblemType;
+import io.github.belgif.rest.problem.i18n.I18N;
 
 /**
  * HTTP 401: Expired Access Token (https://www.belgif.be/specification/rest/api-guide/problems/expiredAccessToken.html)
@@ -40,11 +41,6 @@ public class ExpiredAccessTokenProblem extends ClientProblem implements HttpResp
     public static final String TITLE = "Expired Access Token";
 
     /**
-     * The detail.
-     */
-    public static final String DETAIL = "The Bearer access token found in the Authorization HTTP header has expired";
-
-    /**
      * The status.
      */
     public static final int STATUS = 401;
@@ -55,7 +51,7 @@ public class ExpiredAccessTokenProblem extends ClientProblem implements HttpResp
 
     public ExpiredAccessTokenProblem() {
         super(TYPE_URI, HREF, TITLE, STATUS);
-        setDetail(DETAIL);
+        setDetail(I18N.getLocalizedDetail(ExpiredAccessTokenProblem.class));
     }
 
     public ExpiredAccessTokenProblem(String realm) {
