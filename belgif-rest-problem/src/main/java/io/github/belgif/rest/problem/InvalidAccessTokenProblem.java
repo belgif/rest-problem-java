@@ -49,6 +49,8 @@ public class InvalidAccessTokenProblem extends ClientProblem implements HttpResp
 
     private final String reason;
 
+    private String realm;
+
     public InvalidAccessTokenProblem() {
         this(I18N.getLocalizedDetail(InvalidAccessTokenProblem.class), "The access token is invalid");
     }
@@ -63,10 +65,16 @@ public class InvalidAccessTokenProblem extends ClientProblem implements HttpResp
         this.reason = reason;
     }
 
+    public InvalidAccessTokenProblem realm(String realm) {
+        this.realm = realm;
+        return this;
+    }
+
     @Override
     public Map<String, Object> getHttpResponseHeaders() {
         return Collections.singletonMap(WWW_AUTHENTICATE,
-                String.format("Bearer error=\"invalid_token\", error_description=\"%s\"", reason));
+                String.format("Bearer " + (realm != null ? "realm=\"" + realm + "\", " : "")
+                        + "error=\"invalid_token\", error_description=\"%s\"", reason));
     }
 
     @Override
@@ -81,12 +89,12 @@ public class InvalidAccessTokenProblem extends ClientProblem implements HttpResp
             return false;
         }
         InvalidAccessTokenProblem that = (InvalidAccessTokenProblem) o;
-        return Objects.equals(reason, that.reason);
+        return Objects.equals(reason, that.reason) && Objects.equals(realm, that.realm);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), reason);
+        return Objects.hash(super.hashCode(), reason, realm);
     }
 
 }
