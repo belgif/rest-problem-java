@@ -353,6 +353,7 @@ The https://www.belgif.be/specification/rest/api-guide/#rule-prb-type[naming con
 include::../../../belgif-rest-problem/src/test/java/adoc/CodeSamples.java[tag=api-local-problem]
 ----
 
+If you want fluent setter properties in your custom problem type, you can implement the `FluentProblem` interface.
 Your custom problem type can define additional properties if necessary.
 For problem types related to input parameters, you can extend from `InputValidationProblem` instead of `Problem`.
 
