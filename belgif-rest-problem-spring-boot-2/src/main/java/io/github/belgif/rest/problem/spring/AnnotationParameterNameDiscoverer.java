@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 
 import org.springframework.core.ParameterNameDiscoverer;
 
-import io.github.belgif.rest.problem.internal.CachedAnnotationParameterNameSupport;
+import io.github.belgif.rest.problem.spring.internal.CachedAnnotationParameterNameSupport;
 
 /**
  * ParameterNameDiscoverer that retrieves the parameter name from Spring MVC annotations (if present).

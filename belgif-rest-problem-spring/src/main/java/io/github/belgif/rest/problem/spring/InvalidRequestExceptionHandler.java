@@ -28,7 +28,7 @@ import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
-import io.github.belgif.rest.problem.internal.InvalidRequestExceptionUtil;
+import io.github.belgif.rest.problem.spring.internal.InvalidRequestExceptionUtil;
 
 /**
  * RestController exception handler for InvalidRequestException thrown by Atlassian swagger-request-validator library.

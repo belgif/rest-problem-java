@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
+import io.github.belgif.rest.problem.it.AbstractRestProblemSpringBootIT;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
@@ -31,7 +32,7 @@ class RestProblemSpringBoot3IT extends AbstractRestProblemSpringBootIT {
     // On Spring Boot 3.x only (for now), a proper resourceNotFound problem is returned
     @Override
     @Test
-    void notFound() {
+    public void notFound() {
         getSpec().when().get("/not/found").then().assertThat()
                 .statusCode(404)
                 .body("type", equalTo("urn:problem-type:belgif:resourceNotFound"))

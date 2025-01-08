@@ -13,9 +13,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import io.github.belgif.rest.problem.model.ChildModel;
-import io.github.belgif.rest.problem.model.Model;
-import io.github.belgif.rest.problem.model.NestedModel;
+import io.github.belgif.rest.problem.it.model.ChildModel;
+import io.github.belgif.rest.problem.it.model.Model;
+import io.github.belgif.rest.problem.it.model.NestedModel;
 
 @Path("/frontend")
 public interface Frontend {

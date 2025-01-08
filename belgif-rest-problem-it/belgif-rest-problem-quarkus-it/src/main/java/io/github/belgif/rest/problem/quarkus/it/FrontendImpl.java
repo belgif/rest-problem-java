@@ -26,9 +26,9 @@ import io.github.belgif.rest.problem.DefaultProblem;
 import io.github.belgif.rest.problem.ServiceUnavailableProblem;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.i18n.I18N;
-import io.github.belgif.rest.problem.model.ChildModel;
-import io.github.belgif.rest.problem.model.Model;
-import io.github.belgif.rest.problem.model.NestedModel;
+import io.github.belgif.rest.problem.it.model.ChildModel;
+import io.github.belgif.rest.problem.it.model.Model;
+import io.github.belgif.rest.problem.it.model.NestedModel;
 import io.quarkus.rest.client.reactive.QuarkusRestClientBuilder;
 import io.vertx.core.http.HttpServerRequest;
 

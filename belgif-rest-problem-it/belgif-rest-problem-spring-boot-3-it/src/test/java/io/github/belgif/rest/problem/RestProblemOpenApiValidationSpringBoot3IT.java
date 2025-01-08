@@ -3,6 +3,7 @@ package io.github.belgif.rest.problem;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
+import io.github.belgif.rest.problem.it.AbstractOpenApiValidationSpringBootIT;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 

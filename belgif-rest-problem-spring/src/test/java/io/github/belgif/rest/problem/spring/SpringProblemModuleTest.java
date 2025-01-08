@@ -9,8 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.fasterxml.jackson.databind.Module.SetupContext;
 
-import io.github.belgif.rest.problem.registry.SpringProblemTypeRegistry;
-
 @ExtendWith(MockitoExtension.class)
 class SpringProblemModuleTest {
 

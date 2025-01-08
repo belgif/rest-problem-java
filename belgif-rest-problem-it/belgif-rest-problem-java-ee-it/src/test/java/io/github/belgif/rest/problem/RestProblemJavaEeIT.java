@@ -15,6 +15,7 @@ import org.testcontainers.utility.MountableFile;
 
 import com.github.dockerjava.api.command.StopContainerCmd;
 
+import io.github.belgif.rest.problem.it.AbstractRestProblemEEIT;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
