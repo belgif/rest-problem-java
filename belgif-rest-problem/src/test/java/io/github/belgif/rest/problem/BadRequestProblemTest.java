@@ -2,12 +2,14 @@ package io.github.belgif.rest.problem;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.net.URI;
 import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
+import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.InvalidParam;
 import io.github.belgif.rest.problem.api.ProblemType;
 
@@ -70,6 +72,21 @@ class BadRequestProblemTest {
         assertThat(BadRequestProblem.class).hasAnnotation(ProblemType.class);
         assertThat(BadRequestProblem.class.getAnnotation(ProblemType.class).value())
                 .isEqualTo("urn:problem-type:belgif:badRequest");
+    }
+
+    @Test
+    void fluentProperties() {
+        BadRequestProblem problem = new BadRequestProblem()
+                .detail("detail")
+                .issues(InputValidationIssues.requiredInput(InEnum.QUERY, "test"))
+                .href(URI.create("href"))
+                .instance(URI.create("instance"))
+                .additionalProperty("foo", "bar");
+        assertThat(problem.getDetail()).isEqualTo("detail");
+        assertThat(problem.getHref()).hasToString("href");
+        assertThat(problem.getInstance()).hasToString("instance");
+        assertThat(problem.getAdditionalProperties()).containsEntry("foo", "bar");
+        assertThat(problem.getIssues()).containsExactly(InputValidationIssues.requiredInput(InEnum.QUERY, "test"));
     }
 
     @Test

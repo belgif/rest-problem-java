@@ -6,6 +6,7 @@ import java.util.List;
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.ResourceNotFoundProblem;
 import io.github.belgif.rest.problem.api.ClientProblem;
+import io.github.belgif.rest.problem.api.FluentProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.Problem;
@@ -15,7 +16,8 @@ public class CodeSamples {
 
     // tag::api-local-problem[]
     @ProblemType(TooManyResultsProblem.TYPE)
-    public static class TooManyResultsProblem extends ClientProblem {
+    public static class TooManyResultsProblem extends ClientProblem
+            implements FluentProblem<TooManyResultsProblem> {
 
         public static final String TYPE = "urn:problem-type:cbss:legallog:tooManyResults";
         public static final URI TYPE_URI = URI.create(TYPE);
