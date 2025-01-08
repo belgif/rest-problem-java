@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.http.client.MockClientHttpResponse;
 import org.springframework.web.client.HttpClientErrorException;
@@ -42,7 +43,7 @@ class ProblemResponseErrorHandlerTest {
         Problem problem = new BadRequestProblem();
         when(objectMapper.readValue(entityStream, Problem.class)).thenReturn(problem);
         assertThatExceptionOfType(BadRequestProblem.class)
-                .isThrownBy(() -> handler.handleError(response))
+                .isThrownBy(() -> handler.handleError(URI.create("test"), HttpMethod.GET, response))
                 .isEqualTo(problem);
     }
 
@@ -55,7 +56,7 @@ class ProblemResponseErrorHandlerTest {
         Problem problem = new BadRequestProblem();
         when(objectMapper.readValue(entityStream, Problem.class)).thenReturn(problem);
         assertThatExceptionOfType(BadRequestProblem.class)
-                .isThrownBy(() -> handler.handleError(response))
+                .isThrownBy(() -> handler.handleError(URI.create("test"), HttpMethod.GET, response))
                 .isEqualTo(problem);
     }
 
@@ -66,7 +67,7 @@ class ProblemResponseErrorHandlerTest {
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
         assertThatExceptionOfType(UnknownHttpStatusCodeException.class)
-                .isThrownBy(() -> handler.handleError(response));
+                .isThrownBy(() -> handler.handleError(URI.create("test"), HttpMethod.GET, response));
     }
 
     @Test
@@ -78,7 +79,7 @@ class ProblemResponseErrorHandlerTest {
         Problem problem = new DefaultProblem(URI.create("type"), URI.create("href"), "Title", 400);
         when(objectMapper.readValue(entityStream, Problem.class)).thenReturn(problem);
         assertThatExceptionOfType(DefaultProblem.class)
-                .isThrownBy(() -> handler.handleError(response))
+                .isThrownBy(() -> handler.handleError(URI.create("test"), HttpMethod.GET, response))
                 .isEqualTo(problem);
     }
 
@@ -89,7 +90,7 @@ class ProblemResponseErrorHandlerTest {
         response.getHeaders().setContentType(MediaType.APPLICATION_XML);
 
         assertThatExceptionOfType(HttpClientErrorException.BadRequest.class)
-                .isThrownBy(() -> handler.handleError(response));
+                .isThrownBy(() -> handler.handleError(URI.create("test"), HttpMethod.GET, response));
     }
 
 }

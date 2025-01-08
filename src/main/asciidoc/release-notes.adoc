@@ -28,6 +28,10 @@ by standardized `urn:problem-type:belgif:input-validation:referencedResourceNotF
 ** Support setting the "realm" attribute
 ** Add "error_description" and "scope" attributes for missing_scope
 
+*belgif-rest-problem-spring:*
+
+* Fix compatibility issue with Spring Boot 3.4
+
 *belgif-rest-problem-quarkus:*
 
 * New module for https://quarkus.io/[Quarkus] support (only in JVM mode)
