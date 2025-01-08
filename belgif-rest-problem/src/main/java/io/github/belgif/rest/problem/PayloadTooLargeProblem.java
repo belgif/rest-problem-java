@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 
 import io.github.belgif.rest.problem.api.ClientProblem;
+import io.github.belgif.rest.problem.api.FluentProblem;
 import io.github.belgif.rest.problem.api.ProblemType;
 
 /**
@@ -13,7 +14,7 @@ import io.github.belgif.rest.problem.api.ProblemType;
  *      https://www.belgif.be/specification/rest/api-guide/#payloadTooLargeProblem</a>
  */
 @ProblemType(PayloadTooLargeProblem.TYPE)
-public class PayloadTooLargeProblem extends ClientProblem {
+public class PayloadTooLargeProblem extends ClientProblem implements FluentProblem<PayloadTooLargeProblem> {
 
     /**
      * The problem type.

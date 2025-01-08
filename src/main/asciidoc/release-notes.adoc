@@ -20,6 +20,10 @@
 * Don't include null (issue) input values when serializing
 * Replace `urn:problem-type:cbss:input-validation:referencedResourceNotFound`
 by standardized `urn:problem-type:belgif:input-validation:referencedResourceNotFound`
+* Add fluent setter methods:
+** Problem: detail, href, instance, additionalProperties
+** InputValidationProblem: issues
+** RetryAfterProblem: retryAfter, retryAfterSec
 * Improve WWW-Authenticate header for token-related problem types:
 ** Support setting the "realm" attribute
 ** Add "error_description" and "scope" attributes for missing_scope

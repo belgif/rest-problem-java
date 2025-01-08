@@ -5,6 +5,7 @@ import java.net.URI;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.github.belgif.rest.problem.api.FluentProblem;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.api.ProblemType;
 
@@ -16,7 +17,7 @@ import io.github.belgif.rest.problem.api.ProblemType;
  * with the matching problem type URI has been found on the classpath.
  * </p>
  */
-public class DefaultProblem extends Problem {
+public class DefaultProblem extends Problem implements FluentProblem<DefaultProblem> {
 
     private static final long serialVersionUID = 1L;
 

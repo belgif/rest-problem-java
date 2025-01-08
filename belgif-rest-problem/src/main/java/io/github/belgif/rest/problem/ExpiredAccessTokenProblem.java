@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import io.github.belgif.rest.problem.api.ClientProblem;
+import io.github.belgif.rest.problem.api.FluentProblem;
 import io.github.belgif.rest.problem.api.HttpResponseHeaders;
 import io.github.belgif.rest.problem.api.ProblemType;
 import io.github.belgif.rest.problem.i18n.I18N;
@@ -17,7 +18,8 @@ import io.github.belgif.rest.problem.i18n.I18N;
  *      https://www.belgif.be/specification/rest/api-guide/#expired-access-token</a>
  */
 @ProblemType(ExpiredAccessTokenProblem.TYPE)
-public class ExpiredAccessTokenProblem extends ClientProblem implements HttpResponseHeaders {
+public class ExpiredAccessTokenProblem extends ClientProblem
+        implements FluentProblem<ExpiredAccessTokenProblem>, HttpResponseHeaders {
 
     /**
      * The problem type.
