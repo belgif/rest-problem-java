@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem;
 
 import java.net.URI;
 
+import io.github.belgif.rest.problem.api.FluentInputValidationProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationProblem;
@@ -17,7 +18,8 @@ import io.github.belgif.rest.problem.i18n.I18N;
  * @see InputValidationProblem
  */
 @ProblemType(ResourceNotFoundProblem.TYPE)
-public class ResourceNotFoundProblem extends InputValidationProblem {
+public class ResourceNotFoundProblem extends InputValidationProblem
+        implements FluentInputValidationProblem<ResourceNotFoundProblem> {
 
     /**
      * The problem type.

@@ -3,6 +3,7 @@ package io.github.belgif.rest.problem;
 import java.net.URI;
 import java.util.List;
 
+import io.github.belgif.rest.problem.api.FluentInputValidationProblem;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationProblem;
 import io.github.belgif.rest.problem.api.InvalidParam;
@@ -17,7 +18,8 @@ import io.github.belgif.rest.problem.i18n.I18N;
  * @see InputValidationProblem
  */
 @ProblemType(BadRequestProblem.TYPE)
-public class BadRequestProblem extends InputValidationProblem {
+public class BadRequestProblem extends InputValidationProblem
+        implements FluentInputValidationProblem<BadRequestProblem> {
 
     /**
      * The problem type.
