@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Disabled;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
+import io.github.belgif.rest.problem.it.AbstractOpenApiValidationSpringBootIT;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
@@ -21,7 +22,7 @@ class RestProblemOpenApiValidationSpringBoot2IT extends AbstractOpenApiValidatio
     @Override
     @Disabled("Only seems to work in SB3. In SB2 the atlassian lib throws the same exception, " +
             "but the missing path seems not to be handled by a controller and not caught by the ControllerAdvice.")
-    void notFound() {
+    public void notFound() {
         super.notFound();
     }
 }

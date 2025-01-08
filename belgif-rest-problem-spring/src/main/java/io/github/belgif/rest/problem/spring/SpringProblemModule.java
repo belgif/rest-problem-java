@@ -3,7 +3,6 @@ package io.github.belgif.rest.problem.spring;
 import org.springframework.stereotype.Component;
 
 import io.github.belgif.rest.problem.ProblemModule;
-import io.github.belgif.rest.problem.registry.SpringProblemTypeRegistry;
 
 /**
  * ProblemModule implementation for Spring Boot applications.

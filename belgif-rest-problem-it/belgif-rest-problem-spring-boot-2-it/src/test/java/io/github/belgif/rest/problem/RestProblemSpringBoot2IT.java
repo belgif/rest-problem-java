@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
+import io.github.belgif.rest.problem.it.AbstractRestProblemSpringBootIT;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
