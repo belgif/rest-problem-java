@@ -794,6 +794,22 @@ window.onload = function() {
 by standardized <code>urn:problem-type:belgif:input-validation:referencedResourceNotFound</code></p>
 </li>
 <li>
+<p>Add fluent setter methods:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Problem: detail, href, instance, additionalProperties</p>
+</li>
+<li>
+<p>InputValidationProblem: issues</p>
+</li>
+<li>
+<p>RetryAfterProblem: retryAfter, retryAfterSec</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
 <p>Improve WWW-Authenticate header for token-related problem types:</p>
 <div class="ulist">
 <ul>
@@ -1507,7 +1523,8 @@ This is <a href="https://github.com/belgif/rest-guide/issues/108">not currently 
 <div class="title">Implementing an API-local custom problem type</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@ProblemType</span>(TooManyResultsProblem.TYPE)
-<span class="directive">public</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">TooManyResultsProblem</span> <span class="directive">extends</span> ClientProblem {
+<span class="directive">public</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">TooManyResultsProblem</span> <span class="directive">extends</span> ClientProblem
+        <span class="directive">implements</span> FluentProblem&lt;TooManyResultsProblem&gt; {
 
     <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">String</span> TYPE = <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:cbss:legallog:tooManyResults</span><span class="delimiter">&quot;</span></span>;
     <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">URI</span> TYPE_URI = <span class="predefined-type">URI</span>.create(TYPE);
@@ -1532,7 +1549,8 @@ This is <a href="https://github.com/belgif/rest-guide/issues/108">not currently 
 </div>
 </div>
 <div class="paragraph">
-<p>Your custom problem type can define additional properties if necessary.
+<p>If you want fluent setter properties in your custom problem type, you can implement the <code>FluentProblem</code> interface.
+Your custom problem type can define additional properties if necessary.
 For problem types related to input parameters, you can extend from <code>InputValidationProblem</code> instead of <code>Problem</code>.</p>
 </div>
 <div class="admonitionblock important">
