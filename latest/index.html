@@ -1155,6 +1155,30 @@ Integration with Spring Boot and Jakarta EE works out of the box.</p>
                 .title(<span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid sector code</span><span class="delimiter">&quot;</span></span>));</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>This will return following HTTP response:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>400 Bad Request
+Content-Type: application/problem+json
+
+{
+  "type": "urn:problem-type:belgif:badRequest",
+  "href": "https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "The input message is incorrect",
+  "issues": [
+    {
+      "title": "Invalid sector code",
+      "in": "path",
+      "name": "sectorCode"
+    }
+  ]
+}</pre>
+</div>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_catching_problems_when_calling_a_rest_api"><a class="anchor" href="#_catching_problems_when_calling_a_rest_api"></a>3.2.2. Catching problems when calling a REST API</h4>
