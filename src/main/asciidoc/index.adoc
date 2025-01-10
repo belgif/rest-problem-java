@@ -149,6 +149,27 @@ When implementing a REST API, returning a problem is as simple as throwing the p
 include::../../../belgif-rest-problem/src/test/java/adoc/CodeSamples.java[tag=throw-problem]
 ----
 
+This will return following HTTP response:
+----
+400 Bad Request
+Content-Type: application/problem+json
+
+{
+  "type": "urn:problem-type:belgif:badRequest",
+  "href": "https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "The input message is incorrect",
+  "issues": [
+    {
+      "title": "Invalid sector code",
+      "in": "path",
+      "name": "sectorCode"
+    }
+  ]
+}
+----
+
 ==== Catching problems when calling a REST API
 
 When calling a REST API, handling a problem is as simple as catching the problem exception in your application code:
