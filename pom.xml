@@ -260,6 +260,7 @@
                   <version>8.0.0</version>
                 </dependency>
               </additionalDependencies>
+              <outputDirectory>${project.build.directory}/site</outputDirectory>
             </configuration>
           </execution>
         </executions>
