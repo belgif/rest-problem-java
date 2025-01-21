@@ -12,6 +12,12 @@
 
 // tag::recent-versions[]
 
+== Version 0.13
+
+*belgif-rest-problem-spring:*
+
+* Extract ProblemResponseErrorHandler and ProblemRestTemplateCustomizer to belgif-rest-problem-spring-boot-2 and belgif-rest-problem-spring-boot-3 to fix NoSuchMethodError compatibility issue
+
 == Version 0.12
 
 *belgif-rest-problem:*

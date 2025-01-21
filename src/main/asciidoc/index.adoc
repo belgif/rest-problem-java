@@ -632,8 +632,6 @@ io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
 * *BeanValidationExceptionsHandler:* an exception handler for RestControllers that converts bean validation related exceptions to HTTP 400 BadRequestProblem.
 * *InvalidRequestExceptionHandler:* an exception handler for the link:https://bitbucket.org/atlassian/swagger-request-validator/src/master/[Atlassian swagger-request-validator] that converts InvalidRequestException to the correct Problem type.
 * *RoutingExceptionsHandler:* an exception handler for RestControllers that converts routing related validation exceptions to HTTP 400 BadRequestProblem.
-* *ProblemResponseErrorHandler:* a RestTemplate error handler that converts problem responses to Problem exceptions.
-* *ProblemRestTemplateCustomizer:* a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.
 
 In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.
 
@@ -644,6 +642,8 @@ Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 2.
 
 * *ProblemWebClientCustomizer:* a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
 This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
+* *ProblemResponseErrorHandler:* a RestTemplate error handler that converts problem responses to Problem exceptions.
+* *ProblemRestTemplateCustomizer:* a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.
 * *AnnotationParameterNameDiscoverer:* a bean validation ParameterNameDiscoverer that retrieves parameter names from Spring MVC annotations
 * *ProblemValidatorConfiguration:* registers a LocalValidatorFactoryBean with the AnnotationParameterNameDiscoverer
 
@@ -654,6 +654,8 @@ Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 3.
 
 * *ProblemWebClientCustomizer:* a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
 This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
+* *ProblemResponseErrorHandler:* a RestTemplate error handler that converts problem responses to Problem exceptions.
+* *ProblemRestTemplateCustomizer:* a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.
 * *NoResourceFoundExceptionHandler:* an exception handler for RestControllers that converts NoResourceFoundException to HTTP 404 ResourceNotFoundProblem.
 * *ProblemRestClientCustomizer:* a RestClientCustomizer that registers the ProblemResponseErrorHandler.
 * *AnnotationParameterNameProvider:* a bean validation ParameterNameProvider that retrieves parameter names from Spring MVC annotations
