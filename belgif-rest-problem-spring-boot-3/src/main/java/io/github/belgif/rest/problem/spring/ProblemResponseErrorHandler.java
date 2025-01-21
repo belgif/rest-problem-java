@@ -1,8 +1,8 @@
 package io.github.belgif.rest.problem.spring;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.belgif.rest.problem.DefaultProblem;
-import io.github.belgif.rest.problem.api.Problem;
+import java.io.IOException;
+import java.net.URI;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
@@ -11,8 +11,10 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 
-import java.io.IOException;
-import java.net.URI;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.github.belgif.rest.problem.DefaultProblem;
+import io.github.belgif.rest.problem.api.Problem;
 
 /**
  * RestTemplate/RestClient error handler that converts problem responses to Problem exceptions.

@@ -1,9 +1,13 @@
 package io.github.belgif.rest.problem.spring;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.belgif.rest.problem.BadRequestProblem;
-import io.github.belgif.rest.problem.DefaultProblem;
-import io.github.belgif.rest.problem.api.Problem;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,13 +19,11 @@ import org.springframework.mock.http.client.MockClientHttpResponse;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.UnknownHttpStatusCodeException;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.when;
+import io.github.belgif.rest.problem.BadRequestProblem;
+import io.github.belgif.rest.problem.DefaultProblem;
+import io.github.belgif.rest.problem.api.Problem;
 
 @ExtendWith(MockitoExtension.class)
 class ProblemResponseErrorHandlerTest {
