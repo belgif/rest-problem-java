@@ -654,7 +654,7 @@ Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 3.
 
 * *ProblemWebClientCustomizer:* a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
 This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
-* *ProblemResponseErrorHandler:* a RestTemplate error handler that converts problem responses to Problem exceptions.
+* *ProblemResponseErrorHandler:* a RestTemplate and RestClient error handler that converts problem responses to Problem exceptions.
 * *ProblemRestTemplateCustomizer:* a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.
 * *NoResourceFoundExceptionHandler:* an exception handler for RestControllers that converts NoResourceFoundException to HTTP 404 ResourceNotFoundProblem.
 * *ProblemRestClientCustomizer:* a RestClientCustomizer that registers the ProblemResponseErrorHandler.
