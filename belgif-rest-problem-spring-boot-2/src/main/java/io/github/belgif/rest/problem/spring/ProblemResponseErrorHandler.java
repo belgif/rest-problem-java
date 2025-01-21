@@ -17,7 +17,7 @@ import io.github.belgif.rest.problem.DefaultProblem;
 import io.github.belgif.rest.problem.api.Problem;
 
 /**
- * RestTemplate error handler that converts problem responses to Problem exceptions.
+ * RestTemplate/RestClient error handler that converts problem responses to Problem exceptions.
  */
 @Component
 public class ProblemResponseErrorHandler extends DefaultResponseErrorHandler {
