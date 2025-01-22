@@ -685,13 +685,14 @@ window.onload = function() {
 <li><a href="#_context">1. Context</a></li>
 <li><a href="#_release_notes">2. Release notes</a>
 <ul class="sectlevel2">
-<li><a href="#_version_0_12">2.1. Version 0.12</a></li>
-<li><a href="#_version_0_11">2.2. Version 0.11</a></li>
-<li><a href="#_version_0_10">2.3. Version 0.10</a></li>
-<li><a href="#_version_0_9">2.4. Version 0.9</a></li>
-<li><a href="#_version_0_8">2.5. Version 0.8</a></li>
-<li><a href="#_version_0_7">2.6. Version 0.7</a></li>
-<li><a href="#_older_versions">2.7. Older versions</a></li>
+<li><a href="#_version_0_13">2.1. Version 0.13</a></li>
+<li><a href="#_version_0_12">2.2. Version 0.12</a></li>
+<li><a href="#_version_0_11">2.3. Version 0.11</a></li>
+<li><a href="#_version_0_10">2.4. Version 0.10</a></li>
+<li><a href="#_version_0_9">2.5. Version 0.9</a></li>
+<li><a href="#_version_0_8">2.6. Version 0.8</a></li>
+<li><a href="#_version_0_7">2.7. Version 0.7</a></li>
+<li><a href="#_older_versions">2.8. Older versions</a></li>
 </ul>
 </li>
 <li><a href="#getting-started">3. Getting started</a>
@@ -777,7 +778,20 @@ window.onload = function() {
 <h2 id="_release_notes"><a class="anchor" href="#_release_notes"></a>2. Release notes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_version_0_12"><a class="anchor" href="#_version_0_12"></a>2.1. Version 0.12</h3>
+<h3 id="_version_0_13"><a class="anchor" href="#_version_0_13"></a>2.1. Version 0.13</h3>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-spring:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Extract ProblemResponseErrorHandler and ProblemRestTemplateCustomizer to belgif-rest-problem-spring-boot-2 and belgif-rest-problem-spring-boot-3 to fix NoSuchMethodError compatibility issue</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_version_0_12"><a class="anchor" href="#_version_0_12"></a>2.2. Version 0.12</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -856,7 +870,7 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_11"><a class="anchor" href="#_version_0_11"></a>2.2. Version 0.11</h3>
+<h3 id="_version_0_11"><a class="anchor" href="#_version_0_11"></a>2.3. Version 0.11</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -879,7 +893,7 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_10"><a class="anchor" href="#_version_0_10"></a>2.3. Version 0.10</h3>
+<h3 id="_version_0_10"><a class="anchor" href="#_version_0_10"></a>2.4. Version 0.10</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -942,7 +956,7 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_9"><a class="anchor" href="#_version_0_9"></a>2.4. Version 0.9</h3>
+<h3 id="_version_0_9"><a class="anchor" href="#_version_0_9"></a>2.5. Version 0.9</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem-bom:</strong></p>
 </div>
@@ -975,7 +989,7 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_8"><a class="anchor" href="#_version_0_8"></a>2.5. Version 0.8</h3>
+<h3 id="_version_0_8"><a class="anchor" href="#_version_0_8"></a>2.6. Version 0.8</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem-spring:</strong></p>
 </div>
@@ -997,7 +1011,7 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_7"><a class="anchor" href="#_version_0_7"></a>2.6. Version 0.7</h3>
+<h3 id="_version_0_7"><a class="anchor" href="#_version_0_7"></a>2.7. Version 0.7</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem-validator:</strong></p>
 </div>
@@ -1033,7 +1047,7 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 </div>
 </div>
 <div class="sect2">
-<h3 id="_older_versions"><a class="anchor" href="#_older_versions"></a>2.7. Older versions</h3>
+<h3 id="_older_versions"><a class="anchor" href="#_older_versions"></a>2.8. Older versions</h3>
 <div class="paragraph">
 <p>See <a href="release-notes.html">Release Notes</a>.</p>
 </div>
@@ -2002,12 +2016,6 @@ Additional packages to scan can be configured in your application.properties:</p
 <li>
 <p><strong>RoutingExceptionsHandler:</strong> an exception handler for RestControllers that converts routing related validation exceptions to HTTP 400 BadRequestProblem.</p>
 </li>
-<li>
-<p><strong>ProblemResponseErrorHandler:</strong> a RestTemplate error handler that converts problem responses to Problem exceptions.</p>
-</li>
-<li>
-<p><strong>ProblemRestTemplateCustomizer:</strong> a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.</p>
-</li>
 </ul>
 </div>
 <div class="paragraph">
@@ -2023,6 +2031,12 @@ Additional packages to scan can be configured in your application.properties:</p
 <li>
 <p><strong>ProblemWebClientCustomizer:</strong> a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
 This handles integration with the <a href="https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html">Reactive WebClient</a>.</p>
+</li>
+<li>
+<p><strong>ProblemResponseErrorHandler:</strong> a RestTemplate error handler that converts problem responses to Problem exceptions.</p>
+</li>
+<li>
+<p><strong>ProblemRestTemplateCustomizer:</strong> a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.</p>
 </li>
 <li>
 <p><strong>AnnotationParameterNameDiscoverer:</strong> a bean validation ParameterNameDiscoverer that retrieves parameter names from Spring MVC annotations</p>
@@ -2043,6 +2057,12 @@ This handles integration with the <a href="https://docs.spring.io/spring-framewo
 <li>
 <p><strong>ProblemWebClientCustomizer:</strong> a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
 This handles integration with the <a href="https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html">Reactive WebClient</a>.</p>
+</li>
+<li>
+<p><strong>ProblemResponseErrorHandler:</strong> a RestTemplate and RestClient error handler that converts problem responses to Problem exceptions.</p>
+</li>
+<li>
+<p><strong>ProblemRestTemplateCustomizer:</strong> a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.</p>
 </li>
 <li>
 <p><strong>NoResourceFoundExceptionHandler:</strong> an exception handler for RestControllers that converts NoResourceFoundException to HTTP 404 ResourceNotFoundProblem.</p>
