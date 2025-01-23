@@ -3,6 +3,7 @@ package io.github.belgif.rest.problem;
 import java.net.URI;
 
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import com.acme.custom.CustomProblem;
@@ -41,7 +42,10 @@ public class BackendImpl implements Backend {
     public Response applicationJsonProblem() {
         BadRequestProblem problem = new BadRequestProblem();
         problem.setDetail("Bad Request with application/json media type from backend");
-        return Response.status(Response.Status.BAD_REQUEST).entity(problem).build();
+        return Response.status(Response.Status.BAD_REQUEST)
+                .type(MediaType.APPLICATION_JSON_TYPE)
+                .entity(problem)
+                .build();
     }
 
 }

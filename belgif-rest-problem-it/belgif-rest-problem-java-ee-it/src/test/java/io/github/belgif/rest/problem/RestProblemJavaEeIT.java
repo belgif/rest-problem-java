@@ -27,7 +27,7 @@ class RestProblemJavaEeIT extends AbstractRestProblemEEIT {
     @Container
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static final GenericContainer JBOSS_CONTAINER =
-            new GenericContainer("registry.redhat.io/jboss-eap-7/eap-xp4-openjdk17-openshift-rhel8:4.0-40")
+            new GenericContainer("registry.redhat.io/jboss-eap-7/eap-xp4-openjdk17-openshift-rhel8:4.0-49")
                     .withEnv("JAVA_OPTS_APPEND",
                             "-javaagent:/deployments/jacocoagent.jar=destfile=/tmp/jacoco-it.exec," +
                                     "includes=io.github.belgif.rest.problem.*")

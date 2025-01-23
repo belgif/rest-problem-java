@@ -27,7 +27,7 @@ class RestProblemJakartaEeIT extends AbstractRestProblemEEIT {
     @Container
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static final GenericContainer WILDFLY_CONTAINER =
-            new GenericContainer("quay.io/wildfly/wildfly:31.0.1.Final-jdk17")
+            new GenericContainer("quay.io/wildfly/wildfly:35.0.0.Final-jdk21")
                     .withEnv("PREPEND_JAVA_OPTS", "-javaagent:/opt/jboss/wildfly/standalone/deployments/jacocoagent.jar"
                             + "=destfile=/tmp/jacoco-it.exec,includes=io.github.belgif.rest.problem.*")
                     .withCopyFileToContainer(
