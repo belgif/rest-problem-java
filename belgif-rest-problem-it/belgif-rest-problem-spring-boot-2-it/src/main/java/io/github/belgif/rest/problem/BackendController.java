@@ -40,4 +40,11 @@ public class BackendController {
         throw unmapped;
     }
 
+    @GetMapping("/applicationJsonProblem")
+    public ResponseEntity<BadRequestProblem> applicationJsonProblem() {
+        BadRequestProblem problem = new BadRequestProblem();
+        problem.setDetail("Bad Request with application/json media type from backend");
+        return ResponseEntity.badRequest().body(problem);
+    }
+
 }

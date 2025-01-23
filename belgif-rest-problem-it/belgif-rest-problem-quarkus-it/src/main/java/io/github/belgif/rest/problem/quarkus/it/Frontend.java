@@ -57,6 +57,10 @@ public interface Frontend {
     Response unmappedFromBackend(@QueryParam("client") Client client);
 
     @GET
+    @Path("/applicationJsonProblemFromBackend")
+    Response applicationJsonProblemFromBackend(@QueryParam("client") Client client);
+
+    @GET
     @Path("/beanValidation/queryParameter")
     Response beanValidationQueryParameter(@QueryParam("param") @NotNull @Positive Integer p,
             @QueryParam("other") @Size(max = 5) String o);

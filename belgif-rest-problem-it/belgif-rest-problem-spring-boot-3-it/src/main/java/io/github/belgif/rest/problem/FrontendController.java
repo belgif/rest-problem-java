@@ -174,6 +174,23 @@ public class FrontendController implements ControllerInterface {
         }
     }
 
+    @GetMapping("/applicationJsonProblemFromBackend")
+    public void applicationJsonProblemFromBackend(@RequestParam("client") Client client) {
+        try {
+            if (client == Client.REST_TEMPLATE) {
+                restTemplate.getForObject("/applicationJsonProblem", String.class);
+            } else if (client == Client.WEB_CLIENT) {
+                webClient.get().uri("/applicationJsonProblem").retrieve().toEntity(String.class).block();
+            } else if (client == Client.REST_CLIENT) {
+                restClient.get().uri("/applicationJsonProblem").retrieve().toEntity(String.class);
+            }
+            throw new IllegalStateException(ILLEGAL_STATE_MESSAGE_PREFIX + client);
+        } catch (BadRequestProblem e) {
+            e.setDetail(e.getDetail() + DETAIL_MESSAGE_SUFFIX);
+            throw e;
+        }
+    }
+
     @GetMapping("/beanValidation/queryParameter")
     public ResponseEntity<String> beanValidationQueryParameter(
             @RequestParam("param") @Positive @NotNull Integer p,

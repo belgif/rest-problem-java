@@ -208,6 +208,34 @@ public class FrontendImpl implements Frontend {
     }
 
     @Override
+    public Response applicationJsonProblemFromBackend(Client client) {
+        try {
+            if (client == null || client == Client.MICROPROFILE) {
+                return microprofileClient.applicationJsonProblem();
+            } else if (client == Client.JAXRS) {
+                return jaxRsClient.target(BASE_URI).path("backend/applicationJsonProblem").request().get();
+            } else if (client == Client.JAXRS_ASYNC) {
+                try {
+                    jaxRsClient.target(BASE_URI).path("backend/applicationJsonProblem").request().async().get().get();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if (client == Client.RESTEASY) {
+                return resteasyClient.target(BASE_URI).path("backend/applicationJsonProblem").request().get();
+            } else if (client == Client.RESTEASY_PROXY) {
+                return resteasyProxyClient.applicationJsonProblem();
+            }
+            throw new IllegalStateException("Unsupported client " + client);
+        } catch (BadRequestProblem e) {
+            e.setDetail(e.getDetail() + " (caught successfully by frontend)");
+            throw e;
+        }
+    }
+
+    @Override
     public Response beanValidationQueryParameter(Integer p, String o) {
         return Response.ok("param: " + p + ", other: " + o).build();
     }
