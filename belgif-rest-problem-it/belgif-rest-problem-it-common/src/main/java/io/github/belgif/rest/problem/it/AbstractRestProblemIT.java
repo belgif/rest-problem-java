@@ -105,6 +105,17 @@ public abstract class AbstractRestProblemIT {
                 .body("detail", equalTo("Unmapped problem from backend (caught successfully by frontend)"));
     }
 
+    @ParameterizedTest
+    @MethodSource("getClients")
+    public void applicationJsonProblemFromBackend(String client) {
+        getSpec().when().queryParam("client", client)
+                .get("/applicationJsonProblemFromBackend").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("detail", equalTo("Bad Request with application/json media type from backend"
+                        + " (caught successfully by frontend)"));
+    }
+
     @Test
     public void notFound() {
         getSpec().when().get("/not/found").then().assertThat()

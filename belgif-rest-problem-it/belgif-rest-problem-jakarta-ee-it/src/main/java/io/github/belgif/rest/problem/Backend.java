@@ -23,4 +23,8 @@ public interface Backend {
     @Path("/unmapped")
     Response unmapped();
 
+    @GET
+    @Path("/applicationJsonProblem")
+    Response applicationJsonProblem();
+
 }

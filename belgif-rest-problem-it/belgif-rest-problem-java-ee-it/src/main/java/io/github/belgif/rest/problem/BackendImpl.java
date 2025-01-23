@@ -37,4 +37,11 @@ public class BackendImpl implements Backend {
         throw unmapped;
     }
 
+    @Override
+    public Response applicationJsonProblem() {
+        BadRequestProblem problem = new BadRequestProblem();
+        problem.setDetail("Bad Request with application/json media type from backend");
+        return Response.status(Response.Status.BAD_REQUEST).entity(problem).build();
+    }
+
 }
