@@ -20,8 +20,13 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
+import io.github.belgif.rest.problem.InternalServerErrorProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.Problem;
 
@@ -60,6 +65,38 @@ class RoutingExceptionsHandlerTest {
             assertThat(problem.getIssues().get(0).getDetail()).isEqualTo(
                     "Required request header 'name' for method parameter type Object is not present");
         });
+    }
+
+    @Test
+    void handleHttpMessageNotReadableJacksonMismatchedInputException() {
+        MismatchedInputException exception = MismatchedInputException.from(null, Object.class, "detail");
+        exception.prependPath(new JsonMappingException.Reference(null, "id"));
+        ResponseEntity<Problem> entity =
+                handler.handleHttpMessageNotReadable(new HttpMessageNotReadableException(null, exception));
+        assertThat(entity.getStatusCodeValue()).isEqualTo(400);
+        assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
+        assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
+            assertThat(problem.getIssues()).hasSize(1);
+            assertThat(problem.getIssues().get(0).getType())
+                    .hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
+            assertThat(problem.getIssues().get(0).getIn()).isEqualTo(InEnum.BODY);
+            assertThat(problem.getIssues().get(0).getName()).isEqualTo("id");
+            assertThat(problem.getIssues().get(0).getValue()).isNull();
+            assertThat(problem.getIssues().get(0).getDetail()).isEqualTo("detail");
+        });
+    }
+
+    @Test
+    void handleHttpMessageNotReadableJacksonMismatchedInputExceptionFromRestTemplate() {
+        MismatchedInputException exception = MismatchedInputException.from(null, Object.class, "detail");
+        exception.prependPath(new JsonMappingException.Reference(null, "id"));
+        exception.setStackTrace(
+                new StackTraceElement[] { new StackTraceElement(RestTemplate.class.getName(), "test", "test", 1) });
+        ResponseEntity<Problem> entity =
+                handler.handleHttpMessageNotReadable(new HttpMessageNotReadableException(null, exception));
+        assertThat(entity.getStatusCodeValue()).isEqualTo(500);
+        assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
+        assertThat(entity.getBody()).isInstanceOf(InternalServerErrorProblem.class);
     }
 
     @Test

@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 import com.acme.custom.CustomProblem;
 
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.it.model.JacksonModel;
 
 @RequestScoped
 public class BackendImpl implements Backend {
@@ -46,6 +47,13 @@ public class BackendImpl implements Backend {
                 .type(MediaType.APPLICATION_JSON_TYPE)
                 .entity(problem)
                 .build();
+    }
+
+    @Override
+    public Response jacksonMismatchedInput() {
+        JacksonModel model = new JacksonModel(null);
+        model.setDescription("description");
+        return Response.ok(model, MediaType.APPLICATION_JSON_TYPE).build();
     }
 
 }

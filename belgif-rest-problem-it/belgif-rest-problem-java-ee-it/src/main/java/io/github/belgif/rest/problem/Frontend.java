@@ -14,6 +14,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import io.github.belgif.rest.problem.it.model.ChildModel;
+import io.github.belgif.rest.problem.it.model.JacksonModel;
 import io.github.belgif.rest.problem.it.model.Model;
 import io.github.belgif.rest.problem.it.model.NestedModel;
 
@@ -65,6 +66,10 @@ public interface Frontend {
     Response applicationJsonProblemFromBackend(@QueryParam("client") Client client);
 
     @GET
+    @Path("/jacksonMismatchedInputFromBackend")
+    Response jacksonMismatchedInputFromBackend(@QueryParam("client") Client client);
+
+    @GET
     @Path("/beanValidation/queryParameter")
     Response beanValidationQueryParameter(@QueryParam("param") @NotNull @Positive Integer p,
             @QueryParam("other") @Size(max = 5) String o);
@@ -92,5 +97,9 @@ public interface Frontend {
     @POST
     @Path("/beanValidation/body/inheritance")
     Response beanValidationBodyInheritance(@Valid ChildModel body);
+
+    @POST
+    @Path("/jackson/mismatchedInputException")
+    Response jacksonMismatchedInputException(@Valid JacksonModel body);
 
 }

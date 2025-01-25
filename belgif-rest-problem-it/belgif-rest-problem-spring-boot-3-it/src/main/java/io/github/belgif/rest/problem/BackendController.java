@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.acme.custom.CustomProblem;
 
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.it.model.JacksonModel;
 
 @RestController
 @RequestMapping("/backend")
@@ -45,6 +46,13 @@ public class BackendController {
         BadRequestProblem problem = new BadRequestProblem();
         problem.setDetail("Bad Request with application/json media type from backend");
         return ResponseEntity.badRequest().body(problem);
+    }
+
+    @GetMapping("/jacksonMismatchedInput")
+    public ResponseEntity<JacksonModel> mismatchedInput() {
+        JacksonModel model = new JacksonModel(null);
+        model.setDescription("description");
+        return ResponseEntity.ok(model);
     }
 
 }

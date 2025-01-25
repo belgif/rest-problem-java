@@ -1,5 +1,7 @@
 package io.github.belgif.rest.problem.spring;
 
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -16,10 +18,13 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.internal.JacksonUtil;
 
 /**
  * RestController exception handler for routing-related exceptions.
@@ -32,6 +37,8 @@ import io.github.belgif.rest.problem.api.Problem;
 public class RoutingExceptionsHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoutingExceptionsHandler.class);
+
+    private static final ProblemExceptionHandler DEFAULT_PROBLEM_EXCEPTION_HANDLER = new ProblemExceptionHandler();
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<Problem> handleMissingServletRequestParameterException(
@@ -54,11 +61,24 @@ public class RoutingExceptionsHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Problem> handleHttpMessageNotReadable(HttpMessageNotReadableException exception) {
-        LOGGER.info("Transforming HttpMessageNotReadableException " +
-                "to a BadRequestProblem with sanitized detail message", exception);
-        return ProblemMediaType.INSTANCE
-                .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(InEnum.BODY, null, null,
-                        getSanitizedProblemDetailMessage(exception))));
+        if (exception.getCause() instanceof MismatchedInputException) {
+            MismatchedInputException mismatchedInputException = (MismatchedInputException) exception.getCause();
+            if (Arrays.stream(mismatchedInputException.getStackTrace())
+                    .anyMatch(e -> e.getClassName().startsWith("org.springframework.web.client"))) {
+                // When the MismatchedInputException originates from a REST Client API, it relates to an
+                // invalid inbound response and should be mapped to HTTP 500 Internal Server Error
+                return DEFAULT_PROBLEM_EXCEPTION_HANDLER.handleException(exception);
+            } else {
+                // Otherwise, it relates to an invalid inbound request and should be mapped to HTTP 400 Bad Request
+                return ProblemMediaType.INSTANCE.toResponse(JacksonUtil.toBadRequestProblem(mismatchedInputException));
+            }
+        } else {
+            LOGGER.info("Transforming HttpMessageNotReadableException " +
+                    "to a BadRequestProblem with sanitized detail message", exception);
+            return ProblemMediaType.INSTANCE
+                    .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(InEnum.BODY, null, null,
+                            getSanitizedProblemDetailMessage(exception))));
+        }
     }
 
     private String getSanitizedProblemDetailMessage(HttpMessageNotReadableException exception) {
