@@ -1,4 +1,4 @@
-package io.github.belgif.rest.problem.jaxrs.i18n;
+package io.github.belgif.rest.problem.ee.jaxrs.i18n;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;

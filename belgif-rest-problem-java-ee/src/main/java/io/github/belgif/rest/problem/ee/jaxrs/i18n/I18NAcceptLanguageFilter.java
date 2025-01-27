@@ -1,4 +1,4 @@
-package io.github.belgif.rest.problem.jaxrs.i18n;
+package io.github.belgif.rest.problem.ee.jaxrs.i18n;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
