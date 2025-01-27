@@ -24,6 +24,7 @@ import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemSupport;
 import io.github.belgif.rest.problem.i18n.I18N;
 import io.github.belgif.rest.problem.it.model.ChildModel;
+import io.github.belgif.rest.problem.it.model.JacksonModel;
 import io.github.belgif.rest.problem.it.model.Model;
 import io.github.belgif.rest.problem.it.model.NestedModel;
 
@@ -236,6 +237,31 @@ public class FrontendImpl implements Frontend {
     }
 
     @Override
+    public Response jacksonMismatchedInputFromBackend(Client client) {
+        if (client == null || client == Client.MICROPROFILE) {
+            microprofileClient.jacksonMismatchedInput().readEntity(JacksonModel.class);
+        } else if (client == Client.JAXRS) {
+            jaxRsClient.target(BASE_URI).path("backend/jacksonMismatchedInput").request().get(JacksonModel.class);
+        } else if (client == Client.JAXRS_ASYNC) {
+            try {
+                jaxRsClient.target(BASE_URI).path("backend/jacksonMismatchedInput").request().async()
+                        .get(JacksonModel.class).get();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (client == Client.RESTEASY) {
+            resteasyClient.target(BASE_URI).path("backend/jacksonMismatchedInput").request()
+                    .get(JacksonModel.class);
+        } else if (client == Client.RESTEASY_PROXY) {
+            resteasyProxyClient.jacksonMismatchedInput().readEntity(JacksonModel.class);
+        }
+        throw new IllegalStateException("Unsupported client " + client);
+    }
+
+    @Override
     public Response beanValidationQueryParameter(Integer p, String o) {
         return Response.ok("param: " + p + ", other: " + o).build();
     }
@@ -275,6 +301,11 @@ public class FrontendImpl implements Frontend {
 
     @Override
     public Response beanValidationBodyInheritance(ChildModel body) {
+        return Response.ok("body: " + body).build();
+    }
+
+    @Override
+    public Response jacksonMismatchedInputException(JacksonModel body) {
         return Response.ok("body: " + body).build();
     }
 

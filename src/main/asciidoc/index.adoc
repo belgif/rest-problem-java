@@ -576,6 +576,7 @@ This module provides components that handle Java EE / Jakarta EE integration wit
 * *ProblemObjectMapperContextResolver:* a JAX-RS ContextResolver for a Jackson ObjectMapper with the CdiProblemModule registered.
 Its priority of "Priorities.USER + 200" allows it to be overridden if needed by the client application.
 * *ConstraintViolationExceptionMapper:* a JAX-RS ExceptionMapper that converts ConstraintViolationException to an HTTP 400 BadRequestProblem.
+* *JacksonMismatchedInputExceptionMapper:* a JAX-RS ExceptionMapper that converts jackson MismatchedInputException to an HTTP 400 BadRequestProblem.
 * *ProblemExceptionMapper:* a JAX-RS ExceptionMapper that converts Problem exceptions to a proper application/problem+json response.
 * *WebApplicationExceptionMapper:* a JAX-RS ExceptionMapper that handles WebApplicationExceptions thrown by the JAX-RS runtime itself, to prevent them from being handled by the DefaultExceptionMapper.
 * *DefaultExceptionMapper:* a JAX-RS ExceptionMapper that converts any other uncaught exception to an HTTP 500 InternalServerErrorProblem.

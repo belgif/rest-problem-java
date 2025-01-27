@@ -12,6 +12,12 @@
 
 // tag::recent-versions[]
 
+== Version 0.14
+
+*belgif-rest-problem:*
+
+* Map Jackson MismatchedInputException (for missing required properties on request body) to BadRequestProblem
+
 == Version 0.13
 
 *belgif-rest-problem-spring:*
@@ -81,6 +87,8 @@ by standardized `urn:problem-type:belgif:input-validation:referencedResourceNotF
 
 * Added support for InvalidRequestException thrown by the https://bitbucket.org/atlassian/swagger-request-validator[Atlassian swagger-request-validator]
 
+// end::recent-versions[]
+
 == Version 0.9
 
 *belgif-rest-problem-bom:*
@@ -118,8 +126,6 @@ by standardized `urn:problem-type:belgif:input-validation:referencedResourceNotF
 *belgif-rest-problem-java-ee:*
 
 * Add JaxRsParameterNameProvider to retrieve parameter names from JAX-RS annotations for bean validation
-
-// end::recent-versions[]
 
 == Version 0.6
 

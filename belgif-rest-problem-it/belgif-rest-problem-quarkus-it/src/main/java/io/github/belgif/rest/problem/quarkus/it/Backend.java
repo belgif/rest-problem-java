@@ -30,4 +30,8 @@ public interface Backend {
     @Path("/applicationJsonProblem")
     Response applicationJsonProblem();
 
+    @GET
+    @Path("/jacksonMismatchedInput")
+    Response jacksonMismatchedInput();
+
 }

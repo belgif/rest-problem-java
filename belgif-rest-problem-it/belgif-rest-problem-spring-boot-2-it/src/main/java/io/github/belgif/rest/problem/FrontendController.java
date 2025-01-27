@@ -28,6 +28,7 @@ import com.acme.custom.CustomProblem;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.i18n.I18N;
 import io.github.belgif.rest.problem.it.model.ChildModel;
+import io.github.belgif.rest.problem.it.model.JacksonModel;
 import io.github.belgif.rest.problem.it.model.Model;
 import io.github.belgif.rest.problem.it.model.NestedModel;
 
@@ -169,6 +170,16 @@ public class FrontendController implements ControllerInterface {
         }
     }
 
+    @GetMapping("/jacksonMismatchedInputFromBackend")
+    public void jacksonMismatchedInputFromBackend(@RequestParam("client") Client client) {
+        if (client == Client.REST_TEMPLATE) {
+            restTemplate.getForObject("/jacksonMismatchedInput", JacksonModel.class);
+        } else if (client == Client.WEB_CLIENT) {
+            webClient.get().uri("/jacksonMismatchedInput").retrieve().toEntity(JacksonModel.class).block();
+        }
+        throw new IllegalStateException(ILLEGAL_STATE_MESSAGE_PREFIX + client);
+    }
+
     @GetMapping("/beanValidation/queryParameter")
     public ResponseEntity<String> beanValidationQueryParameter(
             @RequestParam("param") @Positive @NotNull Integer p,
@@ -216,6 +227,11 @@ public class FrontendController implements ControllerInterface {
 
     @PostMapping("/beanValidation/queryParameter/nested")
     public ResponseEntity<String> beanValidationQueryParameterNested(@Valid Model p) {
+        return ResponseEntity.ok("param: " + p);
+    }
+
+    @PostMapping("/jackson/mismatchedInputException")
+    public ResponseEntity<String> jacksonMismatchedInputException(@Valid @RequestBody JacksonModel p) {
         return ResponseEntity.ok("param: " + p);
     }
 
