@@ -27,6 +27,7 @@ import io.github.belgif.rest.problem.ServiceUnavailableProblem;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.i18n.I18N;
 import io.github.belgif.rest.problem.it.model.ChildModel;
+import io.github.belgif.rest.problem.it.model.JacksonModel;
 import io.github.belgif.rest.problem.it.model.Model;
 import io.github.belgif.rest.problem.it.model.NestedModel;
 import io.quarkus.rest.client.reactive.QuarkusRestClientBuilder;
@@ -243,6 +244,30 @@ public class FrontendImpl implements Frontend {
     }
 
     @Override
+    public Response jacksonMismatchedInputFromBackend(Client client) {
+        if (client == null || client == Client.MICROPROFILE) {
+            microprofileClient.jacksonMismatchedInput().readEntity(JacksonModel.class);
+        } else if (client == Client.REGISTER_REST_CLIENT) {
+            restClientBuilderClient.jacksonMismatchedInput().readEntity(JacksonModel.class);
+        } else if (client == Client.QUARKUS_REST_CLIENT_BUILDER) {
+            quarkusRestClientBuilderClient.jacksonMismatchedInput().readEntity(JacksonModel.class);
+        } else if (client == Client.JAXRS) {
+            jaxRsClient.target(baseUri).path("backend/jacksonMismatchedInput").request().get(JacksonModel.class);
+        } else if (client == Client.JAXRS_ASYNC) {
+            try {
+                jaxRsClient.target(baseUri).path("backend/jacksonMismatchedInput").request().async()
+                        .get(JacksonModel.class).get();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        throw new IllegalStateException("Unsupported client " + client);
+    }
+
+    @Override
     public Response beanValidationQueryParameter(Integer p, String o) {
         return Response.ok("param: " + p + ", other: " + o).build();
     }
@@ -282,6 +307,11 @@ public class FrontendImpl implements Frontend {
 
     @Override
     public Response beanValidationBodyInheritance(ChildModel body) {
+        return Response.ok("body: " + body).build();
+    }
+
+    @Override
+    public Response jacksonMismatchedInputException(JacksonModel body) {
         return Response.ok("body: " + body).build();
     }
 
