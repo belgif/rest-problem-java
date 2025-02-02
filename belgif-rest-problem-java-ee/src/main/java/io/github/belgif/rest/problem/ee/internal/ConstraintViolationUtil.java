@@ -73,16 +73,20 @@ public class ConstraintViolationUtil {
         if (propertyPath.getLast().getKind() == ElementKind.PARAMETER) {
             if (methodNode != null) {
                 ParameterNode param = propertyPath.getLast().as(ParameterNode.class);
-                try {
-                    Method method = violation.getRootBeanClass().getMethod(methodNode.getName(),
-                            methodNode.getParameterTypes().toArray(new Class[0]));
-                    return AnnotationUtil.findParamAnnotation(method, param.getParameterIndex(), ANNOTATIONS)
-                            .map(Annotation::annotationType).map(SOURCE_MAPPING::get)
-                            .orElse(InEnum.BODY);
-                } catch (NoSuchMethodException e) {
-                    throw new IllegalStateException(
-                            "Method " + methodNode.getName() + " not found on " + violation.getRootBeanClass(), e);
+                Class<?> clazz = violation.getRootBeanClass();
+                while (!Object.class.equals(clazz)) {
+                    try {
+                        Method method = clazz.getMethod(methodNode.getName(),
+                                methodNode.getParameterTypes().toArray(new Class[0]));
+                        return AnnotationUtil.findParamAnnotation(method, param.getParameterIndex(), ANNOTATIONS)
+                                .map(Annotation::annotationType).map(SOURCE_MAPPING::get)
+                                .orElse(InEnum.BODY);
+                    } catch (NoSuchMethodException e) {
+                        clazz = clazz.getSuperclass();
+                    }
                 }
+                throw new IllegalStateException(
+                        "Method " + methodNode.getName() + " not found on " + violation.getRootBeanClass());
             } else {
                 return InEnum.QUERY;
             }

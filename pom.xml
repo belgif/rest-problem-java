@@ -23,6 +23,7 @@
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
     <version.spring.boot.2>2.7.18</version.spring.boot.2>
     <version.spring.boot.3>3.4.1</version.spring.boot.3>
+    <version.quarkus>3.17.8</version.quarkus>
   </properties>
 
   <dependencyManagement>
@@ -74,6 +75,7 @@
     <module>belgif-rest-problem-spring-boot-2</module>
     <module>belgif-rest-problem-spring-boot-3</module>
     <module>belgif-rest-problem-quarkus</module>
+    <module>belgif-rest-problem-quarkus-deployment</module>
     <module>belgif-rest-problem-it</module>
     <module>belgif-rest-problem-bom</module>
   </modules>
@@ -453,6 +455,7 @@
         <module>belgif-rest-problem-spring-boot-2</module>
         <module>belgif-rest-problem-spring-boot-3</module>
         <module>belgif-rest-problem-quarkus</module>
+        <module>belgif-rest-problem-quarkus-deployment</module>
         <module>belgif-rest-problem-it</module>
         <module>belgif-rest-problem-bom</module>
         <module>jacoco-aggregator</module>
