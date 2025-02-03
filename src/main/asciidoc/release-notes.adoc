@@ -12,6 +12,12 @@
 
 // tag::recent-versions[]
 
+== Version 0.15
+
+*belgif-rest-problem-quarkus:*
+
+* Add support for Quarkus in native mode
+
 == Version 0.14
 
 *belgif-rest-problem:*

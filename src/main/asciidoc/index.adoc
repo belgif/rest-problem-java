@@ -26,7 +26,7 @@ The library consists of these modules:
 * *belgif-rest-problem-java-ee*: Java EE / Jakarta EE integration for belgif-rest-problem
 * *belgif-rest-problem-spring-boot-2*: Spring Boot 2.x integration for belgif-rest-problem
 * *belgif-rest-problem-spring-boot-3*: Spring Boot 3.x integration for belgif-rest-problem
-* *belgif-rest-problem-quarkus*: Quarkus integration for belgif-rest-problem (only in JVM mode)
+* *belgif-rest-problem-quarkus*: Quarkus integration for belgif-rest-problem
 * *belgif-rest-problem-validator*: validation library that generates Belgif-compliant BadRequestProblem with InputValidationIssues
 
 == Release notes
@@ -271,11 +271,6 @@ Problem support must be manually enabled for https://docs.jboss.org/resteasy/doc
 
 [[getting-started-quarkus]]
 === Quarkus
-
-[WARNING]
-====
-Currently, Quarkus integration is only supported in *JVM mode*, and not in native mode.
-====
 
 Similar to <<getting-started-jakarta-ee>>, transparent problem support is provided for JAX-RS, Bean Validation and MicroProfile REST Client.
 
