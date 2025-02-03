@@ -74,6 +74,8 @@ public class ConstraintViolationUtil {
             if (methodNode != null) {
                 ParameterNode param = propertyPath.getLast().as(ParameterNode.class);
                 Class<?> clazz = violation.getRootBeanClass();
+                // Normally Class#getMethod() recursively searches up the class hierarchy,
+                // but apparantly not on Quarkus native, so we implement the recursion ourselves
                 while (!Object.class.equals(clazz)) {
                     try {
                         Method method = clazz.getMethod(methodNode.getName(),

@@ -11,6 +11,7 @@ import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.client.WebTarget;
 
+import org.eclipse.microprofile.rest.client.spi.RestClientListener;
 import org.jboss.jandex.ClassInfo;
 import org.jboss.jandex.DotName;
 
@@ -18,6 +19,10 @@ import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.ee.jaxrs.ProblemObjectMapperContextResolver;
+import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemResponseExceptionMapper;
+import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemRestClientListener;
+import io.github.belgif.rest.problem.i18n.I18N;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.CombinedIndexBuildItem;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
@@ -26,6 +31,9 @@ import io.quarkus.deployment.builditem.nativeimage.NativeImageResourceBundleBuil
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ServiceProviderBuildItem;
 
+/**
+ * BuildSteps for belgif-ret-problem-quarkus extension needed to support native mode.
+ */
 public class ProblemExtensionProcessor {
 
     private static final String FEATURE = "belgif-rest-problem";
@@ -36,26 +44,24 @@ public class ProblemExtensionProcessor {
     }
 
     @BuildStep
-    List<ReflectiveClassBuildItem> registerProblemClassesForReflection(CombinedIndexBuildItem index) {
-        List<ReflectiveClassBuildItem> items = new ArrayList<>();
-        items.add(reflectiveClass(Problem.class.getName()));
-        items.add(reflectiveClass(InputValidationIssue.class.getName()));
-        items.add(reflectiveClass(Input.class.getName()));
-        items.add(reflectiveClass(InEnum.class.getName()));
-        items.addAll(index.getIndex().getAllKnownSubclasses(Problem.class).stream()
+    ReflectiveClassBuildItem registerProblemModelClassesForReflection(CombinedIndexBuildItem index) {
+        List<String> problemModelClasses = new ArrayList<>();
+        problemModelClasses.add(Problem.class.getName());
+        problemModelClasses.add(InputValidationIssue.class.getName());
+        problemModelClasses.add(Input.class.getName());
+        problemModelClasses.add(InEnum.class.getName());
+        problemModelClasses.addAll(index.getIndex().getAllKnownSubclasses(Problem.class).stream()
                 .map(ClassInfo::name)
                 .map(DotName::toString)
-                .map(this::reflectiveClass)
                 .collect(Collectors.toList()));
-        return items;
-    }
-
-    private ReflectiveClassBuildItem reflectiveClass(String className) {
-        return ReflectiveClassBuildItem.builder(className).constructors().methods().fields().build();
+        return ReflectiveClassBuildItem.builder(problemModelClasses.toArray(new String[0]))
+                .reason(ProblemExtensionProcessor.class.getName())
+                .constructors().methods().fields()
+                .build();
     }
 
     @BuildStep
-    List<NativeImageProxyDefinitionBuildItem> jaxrsClientProxies() {
+    List<NativeImageProxyDefinitionBuildItem> registerJaxRsClientProxies() {
         return Arrays.asList(
                 new NativeImageProxyDefinitionBuildItem(Client.class.getName()),
                 new NativeImageProxyDefinitionBuildItem(WebTarget.class.getName()),
@@ -67,22 +73,24 @@ public class ProblemExtensionProcessor {
 
     @BuildStep
     NativeImageResourceBundleBuildItem i18nBundle() {
-        return new NativeImageResourceBundleBuildItem("io.github.belgif.rest.problem.Messages");
+        return new NativeImageResourceBundleBuildItem(I18N.DEFAULT_BUNDLE);
     }
 
     @BuildStep
-    ServiceProviderBuildItem restClientListenerService() {
-        return new ServiceProviderBuildItem(
-                "org.eclipse.microprofile.rest.client.spi.RestClientListener",
-                "io.github.belgif.rest.problem.ee.jaxrs.client.ProblemRestClientListener");
+    ServiceProviderBuildItem registerRestClientListenerServiceProvider() {
+        return new ServiceProviderBuildItem(RestClientListener.class.getName(),
+                ProblemRestClientListener.class.getName());
     }
 
     @BuildStep
-    List<ReflectiveClassBuildItem> restClientListenerReflection() {
-        return Arrays.asList(reflectiveClass("io.github.belgif.rest.problem.ee.jaxrs.client.ProblemRestClientListener" +
-                "$ClientProblemObjectMapperContextResolver"),
-                reflectiveClass("io.github.belgif.rest.problem.ee.jaxrs.ProblemObjectMapperContextResolver"),
-                reflectiveClass("io.github.belgif.rest.problem.ee.jaxrs.client.ProblemResponseExceptionMapper"));
+    ReflectiveClassBuildItem registerRestClientListenerForReflection() {
+        return ReflectiveClassBuildItem.builder(
+                ProblemRestClientListener.class.getName(),
+                ProblemRestClientListener.ClientProblemObjectMapperContextResolver.class.getName(),
+                ProblemObjectMapperContextResolver.class.getName(),
+                ProblemResponseExceptionMapper.class.getName())
+                .constructors().methods().fields()
+                .build();
     }
 
 }
