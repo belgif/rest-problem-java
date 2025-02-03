@@ -164,7 +164,7 @@
         <plugin>
           <groupId>io.swagger.codegen.v3</groupId>
           <artifactId>swagger-codegen-maven-plugin</artifactId>
-          <version>3.0.66</version>
+          <version>3.0.67</version>
         </plugin>
         <plugin>
           <groupId>org.sonarsource.scanner.maven</groupId>
@@ -204,7 +204,7 @@
         <plugin>
           <groupId>io.smallrye</groupId>
           <artifactId>jandex-maven-plugin</artifactId>
-          <version>3.2.3</version>
+          <version>3.2.4</version>
         </plugin>
       </plugins>
     </pluginManagement>
