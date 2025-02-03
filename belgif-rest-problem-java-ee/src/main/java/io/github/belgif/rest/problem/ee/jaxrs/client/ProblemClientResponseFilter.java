@@ -16,8 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.belgif.rest.problem.DefaultProblem;
 import io.github.belgif.rest.problem.api.Problem;
-import io.github.belgif.rest.problem.ee.CdiProblemModule;
 import io.github.belgif.rest.problem.ee.jaxrs.ProblemMediaType;
+import io.github.belgif.rest.problem.ee.jaxrs.ProblemObjectMapper;
 
 /**
  * JAX-RS ClientResponseFilter that converts problem response to a ProblemWrapper exception.
@@ -33,7 +33,7 @@ public class ProblemClientResponseFilter implements ClientResponseFilter {
     private final ObjectMapper objectMapper;
 
     public ProblemClientResponseFilter() {
-        this(new ObjectMapper().registerModule(new CdiProblemModule()));
+        this(ProblemObjectMapper.INSTANCE);
     }
 
     public ProblemClientResponseFilter(ObjectMapper objectMapper) {
