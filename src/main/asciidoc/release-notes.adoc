@@ -21,7 +21,7 @@
 
 *belgif-rest-problem-quarkus:*
 
-* Add support for Quarkus in native mode
+* Add experimental support for Quarkus in native mode
 
 == Version 0.14
 

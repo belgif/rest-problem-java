@@ -32,7 +32,7 @@ import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ServiceProviderBuildItem;
 
 /**
- * BuildSteps for belgif-ret-problem-quarkus extension needed to support native mode.
+ * BuildSteps for belgif-rest-problem-quarkus extension needed to support native mode.
  */
 public class ProblemExtensionProcessor {
 

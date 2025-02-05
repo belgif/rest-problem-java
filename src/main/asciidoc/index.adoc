@@ -117,6 +117,8 @@ compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:{revnumber}'
 [[dependencies-quarkus]]
 ==== Quarkus
 
+WARNING: Quarkus support is currently still *experimental*.
+
 [source,xml,role="primary",subs="attributes+"]
 .Maven
 ----
@@ -271,6 +273,8 @@ Problem support must be manually enabled for https://docs.jboss.org/resteasy/doc
 
 [[getting-started-quarkus]]
 === Quarkus
+
+WARNING: Quarkus support is currently still *experimental*.
 
 Similar to <<getting-started-jakarta-ee>>, transparent problem support is provided for JAX-RS, Bean Validation and MicroProfile REST Client.
 
