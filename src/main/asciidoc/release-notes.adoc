@@ -16,6 +16,7 @@
 
 *belgif-rest-problem:*
 
+* Align MismatchedInputException detail message with Bean Validation
 * Fix input path for MismatchedInputException on array properties
 
 *belgif-rest-problem-quarkus:*

@@ -36,7 +36,15 @@ public class JacksonUtil {
             }
         }
         return new BadRequestProblem(
-                InputValidationIssues.schemaViolation(InEnum.BODY, name.toString(), null, e.getOriginalMessage()));
+                InputValidationIssues.schemaViolation(InEnum.BODY, name.toString(), null, getDetailMessage(e)));
+    }
+
+    private static String getDetailMessage(JsonMappingException e) {
+        if (e.getOriginalMessage().startsWith("Missing required")) {
+            return "must not be null";
+        } else {
+            return e.getOriginalMessage();
+        }
     }
 
 }
