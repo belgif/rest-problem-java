@@ -368,7 +368,7 @@ public abstract class AbstractRestProblemIT {
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("body"))
                 .body("issues[0].name", equalTo("id"))
-                .body("issues[0].detail", equalTo("Missing required creator property 'id' (index 0)"));
+                .body("issues[0].detail", equalTo("must not be null"));
     }
 
     @Test
