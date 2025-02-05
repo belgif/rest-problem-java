@@ -26,7 +26,7 @@ public class JacksonUtil {
     public static BadRequestProblem toBadRequestProblem(JsonMappingException e) {
         StringBuilder name = new StringBuilder();
         for (Reference reference : e.getPath()) {
-            if (reference.getFrom() != null && reference.getFrom() instanceof List) {
+            if (reference.getFrom() instanceof List) {
                 name.append("[").append(reference.getIndex()).append("]");
             } else {
                 if (name.length() > 0) {
