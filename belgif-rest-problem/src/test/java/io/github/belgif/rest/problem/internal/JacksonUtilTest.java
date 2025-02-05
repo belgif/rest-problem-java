@@ -56,7 +56,7 @@ class JacksonUtilTest {
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-            assertThat(issue.getName()).isEqualTo("models.[0].id");
+            assertThat(issue.getName()).isEqualTo("models[0].id");
             assertThat(issue.getValue()).isNull();
             assertThat(issue.getDetail()).isEqualTo("Missing required creator property 'id' (index 0)");
         });
