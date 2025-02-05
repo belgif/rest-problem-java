@@ -2,6 +2,8 @@ package io.github.belgif.rest.problem.internal;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -45,6 +47,21 @@ class JacksonUtilTest {
         });
     }
 
+    @Test
+    void mismatchedInputNestedWithArray() {
+        assertThatExceptionOfType(MismatchedInputException.class).isThrownBy(() -> {
+            new ObjectMapper().readValue("{\"models\": [{}]}", NestedWithArray.class);
+        }).satisfies(e -> {
+            BadRequestProblem problem = JacksonUtil.toBadRequestProblem(e);
+            InputValidationIssue issue = problem.getIssues().get(0);
+            assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
+            assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+            assertThat(issue.getName()).isEqualTo("models.[0].id");
+            assertThat(issue.getValue()).isNull();
+            assertThat(issue.getDetail()).isEqualTo("Missing required creator property 'id' (index 0)");
+        });
+    }
+
     static class Model {
         @JsonCreator
         Model(@JsonProperty(required = true, value = "id") Integer id) {
@@ -54,6 +71,11 @@ class JacksonUtilTest {
     static class Nested {
         @JsonProperty
         private Model model;
+    }
+
+    static class NestedWithArray {
+        @JsonProperty
+        private List<Model> models;
     }
 
 }
