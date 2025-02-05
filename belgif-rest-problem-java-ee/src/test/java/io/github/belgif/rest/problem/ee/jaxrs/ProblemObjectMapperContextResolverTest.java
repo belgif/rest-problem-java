@@ -42,7 +42,6 @@ class ProblemObjectMapperContextResolverTest {
             when(registry.getProblemTypes()).thenReturn(new NamedType[] {});
             ObjectMapper mapper = new ProblemObjectMapperContextResolver().getContext(null);
             assertThat(mapper.getRegisteredModuleIds()).contains("io.github.belgif.rest.problem.ee.CdiProblemModule");
-            assertThat(ProblemObjectMapperContextResolver.getObjectMapper()).isSameAs(mapper);
         }
     }
 

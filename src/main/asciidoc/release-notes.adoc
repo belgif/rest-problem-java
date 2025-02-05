@@ -19,6 +19,10 @@
 * Align MismatchedInputException detail message with Bean Validation
 * Fix input path for MismatchedInputException on array properties
 
+*belgif-rest-problem-quarkus:*
+
+* Add experimental support for Quarkus in native mode
+
 == Version 0.14
 
 *belgif-rest-problem:*
