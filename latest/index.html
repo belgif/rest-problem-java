@@ -764,7 +764,7 @@ window.onload = function() {
 <p><strong>belgif-rest-problem-spring-boot-3</strong>: Spring Boot 3.x integration for belgif-rest-problem</p>
 </li>
 <li>
-<p><strong>belgif-rest-problem-quarkus</strong>: Quarkus integration for belgif-rest-problem (only in JVM mode)</p>
+<p><strong>belgif-rest-problem-quarkus</strong>: Quarkus integration for belgif-rest-problem</p>
 </li>
 <li>
 <p><strong>belgif-rest-problem-validator</strong>: validation library that generates Belgif-compliant BadRequestProblem with InputValidationIssues</p>
@@ -788,6 +788,16 @@ window.onload = function() {
 </li>
 <li>
 <p>Fix input path for MismatchedInputException on array properties</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-quarkus:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add experimental support for Quarkus in native mode</p>
 </li>
 </ul>
 </div>
@@ -1069,6 +1079,18 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 </div>
 <div class="sect3">
 <h4 id="dependencies-quarkus"><a class="anchor" href="#dependencies-quarkus"></a>3.1.3. Quarkus</h4>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Quarkus support is currently still <strong>experimental</strong>.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
@@ -1358,9 +1380,7 @@ JAX-RS async and reactive client API are <a href="https://github.com/belgif/rest
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-<div class="paragraph">
-<p>Currently, Quarkus integration is only supported in <strong>JVM mode</strong>, and not in native mode.</p>
-</div>
+Quarkus support is currently still <strong>experimental</strong>.
 </td>
 </tr>
 </table>
