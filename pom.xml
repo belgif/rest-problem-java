@@ -23,7 +23,7 @@
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
     <version.spring.boot.2>2.7.18</version.spring.boot.2>
     <version.spring.boot.3>3.4.1</version.spring.boot.3>
-    <version.quarkus>3.18.4</version.quarkus>
+    <version.quarkus>3.19.1</version.quarkus>
   </properties>
 
   <dependencyManagement>
@@ -44,7 +44,7 @@
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-junit-jupiter</artifactId>
-        <version>5.15.2</version>
+        <version>5.16.0</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -127,7 +127,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.1.3</version>
+          <version>3.1.4</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -147,7 +147,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>flatten-maven-plugin</artifactId>
-          <version>1.6.0</version>
+          <version>1.7.0</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -162,7 +162,7 @@
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.11.0</version>
+          <version>7.12.0</version>
         </plugin>
         <plugin>
           <groupId>io.swagger.codegen.v3</groupId>
