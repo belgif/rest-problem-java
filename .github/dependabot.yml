@@ -19,9 +19,6 @@ updates:
       - dependency-name: "org.jboss.weld:weld-junit5"
       - dependency-name: "org.hibernate.validator:hibernate-validator"
       - dependency-name: "com.fasterxml.jackson.core:jackson-databind"
-      - dependency-name: "io.smallrye:jandex-maven-plugin"
-        update-types: ["version-update:semver-minor"]
-        # jandex-maven-plugin version 3.3.0 is not yet supported by quarkus
     groups:
       maven:
         patterns:
