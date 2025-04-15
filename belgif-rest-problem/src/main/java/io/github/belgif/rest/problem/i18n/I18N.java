@@ -6,13 +6,12 @@ import java.util.ResourceBundle;
 import java.util.ServiceLoader;
 
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.config.ProblemConfig;
 
 /**
  * Helper class for I18N (Internationalization).
  */
 public class I18N {
-
-    public static final String I18N_FLAG = "io.github.belgif.rest.problem.i18n";
 
     /**
      * The default locale: English.
@@ -25,8 +24,6 @@ public class I18N {
     public static final String DEFAULT_BUNDLE = "io.github.belgif.rest.problem.Messages";
 
     private static final LocaleResolver LOCALE_RESOLVER = loadLocaleResolver();
-
-    private static boolean enabled = true;
 
     private I18N() {
     }
@@ -94,7 +91,8 @@ public class I18N {
      * @return the localized string
      */
     private static String getLocalizedString(String bundle, String key, Object... args) {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle(bundle, enabled ? getRequestLocale() : DEFAULT_LOCALE);
+        ResourceBundle resourceBundle =
+                ResourceBundle.getBundle(bundle, isEnabled() ? getRequestLocale() : DEFAULT_LOCALE);
         return String.format(resourceBundle.getString(key), args);
     }
 
@@ -118,7 +116,7 @@ public class I18N {
      * @param enabled true to enable, false to disable
      */
     public static void setEnabled(boolean enabled) {
-        I18N.enabled = enabled;
+        ProblemConfig.setI18nEnabled(enabled);
     }
 
     /**
@@ -127,7 +125,7 @@ public class I18N {
      * @return whether I18N is enabled
      */
     public static boolean isEnabled() {
-        return I18N.enabled;
+        return ProblemConfig.isI18nEnabled();
     }
 
 }
