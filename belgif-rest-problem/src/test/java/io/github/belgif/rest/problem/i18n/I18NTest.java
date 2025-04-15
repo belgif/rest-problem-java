@@ -79,6 +79,22 @@ class I18NTest {
                 .isEqualTo("Custom detail");
     }
 
+    @Test
+    void getLocalizedMessageFromCustomResourceBundleShouldUseEnglishWhenI18NIsDisabled() {
+        Locale original = Locale.getDefault();
+        try {
+            I18N.setEnabled(false);
+            Locale.setDefault(new Locale("nl", "BE"));
+
+            assertThat(I18N.getLocalizedString(I18NTest.class, "CustomProblem.detail"))
+                    .isEqualTo("Custom detail");
+        } finally {
+            I18N.setEnabled(true);
+            Locale.setDefault(original);
+        }
+
+    }
+
     private static class CustomProblem extends ClientProblem {
         private CustomProblem(URI type, String title, int status) {
             super(type, title, status);
