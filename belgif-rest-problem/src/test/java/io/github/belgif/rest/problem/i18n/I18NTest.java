@@ -84,7 +84,7 @@ class I18NTest {
         Locale original = Locale.getDefault();
         try {
             I18N.setEnabled(false);
-            Locale.setDefault(new Locale("nl", "BE"));
+            Locale.setDefault(Locale.forLanguageTag("nl-BE"));
 
             assertThat(I18N.getLocalizedDetail(BadGatewayProblem.class))
                     .isEqualTo("Error in communication with upstream service");
