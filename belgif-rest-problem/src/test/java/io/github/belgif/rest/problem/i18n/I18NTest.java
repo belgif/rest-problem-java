@@ -79,6 +79,21 @@ class I18NTest {
                 .isEqualTo("Custom detail");
     }
 
+    @Test
+    void useEnglishInsteadOfFallbackToDefaultLocale() {
+        Locale original = Locale.getDefault();
+        try {
+            I18N.setEnabled(false);
+            Locale.setDefault(new Locale("nl", "BE"));
+
+            assertThat(I18N.getLocalizedDetail(BadGatewayProblem.class))
+                    .isEqualTo("Error in communication with upstream service");
+        } finally {
+            I18N.setEnabled(true);
+            Locale.setDefault(original);
+        }
+    }
+
     private static class CustomProblem extends ClientProblem {
         private CustomProblem(URI type, String title, int status) {
             super(type, title, status);
