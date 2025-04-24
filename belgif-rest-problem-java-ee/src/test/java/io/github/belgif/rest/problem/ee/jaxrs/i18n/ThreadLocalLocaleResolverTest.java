@@ -7,6 +7,8 @@ import java.util.Locale;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import io.github.belgif.rest.problem.i18n.I18N;
+
 class ThreadLocalLocaleResolverTest {
 
     private final ThreadLocalLocaleResolver resolver = new ThreadLocalLocaleResolver();
@@ -18,7 +20,7 @@ class ThreadLocalLocaleResolverTest {
 
     @Test
     void defaultLocale() {
-        assertThat(resolver.getLocale()).isEqualTo(Locale.ENGLISH);
+        assertThat(resolver.getLocale()).isEqualTo(I18N.DEFAULT_LOCALE);
     }
 
     @Test
@@ -33,7 +35,7 @@ class ThreadLocalLocaleResolverTest {
         Locale locale = Locale.forLanguageTag("nl-BE");
         ThreadLocalLocaleResolver.setLocale(locale);
         ThreadLocalLocaleResolver.clear();
-        assertThat(resolver.getLocale()).isEqualTo(Locale.ENGLISH);
+        assertThat(resolver.getLocale()).isEqualTo(I18N.DEFAULT_LOCALE);
     }
 
 }
