@@ -91,8 +91,8 @@ public class I18N {
      * @return the localized string
      */
     private static String getLocalizedString(String bundle, String key, Object... args) {
-        ResourceBundle resourceBundle =
-                ResourceBundle.getBundle(bundle, isEnabled() ? getRequestLocale() : DEFAULT_LOCALE);
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(bundle, isEnabled() ? getRequestLocale() : DEFAULT_LOCALE,
+                ResourceBundle.Control.getNoFallbackControl(ResourceBundle.Control.FORMAT_PROPERTIES));
         return String.format(resourceBundle.getString(key), args);
     }
 
