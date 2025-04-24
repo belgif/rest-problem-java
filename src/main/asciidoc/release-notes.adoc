@@ -12,6 +12,12 @@
 
 // tag::recent-versions[]
 
+== Version 0.16
+
+*belgif-rest-problem:*
+
+* Use English by default for I18N messages instead of fallback to system locale
+
 == Version 0.15
 
 *belgif-rest-problem:*
