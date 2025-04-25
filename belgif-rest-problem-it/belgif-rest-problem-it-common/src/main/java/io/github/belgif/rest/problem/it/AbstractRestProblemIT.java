@@ -457,4 +457,15 @@ public abstract class AbstractRestProblemIT {
         }
     }
 
+    @Test
+    void requestValidator() {
+        getSpec().when()
+                .get("/requestValidator?ssin=999999999999&a=test").then()
+                .log().all()
+                .assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("detail", equalTo("The input message is incorrect"));
+    }
+
 }
