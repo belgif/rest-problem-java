@@ -460,12 +460,19 @@ public abstract class AbstractRestProblemIT {
     @Test
     void requestValidator() {
         getSpec().when()
-                .get("/requestValidator?ssin=999999999999&a=test").then()
-                .log().all()
-                .assertThat()
+                .get("/requestValidator?ssin=999999999999&a=test").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
-                .body("detail", equalTo("The input message is incorrect"));
+                .body("detail", equalTo("The input message is incorrect"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:invalidInput"))
+                .body("issues[0].title", equalTo("Invalid input"))
+                .body("issues[0].detail", equalTo("SSIN 999999999999 is invalid"))
+                .body("issues[0].in", equalTo("query"))
+                .body("issues[0].name", equalTo("ssin"))
+                .body("issues[0].value", equalTo("999999999999"))
+                .body("issues[1].type", equalTo("urn:problem-type:belgif:input-validation:invalidInput"))
+                .body("issues[1].title", equalTo("Invalid input"))
+                .body("issues[1].detail", equalTo("All or none of these inputs must be present: a, b"));
     }
 
 }

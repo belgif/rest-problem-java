@@ -1,5 +1,7 @@
 package io.github.belgif.rest.problem.quarkus;
 
+import java.util.Optional;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -17,14 +19,12 @@ public class QuarkusProblemConfigurator {
 
     @Inject
     public QuarkusProblemConfigurator(
-            @ConfigProperty(name = ProblemConfig.PROPERTY_I18N, defaultValue = "true") boolean i18n,
-            @ConfigProperty(name = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES,
-                    defaultValue = "false") boolean extIssueTypes,
-            @ConfigProperty(name = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY,
-                    defaultValue = "false") boolean extInputsArray) {
-        ProblemConfig.setI18nEnabled(i18n);
-        ProblemConfig.setExtIssueTypesEnabled(extIssueTypes);
-        ProblemConfig.setExtInputsArrayEnabled(extInputsArray);
+            @ConfigProperty(name = ProblemConfig.PROPERTY_I18N) Optional<Boolean> i18n,
+            @ConfigProperty(name = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES) Optional<Boolean> extIssueTypes,
+            @ConfigProperty(name = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY) Optional<Boolean> extInputsArray) {
+        ProblemConfig.setI18nEnabled(i18n.orElse(ProblemConfig.DEFAULT_I18N));
+        ProblemConfig.setExtIssueTypesEnabled(extIssueTypes.orElse(ProblemConfig.DEFAULT_EXT_ISSUE_TYPES));
+        ProblemConfig.setExtInputsArrayEnabled(extInputsArray.orElse(ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY));
     }
 
 }

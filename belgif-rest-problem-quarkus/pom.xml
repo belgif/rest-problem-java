@@ -91,6 +91,7 @@
                     META-INF/services/jakarta.enterprise.inject.spi.Extension,
                     META-INF/services/io.github.belgif.rest.problem.i18n.LocaleResolver,
                     io/github/belgif/rest/problem/ee/jaxrs/EJBExceptionMapper.class,
+                    io/github/belgif/rest/problem/ee/jaxrs/ProblemConfigurator.class,
                     io/github/belgif/rest/problem/ee/registry/CdiProblemTypeRegistry.class,
                     io/github/belgif/rest/problem/ee/jaxrs/i18n/*
                   </excludes>
