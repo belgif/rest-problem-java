@@ -12,6 +12,26 @@
 
 // tag::recent-versions[]
 
+== Version 0.17
+
+[WARNING]
+====
+*Potentially breaking*
+====
+
+*belgif-rest-problem:*
+
+* *By default*, replace specialized input validation issue types `invalidStructure`, `invalidPeriod`, `outOfRange`, `rejectedInput`, `requiredInput` and cross-parameter validation issue types by new general issue type `urn:problem-type:belgif:input-validation:invalidInput`.
+** xref:index.adoc#belgif-ext-issue-types[io.github.belgif.rest.problem.ext.issue-types] can be enabled to keep using more specific issue types (from `urn:problem-type:belgif-ext:input-validation:*`) instead of `urn:problem-type:belgif:input-validation:invalidInput`.
+* *By default*, don't populate inputs[] array for issue types that relate to multiple inputs.
+** xref:index.adoc#belgif-ext-inputs-array[io.github.belgif.rest.problem.ext.inputs-array] can be enabled to keep populating the inputs[] array.
+
+[WARNING]
+====
+Use these extensions at your own discretion.
+They are not an official part of the Belgif REST guidelines, may have an impact on interoperability, and may potentially be changed or removed in a future version.
+====
+
 == Version 0.16
 
 *belgif-rest-problem:*

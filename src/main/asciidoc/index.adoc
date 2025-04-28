@@ -545,10 +545,10 @@ They are not an official part of the Belgif REST guidelines, may have an impact 
 This extension replaces the generic `urn:problem-type:belgif:input-validation:invalidInput` issue type with more specialized `urn:problem-type:belgif-ext:input-validation:*` issue types, enabling clients to interpret and handle these issues individually (if desired).
 
 * `invalidStructure`: Input value has invalid structure (e.g. checksum, format, ...)
+* `invalidPeriod`: Period is invalid (startDate > endDate)
 * `outOfRange`: Input value is out of range
 * `rejectedInput`: Input is not allowed in this context (e.g. when reusing a permissive schema)
 * `requiredInput`: Input is required in this context (e.g. when reusing a permissive schema)
-* `invalidPeriod`: Period is invalid (startDate > endDate)
 * Cross-parameter validation issues:
 ** `exactlyOneOfExpected`: Exactly one of these inputs must be present
 ** `anyOfExpected`: Any of these inputs must be present
