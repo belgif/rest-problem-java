@@ -13,10 +13,6 @@
   <packaging>pom</packaging>
   <description>integration tests</description>
 
-  <properties>
-    <maven.deploy.skip>true</maven.deploy.skip>
-  </properties>
-
   <build>
     <plugins>
       <plugin>

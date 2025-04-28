@@ -126,11 +126,6 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.1.4</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-gpg-plugin</artifactId>
           <version>3.2.7</version>
         </plugin>
@@ -138,6 +133,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
           <version>3.3.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.sonatype.central</groupId>
+          <artifactId>central-publishing-maven-plugin</artifactId>
+          <version>0.7.0</version>
         </plugin>
         <plugin>
           <groupId>org.asciidoctor</groupId>
@@ -374,17 +374,6 @@
     <url>https://github.com/belgif/rest-problem-java</url>
   </scm>
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-    </repository>
-  </distributionManagement>
-
   <profiles>
     <profile>
       <id>release</id>
@@ -432,6 +421,32 @@
                 </configuration>
               </execution>
             </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>central</publishingServerId>
+              <deploymentName>belgif-rest-problem</deploymentName>
+              <autoPublish>true</autoPublish>
+              <waitUntil>published</waitUntil>
+              <waitMaxTime>3600</waitMaxTime>
+              <excludeArtifacts>
+                <excludeArtifact>jacoco-aggregator</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-apt</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-codegen-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-it-common</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-jackson-latest-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-jackson-minimal-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-jakarta-ee-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-java-ee-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-quarkus-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-spring-boot-2-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-spring-boot-3-it</excludeArtifact>
+              </excludeArtifacts>
+            </configuration>
           </plugin>
         </plugins>
       </build>
