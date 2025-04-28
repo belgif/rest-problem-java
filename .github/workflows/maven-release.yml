@@ -14,7 +14,7 @@ jobs:
         distribution: adopt
         java-version: '21'
         cache: maven
-        server-id: ossrh
+        server-id: central
         server-username: MAVEN_CENTRAL_USER
         server-password: MAVEN_CENTRAL_TOKEN
     - name: Login to registry.redhat.io
