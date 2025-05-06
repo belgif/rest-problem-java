@@ -15,9 +15,9 @@ public class I18N {
     public static final String I18N_FLAG = "io.github.belgif.rest.problem.i18n";
 
     /**
-     * The default locale: English.
+     * The default locale: ROOT (=English).
      */
-    public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
+    public static final Locale DEFAULT_LOCALE = Locale.ROOT;
 
     /**
      * The Belgif default resource bundle.
