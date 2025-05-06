@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @AutoConfiguration
 @ComponentScan("io.github.belgif.rest.problem")
-@EnableConfigurationProperties(ProblemConfigurationProperties.class)
+@EnableConfigurationProperties({ ProblemConfigurationProperties.class, ProblemExtConfigurationProperties.class })
 public class ProblemAutoConfiguration {
 
 }

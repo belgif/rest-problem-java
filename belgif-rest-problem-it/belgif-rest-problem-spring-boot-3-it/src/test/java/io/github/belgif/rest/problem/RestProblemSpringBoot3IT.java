@@ -8,12 +8,14 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
 
 import io.github.belgif.rest.problem.it.AbstractRestProblemSpringBootIT;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext
 class RestProblemSpringBoot3IT extends AbstractRestProblemSpringBootIT {
 
     @LocalServerPort

@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterAll;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
@@ -22,27 +21,29 @@ import io.restassured.specification.RequestSpecification;
 @Testcontainers
 class RestProblemJavaEeIT extends AbstractRestProblemEEIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestProblemJavaEeIT.class);
-
     @Container
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static final GenericContainer JBOSS_CONTAINER =
-            new GenericContainer("registry.redhat.io/jboss-eap-7/eap-xp4-openjdk17-openshift-rhel8:4.0-49")
-                    .withEnv("JAVA_OPTS_APPEND",
-                            "-javaagent:/deployments/jacocoagent.jar=destfile=/tmp/jacoco-it.exec," +
-                                    "includes=io.github.belgif.rest.problem.*")
-                    .withCopyFileToContainer(
-                            MountableFile.forHostPath("src/test/resources/standalone-openshift.xml", 0777),
-                            "/opt/eap/standalone/configuration/standalone-openshift.xml")
-                    .withCopyFileToContainer(
-                            MountableFile.forHostPath("target/dependency/jacocoagent.jar"),
-                            "/deployments/jacocoagent.jar")
-                    .withCopyFileToContainer(
-                            MountableFile.forHostPath("target/belgif-rest-problem-java-ee-it.war"),
-                            "/deployments/belgif-rest-problem-java-ee-it.war")
-                    .withExposedPorts(8080)
-                    .waitingFor(Wait.forLogMessage(".*WFLYSRV0025.*", 1))
-                    .withLogConsumer(new Slf4jLogConsumer(LOGGER));
+    @SuppressWarnings("rawtypes")
+    public static final GenericContainer JBOSS_CONTAINER = createContainer();
+
+    @SuppressWarnings({ "rawtypes", "unchecked", "resource" })
+    static GenericContainer createContainer() {
+        return new GenericContainer("registry.redhat.io/jboss-eap-7/eap-xp4-openjdk17-openshift-rhel8:4.0-49")
+                .withEnv("JAVA_OPTS_APPEND",
+                        "-javaagent:/deployments/jacocoagent.jar=destfile=/tmp/jacoco-it.exec," +
+                                "includes=io.github.belgif.rest.problem.*")
+                .withCopyFileToContainer(
+                        MountableFile.forHostPath("src/test/resources/standalone-openshift.xml", 0777),
+                        "/opt/eap/standalone/configuration/standalone-openshift.xml")
+                .withCopyFileToContainer(
+                        MountableFile.forHostPath("target/dependency/jacocoagent.jar"),
+                        "/deployments/jacocoagent.jar")
+                .withCopyFileToContainer(
+                        MountableFile.forHostPath("target/belgif-rest-problem-java-ee-it.war"),
+                        "/deployments/belgif-rest-problem-java-ee-it.war")
+                .withExposedPorts(8080)
+                .waitingFor(Wait.forLogMessage(".*WFLYSRV0025.*", 2))
+                .withLogConsumer(new Slf4jLogConsumer(LoggerFactory.getLogger(RestProblemJavaEeIT.class)));
+    }
 
     @AfterAll
     static void dumpJacocoReport() {
