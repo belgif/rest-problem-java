@@ -75,6 +75,19 @@ class InputValidationIssuesTest {
         assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
+    @Test
+    void invalidInput() {
+        InputValidationIssue issue =
+                InputValidationIssues.invalidInput(InEnum.BODY, "oops", "value", "detail");
+        assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+        assertThat(issue.getTitle()).isEqualTo("Invalid input");
+        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+        assertThat(issue.getName()).isEqualTo("oops");
+        assertThat(issue.getValue()).isEqualTo("value");
+        assertThat(issue.getDetail()).isEqualTo("detail");
+        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+    }
+
     @ParameterizedTest
     @MethodSource("toggleExtIssueTypes")
     void invalidStructure(boolean extIssueTypes) {

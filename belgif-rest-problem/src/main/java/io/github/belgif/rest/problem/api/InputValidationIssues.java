@@ -73,6 +73,12 @@ public class InputValidationIssues {
                 .in(in, name, value);
     }
 
+	public static InputValidationIssue invalidInput(InEnum in, String name, Object value, String detail) {
+		return new InputValidationIssue(ISSUE_TYPE_INVALID_INPUT, "Invalid input")
+				.detail(detail)
+				.in(in, name, value);
+	}
+
     public static InputValidationIssue invalidStructure(InEnum in, String name, Object value, String detail) {
         return invalidInputExt(ISSUE_TYPE_INVALID_STRUCTURE, "Input value has invalid structure")
                 .detail(detail)
