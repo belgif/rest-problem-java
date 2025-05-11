@@ -10,14 +10,21 @@ import java.util.List;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.assertj.core.api.ThrowableAssert;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import io.github.belgif.rest.problem.config.ProblemConfig;
 import io.github.belgif.rest.problem.i18n.Context;
 
 class InputValidationIssueTest {
 
     private static final String MUTUALLY_EXCLUSIVE_EXC = "mutually exclusive";
     private static final String SINGLE_ITEM_EXC = "single item";
+
+    @AfterEach
+    void resetProblemConfig() {
+        ProblemConfig.reset();
+    }
 
     @Test
     void construct() {
@@ -177,6 +184,8 @@ class InputValidationIssueTest {
 
     @Test
     void inNameValueAndInputsAreMutuallyExclusive() {
+        ProblemConfig.setExtInputsArrayEnabled(true);
+
         Input<?> input = Input.query("name", "value");
         List<Input<?>> inputs = Arrays.asList(input, input);
 
@@ -199,6 +208,8 @@ class InputValidationIssueTest {
 
     @Test
     void inputs() {
+        ProblemConfig.setExtInputsArrayEnabled(true);
+
         List<Input<?>> inputs;
         InputValidationIssue issue = new InputValidationIssue();
 
@@ -214,7 +225,20 @@ class InputValidationIssueTest {
     }
 
     @Test
+    void inputsWithExtInputsArrayDisabled() {
+        List<Input<?>> inputs =
+                new ArrayList<>(Arrays.asList(Input.query("name", "value"), Input.query("name1", "value1")));
+        InputValidationIssue issue = new InputValidationIssue();
+
+        assertThatIllegalStateException()
+                .isThrownBy(() -> issue.inputs(inputs))
+                .withMessageContaining(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY);
+    }
+
+    @Test
     void inputsVarargs() {
+        ProblemConfig.setExtInputsArrayEnabled(true);
+
         Input<?> input;
         InputValidationIssue issue = new InputValidationIssue();
 
@@ -227,7 +251,17 @@ class InputValidationIssueTest {
     }
 
     @Test
+    void inputsVarargsWithExtInputsArrayDisabled() {
+        InputValidationIssue issue = new InputValidationIssue();
+        assertThatIllegalStateException()
+                .isThrownBy(() -> issue.inputs(Input.query("first", "value"), Input.query("second", "value")))
+                .withMessageContaining(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY);
+    }
+
+    @Test
     void input() {
+        ProblemConfig.setExtInputsArrayEnabled(true);
+
         InputValidationIssue issue = new InputValidationIssue();
 
         issue.addInput(null);
@@ -246,6 +280,16 @@ class InputValidationIssueTest {
         assertThat(issue.getIn()).isNull();
         assertThat(issue.getValue()).isNull();
         assertThat(issue.getInputs()).containsExactly(input, input);
+    }
+
+    @Test
+    void inputWithExtInputsArrayDisabled() {
+        InputValidationIssue issue = new InputValidationIssue();
+        Input<?> input = Input.query("name", "value");
+        issue.addInput(input);
+        assertThatIllegalStateException()
+                .isThrownBy(() -> issue.addInput(input))
+                .withMessageContaining(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY);
     }
 
     @Test
