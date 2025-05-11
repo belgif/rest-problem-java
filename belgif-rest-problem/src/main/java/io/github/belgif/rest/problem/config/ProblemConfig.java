@@ -1,5 +1,9 @@
 package io.github.belgif.rest.problem.config;
 
+import io.github.belgif.rest.problem.i18n.I18N;
+
+import java.util.Locale;
+
 /**
  * Dynamic configuration parameters for the problem module.
  */
@@ -16,6 +20,20 @@ public class ProblemConfig {
     public static final boolean DEFAULT_EXT_ISSUE_TYPES = false;
 
     public static final boolean DEFAULT_EXT_INPUTS_ARRAY = false;
+
+    private static final ThreadLocal<Boolean> LOCAL_EXT_ISSUE_TYPES = new InheritableThreadLocal<Boolean>() {
+        @Override
+        protected Boolean initialValue() {
+            return null;
+        }
+    };
+
+    private static final ThreadLocal<Boolean> LOCAL_EXT_INPUTS_ARRAY = new InheritableThreadLocal<Boolean>() {
+        @Override
+        protected Boolean initialValue() {
+            return null;
+        }
+    };
 
     private static boolean i18nEnabled = DEFAULT_I18N;
 
@@ -35,6 +53,9 @@ public class ProblemConfig {
     }
 
     public static boolean isExtIssueTypesEnabled() {
+        if (LOCAL_EXT_ISSUE_TYPES.get() != null) {
+            return LOCAL_EXT_ISSUE_TYPES.get();
+        }
         return extIssueTypesEnabled;
     }
 
@@ -42,12 +63,28 @@ public class ProblemConfig {
         ProblemConfig.extIssueTypesEnabled = extIssueTypesEnabled;
     }
 
+    public static void setLocalExtIssueTypesEnabled(boolean extIssueTypesEnabled) {
+        LOCAL_EXT_ISSUE_TYPES.set(extIssueTypesEnabled);
+    }
+
     public static boolean isExtInputsArrayEnabled() {
+        if (LOCAL_EXT_INPUTS_ARRAY.get() != null) {
+            return LOCAL_EXT_INPUTS_ARRAY.get();
+        }
         return extInputsArrayEnabled;
     }
 
     public static void setExtInputsArrayEnabled(boolean extInputsArrayEnabled) {
         ProblemConfig.extInputsArrayEnabled = extInputsArrayEnabled;
+    }
+
+    public static void setLocalExtInputsArrayEnabled(boolean extInputsArrayEnabled) {
+        LOCAL_EXT_INPUTS_ARRAY.set(extInputsArrayEnabled);
+    }
+
+    public static void clearLocal() {
+        LOCAL_EXT_ISSUE_TYPES.remove();
+        LOCAL_EXT_INPUTS_ARRAY.remove();
     }
 
     public static void reset() {

@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
+import io.github.belgif.rest.problem.config.ProblemConfig;
 
 /**
  * Abstract base class for {@link RequestValidator} (for extensible fluent builder pattern).
@@ -38,20 +39,44 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
 
     private final List<InputValidator> validators = new ArrayList<>();
 
+    private Boolean extIssueTypes = null;
+
+    private Boolean extInputsArray = null;
+
     /**
      * Perform all configured validations.
      *
      * @throws BadRequestProblem if the validation fails, containing each encountered {@link InputValidationIssue}
      */
     public void validate() throws BadRequestProblem {
-        List<InputValidationIssue> issues = validators.stream()
-                .map(InputValidator::validate)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
-        if (!issues.isEmpty()) {
-            throw new BadRequestProblem(issues);
+        try {
+            if (extIssueTypes != null) {
+                ProblemConfig.setLocalExtIssueTypesEnabled(extIssueTypes);
+            }
+            if (extInputsArray != null) {
+                ProblemConfig.setLocalExtInputsArrayEnabled(extInputsArray);
+            }
+            List<InputValidationIssue> issues = validators.stream()
+                    .map(InputValidator::validate)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toList());
+            if (!issues.isEmpty()) {
+                throw new BadRequestProblem(issues);
+            }
+        } finally {
+            ProblemConfig.clearLocal();
         }
+    }
+
+    public SELF extIssueTypes(boolean extIssueTypes) {
+        this.extIssueTypes = extIssueTypes;
+        return getThis();
+    }
+
+    public SELF extInputsArray(boolean extInputsArray) {
+        this.extInputsArray = extInputsArray;
+        return getThis();
     }
 
     /**
