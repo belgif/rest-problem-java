@@ -150,7 +150,7 @@ public class InputValidationIssue {
             return;
         }
 
-        if (!ProblemConfig.isExtInputsArrayEnabled() && (hasInNameValue() || !inputs.isEmpty())) {
+        if (!ProblemConfig.isExtInputsArrayEnabled() && hasInNameValue()) {
             throw new IllegalStateException(
                     "inputs[] array extension is not enabled: " + ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED);
         }
@@ -355,9 +355,13 @@ public class InputValidationIssue {
      * @throws IllegalStateException if inputs[] array extension is not enabled
      */
     public InputValidationIssue inputs(Collection<Input<?>> inputs) {
-
         if (inputs == null) {
             return this;
+        }
+
+        if (!ProblemConfig.isExtInputsArrayEnabled()) {
+            throw new IllegalStateException(
+                    "inputs[] array extension is not enabled: " + ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED);
         }
 
         if (hasInNameValue()) {
@@ -368,9 +372,6 @@ public class InputValidationIssue {
 
         if (filteredInputs.size() == 1) {
             throw new IllegalArgumentException(INPUTS_SETTER_ONE_ITEM);
-        } else if (filteredInputs.size() > 1 && !ProblemConfig.isExtInputsArrayEnabled()) {
-            throw new IllegalStateException(
-                    "inputs[] array extension is not enabled: " + ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED);
         }
 
         this.inputs.clear();
