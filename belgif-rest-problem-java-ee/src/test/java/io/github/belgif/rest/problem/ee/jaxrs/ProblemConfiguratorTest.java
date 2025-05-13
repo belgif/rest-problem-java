@@ -33,20 +33,20 @@ class ProblemConfiguratorTest {
 
     @Test
     void defaults() {
-        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_I18N)).thenReturn(null);
-        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_ISSUE_TYPES)).thenReturn(null);
-        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY)).thenReturn(null);
+        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_I18N_ENABLED)).thenReturn(null);
+        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED)).thenReturn(null);
+        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED)).thenReturn(null);
         configurator.contextInitialized(new ServletContextEvent(servletContext));
-        assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(ProblemConfig.DEFAULT_I18N);
-        assertThat(ProblemConfig.isExtIssueTypesEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_ISSUE_TYPES);
-        assertThat(ProblemConfig.isExtInputsArrayEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY);
+        assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(ProblemConfig.DEFAULT_I18N_ENABLED);
+        assertThat(ProblemConfig.isExtIssueTypesEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_ISSUE_TYPES_ENABLED);
+        assertThat(ProblemConfig.isExtInputsArrayEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY_ENABLED);
     }
 
     @Test
     void enabledViaInitParam() {
-        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_I18N)).thenReturn("true");
-        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_ISSUE_TYPES)).thenReturn("true");
-        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY)).thenReturn("true");
+        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_I18N_ENABLED)).thenReturn("true");
+        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED)).thenReturn("true");
+        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED)).thenReturn("true");
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isTrue();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isTrue();
@@ -55,9 +55,9 @@ class ProblemConfiguratorTest {
 
     @Test
     void disabledViaInitParam() {
-        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_I18N)).thenReturn("false");
-        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_ISSUE_TYPES)).thenReturn("false");
-        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY)).thenReturn("false");
+        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_I18N_ENABLED)).thenReturn("false");
+        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED)).thenReturn("false");
+        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED)).thenReturn("false");
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isFalse();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isFalse();
@@ -65,9 +65,9 @@ class ProblemConfiguratorTest {
     }
 
     @Test
-    @SetSystemProperty(key = ProblemConfig.PROPERTY_I18N, value = "true")
-    @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES, value = "true")
-    @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY, value = "true")
+    @SetSystemProperty(key = ProblemConfig.PROPERTY_I18N_ENABLED, value = "true")
+    @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "true")
+    @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "true")
     void enabledViaSystemProperties() {
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isTrue();
@@ -77,9 +77,9 @@ class ProblemConfiguratorTest {
     }
 
     @Test
-    @SetSystemProperty(key = ProblemConfig.PROPERTY_I18N, value = "false")
-    @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES, value = "false")
-    @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY, value = "false")
+    @SetSystemProperty(key = ProblemConfig.PROPERTY_I18N_ENABLED, value = "false")
+    @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "false")
+    @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "false")
     void disabledViaSystemProperty() {
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isFalse();
@@ -89,9 +89,9 @@ class ProblemConfiguratorTest {
     }
 
     @Test
-    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_I18N, value = "true")
-    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES, value = "true")
-    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY, value = "true")
+    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_I18N_ENABLED, value = "true")
+    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "true")
+    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "true")
     void enabledViaEnvironmentVariable() {
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isTrue();
@@ -101,9 +101,9 @@ class ProblemConfiguratorTest {
     }
 
     @Test
-    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_I18N, value = "false")
-    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES, value = "false")
-    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY, value = "false")
+    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_I18N_ENABLED, value = "false")
+    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "false")
+    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "false")
     void disabledViaEnvironmentVariable() {
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isFalse();
@@ -113,12 +113,12 @@ class ProblemConfiguratorTest {
     }
 
     @Test
-    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_I18N, value = "false")
-    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES, value = "false")
-    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY, value = "false")
-    @SetSystemProperty(key = ProblemConfig.PROPERTY_I18N, value = "true")
-    @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES, value = "true")
-    @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY, value = "true")
+    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_I18N_ENABLED, value = "false")
+    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "false")
+    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "false")
+    @SetSystemProperty(key = ProblemConfig.PROPERTY_I18N_ENABLED, value = "true")
+    @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "true")
+    @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "true")
     void systemPropertyHasPrecedenceOverEnvironmentVariable() {
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isTrue();

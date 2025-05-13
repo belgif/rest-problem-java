@@ -25,7 +25,7 @@ class ProblemConfigurationPropertiesTest {
     void empty() {
         properties.afterPropertiesSet();
         assertThat(properties.getScanAdditionalProblemPackages()).isEmpty();
-        assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(ProblemConfig.DEFAULT_I18N);
+        assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(ProblemConfig.DEFAULT_I18N_ENABLED);
     }
 
     @Test
@@ -37,14 +37,14 @@ class ProblemConfigurationPropertiesTest {
 
     @Test
     void i18nEnabled() {
-        properties.setI18n(true);
+        properties.setI18nEnabled(true);
         properties.afterPropertiesSet();
         assertThat(ProblemConfig.isI18nEnabled()).isTrue();
     }
 
     @Test
     void i18nDisabled() {
-        properties.setI18n(false);
+        properties.setI18nEnabled(false);
         properties.afterPropertiesSet();
         assertThat(ProblemConfig.isI18nEnabled()).isFalse();
     }

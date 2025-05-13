@@ -21,34 +21,34 @@ class ProblemExtConfigurationPropertiesTest {
     @Test
     void empty() {
         properties.afterPropertiesSet();
-        assertThat(ProblemConfig.isExtIssueTypesEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_ISSUE_TYPES);
-        assertThat(ProblemConfig.isExtInputsArrayEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY);
+        assertThat(ProblemConfig.isExtIssueTypesEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_ISSUE_TYPES_ENABLED);
+        assertThat(ProblemConfig.isExtInputsArrayEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY_ENABLED);
     }
 
     @Test
     void extIssueTypesEnabled() {
-        properties.setIssueTypes(true);
+        properties.setIssueTypesEnabled(true);
         properties.afterPropertiesSet();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isTrue();
     }
 
     @Test
     void extIssueTypesDisabled() {
-        properties.setIssueTypes(false);
+        properties.setIssueTypesEnabled(false);
         properties.afterPropertiesSet();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isFalse();
     }
 
     @Test
     void extInputsArrayEnabled() {
-        properties.setInputsArray(true);
+        properties.setInputsArrayEnabled(true);
         properties.afterPropertiesSet();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isTrue();
     }
 
     @Test
     void extInputsArrayDisabled() {
-        properties.setInputsArray(false);
+        properties.setInputsArrayEnabled(false);
         properties.afterPropertiesSet();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isFalse();
     }

@@ -232,7 +232,7 @@ class InputValidationIssueTest {
 
         assertThatIllegalStateException()
                 .isThrownBy(() -> issue.inputs(inputs))
-                .withMessageContaining(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY);
+                .withMessageContaining(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED);
     }
 
     @Test
@@ -255,7 +255,7 @@ class InputValidationIssueTest {
         InputValidationIssue issue = new InputValidationIssue();
         assertThatIllegalStateException()
                 .isThrownBy(() -> issue.inputs(Input.query("first", "value"), Input.query("second", "value")))
-                .withMessageContaining(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY);
+                .withMessageContaining(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED);
     }
 
     @Test
@@ -289,7 +289,7 @@ class InputValidationIssueTest {
         issue.addInput(input);
         assertThatIllegalStateException()
                 .isThrownBy(() -> issue.addInput(input))
-                .withMessageContaining(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY);
+                .withMessageContaining(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED);
     }
 
     @Test

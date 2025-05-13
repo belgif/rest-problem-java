@@ -498,7 +498,7 @@ The I18N feature of the problem library can be disabled by configuring property:
 
 [source,properties]
 ----
-io.github.belgif.rest.problem.i18n=false
+io.github.belgif.rest.problem.i18n-enabled=false
 ----
 
 On Spring Boot, this can be configured via any of the standard https://docs.spring.io/spring-boot/reference/features/external-config.html[externalized configuration] mechanisms.
@@ -539,7 +539,7 @@ They are not an official part of the Belgif REST guidelines, may have an impact 
 [[belgif-ext-issue-types]]
 === Specialized issue types
 
-* Property: `io.github.belgif.rest.problem.ext.issue-types`
+* Property: `io.github.belgif.rest.problem.ext.issue-types-enabled`
 * Related issues: https://github.com/belgif/rest-guide/issues/113[belgif/rest-guide#113], https://github.com/belgif/rest-guide/issues/126[belgif/rest-guide#126]
 
 This extension replaces the generic `urn:problem-type:belgif:input-validation:invalidInput` issue type with more specialized `urn:problem-type:belgif-ext:input-validation:*` issue types, enabling clients to interpret and handle these issues individually (if desired).
@@ -559,7 +559,7 @@ This extension replaces the generic `urn:problem-type:belgif:input-validation:in
 [[belgif-ext-inputs-array]]
 === Inputs[] array
 
-* Property: `io.github.belgif.rest.problem.ext.inputs-array`
+* Property: `io.github.belgif.rest.problem.ext.inputs-array-enabled`
 * Related issue: https://github.com/belgif/rest-guide/issues/108[belgif/rest-guide#108]
 
 This extension provides an `inputs[]` array of in/name/value objects for input validation issues that relate to multiple inputs, enabling clients to parse this structured information (if desired).

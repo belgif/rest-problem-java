@@ -16,7 +16,7 @@ public class ProblemConfigurationProperties implements InitializingBean {
 
     private List<String> scanAdditionalProblemPackages = new ArrayList<>();
 
-    private boolean i18n = ProblemConfig.DEFAULT_I18N;
+    private boolean i18nEnabled = ProblemConfig.DEFAULT_I18N_ENABLED;
 
     public void setScanAdditionalProblemPackages(List<String> scanAdditionalProblemPackages) {
         this.scanAdditionalProblemPackages = scanAdditionalProblemPackages;
@@ -26,13 +26,13 @@ public class ProblemConfigurationProperties implements InitializingBean {
         return scanAdditionalProblemPackages;
     }
 
-    public void setI18n(boolean i18n) {
-        this.i18n = i18n;
+    public void setI18nEnabled(boolean i18nEnabled) {
+        this.i18nEnabled = i18nEnabled;
     }
 
     @Override
     public void afterPropertiesSet() {
-        ProblemConfig.setI18nEnabled(i18n);
+        ProblemConfig.setI18nEnabled(i18nEnabled);
     }
 
 }

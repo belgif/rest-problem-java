@@ -5,23 +5,26 @@ package io.github.belgif.rest.problem.config;
  */
 public class ProblemConfig {
 
-    public static final String PROPERTY_I18N = "io.github.belgif.rest.problem.i18n";
+    public static final String PROPERTY_I18N_ENABLED =
+            "io.github.belgif.rest.problem.i18n-enabled";
 
-    public static final String PROPERTY_EXT_ISSUE_TYPES = "io.github.belgif.rest.problem.ext.issue-types";
+    public static final String PROPERTY_EXT_ISSUE_TYPES_ENABLED =
+            "io.github.belgif.rest.problem.ext.issue-types-enabled";
 
-    public static final String PROPERTY_EXT_INPUTS_ARRAY = "io.github.belgif.rest.problem.ext.inputs-array";
+    public static final String PROPERTY_EXT_INPUTS_ARRAY_ENABLED =
+            "io.github.belgif.rest.problem.ext.inputs-array-enabled";
 
-    public static final boolean DEFAULT_I18N = true;
+    public static final boolean DEFAULT_I18N_ENABLED = true;
 
-    public static final boolean DEFAULT_EXT_ISSUE_TYPES = false;
+    public static final boolean DEFAULT_EXT_ISSUE_TYPES_ENABLED = false;
 
-    public static final boolean DEFAULT_EXT_INPUTS_ARRAY = false;
+    public static final boolean DEFAULT_EXT_INPUTS_ARRAY_ENABLED = false;
 
-    private static boolean i18nEnabled = DEFAULT_I18N;
+    private static boolean i18nEnabled = DEFAULT_I18N_ENABLED;
 
-    private static boolean extIssueTypesEnabled = DEFAULT_EXT_ISSUE_TYPES;
+    private static boolean extIssueTypesEnabled = DEFAULT_EXT_ISSUE_TYPES_ENABLED;
 
-    private static boolean extInputsArrayEnabled = DEFAULT_EXT_INPUTS_ARRAY;
+    private static boolean extInputsArrayEnabled = DEFAULT_EXT_INPUTS_ARRAY_ENABLED;
 
     private ProblemConfig() {
     }
@@ -51,9 +54,9 @@ public class ProblemConfig {
     }
 
     public static void reset() {
-        i18nEnabled = DEFAULT_I18N;
-        extIssueTypesEnabled = DEFAULT_EXT_ISSUE_TYPES;
-        extInputsArrayEnabled = DEFAULT_EXT_INPUTS_ARRAY;
+        i18nEnabled = DEFAULT_I18N_ENABLED;
+        extIssueTypesEnabled = DEFAULT_EXT_ISSUE_TYPES_ENABLED;
+        extInputsArrayEnabled = DEFAULT_EXT_INPUTS_ARRAY_ENABLED;
     }
 
 }
