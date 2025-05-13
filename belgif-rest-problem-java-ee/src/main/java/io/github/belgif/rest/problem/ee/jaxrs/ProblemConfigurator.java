@@ -19,12 +19,12 @@ public class ProblemConfigurator implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ProblemConfig.setI18nEnabled(
-                getBoolean(sce, ProblemConfig.PROPERTY_I18N, ProblemConfig.DEFAULT_I18N));
-        ProblemConfig.setExtIssueTypesEnabled(
-                getBoolean(sce, ProblemConfig.PROPERTY_EXT_ISSUE_TYPES, ProblemConfig.DEFAULT_EXT_ISSUE_TYPES));
-        ProblemConfig.setExtInputsArrayEnabled(
-                getBoolean(sce, ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY, ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY));
+        ProblemConfig.setI18nEnabled(getBoolean(sce, ProblemConfig.PROPERTY_I18N_ENABLED,
+                ProblemConfig.DEFAULT_I18N_ENABLED));
+        ProblemConfig.setExtIssueTypesEnabled(getBoolean(sce, ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED,
+                ProblemConfig.DEFAULT_EXT_ISSUE_TYPES_ENABLED));
+        ProblemConfig.setExtInputsArrayEnabled(getBoolean(sce, ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED,
+                ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY_ENABLED));
     }
 
     private boolean getBoolean(ServletContextEvent sce, String key, boolean defaultValue) {

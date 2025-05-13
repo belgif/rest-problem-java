@@ -37,9 +37,9 @@ class QuarkusProblemConfiguratorTest {
     @Test
     void defaults() {
         new QuarkusProblemConfigurator(Optional.empty(), Optional.empty(), Optional.empty());
-        assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(ProblemConfig.DEFAULT_I18N);
-        assertThat(ProblemConfig.isExtIssueTypesEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_ISSUE_TYPES);
-        assertThat(ProblemConfig.isExtInputsArrayEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY);
+        assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(ProblemConfig.DEFAULT_I18N_ENABLED);
+        assertThat(ProblemConfig.isExtIssueTypesEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_ISSUE_TYPES_ENABLED);
+        assertThat(ProblemConfig.isExtInputsArrayEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY_ENABLED);
     }
 
 }

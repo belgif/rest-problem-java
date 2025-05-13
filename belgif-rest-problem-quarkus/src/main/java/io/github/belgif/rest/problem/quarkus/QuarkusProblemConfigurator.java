@@ -19,12 +19,18 @@ public class QuarkusProblemConfigurator {
 
     @Inject
     public QuarkusProblemConfigurator(
-            @ConfigProperty(name = ProblemConfig.PROPERTY_I18N) Optional<Boolean> i18n,
-            @ConfigProperty(name = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES) Optional<Boolean> extIssueTypes,
-            @ConfigProperty(name = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY) Optional<Boolean> extInputsArray) {
-        ProblemConfig.setI18nEnabled(i18n.orElse(ProblemConfig.DEFAULT_I18N));
-        ProblemConfig.setExtIssueTypesEnabled(extIssueTypes.orElse(ProblemConfig.DEFAULT_EXT_ISSUE_TYPES));
-        ProblemConfig.setExtInputsArrayEnabled(extInputsArray.orElse(ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY));
+            @ConfigProperty(
+                    name = ProblemConfig.PROPERTY_I18N_ENABLED) Optional<Boolean> i18nEnabled,
+            @ConfigProperty(
+                    name = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED) Optional<Boolean> extIssueTypesEnabled,
+            @ConfigProperty(
+                    name = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED) Optional<Boolean> extInputsArrayEnabled) {
+        ProblemConfig.setI18nEnabled(i18nEnabled.orElse(
+                ProblemConfig.DEFAULT_I18N_ENABLED));
+        ProblemConfig.setExtIssueTypesEnabled(extIssueTypesEnabled.orElse(
+                ProblemConfig.DEFAULT_EXT_ISSUE_TYPES_ENABLED));
+        ProblemConfig.setExtInputsArrayEnabled(extInputsArrayEnabled.orElse(
+                ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY_ENABLED));
     }
 
 }

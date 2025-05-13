@@ -15,8 +15,8 @@ class RestProblemJakartaEeExtIT extends AbstractRestProblemExtIT {
     @Container
     @SuppressWarnings("rawtypes")
     public static final GenericContainer JBOSS_CONTAINER = RestProblemJakartaEeIT.createContainer()
-            .withEnv(ProblemConfig.PROPERTY_EXT_ISSUE_TYPES, "true")
-            .withEnv(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY, "true");
+            .withEnv(ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, "true")
+            .withEnv(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, "true");
 
     @Override
     protected RequestSpecification getSpec() {
