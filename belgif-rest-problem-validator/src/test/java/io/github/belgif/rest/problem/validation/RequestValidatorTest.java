@@ -3,7 +3,6 @@ package io.github.belgif.rest.problem.validation;
 import static io.github.belgif.rest.problem.api.InEnum.*;
 import static org.assertj.core.api.Assertions.*;
 
-import java.net.URI;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
@@ -493,8 +492,9 @@ class RequestValidatorTest {
         assertThatExceptionOfType(BadRequestProblem.class).isThrownBy(validator::validate)
                 .extracting(p -> p.getIssues().get(0))
                 .satisfies(issue -> {
-                   assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:zeroOrAllOfExpected");
-                   assertThat(issue.getInputs()).hasSize(2);
+                    assertThat(issue.getType())
+                            .hasToString("urn:problem-type:belgif-ext:input-validation:zeroOrAllOfExpected");
+                    assertThat(issue.getInputs()).hasSize(2);
                 });
         validator = new RequestValidator().zeroOrAllOf(inputs);
         assertThatExceptionOfType(BadRequestProblem.class).isThrownBy(validator::validate)

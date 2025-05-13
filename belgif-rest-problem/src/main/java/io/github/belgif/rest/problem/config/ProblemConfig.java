@@ -1,9 +1,5 @@
 package io.github.belgif.rest.problem.config;
 
-import io.github.belgif.rest.problem.i18n.I18N;
-
-import java.util.Locale;
-
 /**
  * Dynamic configuration parameters for the problem module.
  */
@@ -24,14 +20,14 @@ public class ProblemConfig {
 
     public static final boolean DEFAULT_EXT_INPUTS_ARRAY_ENABLED = false;
 
-    private static final ThreadLocal<Boolean> LOCAL_EXT_ISSUE_TYPES = new InheritableThreadLocal<Boolean>() {
+    private static final ThreadLocal<Boolean> LOCAL_EXT_ISSUE_TYPES_ENABLED = new InheritableThreadLocal<Boolean>() {
         @Override
         protected Boolean initialValue() {
             return null;
         }
     };
 
-    private static final ThreadLocal<Boolean> LOCAL_EXT_INPUTS_ARRAY = new InheritableThreadLocal<Boolean>() {
+    private static final ThreadLocal<Boolean> LOCAL_EXT_INPUTS_ARRAY_ENABLED = new InheritableThreadLocal<Boolean>() {
         @Override
         protected Boolean initialValue() {
             return null;
@@ -56,8 +52,8 @@ public class ProblemConfig {
     }
 
     public static boolean isExtIssueTypesEnabled() {
-        if (LOCAL_EXT_ISSUE_TYPES.get() != null) {
-            return LOCAL_EXT_ISSUE_TYPES.get();
+        if (LOCAL_EXT_ISSUE_TYPES_ENABLED.get() != null) {
+            return LOCAL_EXT_ISSUE_TYPES_ENABLED.get();
         }
         return extIssueTypesEnabled;
     }
@@ -67,12 +63,12 @@ public class ProblemConfig {
     }
 
     public static void setLocalExtIssueTypesEnabled(boolean extIssueTypesEnabled) {
-        LOCAL_EXT_ISSUE_TYPES.set(extIssueTypesEnabled);
+        LOCAL_EXT_ISSUE_TYPES_ENABLED.set(extIssueTypesEnabled);
     }
 
     public static boolean isExtInputsArrayEnabled() {
-        if (LOCAL_EXT_INPUTS_ARRAY.get() != null) {
-            return LOCAL_EXT_INPUTS_ARRAY.get();
+        if (LOCAL_EXT_INPUTS_ARRAY_ENABLED.get() != null) {
+            return LOCAL_EXT_INPUTS_ARRAY_ENABLED.get();
         }
         return extInputsArrayEnabled;
     }
@@ -82,12 +78,12 @@ public class ProblemConfig {
     }
 
     public static void setLocalExtInputsArrayEnabled(boolean extInputsArrayEnabled) {
-        LOCAL_EXT_INPUTS_ARRAY.set(extInputsArrayEnabled);
+        LOCAL_EXT_INPUTS_ARRAY_ENABLED.set(extInputsArrayEnabled);
     }
 
     public static void clearLocal() {
-        LOCAL_EXT_ISSUE_TYPES.remove();
-        LOCAL_EXT_INPUTS_ARRAY.remove();
+        LOCAL_EXT_ISSUE_TYPES_ENABLED.remove();
+        LOCAL_EXT_INPUTS_ARRAY_ENABLED.remove();
     }
 
     public static void reset() {
