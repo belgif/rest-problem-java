@@ -14,9 +14,9 @@ import io.github.belgif.rest.problem.config.ProblemConfig;
 public class I18N {
 
     /**
-     * The default locale: English.
+     * The default locale: ROOT (=English).
      */
-    public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
+    public static final Locale DEFAULT_LOCALE = Locale.ROOT;
 
     /**
      * The Belgif default resource bundle.
