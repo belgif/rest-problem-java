@@ -23,9 +23,10 @@ class ProblemConfigurationPropertiesTest {
 
     @Test
     void empty() {
+        boolean i18nEnabledBefore = ProblemConfig.isI18nEnabled();
         properties.afterPropertiesSet();
         assertThat(properties.getScanAdditionalProblemPackages()).isEmpty();
-        assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(ProblemConfig.DEFAULT_I18N_ENABLED);
+        assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(i18nEnabledBefore);
     }
 
     @Test

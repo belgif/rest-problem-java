@@ -1,5 +1,7 @@
 package io.github.belgif.rest.problem.ee.jaxrs;
 
+import java.util.function.Consumer;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -19,23 +21,20 @@ public class ProblemConfigurator implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ProblemConfig.setI18nEnabled(getBoolean(sce, ProblemConfig.PROPERTY_I18N_ENABLED,
-                ProblemConfig.DEFAULT_I18N_ENABLED));
-        ProblemConfig.setExtIssueTypesEnabled(getBoolean(sce, ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED,
-                ProblemConfig.DEFAULT_EXT_ISSUE_TYPES_ENABLED));
-        ProblemConfig.setExtInputsArrayEnabled(getBoolean(sce, ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED,
-                ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY_ENABLED));
+        setBooleanConfig(sce, ProblemConfig.PROPERTY_I18N_ENABLED, ProblemConfig::setI18nEnabled);
+        setBooleanConfig(sce, ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, ProblemConfig::setExtIssueTypesEnabled);
+        setBooleanConfig(sce, ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, ProblemConfig::setExtInputsArrayEnabled);
     }
 
-    private boolean getBoolean(ServletContextEvent sce, String key, boolean defaultValue) {
+    private void setBooleanConfig(ServletContextEvent sce, String key, Consumer<Boolean> configSetter) {
         if (System.getProperty(key) != null) {
-            return Boolean.parseBoolean(System.getProperty(key));
+            configSetter.accept(Boolean.parseBoolean(System.getProperty(key)));
         } else if (System.getenv(key) != null) {
-            return Boolean.parseBoolean(System.getenv(key));
+            configSetter.accept(Boolean.parseBoolean(System.getenv(key)));
         } else if (sce.getServletContext().getInitParameter(key) != null) {
-            return Boolean.parseBoolean(sce.getServletContext().getInitParameter(key));
+            configSetter.accept(Boolean.parseBoolean(sce.getServletContext().getInitParameter(key)));
         } else {
-            return defaultValue;
+            return;
         }
     }
 
