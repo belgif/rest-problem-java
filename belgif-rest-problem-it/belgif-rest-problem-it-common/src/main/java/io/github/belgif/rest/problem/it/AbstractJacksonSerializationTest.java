@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.net.URI;
 import java.util.Collections;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,7 @@ import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.config.ProblemConfig;
 
 public abstract class AbstractJacksonSerializationTest {
 
@@ -41,6 +43,11 @@ public abstract class AbstractJacksonSerializationTest {
         TestProblemTypeRegistry registry = new TestProblemTypeRegistry();
         registry.registerProblemType(BadRequestProblem.class, CustomProblem.class, TooManyRequestsProblem.class);
         mapper.registerModule(new ProblemModule(registry));
+    }
+
+    @AfterEach
+    public void resetProblemConfig() {
+        ProblemConfig.reset();
     }
 
     @Test
@@ -75,6 +82,7 @@ public abstract class AbstractJacksonSerializationTest {
 
     @Test
     public void badRequestProblemMultipleInputs() throws JsonProcessingException {
+        ProblemConfig.setExtInputsArrayEnabled(true);
         BadRequestProblem problem = new BadRequestProblem();
         problem.setDetail("my detail message");
         InputValidationIssue issue = new InputValidationIssue();
@@ -238,6 +246,7 @@ public abstract class AbstractJacksonSerializationTest {
 
     @Test
     public void issueWithNullInputValue() throws JsonProcessingException {
+        ProblemConfig.setExtInputsArrayEnabled(true);
         BadRequestProblem problem = new BadRequestProblem(new InputValidationIssue()
                 .inputs(Input.body("a", null), Input.body("b", null)));
         String json = mapper.writeValueAsString(problem);

@@ -5,11 +5,13 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import io.github.belgif.rest.problem.config.ProblemConfig;
 import io.restassured.specification.RequestSpecification;
 
 @TestInstance(PER_CLASS)
@@ -19,6 +21,11 @@ public abstract class AbstractRestProblemIT {
     protected abstract RequestSpecification getSpec();
 
     protected abstract Stream<String> getClients();
+
+    @AfterAll
+    static void afterAll() {
+        ProblemConfig.reset();
+    }
 
     @Test
     public void ping() {
@@ -455,6 +462,24 @@ public abstract class AbstractRestProblemIT {
         } finally {
             getSpec().queryParam("enabled", "true").post("/i18n");
         }
+    }
+
+    @Test
+    void requestValidator() {
+        getSpec().when()
+                .get("/requestValidator?ssin=999999999999&a=test").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("detail", equalTo("The input message is incorrect"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:invalidInput"))
+                .body("issues[0].title", equalTo("Invalid input"))
+                .body("issues[0].detail", equalTo("SSIN 999999999999 is invalid"))
+                .body("issues[0].in", equalTo("query"))
+                .body("issues[0].name", equalTo("ssin"))
+                .body("issues[0].value", equalTo("999999999999"))
+                .body("issues[1].type", equalTo("urn:problem-type:belgif:input-validation:invalidInput"))
+                .body("issues[1].title", equalTo("Invalid input"))
+                .body("issues[1].detail", equalTo("All or none of these inputs must be present: a, b"));
     }
 
 }

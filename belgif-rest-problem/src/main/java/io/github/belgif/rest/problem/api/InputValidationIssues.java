@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.github.belgif.rest.problem.config.ProblemConfig;
 import io.github.belgif.rest.problem.i18n.I18N;
 
 /**
@@ -21,41 +22,40 @@ public class InputValidationIssues {
             URI.create("urn:problem-type:belgif:input-validation:schemaViolation");
     public static final URI ISSUE_TYPE_UNKNOWN_INPUT =
             URI.create("urn:problem-type:belgif:input-validation:unknownInput");
+    public static final URI ISSUE_TYPE_INVALID_INPUT =
+            URI.create("urn:problem-type:belgif:input-validation:invalidInput");
     public static final URI ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND =
             URI.create("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
 
-    // CBSS input-validation issue types for Belgif openapi types
-    // TODO: standardize @ Belgif: https://github.com/belgif/rest-guide/issues/126
-
+    // Belgif-ext input-validation issue types
     public static final URI ISSUE_TYPE_INVALID_STRUCTURE =
-            URI.create("urn:problem-type:cbss:input-validation:invalidStructure");
+            URI.create("urn:problem-type:belgif-ext:input-validation:invalidStructure");
     public static final URI ISSUE_TYPE_OUT_OF_RANGE =
-            URI.create("urn:problem-type:cbss:input-validation:outOfRange");
+            URI.create("urn:problem-type:belgif-ext:input-validation:outOfRange");
     public static final URI ISSUE_TYPE_REJECTED_INPUT =
-            URI.create("urn:problem-type:cbss:input-validation:rejectedInput");
+            URI.create("urn:problem-type:belgif-ext:input-validation:rejectedInput");
     public static final URI ISSUE_TYPE_REQUIRED_INPUT =
-            URI.create("urn:problem-type:cbss:input-validation:requiredInput");
+            URI.create("urn:problem-type:belgif-ext:input-validation:requiredInput");
+    public static final URI ISSUE_TYPE_INVALID_PERIOD =
+            URI.create("urn:problem-type:belgif-ext:input-validation:invalidPeriod");
 
+    // CBSS SSIN input-validation issue types
     public static final URI ISSUE_TYPE_REPLACED_SSIN =
             URI.create("urn:problem-type:cbss:input-validation:replacedSsin");
     public static final URI ISSUE_TYPE_CANCELED_SSIN =
             URI.create("urn:problem-type:cbss:input-validation:canceledSsin");
-    public static final URI ISSUE_TYPE_INVALID_PERIOD =
-            URI.create("urn:problem-type:cbss:input-validation:invalidPeriod");
 
-    // CBSS input-validation issue types for cross-parameter validation
-    // TODO: standardize @ Belgif: https://github.com/belgif/rest-guide/issues/113
-
+    // Belgif-ext input-validation issue types for cross-parameter validation
     public static final URI ISSUE_TYPE_EXACTLY_ONE_OF_EXPECTED =
-            URI.create("urn:problem-type:cbss:input-validation:exactlyOneOfExpected");
+            URI.create("urn:problem-type:belgif-ext:input-validation:exactlyOneOfExpected");
     public static final URI ISSUE_TYPE_ANY_OF_EXPECTED =
-            URI.create("urn:problem-type:cbss:input-validation:anyOfExpected");
+            URI.create("urn:problem-type:belgif-ext:input-validation:anyOfExpected");
     public static final URI ISSUE_TYPE_ZERO_OR_EXACTLY_ONE_OF_EXPECTED =
-            URI.create("urn:problem-type:cbss:input-validation:zeroOrExactlyOneOfExpected");
+            URI.create("urn:problem-type:belgif-ext:input-validation:zeroOrExactlyOneOfExpected");
     public static final URI ISSUE_TYPE_ZERO_OR_ALL_OF_EXPECTED =
-            URI.create("urn:problem-type:cbss:input-validation:zeroOrAllOfExpected");
+            URI.create("urn:problem-type:belgif-ext:input-validation:zeroOrAllOfExpected");
     public static final URI ISSUE_TYPE_EQUAL_EXPECTED =
-            URI.create("urn:problem-type:cbss:input-validation:equalExpected");
+            URI.create("urn:problem-type:belgif-ext:input-validation:equalExpected");
 
     private InputValidationIssues() {
     }
@@ -73,11 +73,16 @@ public class InputValidationIssues {
                 .in(in, name, value);
     }
 
+    public static InputValidationIssue invalidInput(InEnum in, String name, Object value, String detail) {
+        return new InputValidationIssue(ISSUE_TYPE_INVALID_INPUT, "Invalid input")
+                .detail(detail)
+                .in(in, name, value);
+    }
+
     public static InputValidationIssue invalidStructure(InEnum in, String name, Object value, String detail) {
-        return new InputValidationIssue(ISSUE_TYPE_INVALID_STRUCTURE,
-                "Input value has invalid structure")
-                        .detail(detail)
-                        .in(in, name, value);
+        return invalidInputExt(ISSUE_TYPE_INVALID_STRUCTURE, "Input value has invalid structure")
+                .detail(detail)
+                .in(in, name, value);
     }
 
     public static <T extends Comparable<T>> InputValidationIssue outOfRange(InEnum in, String name, T value, T min,
@@ -85,9 +90,8 @@ public class InputValidationIssues {
         if (min == null && max == null) {
             throw new IllegalArgumentException("At least one of min, max must be non-null");
         }
-        InputValidationIssue issue =
-                new InputValidationIssue(ISSUE_TYPE_OUT_OF_RANGE, "Input value is out of range")
-                        .in(in, name, value);
+        InputValidationIssue issue = invalidInputExt(ISSUE_TYPE_OUT_OF_RANGE, "Input value is out of range")
+                .in(in, name, value);
         if (min != null && max != null) {
             issue.localizedDetail("outOfRange.minmax", name, value, min, max)
                     .additionalProperty("minimum", min.toString())
@@ -109,24 +113,23 @@ public class InputValidationIssues {
     }
 
     public static InputValidationIssue rejectedInput(InEnum in, String name, Object value) {
-        return new InputValidationIssue(ISSUE_TYPE_REJECTED_INPUT, "Input is not allowed in this context")
+        return invalidInputExt(ISSUE_TYPE_REJECTED_INPUT, "Input is not allowed in this context")
                 .localizedDetail("rejectedInput", name)
                 .in(in, name, value);
     }
 
     public static InputValidationIssue requiredInput(InEnum in, String name) {
-        return new InputValidationIssue(ISSUE_TYPE_REQUIRED_INPUT, "Input is required in this context")
+        return invalidInputExt(ISSUE_TYPE_REQUIRED_INPUT, "Input is required in this context")
                 .localizedDetail("requiredInput", name)
                 .in(in, name, null);
     }
 
     public static InputValidationIssue requiredInputsIfPresent(Input<?> target, List<Input<?>> inputs) {
-        InputValidationIssue issue =
-                new InputValidationIssue(ISSUE_TYPE_REQUIRED_INPUT, "Input is required in this context")
-                        .localizedDetail("requiredInput.ifPresent", target.getName(), getJoinedNames(inputs));
+        InputValidationIssue issue = invalidInputExt(ISSUE_TYPE_REQUIRED_INPUT, "Input is required in this context")
+                .localizedDetail("requiredInput.ifPresent", target.getName(), getJoinedNames(inputs));
         issue.addInput(target);
 
-        if (inputs != null) {
+        if (inputs != null && ProblemConfig.isExtInputsArrayEnabled()) {
             inputs.forEach(issue::addInput);
         }
 
@@ -160,16 +163,19 @@ public class InputValidationIssues {
     }
 
     public static InputValidationIssue invalidPeriod(InEnum in, String name, Object period) {
-        return new InputValidationIssue(ISSUE_TYPE_INVALID_PERIOD, "Period is invalid")
+        return invalidInputExt(ISSUE_TYPE_INVALID_PERIOD, "Period is invalid")
                 .localizedDetail("invalidPeriod", "endDate", "startDate")
                 .in(in, name, period);
     }
 
     public static <T extends Temporal & Comparable<? super T>> InputValidationIssue invalidPeriod(
             Input<T> start, Input<T> end) {
-        return new InputValidationIssue(ISSUE_TYPE_INVALID_PERIOD, "Period is invalid")
-                .localizedDetail("invalidPeriod", end.getName(), start.getName())
-                .inputs(Arrays.asList(start, end));
+        InputValidationIssue issue = invalidInputExt(ISSUE_TYPE_INVALID_PERIOD, "Period is invalid")
+                .localizedDetail("invalidPeriod", end.getName(), start.getName());
+        if (ProblemConfig.isExtInputsArrayEnabled()) {
+            issue.inputs(Arrays.asList(start, end));
+        }
+        return issue;
     }
 
     public static InputValidationIssue invalidIncompleteDate(InEnum in, String name, String incompleteDate) {
@@ -194,40 +200,66 @@ public class InputValidationIssues {
     }
 
     public static InputValidationIssue exactlyOneOfExpected(List<Input<?>> inputs) {
-        return new InputValidationIssue(ISSUE_TYPE_EXACTLY_ONE_OF_EXPECTED,
-                "Exactly one of these inputs must be present")
-                        .localizedDetail("exactlyOneOfExpected", getJoinedNames(inputs))
-                        .inputs(inputs);
+        InputValidationIssue issue =
+                invalidInputExt(ISSUE_TYPE_EXACTLY_ONE_OF_EXPECTED, "Exactly one of these inputs must be present")
+                        .localizedDetail("exactlyOneOfExpected", getJoinedNames(inputs));
+        if (ProblemConfig.isExtInputsArrayEnabled()) {
+            issue.inputs(inputs);
+        }
+        return issue;
     }
 
     public static InputValidationIssue anyOfExpected(List<Input<?>> inputs) {
-        return new InputValidationIssue(ISSUE_TYPE_ANY_OF_EXPECTED, "Any of these inputs must be present")
-                .localizedDetail("anyOfExpected", getJoinedNames(inputs))
-                .inputs(inputs);
+        InputValidationIssue issue =
+                invalidInputExt(ISSUE_TYPE_ANY_OF_EXPECTED, "Any of these inputs must be present")
+                        .localizedDetail("anyOfExpected", getJoinedNames(inputs));
+        if (ProblemConfig.isExtInputsArrayEnabled()) {
+            issue.inputs(inputs);
+        }
+        return issue;
     }
 
     public static InputValidationIssue zeroOrExactlyOneOfExpected(List<Input<?>> inputs) {
-        return new InputValidationIssue(ISSUE_TYPE_ZERO_OR_EXACTLY_ONE_OF_EXPECTED,
+        InputValidationIssue issue = invalidInputExt(ISSUE_TYPE_ZERO_OR_EXACTLY_ONE_OF_EXPECTED,
                 "Exactly one or none of these inputs must be present")
-                        .localizedDetail("zeroOrExactlyOneOfExpected", getJoinedNames(inputs))
-                        .inputs(inputs);
+                        .localizedDetail("zeroOrExactlyOneOfExpected", getJoinedNames(inputs));
+        if (ProblemConfig.isExtInputsArrayEnabled()) {
+            issue.inputs(inputs);
+        }
+        return issue;
     }
 
     public static InputValidationIssue zeroOrAllOfExpected(List<Input<?>> inputs) {
-        return new InputValidationIssue(ISSUE_TYPE_ZERO_OR_ALL_OF_EXPECTED,
-                "All or none of these inputs must be present")
-                        .localizedDetail("zeroOrAllOfExpected", getJoinedNames(inputs))
-                        .inputs(inputs);
+        InputValidationIssue issue =
+                invalidInputExt(ISSUE_TYPE_ZERO_OR_ALL_OF_EXPECTED, "All or none of these inputs must be present")
+                        .localizedDetail("zeroOrAllOfExpected", getJoinedNames(inputs));
+        if (ProblemConfig.isExtInputsArrayEnabled()) {
+            issue.inputs(inputs);
+        }
+        return issue;
     }
 
     public static InputValidationIssue equalExpected(List<Input<?>> inputs) {
-        return new InputValidationIssue(ISSUE_TYPE_EQUAL_EXPECTED, "These inputs must be equal")
-                .localizedDetail("equalExpected", getJoinedNames(inputs))
-                .inputs(inputs);
+        InputValidationIssue issue =
+                invalidInputExt(ISSUE_TYPE_EQUAL_EXPECTED, "These inputs must be equal")
+                        .localizedDetail("equalExpected", getJoinedNames(inputs));
+        if (ProblemConfig.isExtInputsArrayEnabled()) {
+            issue.inputs(inputs);
+        }
+        return issue;
     }
 
     private static String getJoinedNames(List<Input<?>> inputs) {
         return inputs == null || inputs.isEmpty() ? ""
                 : inputs.stream().map(Input::getName).collect(Collectors.joining(", "));
     }
+
+    private static InputValidationIssue invalidInputExt(URI extIssueType, String extTitle) {
+        if (!ProblemConfig.isExtIssueTypesEnabled()) {
+            return new InputValidationIssue(ISSUE_TYPE_INVALID_INPUT, "Invalid input");
+        } else {
+            return new InputValidationIssue(extIssueType, extTitle);
+        }
+    }
+
 }

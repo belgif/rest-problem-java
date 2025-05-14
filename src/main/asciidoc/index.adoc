@@ -152,6 +152,7 @@ include::../../../belgif-rest-problem/src/test/java/adoc/CodeSamples.java[tag=th
 ----
 
 This will return following HTTP response:
+
 ----
 400 Bad Request
 Content-Type: application/problem+json
@@ -352,8 +353,6 @@ _Problem_
 [NOTE]
 ====
 * The `BadRequestProblem` is backwards compatible with the deprecated `InvalidParamProblem` _(with invalidParams[] instead of issues[])_ of openapi-problem 1.1.
-* Besides the standard in/name/value properties for referencing a single input, the `InputValidationIssue` class also supports an inputs[] array for referencing multiple in/name/value inputs.
-This is https://github.com/belgif/rest-guide/issues/108[not currently standardized].
 * `MissingPermissionProblem` extending InputValidationProblem is https://github.com/belgif/rest-guide/issues/114[not currently standardized].
 ====
 
@@ -422,57 +421,33 @@ include::../../../belgif-rest-problem-validator/src/test/java/adoc/CodeSamples.j
   "detail": "The input message is incorrect",
   "issues": [
     {
-      "type": "urn:problem-type:cbss:input-validation:invalidStructure",
-      "title": "Input value has invalid structure",
+      "type": "urn:problem-type:belgif:input-validation:invalidInput",
+      "title": "Invalid input",
       "detail": "SSIN 11111111111 is invalid",
       "in": "query",
       "name": "ssin",
       "value": "11111111111"
     },
     {
-      "type": "urn:problem-type:cbss:input-validation:invalidStructure",
-      "title": "Input value has invalid structure",
+      "type": "urn:problem-type:belgif:input-validation:invalidInput",
+      "title": "Invalid input",
       "detail": "Enterprise number 2222222222 is invalid",
       "in": "query",
       "name": "enterpriseNumber",
       "value": "2222222222"
     },
     {
-      "type": "urn:problem-type:cbss:input-validation:invalidPeriod",
-      "title": "Period is invalid",
-      "detail": "endDate should not preceed startDate",
-      "inputs": [
-        {
-          "in": "query",
-          "name": "startDate",
-          "value": "2023-12-31"
-        },
-        {
-          "in": "query",
-          "name": "endDate",
-          "value": "2023-01-01"
-        }
-      ]
+      "type": "urn:problem-type:belgif:input-validation:invalidInput",
+      "title": "Invalid input",
+      "detail": "endDate should not preceed startDate"
     },
     {
-      "type": "urn:problem-type:cbss:input-validation:exactlyOneOfExpected",
-      "title": "Exactly one of these inputs must be present",
-      "detail": "Exactly one of these inputs must be present: ssin, enterpriseNumber",
-      "inputs": [
-        {
-          "in": "query",
-          "name": "ssin",
-          "value": "11111111111"
-        },
-        {
-          "in": "query",
-          "name": "enterpriseNumber",
-          "value": "2222222222"
-        }
-      ]
+      "type": "urn:problem-type:belgif:input-validation:invalidInput",
+      "title": "Invalid input",
+      "detail": "Exactly one of these inputs must be present: ssin, enterpriseNumber"
     },
     {
-      "type": "urn:problem-type:cbss:input-validation:example:invalidPassword",
+      "type": "urn:problem-type:acme:input-validation:example:invalidPassword",
       "title": "Invalid password",
       "in": "query",
       "name": "password",
@@ -523,7 +498,7 @@ The I18N feature of the problem library can be disabled by configuring property:
 
 [source,properties]
 ----
-io.github.belgif.rest.problem.i18n=false
+io.github.belgif.rest.problem.i18n-enabled=false
 ----
 
 On Spring Boot, this can be configured via any of the standard https://docs.spring.io/spring-boot/reference/features/external-config.html[externalized configuration] mechanisms.
@@ -545,6 +520,228 @@ On Jakarta EE, a default implementation is provided that retrieves the locale fr
 On Quarkus, a default implementation is provided that retrieves the locale from a request-scoped CDI bean that gets initialized with the value from the Accept-Language header.
 
 Applications can provide and register their own LocaleResolver if needed (`/META-INF/services/io.github.belgif.rest.problem.i18n.LocaleResolver`).
+
+[[belgif-ext]]
+== Extensions
+
+The belgif-rest-problem library provides some optional extensions to the Belgif REST guidelines, which can be enabled on-demand by setting the corresponding `io.github.belgif.rest.problem.ext.*` configuration property:
+
+* On Spring Boot, via any of the standard https://docs.spring.io/spring-boot/reference/features/external-config.html[externalized configuration] mechanisms.
+* On Jakarta EE, as a system property, environment variable, or web.xml context-param (in that order of precedence).
+* On Quarkus, via any of the standard https://quarkus.io/guides/config-reference#configuration-sources[MicroProfile Config Sources].
+
+[WARNING]
+====
+Use these extensions at your own discretion.
+They are not an official part of the Belgif REST guidelines, may have an impact on interoperability, and may potentially be changed or removed in a future version.
+====
+
+[[belgif-ext-issue-types]]
+=== Specialized issue types
+
+* Property: `io.github.belgif.rest.problem.ext.issue-types-enabled`
+* Related issues: https://github.com/belgif/rest-guide/issues/113[belgif/rest-guide#113], https://github.com/belgif/rest-guide/issues/126[belgif/rest-guide#126]
+
+This extension replaces the generic `urn:problem-type:belgif:input-validation:invalidInput` issue type with more specialized `urn:problem-type:belgif-ext:input-validation:*` issue types, enabling clients to interpret and handle these issues individually (if desired).
+
+* `invalidStructure`: Input value has invalid structure (e.g. checksum, format, ...)
+* `invalidPeriod`: Period is invalid (startDate > endDate)
+* `outOfRange`: Input value is out of range
+* `rejectedInput`: Input is not allowed in this context (e.g. when reusing a permissive schema)
+* `requiredInput`: Input is required in this context (e.g. when reusing a permissive schema)
+* Cross-parameter validation issues:
+** `exactlyOneOfExpected`: Exactly one of these inputs must be present
+** `anyOfExpected`: Any of these inputs must be present
+** `zeroOrExactlyOneOfExpected`: Exactly one or none of these inputs must be present
+** `zeroOrAllOfExpected`: All or none of these inputs must be present
+** `equalExpected`: These inputs must be equal
+
+[[belgif-ext-inputs-array]]
+=== Inputs[] array
+
+* Property: `io.github.belgif.rest.problem.ext.inputs-array-enabled`
+* Related issue: https://github.com/belgif/rest-guide/issues/108[belgif/rest-guide#108]
+
+This extension provides an `inputs[]` array of in/name/value objects for input validation issues that relate to multiple inputs, enabling clients to parse this structured information (if desired).
+
+[[belgif-ext-example]]
+=== Example
+
+[source,json,role="primary",subs="attributes+"]
+.Standard
+----
+{
+  "type": "urn:problem-type:belgif:badRequest",
+  "href": "https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "The input message is incorrect",
+  "issues": [
+    {
+      "type": "urn:problem-type:belgif:input-validation:invalidInput",
+      "title": "Invalid input",
+      "detail": "SSIN 11111111111 is invalid",
+      "in": "query",
+      "name": "ssin",
+      "value": "11111111111"
+    },
+    {
+      "type": "urn:problem-type:belgif:input-validation:invalidInput",
+      "title": "Invalid input",
+      "detail": "endDate should not preceed startDate"
+    },
+    {
+      "type": "urn:problem-type:belgif:input-validation:invalidInput",
+      "title": "Invalid input",
+      "detail": "Exactly one of these inputs must be present: ssin, enterpriseNumber"
+    }
+  ]
+}
+----
+
+[source,json,role="secondary",subs="attributes+"]
+.ext.issue-types
+----
+{
+  "type": "urn:problem-type:belgif:badRequest",
+  "href": "https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "The input message is incorrect",
+  "issues": [
+    {
+      "type": "urn:problem-type:belgif-ext:input-validation:invalidStructure",
+      "title": "Input value has invalid structure",
+      "detail": "SSIN 11111111111 is invalid",
+      "in": "query",
+      "name": "ssin",
+      "value": "11111111111"
+    },
+    {
+      "type": "urn:problem-type:belgif-ext:input-validation:invalidPeriod",
+      "title": "Period is invalid",
+      "detail": "endDate should not preceed startDate"
+    },
+    {
+      "type": "urn:problem-type:belgif-ext:input-validation:exactlyOneOfExpected",
+      "title": "Exactly one of these inputs must be present",
+      "detail": "Exactly one of these inputs must be present: ssin, enterpriseNumber"
+    }
+  ]
+}
+----
+
+[source,json,role="secondary",subs="attributes+"]
+.ext.inputs-array
+----
+{
+  "type": "urn:problem-type:belgif:badRequest",
+  "href": "https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "The input message is incorrect",
+  "issues": [
+    {
+      "type": "urn:problem-type:belgif:input-validation:invalidInput",
+      "title": "Invalid input",
+      "detail": "SSIN 11111111111 is invalid",
+      "in": "query",
+      "name": "ssin",
+      "value": "11111111111"
+    },
+    {
+      "type": "urn:problem-type:belgif:input-validation:invalidInput",
+      "title": "Invalid input",
+      "detail": "endDate should not preceed startDate",
+      "inputs": [
+        {
+          "in": "query",
+          "name": "startDate",
+          "value": "2023-12-31"
+        },
+        {
+          "in": "query",
+          "name": "endDate",
+          "value": "2023-01-01"
+        }
+      ]
+    },
+    {
+      "type": "urn:problem-type:belgif:input-validation:invalidInput",
+      "title": "Invalid input",
+      "detail": "Exactly one of these inputs must be present: ssin, enterpriseNumber",
+      "inputs": [
+        {
+          "in": "query",
+          "name": "ssin",
+          "value": "11111111111"
+        },
+        {
+          "in": "query",
+          "name": "enterpriseNumber",
+          "value": "0244640631"
+        }
+      ]
+    }
+  ]
+}
+----
+
+[source,json,role="secondary",subs="attributes+"]
+.ext.issue-types and ext.inputs-array
+----
+{
+  "type": "urn:problem-type:belgif:badRequest",
+  "href": "https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "The input message is incorrect",
+  "issues": [
+    {
+      "type": "urn:problem-type:belgif-ext:input-validation:invalidStructure",
+      "title": "Input value has invalid structure",
+      "detail": "SSIN 11111111111 is invalid",
+      "in": "query",
+      "name": "ssin",
+      "value": "11111111111"
+    },
+    {
+      "type": "urn:problem-type:belgif-ext:input-validation:invalidPeriod",
+      "title": "Period is invalid",
+      "detail": "endDate should not preceed startDate",
+      "inputs": [
+        {
+          "in": "query",
+          "name": "startDate",
+          "value": "2023-12-31"
+        },
+        {
+          "in": "query",
+          "name": "endDate",
+          "value": "2023-01-01"
+        }
+      ]
+    },
+    {
+      "type": "urn:problem-type:belgif-ext:input-validation:exactlyOneOfExpected",
+      "title": "Exactly one of these inputs must be present",
+      "detail": "Exactly one of these inputs must be present: ssin, enterpriseNumber",
+      "inputs": [
+        {
+          "in": "query",
+          "name": "ssin",
+          "value": "11111111111"
+        },
+        {
+          "in": "query",
+          "name": "enterpriseNumber",
+          "value": "0244640631"
+        }
+      ]
+    }
+  ]
+}
+----
 
 [[implementation-details]]
 == Implementation details

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
+import io.github.belgif.rest.problem.config.ProblemConfig;
 import io.github.belgif.rest.problem.i18n.I18N;
 
 /**
@@ -145,9 +146,13 @@ public class InputValidationIssue {
     }
 
     public void addInput(Input<?> input) {
-
         if (input == null) {
             return;
+        }
+
+        if (!ProblemConfig.isExtInputsArrayEnabled() && hasInNameValue()) {
+            throw new IllegalStateException(
+                    "inputs[] array extension is not enabled: " + ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED);
         }
 
         if (hasInNameValue()) {
@@ -347,11 +352,16 @@ public class InputValidationIssue {
      *
      * @throws IllegalArgumentException if in/name/value properties are not null (mutually exclusive with inputs[]),
      *         or when the collection only contains one non-null item.
+     * @throws IllegalStateException if inputs[] array extension is not enabled
      */
     public InputValidationIssue inputs(Collection<Input<?>> inputs) {
-
         if (inputs == null) {
             return this;
+        }
+
+        if (!ProblemConfig.isExtInputsArrayEnabled()) {
+            throw new IllegalStateException(
+                    "inputs[] array extension is not enabled: " + ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED);
         }
 
         if (hasInNameValue()) {

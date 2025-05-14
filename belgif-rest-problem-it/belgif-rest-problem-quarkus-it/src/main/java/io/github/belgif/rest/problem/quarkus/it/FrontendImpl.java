@@ -24,12 +24,14 @@ import com.acme.custom.CustomProblem;
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.DefaultProblem;
 import io.github.belgif.rest.problem.ServiceUnavailableProblem;
+import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.i18n.I18N;
 import io.github.belgif.rest.problem.it.model.ChildModel;
 import io.github.belgif.rest.problem.it.model.JacksonModel;
 import io.github.belgif.rest.problem.it.model.Model;
 import io.github.belgif.rest.problem.it.model.NestedModel;
+import io.github.belgif.rest.problem.validation.RequestValidator;
 import io.quarkus.rest.client.reactive.QuarkusRestClientBuilder;
 import io.vertx.core.http.HttpServerRequest;
 
@@ -319,6 +321,16 @@ public class FrontendImpl implements Frontend {
     @Path("/i18n")
     public Response i18n(@QueryParam("enabled") boolean enabled) {
         I18N.setEnabled(enabled);
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("/requestValidator")
+    public Response requestValidator(
+            @QueryParam("ssin") String ssin, @QueryParam("a") String a, @QueryParam("b") String b) {
+        new RequestValidator().ssin(Input.query("ssin", ssin))
+                .zeroOrAllOf(Input.query("a", a), Input.query("b", b))
+                .validate();
         return Response.ok().build();
     }
 

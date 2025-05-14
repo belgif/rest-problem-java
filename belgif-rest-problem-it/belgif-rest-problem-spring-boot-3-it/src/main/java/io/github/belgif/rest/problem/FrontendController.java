@@ -26,12 +26,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.acme.custom.CustomProblem;
 
+import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.i18n.I18N;
 import io.github.belgif.rest.problem.it.model.ChildModel;
 import io.github.belgif.rest.problem.it.model.JacksonModel;
 import io.github.belgif.rest.problem.it.model.Model;
 import io.github.belgif.rest.problem.it.model.NestedModel;
+import io.github.belgif.rest.problem.validation.RequestValidator;
 
 @RestController
 @RequestMapping("/frontend")
@@ -262,6 +264,16 @@ public class FrontendController implements ControllerInterface {
     @PostMapping("/i18n")
     public ResponseEntity<Void> i18n(@RequestParam("enabled") boolean enabled) {
         I18N.setEnabled(enabled);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/requestValidator")
+    public ResponseEntity<Void> requestValidator(@RequestParam("ssin") String ssin,
+            @RequestParam(name = "a", required = false) String a,
+            @RequestParam(name = "b", required = false) String b) {
+        new RequestValidator().ssin(Input.query("ssin", ssin))
+                .zeroOrAllOf(Input.query("a", a), Input.query("b", b))
+                .validate();
         return ResponseEntity.ok().build();
     }
 

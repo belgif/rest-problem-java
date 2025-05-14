@@ -35,7 +35,7 @@ public class CodeSamples {
                     // custom validation logic returning Optional<InputValidationIssue>
                     if (!"secret".equals(password)) {
                         return Optional.of(new InputValidationIssue(InEnum.QUERY, "password", password)
-                                .type("urn:problem-type:cbss:input-validation:example:invalidPassword")
+                                .type("urn:problem-type:acme:input-validation:example:invalidPassword")
                                 .title("Invalid password"));
                     }
                     return Optional.empty();
