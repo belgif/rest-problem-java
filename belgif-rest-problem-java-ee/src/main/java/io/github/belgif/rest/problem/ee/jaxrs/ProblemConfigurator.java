@@ -33,8 +33,6 @@ public class ProblemConfigurator implements ServletContextListener {
             configSetter.accept(Boolean.parseBoolean(System.getenv(key)));
         } else if (sce.getServletContext().getInitParameter(key) != null) {
             configSetter.accept(Boolean.parseBoolean(sce.getServletContext().getInitParameter(key)));
-        } else {
-            return;
         }
     }
 
