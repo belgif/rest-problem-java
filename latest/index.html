@@ -685,14 +685,15 @@ window.onload = function() {
 <li><a href="#_context">1. Context</a></li>
 <li><a href="#_release_notes">2. Release notes</a>
 <ul class="sectlevel2">
-<li><a href="#_version_0_16">2.1. Version 0.16</a></li>
-<li><a href="#_version_0_15">2.2. Version 0.15</a></li>
-<li><a href="#_version_0_14">2.3. Version 0.14</a></li>
-<li><a href="#_version_0_13">2.4. Version 0.13</a></li>
-<li><a href="#_version_0_12">2.5. Version 0.12</a></li>
-<li><a href="#_version_0_11">2.6. Version 0.11</a></li>
-<li><a href="#_version_0_10">2.7. Version 0.10</a></li>
-<li><a href="#_older_versions">2.8. Older versions</a></li>
+<li><a href="#_version_0_17">2.1. Version 0.17</a></li>
+<li><a href="#_version_0_16">2.2. Version 0.16</a></li>
+<li><a href="#_version_0_15">2.3. Version 0.15</a></li>
+<li><a href="#_version_0_14">2.4. Version 0.14</a></li>
+<li><a href="#_version_0_13">2.5. Version 0.13</a></li>
+<li><a href="#_version_0_12">2.6. Version 0.12</a></li>
+<li><a href="#_version_0_11">2.7. Version 0.11</a></li>
+<li><a href="#_version_0_10">2.8. Version 0.10</a></li>
+<li><a href="#_older_versions">2.9. Older versions</a></li>
 </ul>
 </li>
 <li><a href="#getting-started">3. Getting started</a>
@@ -717,11 +718,18 @@ window.onload = function() {
 <li><a href="#_localeresolver">6.1. LocaleResolver</a></li>
 </ul>
 </li>
-<li><a href="#implementation-details">7. Implementation details</a>
+<li><a href="#belgif-ext">7. Extensions</a>
 <ul class="sectlevel2">
-<li><a href="#problem-type-registry">7.1. @ProblemType and ProblemTypeRegistry</a></li>
-<li><a href="#belgif-rest-problem-java-ee">7.2. belgif-rest-problem-java-ee</a></li>
-<li><a href="#belgif-rest-problem-spring">7.3. belgif-rest-problem-spring</a></li>
+<li><a href="#belgif-ext-issue-types">7.1. Specialized issue types</a></li>
+<li><a href="#belgif-ext-inputs-array">7.2. Inputs[] array</a></li>
+<li><a href="#belgif-ext-example">7.3. Example</a></li>
+</ul>
+</li>
+<li><a href="#implementation-details">8. Implementation details</a>
+<ul class="sectlevel2">
+<li><a href="#problem-type-registry">8.1. @ProblemType and ProblemTypeRegistry</a></li>
+<li><a href="#belgif-rest-problem-java-ee">8.2. belgif-rest-problem-java-ee</a></li>
+<li><a href="#belgif-rest-problem-spring">8.3. belgif-rest-problem-spring</a></li>
 </ul>
 </li>
 </ul>
@@ -778,7 +786,69 @@ window.onload = function() {
 <h2 id="_release_notes"><a class="anchor" href="#_release_notes"></a>2. Release notes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_version_0_16"><a class="anchor" href="#_version_0_16"></a>2.1. Version 0.16</h3>
+<h3 id="_version_0_17"><a class="anchor" href="#_version_0_17"></a>2.1. Version 0.17</h3>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Potentially breaking</strong></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Renamed <code>io.github.belgif.rest.problem.i18n</code> property to <code>io.github.belgif.rest.problem.i18n-enabled</code></p>
+</li>
+<li>
+<p><strong>By default</strong>, replace specialized input validation issue types <code>invalidStructure</code>, <code>invalidPeriod</code>, <code>outOfRange</code>, <code>rejectedInput</code>, <code>requiredInput</code> and cross-parameter validation issue types by new general issue type <code>urn:problem-type:belgif:input-validation:invalidInput</code>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#belgif-ext-issue-types">io.github.belgif.rest.problem.ext.issue-types-enabled</a> can be configured to keep using more specific issue types (from <code>urn:problem-type:belgif-ext:input-validation:*</code>) instead of <code>urn:problem-type:belgif:input-validation:invalidInput</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>By default</strong>, don&#8217;t populate inputs[] array for issue types that relate to multiple inputs.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#belgif-ext-inputs-array">io.github.belgif.rest.problem.ext.inputs-array-enabled</a> can be configured to keep populating the inputs[] array.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Use these extensions at your own discretion.
+They are not an official part of the Belgif REST guidelines, may have an impact on interoperability, and may potentially be changed or removed in a future version.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_version_0_16"><a class="anchor" href="#_version_0_16"></a>2.2. Version 0.16</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -791,7 +861,7 @@ window.onload = function() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_15"><a class="anchor" href="#_version_0_15"></a>2.2. Version 0.15</h3>
+<h3 id="_version_0_15"><a class="anchor" href="#_version_0_15"></a>2.3. Version 0.15</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -817,7 +887,7 @@ window.onload = function() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_14"><a class="anchor" href="#_version_0_14"></a>2.3. Version 0.14</h3>
+<h3 id="_version_0_14"><a class="anchor" href="#_version_0_14"></a>2.4. Version 0.14</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -830,7 +900,7 @@ window.onload = function() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_13"><a class="anchor" href="#_version_0_13"></a>2.4. Version 0.13</h3>
+<h3 id="_version_0_13"><a class="anchor" href="#_version_0_13"></a>2.5. Version 0.13</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem-spring:</strong></p>
 </div>
@@ -843,7 +913,7 @@ window.onload = function() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_12"><a class="anchor" href="#_version_0_12"></a>2.5. Version 0.12</h3>
+<h3 id="_version_0_12"><a class="anchor" href="#_version_0_12"></a>2.6. Version 0.12</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -922,7 +992,7 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_11"><a class="anchor" href="#_version_0_11"></a>2.6. Version 0.11</h3>
+<h3 id="_version_0_11"><a class="anchor" href="#_version_0_11"></a>2.7. Version 0.11</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -945,7 +1015,7 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version_0_10"><a class="anchor" href="#_version_0_10"></a>2.7. Version 0.10</h3>
+<h3 id="_version_0_10"><a class="anchor" href="#_version_0_10"></a>2.8. Version 0.10</h3>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
@@ -1008,7 +1078,7 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 </div>
 </div>
 <div class="sect2">
-<h3 id="_older_versions"><a class="anchor" href="#_older_versions"></a>2.8. Older versions</h3>
+<h3 id="_older_versions"><a class="anchor" href="#_older_versions"></a>2.9. Older versions</h3>
 <div class="paragraph">
 <p>See <a href="release-notes.html">Release Notes</a>.</p>
 </div>
@@ -1507,10 +1577,6 @@ contains all problem types defined in the <a href="https://www.belgif.be/specifi
 <p>The <code>BadRequestProblem</code> is backwards compatible with the deprecated <code>InvalidParamProblem</code> <em>(with invalidParams[] instead of issues[])</em> of openapi-problem 1.1.</p>
 </li>
 <li>
-<p>Besides the standard in/name/value properties for referencing a single input, the <code>InputValidationIssue</code> class also supports an inputs[] array for referencing multiple in/name/value inputs.
-This is <a href="https://github.com/belgif/rest-guide/issues/108">not currently standardized</a>.</p>
-</li>
-<li>
 <p><code>MissingPermissionProblem</code> extending InputValidationProblem is <a href="https://github.com/belgif/rest-guide/issues/114">not currently standardized</a>.</p>
 </li>
 </ul>
@@ -1622,7 +1688,7 @@ It performs all configured validations and if any of them failed, a <code>BadReq
             <span class="comment">// custom validation logic returning Optional&lt;InputValidationIssue&gt;</span>
             <span class="keyword">if</span> (!<span class="string"><span class="delimiter">&quot;</span><span class="content">secret</span><span class="delimiter">&quot;</span></span>.equals(password)) {
                 <span class="keyword">return</span> Optional.of(<span class="keyword">new</span> InputValidationIssue(InEnum.QUERY, <span class="string"><span class="delimiter">&quot;</span><span class="content">password</span><span class="delimiter">&quot;</span></span>, password)
-                        .type(<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:cbss:input-validation:example:invalidPassword</span><span class="delimiter">&quot;</span></span>)
+                        .type(<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:acme:input-validation:example:invalidPassword</span><span class="delimiter">&quot;</span></span>)
                         .title(<span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid password</span><span class="delimiter">&quot;</span></span>));
             }
             <span class="keyword">return</span> Optional.empty();
@@ -1671,57 +1737,33 @@ It performs all configured validations and if any of them failed, a <code>BadReq
   <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">The input message is incorrect</span><span class="delimiter">&quot;</span></span>,
   <span class="key"><span class="delimiter">&quot;</span><span class="content">issues</span><span class="delimiter">&quot;</span></span>: [
     {
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:cbss:input-validation:invalidStructure</span><span class="delimiter">&quot;</span></span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Input value has invalid structure</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif:input-validation:invalidInput</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid input</span><span class="delimiter">&quot;</span></span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">SSIN 11111111111 is invalid</span><span class="delimiter">&quot;</span></span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ssin</span><span class="delimiter">&quot;</span></span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">11111111111</span><span class="delimiter">&quot;</span></span>
     },
     {
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:cbss:input-validation:invalidStructure</span><span class="delimiter">&quot;</span></span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Input value has invalid structure</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif:input-validation:invalidInput</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid input</span><span class="delimiter">&quot;</span></span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Enterprise number 2222222222 is invalid</span><span class="delimiter">&quot;</span></span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">enterpriseNumber</span><span class="delimiter">&quot;</span></span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2222222222</span><span class="delimiter">&quot;</span></span>
     },
     {
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:cbss:input-validation:invalidPeriod</span><span class="delimiter">&quot;</span></span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Period is invalid</span><span class="delimiter">&quot;</span></span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">endDate should not preceed startDate</span><span class="delimiter">&quot;</span></span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">inputs</span><span class="delimiter">&quot;</span></span>: [
-        {
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">startDate</span><span class="delimiter">&quot;</span></span>,
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2023-12-31</span><span class="delimiter">&quot;</span></span>
-        },
-        {
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">endDate</span><span class="delimiter">&quot;</span></span>,
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2023-01-01</span><span class="delimiter">&quot;</span></span>
-        }
-      ]
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif:input-validation:invalidInput</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid input</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">endDate should not preceed startDate</span><span class="delimiter">&quot;</span></span>
     },
     {
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:cbss:input-validation:exactlyOneOfExpected</span><span class="delimiter">&quot;</span></span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Exactly one of these inputs must be present</span><span class="delimiter">&quot;</span></span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Exactly one of these inputs must be present: ssin, enterpriseNumber</span><span class="delimiter">&quot;</span></span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">inputs</span><span class="delimiter">&quot;</span></span>: [
-        {
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ssin</span><span class="delimiter">&quot;</span></span>,
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">11111111111</span><span class="delimiter">&quot;</span></span>
-        },
-        {
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">enterpriseNumber</span><span class="delimiter">&quot;</span></span>,
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2222222222</span><span class="delimiter">&quot;</span></span>
-        }
-      ]
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif:input-validation:invalidInput</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid input</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Exactly one of these inputs must be present: ssin, enterpriseNumber</span><span class="delimiter">&quot;</span></span>
     },
     {
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:cbss:input-validation:example:invalidPassword</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:acme:input-validation:example:invalidPassword</span><span class="delimiter">&quot;</span></span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid password</span><span class="delimiter">&quot;</span></span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">password</span><span class="delimiter">&quot;</span></span>,
@@ -1778,7 +1820,7 @@ This is possible by extending the AbstractRequestValidator base class.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="properties">io.github.belgif.rest.problem.i18n=false</code></pre>
+<pre class="CodeRay highlight"><code data-lang="properties">io.github.belgif.rest.problem.i18n-enabled=false</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1823,13 +1865,301 @@ On Quarkus, you also need to add the following configuration property if you wan
 </div>
 </div>
 <div class="sect1">
-<h2 id="implementation-details"><a class="anchor" href="#implementation-details"></a>7. Implementation details</h2>
+<h2 id="belgif-ext"><a class="anchor" href="#belgif-ext"></a>7. Extensions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The belgif-rest-problem library provides some optional extensions to the Belgif REST guidelines, which can be enabled on-demand by setting the corresponding <code>io.github.belgif.rest.problem.ext.*</code> configuration property:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>On Spring Boot, via any of the standard <a href="https://docs.spring.io/spring-boot/reference/features/external-config.html">externalized configuration</a> mechanisms.</p>
+</li>
+<li>
+<p>On Jakarta EE, as a system property, environment variable, or web.xml context-param (in that order of precedence).</p>
+</li>
+<li>
+<p>On Quarkus, via any of the standard <a href="https://quarkus.io/guides/config-reference#configuration-sources">MicroProfile Config Sources</a>.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Use these extensions at your own discretion.
+They are not an official part of the Belgif REST guidelines, may have an impact on interoperability, and may potentially be changed or removed in a future version.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="belgif-ext-issue-types"><a class="anchor" href="#belgif-ext-issue-types"></a>7.1. Specialized issue types</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Property: <code>io.github.belgif.rest.problem.ext.issue-types-enabled</code></p>
+</li>
+<li>
+<p>Related issues: <a href="https://github.com/belgif/rest-guide/issues/113">belgif/rest-guide#113</a>, <a href="https://github.com/belgif/rest-guide/issues/126">belgif/rest-guide#126</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This extension replaces the generic <code>urn:problem-type:belgif:input-validation:invalidInput</code> issue type with more specialized <code>urn:problem-type:belgif-ext:input-validation:*</code> issue types, enabling clients to interpret and handle these issues individually (if desired).</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>invalidStructure</code>: Input value has invalid structure (e.g. checksum, format, &#8230;&#8203;)</p>
+</li>
+<li>
+<p><code>invalidPeriod</code>: Period is invalid (startDate &gt; endDate)</p>
+</li>
+<li>
+<p><code>outOfRange</code>: Input value is out of range</p>
+</li>
+<li>
+<p><code>rejectedInput</code>: Input is not allowed in this context (e.g. when reusing a permissive schema)</p>
+</li>
+<li>
+<p><code>requiredInput</code>: Input is required in this context (e.g. when reusing a permissive schema)</p>
+</li>
+<li>
+<p>Cross-parameter validation issues:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>exactlyOneOfExpected</code>: Exactly one of these inputs must be present</p>
+</li>
+<li>
+<p><code>anyOfExpected</code>: Any of these inputs must be present</p>
+</li>
+<li>
+<p><code>zeroOrExactlyOneOfExpected</code>: Exactly one or none of these inputs must be present</p>
+</li>
+<li>
+<p><code>zeroOrAllOfExpected</code>: All or none of these inputs must be present</p>
+</li>
+<li>
+<p><code>equalExpected</code>: These inputs must be equal</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="belgif-ext-inputs-array"><a class="anchor" href="#belgif-ext-inputs-array"></a>7.2. Inputs[] array</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Property: <code>io.github.belgif.rest.problem.ext.inputs-array-enabled</code></p>
+</li>
+<li>
+<p>Related issue: <a href="https://github.com/belgif/rest-guide/issues/108">belgif/rest-guide#108</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This extension provides an <code>inputs[]</code> array of in/name/value objects for input validation issues that relate to multiple inputs, enabling clients to parse this structured information (if desired).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="belgif-ext-example"><a class="anchor" href="#belgif-ext-example"></a>7.3. Example</h3>
+<div class="listingblock primary">
+<div class="title">Standard</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif:badRequest</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">href</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bad Request</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span>: <span class="integer">400</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">The input message is incorrect</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">issues</span><span class="delimiter">&quot;</span></span>: [
+    {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif:input-validation:invalidInput</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid input</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">SSIN 11111111111 is invalid</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ssin</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">11111111111</span><span class="delimiter">&quot;</span></span>
+    },
+    {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif:input-validation:invalidInput</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid input</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">endDate should not preceed startDate</span><span class="delimiter">&quot;</span></span>
+    },
+    {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif:input-validation:invalidInput</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid input</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Exactly one of these inputs must be present: ssin, enterpriseNumber</span><span class="delimiter">&quot;</span></span>
+    }
+  ]
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">ext.issue-types</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif:badRequest</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">href</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bad Request</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span>: <span class="integer">400</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">The input message is incorrect</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">issues</span><span class="delimiter">&quot;</span></span>: [
+    {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif-ext:input-validation:invalidStructure</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Input value has invalid structure</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">SSIN 11111111111 is invalid</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ssin</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">11111111111</span><span class="delimiter">&quot;</span></span>
+    },
+    {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif-ext:input-validation:invalidPeriod</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Period is invalid</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">endDate should not preceed startDate</span><span class="delimiter">&quot;</span></span>
+    },
+    {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif-ext:input-validation:exactlyOneOfExpected</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Exactly one of these inputs must be present</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Exactly one of these inputs must be present: ssin, enterpriseNumber</span><span class="delimiter">&quot;</span></span>
+    }
+  ]
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">ext.inputs-array</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif:badRequest</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">href</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bad Request</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span>: <span class="integer">400</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">The input message is incorrect</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">issues</span><span class="delimiter">&quot;</span></span>: [
+    {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif:input-validation:invalidInput</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid input</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">SSIN 11111111111 is invalid</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ssin</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">11111111111</span><span class="delimiter">&quot;</span></span>
+    },
+    {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif:input-validation:invalidInput</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid input</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">endDate should not preceed startDate</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">inputs</span><span class="delimiter">&quot;</span></span>: [
+        {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">startDate</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2023-12-31</span><span class="delimiter">&quot;</span></span>
+        },
+        {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">endDate</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2023-01-01</span><span class="delimiter">&quot;</span></span>
+        }
+      ]
+    },
+    {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif:input-validation:invalidInput</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Invalid input</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Exactly one of these inputs must be present: ssin, enterpriseNumber</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">inputs</span><span class="delimiter">&quot;</span></span>: [
+        {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ssin</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">11111111111</span><span class="delimiter">&quot;</span></span>
+        },
+        {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">enterpriseNumber</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">0244640631</span><span class="delimiter">&quot;</span></span>
+        }
+      ]
+    }
+  ]
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">ext.issue-types and ext.inputs-array</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif:badRequest</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">href</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bad Request</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span>: <span class="integer">400</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">The input message is incorrect</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">issues</span><span class="delimiter">&quot;</span></span>: [
+    {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif-ext:input-validation:invalidStructure</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Input value has invalid structure</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">SSIN 11111111111 is invalid</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ssin</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">11111111111</span><span class="delimiter">&quot;</span></span>
+    },
+    {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif-ext:input-validation:invalidPeriod</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Period is invalid</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">endDate should not preceed startDate</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">inputs</span><span class="delimiter">&quot;</span></span>: [
+        {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">startDate</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2023-12-31</span><span class="delimiter">&quot;</span></span>
+        },
+        {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">endDate</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2023-01-01</span><span class="delimiter">&quot;</span></span>
+        }
+      ]
+    },
+    {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">urn:problem-type:belgif-ext:input-validation:exactlyOneOfExpected</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Exactly one of these inputs must be present</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">detail</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Exactly one of these inputs must be present: ssin, enterpriseNumber</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">inputs</span><span class="delimiter">&quot;</span></span>: [
+        {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ssin</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">11111111111</span><span class="delimiter">&quot;</span></span>
+        },
+        {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">in</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">query</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">enterpriseNumber</span><span class="delimiter">&quot;</span></span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">0244640631</span><span class="delimiter">&quot;</span></span>
+        }
+      ]
+    }
+  ]
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="implementation-details"><a class="anchor" href="#implementation-details"></a>8. Implementation details</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section describes the internal implementation details of this library.</p>
 </div>
 <div class="sect2">
-<h3 id="problem-type-registry"><a class="anchor" href="#problem-type-registry"></a>7.1. @ProblemType and ProblemTypeRegistry</h3>
+<h3 id="problem-type-registry"><a class="anchor" href="#problem-type-registry"></a>8.1. @ProblemType and ProblemTypeRegistry</h3>
 <div class="paragraph">
 <p>This library makes use of Jackson&#8217;s <a href="https://github.com/FasterXML/jackson-docs/wiki/JacksonPolymorphicDeserialization">polymorphic deserialization</a> feature, so the Jackson ObjectMapper knows which problem type to instantiate when deserializing a problem.
 The problem subclasses have their problem type URI configured in the
@@ -1853,7 +2183,7 @@ The problem subclasses have their problem type URI configured in the
 </div>
 </div>
 <div class="sect2">
-<h3 id="belgif-rest-problem-java-ee"><a class="anchor" href="#belgif-rest-problem-java-ee"></a>7.2. belgif-rest-problem-java-ee</h3>
+<h3 id="belgif-rest-problem-java-ee"><a class="anchor" href="#belgif-rest-problem-java-ee"></a>8.2. belgif-rest-problem-java-ee</h3>
 <div class="paragraph">
 <p>This module provides components that handle Java EE / Jakarta EE integration with the belgif-rest-problem library:</p>
 </div>
@@ -1955,7 +2285,7 @@ A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is a
 </div>
 </div>
 <div class="sect2">
-<h3 id="belgif-rest-problem-spring"><a class="anchor" href="#belgif-rest-problem-spring"></a>7.3. belgif-rest-problem-spring</h3>
+<h3 id="belgif-rest-problem-spring"><a class="anchor" href="#belgif-rest-problem-spring"></a>8.3. belgif-rest-problem-spring</h3>
 <div class="paragraph">
 <p>This module provides auto-configuration for components that handle Spring Boot integration with the belgif-rest-problem library:</p>
 </div>
@@ -1996,7 +2326,7 @@ Additional packages to scan can be configured in your application.properties:</p
 <p>In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.</p>
 </div>
 <div class="sect3">
-<h4 id="belgif-rest-problem-spring-boot-2"><a class="anchor" href="#belgif-rest-problem-spring-boot-2"></a>7.3.1. belgif-rest-problem-spring-boot-2</h4>
+<h4 id="belgif-rest-problem-spring-boot-2"><a class="anchor" href="#belgif-rest-problem-spring-boot-2"></a>8.3.1. belgif-rest-problem-spring-boot-2</h4>
 <div class="paragraph">
 <p>Rather than depending on <a href="#belgif-rest-problem-spring">belgif-rest-problem-spring</a> directly, Spring Boot 2.x users are recommended to depend on <code>belgif-rest-problem-spring-boot-2</code>, which adds some Spring Boot 2.x specific integrations:</p>
 </div>
@@ -2022,7 +2352,7 @@ This handles integration with the <a href="https://docs.spring.io/spring-framewo
 </div>
 </div>
 <div class="sect3">
-<h4 id="belgif-rest-problem-spring-boot-3"><a class="anchor" href="#belgif-rest-problem-spring-boot-3"></a>7.3.2. belgif-rest-problem-spring-boot-3</h4>
+<h4 id="belgif-rest-problem-spring-boot-3"><a class="anchor" href="#belgif-rest-problem-spring-boot-3"></a>8.3.2. belgif-rest-problem-spring-boot-3</h4>
 <div class="paragraph">
 <p>Rather than depending on <a href="#belgif-rest-problem-spring">belgif-rest-problem-spring</a> directly, Spring Boot 3.x users are recommended to depend on <code>belgif-rest-problem-spring-boot-3</code>, which adds some Spring Boot 3.x specific integrations:</p>
 </div>

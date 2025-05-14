@@ -593,6 +593,7 @@ window.onload = function() {
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
+<li><a href="#_version_0_17">Version 0.17</a></li>
 <li><a href="#_version_0_16">Version 0.16</a></li>
 <li><a href="#_version_0_15">Version 0.15</a></li>
 <li><a href="#_version_0_14">Version 0.14</a></li>
@@ -613,6 +614,70 @@ window.onload = function() {
 </div>
 </div>
 <div id="content">
+<div class="sect1">
+<h2 id="_version_0_17"><a class="anchor" href="#_version_0_17"></a>Version 0.17</h2>
+<div class="sectionbody">
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Potentially breaking</strong></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Renamed <code>io.github.belgif.rest.problem.i18n</code> property to <code>io.github.belgif.rest.problem.i18n-enabled</code></p>
+</li>
+<li>
+<p><strong>By default</strong>, replace specialized input validation issue types <code>invalidStructure</code>, <code>invalidPeriod</code>, <code>outOfRange</code>, <code>rejectedInput</code>, <code>requiredInput</code> and cross-parameter validation issue types by new general issue type <code>urn:problem-type:belgif:input-validation:invalidInput</code>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="index.html#belgif-ext-issue-types">io.github.belgif.rest.problem.ext.issue-types-enabled</a> can be configured to keep using more specific issue types (from <code>urn:problem-type:belgif-ext:input-validation:*</code>) instead of <code>urn:problem-type:belgif:input-validation:invalidInput</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>By default</strong>, don&#8217;t populate inputs[] array for issue types that relate to multiple inputs.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="index.html#belgif-ext-inputs-array">io.github.belgif.rest.problem.ext.inputs-array-enabled</a> can be configured to keep populating the inputs[] array.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Use these extensions at your own discretion.
+They are not an official part of the Belgif REST guidelines, may have an impact on interoperability, and may potentially be changed or removed in a future version.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="_version_0_16"><a class="anchor" href="#_version_0_16"></a>Version 0.16</h2>
 <div class="sectionbody">

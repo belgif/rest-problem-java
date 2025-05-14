@@ -90,10 +90,15 @@ loadScripts(document, 'script');</script>
 <div class="inheritance">io.github.belgif.rest.problem.spring.ProblemConfigurationProperties</div>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>All Implemented Interfaces:</dt>
+<dd><code>org.springframework.beans.factory.InitializingBean</code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="annotations">@ConfigurationProperties(prefix="io.github.belgif.rest.problem")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">ProblemConfigurationProperties</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
+implements org.springframework.beans.factory.InitializingBean</span></div>
 <div class="block">Lists all supported application.properties configurations for the belgif-rest-problem-spring library.</div>
 </section>
 <section class="summary">
@@ -122,14 +127,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getScanAdditionalProblemPackages()" class="member-name-link">getScanAdditionalProblemPackages</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#afterPropertiesSet()" class="member-name-link">afterPropertiesSet</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isI18n()" class="member-name-link">isI18n</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getScanAdditionalProblemPackages()" class="member-name-link">getScanAdditionalProblemPackages</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setI18n(boolean)" class="member-name-link">setI18n</a><wbr>(boolean&nbsp;i18n)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setI18nEnabled(boolean)" class="member-name-link">setI18nEnabled</a><wbr>(boolean&nbsp;i18nEnabled)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setScanAdditionalProblemPackages(java.util.List)" class="member-name-link">setScanAdditionalProblemPackages</a><wbr>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;scanAdditionalProblemPackages)</code></div>
@@ -178,15 +183,19 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setI18n(boolean)">
-<h3>setI18n</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setI18n</span><wbr><span class="parameters">(boolean&nbsp;i18n)</span></div>
+<section class="detail" id="setI18nEnabled(boolean)">
+<h3>setI18nEnabled</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setI18nEnabled</span><wbr><span class="parameters">(boolean&nbsp;i18nEnabled)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="isI18n()">
-<h3>isI18n</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isI18n</span>()</div>
+<section class="detail" id="afterPropertiesSet()">
+<h3>afterPropertiesSet</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">afterPropertiesSet</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code>afterPropertiesSet</code>&nbsp;in interface&nbsp;<code>org.springframework.beans.factory.InitializingBean</code></dd>
+</dl>
 </section>
 </li>
 </ul>
