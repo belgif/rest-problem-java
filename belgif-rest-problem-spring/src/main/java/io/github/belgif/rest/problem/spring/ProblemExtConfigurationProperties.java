@@ -11,9 +11,9 @@ import io.github.belgif.rest.problem.config.ProblemConfig;
 @ConfigurationProperties(prefix = "io.github.belgif.rest.problem.ext")
 public class ProblemExtConfigurationProperties implements InitializingBean {
 
-    private boolean issueTypesEnabled = ProblemConfig.DEFAULT_EXT_ISSUE_TYPES_ENABLED;
+    private Boolean issueTypesEnabled = null;
 
-    private boolean inputsArrayEnabled = ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY_ENABLED;
+    private Boolean inputsArrayEnabled = null;
 
     public void setIssueTypesEnabled(boolean issueTypesEnabled) {
         this.issueTypesEnabled = issueTypesEnabled;
@@ -25,8 +25,12 @@ public class ProblemExtConfigurationProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        ProblemConfig.setExtIssueTypesEnabled(issueTypesEnabled);
-        ProblemConfig.setExtInputsArrayEnabled(inputsArrayEnabled);
+        if (issueTypesEnabled != null) {
+            ProblemConfig.setExtIssueTypesEnabled(issueTypesEnabled);
+        }
+        if (inputsArrayEnabled != null) {
+            ProblemConfig.setExtInputsArrayEnabled(inputsArrayEnabled);
+        }
     }
 
 }

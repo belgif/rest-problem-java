@@ -25,12 +25,9 @@ public class QuarkusProblemConfigurator {
                     name = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED) Optional<Boolean> extIssueTypesEnabled,
             @ConfigProperty(
                     name = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED) Optional<Boolean> extInputsArrayEnabled) {
-        ProblemConfig.setI18nEnabled(i18nEnabled.orElse(
-                ProblemConfig.DEFAULT_I18N_ENABLED));
-        ProblemConfig.setExtIssueTypesEnabled(extIssueTypesEnabled.orElse(
-                ProblemConfig.DEFAULT_EXT_ISSUE_TYPES_ENABLED));
-        ProblemConfig.setExtInputsArrayEnabled(extInputsArrayEnabled.orElse(
-                ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY_ENABLED));
+        i18nEnabled.ifPresent(ProblemConfig::setI18nEnabled);
+        extIssueTypesEnabled.ifPresent(ProblemConfig::setExtIssueTypesEnabled);
+        extInputsArrayEnabled.ifPresent(ProblemConfig::setExtInputsArrayEnabled);
     }
 
 }

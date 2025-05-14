@@ -32,14 +32,17 @@ class ProblemConfiguratorTest {
     }
 
     @Test
-    void defaults() {
+    void notConfigured() {
+        boolean i18nEnabledBefore = ProblemConfig.isI18nEnabled();
+        boolean extIssueTypesEnabledBefore = ProblemConfig.isExtIssueTypesEnabled();
+        boolean extInputsArrayEnabledBefore = ProblemConfig.isExtInputsArrayEnabled();
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_I18N_ENABLED)).thenReturn(null);
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED)).thenReturn(null);
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED)).thenReturn(null);
         configurator.contextInitialized(new ServletContextEvent(servletContext));
-        assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(ProblemConfig.DEFAULT_I18N_ENABLED);
-        assertThat(ProblemConfig.isExtIssueTypesEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_ISSUE_TYPES_ENABLED);
-        assertThat(ProblemConfig.isExtInputsArrayEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY_ENABLED);
+        assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(i18nEnabledBefore);
+        assertThat(ProblemConfig.isExtIssueTypesEnabled()).isEqualTo(extIssueTypesEnabledBefore);
+        assertThat(ProblemConfig.isExtInputsArrayEnabled()).isEqualTo(extInputsArrayEnabledBefore);
     }
 
     @Test
