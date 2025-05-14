@@ -14,11 +14,11 @@ public class ProblemConfig {
     public static final String PROPERTY_EXT_INPUTS_ARRAY_ENABLED =
             "io.github.belgif.rest.problem.ext.inputs-array-enabled";
 
-    public static final boolean DEFAULT_I18N_ENABLED = true;
+    private static final boolean DEFAULT_I18N_ENABLED = true;
 
-    public static final boolean DEFAULT_EXT_ISSUE_TYPES_ENABLED = false;
+    private static final boolean DEFAULT_EXT_ISSUE_TYPES_ENABLED = false;
 
-    public static final boolean DEFAULT_EXT_INPUTS_ARRAY_ENABLED = false;
+    private static final boolean DEFAULT_EXT_INPUTS_ARRAY_ENABLED = false;
 
     private static boolean i18nEnabled = DEFAULT_I18N_ENABLED;
 

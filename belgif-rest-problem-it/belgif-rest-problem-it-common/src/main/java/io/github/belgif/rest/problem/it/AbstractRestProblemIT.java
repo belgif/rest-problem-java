@@ -5,11 +5,13 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import io.github.belgif.rest.problem.config.ProblemConfig;
 import io.restassured.specification.RequestSpecification;
 
 @TestInstance(PER_CLASS)
@@ -19,6 +21,11 @@ public abstract class AbstractRestProblemIT {
     protected abstract RequestSpecification getSpec();
 
     protected abstract Stream<String> getClients();
+
+    @AfterAll
+    static void afterAll() {
+        ProblemConfig.reset();
+    }
 
     @Test
     public void ping() {

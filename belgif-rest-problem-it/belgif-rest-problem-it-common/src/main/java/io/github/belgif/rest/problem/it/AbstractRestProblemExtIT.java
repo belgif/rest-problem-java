@@ -2,13 +2,20 @@ package io.github.belgif.rest.problem.it;
 
 import static org.hamcrest.Matchers.*;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
+import io.github.belgif.rest.problem.config.ProblemConfig;
 import io.restassured.specification.RequestSpecification;
 
 public abstract class AbstractRestProblemExtIT {
 
     protected abstract RequestSpecification getSpec();
+
+    @AfterAll
+    static void afterAll() {
+        ProblemConfig.reset();
+    }
 
     @Test
     public void ping() {

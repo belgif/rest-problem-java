@@ -20,9 +20,11 @@ class ProblemExtConfigurationPropertiesTest {
 
     @Test
     void empty() {
+        boolean extIssueTypesEnabledBefore = ProblemConfig.isExtIssueTypesEnabled();
+        boolean extInputsArrayEnabledBefore = ProblemConfig.isExtInputsArrayEnabled();
         properties.afterPropertiesSet();
-        assertThat(ProblemConfig.isExtIssueTypesEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_ISSUE_TYPES_ENABLED);
-        assertThat(ProblemConfig.isExtInputsArrayEnabled()).isEqualTo(ProblemConfig.DEFAULT_EXT_INPUTS_ARRAY_ENABLED);
+        assertThat(ProblemConfig.isExtIssueTypesEnabled()).isEqualTo(extIssueTypesEnabledBefore);
+        assertThat(ProblemConfig.isExtInputsArrayEnabled()).isEqualTo(extInputsArrayEnabledBefore);
     }
 
     @Test
