@@ -107,9 +107,14 @@ public class InputValidationIssues {
     }
 
     public static InputValidationIssue referencedResourceNotFound(InEnum in, String name, Object value) {
+        return referencedResourceNotFound(in, name, name, value);
+    }
+
+    public static InputValidationIssue referencedResourceNotFound(InEnum in, String parameterName, String resourceName,
+            Object value) {
         return new InputValidationIssue(ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND, "Referenced resource not found")
-                .localizedDetail("referencedResourceNotFound", name, value)
-                .in(in, name, value);
+                .localizedDetail("referencedResourceNotFound", resourceName, value)
+                .in(in, parameterName, value);
     }
 
     /**

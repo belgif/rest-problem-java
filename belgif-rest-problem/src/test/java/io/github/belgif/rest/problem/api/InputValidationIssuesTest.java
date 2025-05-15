@@ -188,16 +188,29 @@ class InputValidationIssuesTest {
     }
 
     @Test
-    void referencedResourceFromCollectionParameterNotFound() {
+    void referencedResourceNotFoundDifferentResourceAndParameterName() {
         InputValidationIssue issue =
-                InputValidationIssues.referencedResourceNotFound(InEnum.BODY, "test", "value",
-                        Arrays.asList("other-value", "value", "another-value"));
+                InputValidationIssues.referencedResourceNotFound(InEnum.BODY, "partners", "organization", "0123456789");
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
         assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("test[1]");
-        assertThat(issue.getValue()).isEqualTo("value");
-        assertThat(issue.getDetail()).isEqualTo("Referenced resource test[1] = 'value' does not exist");
+        assertThat(issue.getName()).isEqualTo("partners");
+        assertThat(issue.getValue()).isEqualTo("0123456789");
+        assertThat(issue.getDetail()).isEqualTo("Referenced resource organization = '0123456789' does not exist");
+        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+    }
+
+    @Test
+    void referencedResourceFromCollectionParameterNotFound() {
+        InputValidationIssue issue =
+                InputValidationIssues.referencedResourceNotFound(InEnum.BODY, "partners", 123,
+                        Arrays.asList(1, 123, 3));
+        assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
+        assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
+        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+        assertThat(issue.getName()).isEqualTo("partners[1]");
+        assertThat(issue.getValue()).isEqualTo(123);
+        assertThat(issue.getDetail()).isEqualTo("Referenced resource partners[1] = '123' does not exist");
         assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
