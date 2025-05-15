@@ -121,7 +121,7 @@ public class InputValidationIssues {
      * Creates a proper {@link InputValidationIssue} for an {@link #ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND} where the
      * resource reference originated from a collection parameter. For the sake of clarity the name (e.g. scope) is
      * enriched with its position in the collection.
-     * 
+     *
      * @param in The location in the request of the parameter that contained the reference
      * @param name The name of the parameter that contained the reference, will be enriched with its position in the
      *        source {@link List}
