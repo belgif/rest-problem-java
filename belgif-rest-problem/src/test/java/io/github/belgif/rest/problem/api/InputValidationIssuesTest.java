@@ -187,6 +187,20 @@ class InputValidationIssuesTest {
         assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
+    @Test
+    void referencedResourceFromCollectionParameterNotFound() {
+        InputValidationIssue issue =
+                InputValidationIssues.referencedResourceNotFound(InEnum.BODY, "test", "value",
+                        Arrays.asList("other-value", "value", "another-value"));
+        assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
+        assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
+        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+        assertThat(issue.getName()).isEqualTo("test[1]");
+        assertThat(issue.getValue()).isEqualTo("value");
+        assertThat(issue.getDetail()).isEqualTo("Referenced resource test[1] = 'value' does not exist");
+        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+    }
+
     @ParameterizedTest
     @MethodSource("toggleExtIssueTypes")
     void rejectedInput(boolean extIssueTypes) {
