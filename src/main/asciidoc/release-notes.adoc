@@ -21,6 +21,7 @@
 
 *belgif-rest-problem:*
 
+* Normalize `*Id` and `*Code` input names in 404 Resource Not Found detail message to `id` and `code` to account for https://github.com/belgif/rest-guide/pull/231[updated [id-name\] rule]
 * Renamed `io.github.belgif.rest.problem.i18n` property to `io.github.belgif.rest.problem.i18n-enabled`
 * *By default*, replace specialized input validation issue types `invalidStructure`, `invalidPeriod`, `outOfRange`, `rejectedInput`, `requiredInput` and cross-parameter validation issue types by new general issue type `urn:problem-type:belgif:input-validation:invalidInput`.
 ** xref:index.adoc#belgif-ext-issue-types[io.github.belgif.rest.problem.ext.issue-types-enabled] can be configured to keep using more specific issue types (from `urn:problem-type:belgif-ext:input-validation:*`) instead of `urn:problem-type:belgif:input-validation:invalidInput`.
