@@ -42,6 +42,29 @@ class ResourceNotFoundProblemTest {
     }
 
     @Test
+    void constructWithResourceInNameValueNormalizeId() {
+        ResourceNotFoundProblem problem = new ResourceNotFoundProblem("resource", InEnum.PATH, "resourceId", "value");
+        assertThat(problem.getDetail()).isEqualTo("No data found for resource with id [value]");
+        assertThat(problem.getIssues()).hasSize(1);
+        InputValidationIssue issue = problem.getIssues().get(0);
+        assertThat(issue.getIn()).isEqualTo(InEnum.PATH);
+        assertThat(issue.getName()).isEqualTo("resourceId");
+        assertThat(issue.getValue()).isEqualTo("value");
+    }
+
+    @Test
+    void constructWithResourceInNameValueNormalizeCode() {
+        ResourceNotFoundProblem problem =
+                new ResourceNotFoundProblem("resource", InEnum.PATH, "resourceCode", "value");
+        assertThat(problem.getDetail()).isEqualTo("No data found for resource with code [value]");
+        assertThat(problem.getIssues()).hasSize(1);
+        InputValidationIssue issue = problem.getIssues().get(0);
+        assertThat(issue.getIn()).isEqualTo(InEnum.PATH);
+        assertThat(issue.getName()).isEqualTo("resourceCode");
+        assertThat(issue.getValue()).isEqualTo("value");
+    }
+
+    @Test
     void constructWithResourceInvalidParam() {
         InvalidParam invalidParam = new InvalidParam(InEnum.QUERY, "test", "value");
         ResourceNotFoundProblem problem = new ResourceNotFoundProblem("resource", invalidParam);
