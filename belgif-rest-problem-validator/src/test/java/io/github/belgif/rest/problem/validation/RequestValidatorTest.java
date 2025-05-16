@@ -482,6 +482,29 @@ class RequestValidatorTest {
                 .validate();
     }
 
+    @Test
+    void localExtMode() {
+        Input<?>[] inputs = { Input.query("a", "ok"), Input.query("b", null) };
+        RequestValidator validator = new RequestValidator()
+                .extIssueTypesEnabled(true)
+                .extInputsArrayEnabled(true)
+                .zeroOrAllOf(inputs);
+        assertThatExceptionOfType(BadRequestProblem.class).isThrownBy(validator::validate)
+                .extracting(p -> p.getIssues().get(0))
+                .satisfies(issue -> {
+                    assertThat(issue.getType())
+                            .hasToString("urn:problem-type:belgif-ext:input-validation:zeroOrAllOfExpected");
+                    assertThat(issue.getInputs()).hasSize(2);
+                });
+        validator = new RequestValidator().zeroOrAllOf(inputs);
+        assertThatExceptionOfType(BadRequestProblem.class).isThrownBy(validator::validate)
+                .extracting(p -> p.getIssues().get(0))
+                .satisfies(issue -> {
+                    assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+                    assertThat(issue.getInputs()).isEmpty();
+                });
+    }
+
     private void assertValid(RequestValidator validator) {
         assertThatNoException().isThrownBy(validator::validate);
     }
