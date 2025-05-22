@@ -26,6 +26,20 @@ public class ProblemConfig {
 
     private static boolean extInputsArrayEnabled = DEFAULT_EXT_INPUTS_ARRAY_ENABLED;
 
+    private static final ThreadLocal<Boolean> LOCAL_EXT_ISSUE_TYPES_ENABLED = new InheritableThreadLocal<Boolean>() {
+        @Override
+        protected Boolean initialValue() {
+            return null;
+        }
+    };
+
+    private static final ThreadLocal<Boolean> LOCAL_EXT_INPUTS_ARRAY_ENABLED = new InheritableThreadLocal<Boolean>() {
+        @Override
+        protected Boolean initialValue() {
+            return null;
+        }
+    };
+
     private ProblemConfig() {
     }
 
@@ -38,6 +52,9 @@ public class ProblemConfig {
     }
 
     public static boolean isExtIssueTypesEnabled() {
+        if (LOCAL_EXT_ISSUE_TYPES_ENABLED.get() != null) {
+            return LOCAL_EXT_ISSUE_TYPES_ENABLED.get();
+        }
         return extIssueTypesEnabled;
     }
 
@@ -45,12 +62,28 @@ public class ProblemConfig {
         ProblemConfig.extIssueTypesEnabled = extIssueTypesEnabled;
     }
 
+    public static void setLocalExtIssueTypesEnabled(boolean extIssueTypesEnabled) {
+        LOCAL_EXT_ISSUE_TYPES_ENABLED.set(extIssueTypesEnabled);
+    }
+
     public static boolean isExtInputsArrayEnabled() {
+        if (LOCAL_EXT_INPUTS_ARRAY_ENABLED.get() != null) {
+            return LOCAL_EXT_INPUTS_ARRAY_ENABLED.get();
+        }
         return extInputsArrayEnabled;
     }
 
     public static void setExtInputsArrayEnabled(boolean extInputsArrayEnabled) {
         ProblemConfig.extInputsArrayEnabled = extInputsArrayEnabled;
+    }
+
+    public static void setLocalExtInputsArrayEnabled(boolean extInputsArrayEnabled) {
+        LOCAL_EXT_INPUTS_ARRAY_ENABLED.set(extInputsArrayEnabled);
+    }
+
+    public static void clearLocal() {
+        LOCAL_EXT_ISSUE_TYPES_ENABLED.remove();
+        LOCAL_EXT_INPUTS_ARRAY_ENABLED.remove();
     }
 
     public static void reset() {

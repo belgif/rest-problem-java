@@ -54,7 +54,7 @@ public class ResourceNotFoundProblem extends InputValidationProblem
     }
 
     public ResourceNotFoundProblem(String resource, InEnum in, String name, Object value) {
-        this(I18N.getLocalizedDetail(ResourceNotFoundProblem.class, resource, name, value),
+        this(I18N.getLocalizedDetail(ResourceNotFoundProblem.class, resource, normalizeResourceIdentifier(name), value),
                 new InputValidationIssue(in, name, value));
     }
 
@@ -70,6 +70,16 @@ public class ResourceNotFoundProblem extends InputValidationProblem
     @Deprecated
     public ResourceNotFoundProblem(String resource, InvalidParam param) {
         this(resource, param.getIn(), param.getName(), param.getValue());
+    }
+
+    private static String normalizeResourceIdentifier(String name) {
+        if (name.endsWith("Id")) {
+            return "id";
+        } else if (name.endsWith("Code")) {
+            return "code";
+        } else {
+            return name;
+        }
     }
 
 }
