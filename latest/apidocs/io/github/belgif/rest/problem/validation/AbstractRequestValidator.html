@@ -183,6 +183,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Validate that exactly one of the given inputs is present.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="AbstractRequestValidator.html" title="type parameter in AbstractRequestValidator">SELF</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#extInputsArrayEnabled(boolean)" class="member-name-link">extInputsArrayEnabled</a><wbr>(boolean&nbsp;extInputsArrayEnabled)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Override the default <a href="../config/ProblemConfig.html#isExtInputsArrayEnabled()"><code>ProblemConfig.isExtInputsArrayEnabled()</code></a> config value for this request validator.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="AbstractRequestValidator.html" title="type parameter in AbstractRequestValidator">SELF</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#extIssueTypesEnabled(boolean)" class="member-name-link">extIssueTypesEnabled</a><wbr>(boolean&nbsp;extIssueTypesEnabled)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Override the default <a href="../config/ProblemConfig.html#isExtIssueTypesEnabled()"><code>ProblemConfig.isExtIssueTypesEnabled()</code></a> config value for this request validator.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="AbstractRequestValidator.html" title="type parameter in AbstractRequestValidator">SELF</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getThis()" class="member-name-link">getThis</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -357,6 +367,32 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="../BadRequestProblem.html" title="class in io.github.belgif.rest.problem">BadRequestProblem</a></code> - if the validation fails, containing each encountered <a href="../api/InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api"><code>InputValidationIssue</code></a></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="extIssueTypesEnabled(boolean)">
+<h3>extIssueTypesEnabled</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="AbstractRequestValidator.html" title="type parameter in AbstractRequestValidator">SELF</a></span>&nbsp;<span class="element-name">extIssueTypesEnabled</span><wbr><span class="parameters">(boolean&nbsp;extIssueTypesEnabled)</span></div>
+<div class="block">Override the default <a href="../config/ProblemConfig.html#isExtIssueTypesEnabled()"><code>ProblemConfig.isExtIssueTypesEnabled()</code></a> config value for this request validator.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>extIssueTypesEnabled</code> - the overriding config value</dd>
+<dt>Returns:</dt>
+<dd>this request validator</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="extInputsArrayEnabled(boolean)">
+<h3>extInputsArrayEnabled</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="AbstractRequestValidator.html" title="type parameter in AbstractRequestValidator">SELF</a></span>&nbsp;<span class="element-name">extInputsArrayEnabled</span><wbr><span class="parameters">(boolean&nbsp;extInputsArrayEnabled)</span></div>
+<div class="block">Override the default <a href="../config/ProblemConfig.html#isExtInputsArrayEnabled()"><code>ProblemConfig.isExtInputsArrayEnabled()</code></a> config value for this request validator.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>extInputsArrayEnabled</code> - the overriding config value</dd>
+<dt>Returns:</dt>
+<dd>this request validator</dd>
 </dl>
 </section>
 </li>
