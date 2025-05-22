@@ -556,6 +556,8 @@ This extension replaces the generic `urn:problem-type:belgif:input-validation:in
 ** `zeroOrAllOfExpected`: All or none of these inputs must be present
 ** `equalExpected`: These inputs must be equal
 
+NOTE: You can override the configuration on RequestValidator level with `setExtIssueTypesEnabled()`.
+
 [[belgif-ext-inputs-array]]
 === Inputs[] array
 
@@ -563,6 +565,8 @@ This extension replaces the generic `urn:problem-type:belgif:input-validation:in
 * Related issue: https://github.com/belgif/rest-guide/issues/108[belgif/rest-guide#108]
 
 This extension provides an `inputs[]` array of in/name/value objects for input validation issues that relate to multiple inputs, enabling clients to parse this structured information (if desired).
+
+NOTE: You can override the configuration on RequestValidator level with `setExtInputsArrayEnabled()`.
 
 [[belgif-ext-example]]
 === Example
