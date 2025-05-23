@@ -107,9 +107,33 @@ public class InputValidationIssues {
     }
 
     public static InputValidationIssue referencedResourceNotFound(InEnum in, String name, Object value) {
+        return referencedResourceNotFound(in, name, name, value);
+    }
+
+    public static InputValidationIssue referencedResourceNotFound(InEnum in, String parameterName, String resourceName,
+            Object value) {
         return new InputValidationIssue(ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND, "Referenced resource not found")
-                .localizedDetail("referencedResourceNotFound", name, value)
-                .in(in, name, value);
+                .localizedDetail("referencedResourceNotFound", resourceName, value)
+                .in(in, parameterName, value);
+    }
+
+    /**
+     * Creates a proper {@link InputValidationIssue} for an {@link #ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND} where the
+     * resource reference originated from a collection parameter. For the sake of clarity the name (e.g. scopes) is
+     * enriched with its position in the collection.
+     *
+     * @param in The location in the request of the parameter that contained the reference
+     * @param name The name of the parameter that contained the reference, will be enriched with its position in the
+     *        source {@link List}
+     * @param value The reference value
+     * @param source The source {@link List} that contained the reference
+     * @return A properly initialized {@link InputValidationIssue} for an
+     *         {@link #ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND}
+     * @param <T> The type of the reference
+     */
+    public static <T> InputValidationIssue referencedResourceNotFound(InEnum in, String name, T value, List<T> source) {
+        String nameWithIndex = name + "[" + source.indexOf(value) + "]";
+        return referencedResourceNotFound(in, nameWithIndex, value);
     }
 
     public static InputValidationIssue rejectedInput(InEnum in, String name, Object value) {
