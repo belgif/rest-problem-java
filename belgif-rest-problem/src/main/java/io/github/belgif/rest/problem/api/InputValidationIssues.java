@@ -119,7 +119,7 @@ public class InputValidationIssues {
 
     /**
      * Creates a proper {@link InputValidationIssue} for an {@link #ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND} where the
-     * resource reference originated from a collection parameter. For the sake of clarity the name (e.g. scope) is
+     * resource reference originated from a collection parameter. For the sake of clarity the name (e.g. scopes) is
      * enriched with its position in the collection.
      *
      * @param in The location in the request of the parameter that contained the reference
@@ -133,9 +133,7 @@ public class InputValidationIssues {
      */
     public static <T> InputValidationIssue referencedResourceNotFound(InEnum in, String name, T value, List<T> source) {
         String nameWithIndex = name + "[" + source.indexOf(value) + "]";
-        return new InputValidationIssue(ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND, "Referenced resource not found")
-                .localizedDetail("referencedResourceNotFound", nameWithIndex, value)
-                .in(in, nameWithIndex, value);
+        return referencedResourceNotFound(in, nameWithIndex, value);
     }
 
     public static InputValidationIssue rejectedInput(InEnum in, String name, Object value) {
