@@ -249,6 +249,21 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#referencedResourceNotFound(io.github.belgif.rest.problem.api.InEnum,java.lang.String,java.lang.String,java.lang.Object)" class="member-name-link">referencedResourceNotFound</a><wbr>(<a href="InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a>&nbsp;in,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parameterName,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;resourceName,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static &lt;T&gt;&nbsp;<a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#referencedResourceNotFound(io.github.belgif.rest.problem.api.InEnum,java.lang.String,T,java.util.List)" class="member-name-link">referencedResourceNotFound</a><wbr>(<a href="InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a>&nbsp;in,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ T&nbsp;value,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;T&gt;&nbsp;source)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates a proper <a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api"><code>InputValidationIssue</code></a> for an <a href="#ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND"><code>ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND</code></a> where the
+ resource reference originated from a collection parameter.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#rejectedInput(io.github.belgif.rest.problem.api.InEnum,java.lang.String,java.lang.Object)" class="member-name-link">rejectedInput</a><wbr>(<a href="InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a>&nbsp;in,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</code></div>
@@ -469,6 +484,40 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></span>&nbsp;<span class="element-name">referencedResourceNotFound</span><wbr><span class="parameters">(<a href="InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a>&nbsp;in,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="referencedResourceNotFound(io.github.belgif.rest.problem.api.InEnum,java.lang.String,java.lang.String,java.lang.Object)">
+<h3>referencedResourceNotFound</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></span>&nbsp;<span class="element-name">referencedResourceNotFound</span><wbr><span class="parameters">(<a href="InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a>&nbsp;in,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parameterName,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;resourceName,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="referencedResourceNotFound(io.github.belgif.rest.problem.api.InEnum,java.lang.String,T,java.util.List)">
+<h3 id="referencedResourceNotFound(io.github.belgif.rest.problem.api.InEnum,java.lang.String,java.lang.Object,java.util.List)">referencedResourceNotFound</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></span>&nbsp;<span class="element-name">referencedResourceNotFound</span><wbr><span class="parameters">(<a href="InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a>&nbsp;in,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ T&nbsp;value,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;T&gt;&nbsp;source)</span></div>
+<div class="block">Creates a proper <a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api"><code>InputValidationIssue</code></a> for an <a href="#ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND"><code>ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND</code></a> where the
+ resource reference originated from a collection parameter. For the sake of clarity the name (e.g. scopes) is
+ enriched with its position in the collection.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - The type of the reference</dd>
+<dt>Parameters:</dt>
+<dd><code>in</code> - The location in the request of the parameter that contained the reference</dd>
+<dd><code>name</code> - The name of the parameter that contained the reference, will be enriched with its position in the
+        source <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link"><code>List</code></a></dd>
+<dd><code>value</code> - The reference value</dd>
+<dd><code>source</code> - The source <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link"><code>List</code></a> that contained the reference</dd>
+<dt>Returns:</dt>
+<dd>A properly initialized <a href="InputValidationIssue.html" title="class in io.github.belgif.rest.problem.api"><code>InputValidationIssue</code></a> for an
+         <a href="#ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND"><code>ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND</code></a></dd>
+</dl>
 </section>
 </li>
 <li>
