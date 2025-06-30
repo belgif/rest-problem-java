@@ -23,7 +23,7 @@
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
     <version.spring.boot.2>2.7.18</version.spring.boot.2>
     <version.spring.boot.3>3.4.1</version.spring.boot.3>
-    <version.quarkus>3.23.3</version.quarkus>
+    <version.quarkus>3.24.1</version.quarkus>
   </properties>
 
   <dependencyManagement>
@@ -31,7 +31,7 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.13.1</version>
+        <version>5.13.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -137,7 +137,7 @@
         <plugin>
           <groupId>org.sonatype.central</groupId>
           <artifactId>central-publishing-maven-plugin</artifactId>
-          <version>0.7.0</version>
+          <version>0.8.0</version>
         </plugin>
         <plugin>
           <groupId>org.asciidoctor</groupId>
@@ -147,7 +147,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>flatten-maven-plugin</artifactId>
-          <version>1.7.0</version>
+          <version>1.7.1</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -162,12 +162,12 @@
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.13.0</version>
+          <version>7.14.0</version>
         </plugin>
         <plugin>
           <groupId>io.swagger.codegen.v3</groupId>
           <artifactId>swagger-codegen-maven-plugin</artifactId>
-          <version>3.0.68</version>
+          <version>3.0.69</version>
         </plugin>
         <plugin>
           <groupId>org.sonarsource.scanner.maven</groupId>
