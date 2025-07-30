@@ -19,8 +19,6 @@ updates:
       - dependency-name: "org.jboss.weld:weld-junit5"
       - dependency-name: "org.hibernate.validator:hibernate-validator"
       - dependency-name: "com.fasterxml.jackson.core:jackson-databind"
-      - dependency-name: "org.codehaus.mojo:flatten-maven-plugin"
-        versions: ["1.7.1"]
     groups:
       maven:
         patterns:
