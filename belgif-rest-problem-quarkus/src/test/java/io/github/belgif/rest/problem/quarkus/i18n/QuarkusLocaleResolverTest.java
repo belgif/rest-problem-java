@@ -5,10 +5,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.Locale;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.enterprise.context.spi.Context;
 import jakarta.enterprise.inject.Instance;
-import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.enterprise.inject.spi.CDI;
 
 import org.junit.jupiter.api.Test;
@@ -19,6 +16,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import io.github.belgif.rest.problem.i18n.I18N;
+import io.quarkus.arc.Arc;
+import io.quarkus.arc.ArcContainer;
+import io.quarkus.arc.ManagedContext;
 
 @ExtendWith(MockitoExtension.class)
 class QuarkusLocaleResolverTest {
@@ -35,19 +35,20 @@ class QuarkusLocaleResolverTest {
     private LocaleHolder localeHolder;
 
     @Mock
-    private BeanManager beanManager;
+    private ArcContainer arcContainer;
 
     @Mock
-    private Context context;
+    private ManagedContext context;
 
     @Test
     void getLocale() {
-        try (MockedStatic<CDI> mock = Mockito.mockStatic(CDI.class)) {
-            mock.when(CDI::current).thenReturn(cdi);
-            when(cdi.getBeanManager()).thenReturn(beanManager);
-            when(beanManager.getContext(RequestScoped.class)).thenReturn(context);
+        try (MockedStatic<CDI> cdiStatic = Mockito.mockStatic(CDI.class);
+                MockedStatic<Arc> arcStatic = Mockito.mockStatic(Arc.class)) {
+            arcStatic.when(Arc::container).thenReturn(arcContainer);
+            when(arcContainer.requestContext()).thenReturn(context);
             when(context.isActive()).thenReturn(true);
-            when(cdi.select(LocaleHolder.class)).thenReturn(instance);
+            cdiStatic.when(CDI::current).thenReturn(this.cdi);
+            when(this.cdi.select(LocaleHolder.class)).thenReturn(instance);
             when(instance.get()).thenReturn(localeHolder);
             when(localeHolder.getLocale()).thenReturn(Locale.forLanguageTag("nl-BE"));
             assertThat(localeResolver.getLocale()).isEqualTo(Locale.forLanguageTag("nl-BE"));
@@ -56,10 +57,9 @@ class QuarkusLocaleResolverTest {
 
     @Test
     void getLocaleRequestScopeNotActive() {
-        try (MockedStatic<CDI> mock = Mockito.mockStatic(CDI.class)) {
-            mock.when(CDI::current).thenReturn(cdi);
-            when(cdi.getBeanManager()).thenReturn(beanManager);
-            when(beanManager.getContext(RequestScoped.class)).thenReturn(context);
+        try (MockedStatic<Arc> arcStatic = Mockito.mockStatic(Arc.class)) {
+            arcStatic.when(Arc::container).thenReturn(arcContainer);
+            when(arcContainer.requestContext()).thenReturn(context);
             when(context.isActive()).thenReturn(false);
             assertThat(localeResolver.getLocale()).isEqualTo(I18N.DEFAULT_LOCALE);
         }
