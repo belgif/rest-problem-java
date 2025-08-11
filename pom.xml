@@ -23,7 +23,7 @@
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
     <version.spring.boot.2>2.7.18</version.spring.boot.2>
     <version.spring.boot.3>3.4.1</version.spring.boot.3>
-    <version.quarkus>3.24.5</version.quarkus>
+    <version.quarkus>3.25.2</version.quarkus>
   </properties>
 
   <dependencyManagement>
@@ -38,7 +38,7 @@
       <dependency>
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
-        <version>3.27.3</version>
+        <version>3.27.4</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -147,7 +147,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>flatten-maven-plugin</artifactId>
-          <version>1.7.0</version>
+          <version>1.7.2</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
