@@ -1,6 +1,5 @@
 package io.github.belgif.rest.problem.quarkus.i18n;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Collections;

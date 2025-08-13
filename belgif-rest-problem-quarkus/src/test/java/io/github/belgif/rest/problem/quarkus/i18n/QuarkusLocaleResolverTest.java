@@ -1,44 +1,42 @@
 package io.github.belgif.rest.problem.quarkus.i18n;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Locale;
 
-import jakarta.enterprise.inject.Instance;
-import jakarta.enterprise.inject.spi.CDI;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
+import io.github.belgif.rest.problem.i18n.I18N;
+import io.quarkus.arc.Arc;
+import io.quarkus.test.InjectMock;
+import io.quarkus.test.junit.QuarkusTest;
+
+@QuarkusTest
 class QuarkusLocaleResolverTest {
 
     private final QuarkusLocaleResolver localeResolver = new QuarkusLocaleResolver();
 
-    @Mock
-    private CDI cdi;
-
-    @Mock
-    private Instance instance;
-
-    @Mock
+    @InjectMock
     private LocaleHolder localeHolder;
+
+    @BeforeEach
+    void activateRequestContext() {
+        // By default active during tests, explicitly activate it to ignore test execution order
+        Arc.container().requestContext().activate();
+    }
 
     @Test
     void getLocale() {
-        try (MockedStatic<CDI> mock = Mockito.mockStatic(CDI.class)) {
-            mock.when(CDI::current).thenReturn(cdi);
-            when(cdi.select(LocaleHolder.class)).thenReturn(instance);
-            when(instance.get()).thenReturn(localeHolder);
-            when(localeHolder.getLocale()).thenReturn(Locale.forLanguageTag("nl-BE"));
-            assertThat(localeResolver.getLocale()).isEqualTo(Locale.forLanguageTag("nl-BE"));
-        }
+        when(localeHolder.getLocale()).thenReturn(Locale.forLanguageTag("nl-BE"));
+        assertThat(localeResolver.getLocale()).isEqualTo(Locale.forLanguageTag("nl-BE"));
+    }
+
+    @Test
+    void getLocaleRequestScopeNotActive() {
+        Arc.container().requestContext().deactivate();
+        assertThat(localeResolver.getLocale()).isEqualTo(I18N.DEFAULT_LOCALE);
     }
 
 }
