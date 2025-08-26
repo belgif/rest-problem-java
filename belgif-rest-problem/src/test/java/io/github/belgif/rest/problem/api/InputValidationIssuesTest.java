@@ -293,6 +293,20 @@ class InputValidationIssuesTest {
     }
 
     @Test
+    void replacedSsinInput() {
+        InputValidationIssue issue =
+                InputValidationIssues.replacedSsin(Input.body("ssin", "00000000196"), "00000000295");
+        assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:replacedSsin");
+        assertThat(issue.getTitle()).isEqualTo("SSIN has been replaced, use new SSIN");
+        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+        assertThat(issue.getName()).isEqualTo("ssin");
+        assertThat(issue.getValue()).isEqualTo("00000000196");
+        assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 has been replaced by 00000000295");
+        assertThat(issue.getAdditionalProperties()).containsExactly(entry("replacedBy", "00000000295"));
+        assertThat(issue).extracting("href", "inputs").allMatch(this::isEmpty);
+    }
+
+    @Test
     void replacedSsinWithReplacedByHref() {
         InputValidationIssue issue =
                 InputValidationIssues.replacedSsin(InEnum.BODY, "ssin", "00000000196", "00000000295",
@@ -311,8 +325,19 @@ class InputValidationIssuesTest {
 
     @Test
     void canceledSsin() {
-        InputValidationIssue issue =
-                InputValidationIssues.canceledSsin(InEnum.BODY, "ssin", "00000000196");
+        InputValidationIssue issue = InputValidationIssues.canceledSsin(InEnum.BODY, "ssin", "00000000196");
+        assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:canceledSsin");
+        assertThat(issue.getTitle()).isEqualTo("SSIN has been canceled");
+        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+        assertThat(issue.getName()).isEqualTo("ssin");
+        assertThat(issue.getValue()).isEqualTo("00000000196");
+        assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 has been canceled");
+        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+    }
+
+    @Test
+    void canceledSsinInput() {
+        InputValidationIssue issue = InputValidationIssues.canceledSsin(Input.body("ssin", "00000000196"));
         assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:canceledSsin");
         assertThat(issue.getTitle()).isEqualTo("SSIN has been canceled");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
@@ -325,8 +350,25 @@ class InputValidationIssuesTest {
     @ParameterizedTest
     @MethodSource("toggleExtIssueTypes")
     void invalidSsin(boolean extIssueTypes) {
-        InputValidationIssue issue =
-                InputValidationIssues.invalidSsin(InEnum.BODY, "ssin", "00000000195");
+        InputValidationIssue issue = InputValidationIssues.invalidSsin(InEnum.BODY, "ssin", "00000000195");
+        if (extIssueTypes) {
+            assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
+            assertThat(issue.getTitle()).isEqualTo("Input value has invalid structure");
+        } else {
+            assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getTitle()).isEqualTo("Invalid input");
+        }
+        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+        assertThat(issue.getName()).isEqualTo("ssin");
+        assertThat(issue.getValue()).isEqualTo("00000000195");
+        assertThat(issue.getDetail()).isEqualTo("SSIN 00000000195 is invalid");
+        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+    }
+
+    @ParameterizedTest
+    @MethodSource("toggleExtIssueTypes")
+    void invalidSsinInput(boolean extIssueTypes) {
+        InputValidationIssue issue = InputValidationIssues.invalidSsin(Input.body("ssin", "00000000195"));
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
             assertThat(issue.getTitle()).isEqualTo("Input value has invalid structure");
@@ -343,8 +385,19 @@ class InputValidationIssuesTest {
 
     @Test
     void unknownSsin() {
-        InputValidationIssue issue =
-                InputValidationIssues.unknownSsin(InEnum.BODY, "ssin", "00000000196");
+        InputValidationIssue issue = InputValidationIssues.unknownSsin(InEnum.BODY, "ssin", "00000000196");
+        assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
+        assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
+        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+        assertThat(issue.getName()).isEqualTo("ssin");
+        assertThat(issue.getValue()).isEqualTo("00000000196");
+        assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 does not exist");
+        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+    }
+
+    @Test
+    void unknownSsinInput() {
+        InputValidationIssue issue = InputValidationIssues.unknownSsin(Input.body("ssin", "00000000196"));
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
         assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
