@@ -160,6 +160,10 @@ public class InputValidationIssues {
         return issue;
     }
 
+    public static InputValidationIssue replacedSsin(Input<String> ssinInput, String newSsin) {
+        return replacedSsin(ssinInput.getIn(), ssinInput.getName(), ssinInput.getValue(), newSsin);
+    }
+
     public static InputValidationIssue replacedSsin(InEnum in, String name, String ssin, String newSsin) {
         return new InputValidationIssue(ISSUE_TYPE_REPLACED_SSIN, "SSIN has been replaced, use new SSIN")
                 .localizedDetail("replacedSsin", ssin, newSsin)
@@ -171,14 +175,26 @@ public class InputValidationIssues {
         return replacedSsin(in, name, ssin, newSsin).additionalProperty("replacedByHref", String.valueOf(newHref));
     }
 
+    public static InputValidationIssue canceledSsin(Input<String> ssinInput) {
+        return canceledSsin(ssinInput.getIn(), ssinInput.getName(), ssinInput.getValue());
+    }
+
     public static InputValidationIssue canceledSsin(InEnum in, String name, String ssin) {
         return new InputValidationIssue(ISSUE_TYPE_CANCELED_SSIN, "SSIN has been canceled")
                 .localizedDetail("canceledSsin", ssin)
                 .in(in, name, ssin);
     }
 
+    public static InputValidationIssue invalidSsin(Input<String> ssinInput) {
+        return invalidSsin(ssinInput.getIn(), ssinInput.getName(), ssinInput.getValue());
+    }
+
     public static InputValidationIssue invalidSsin(InEnum in, String name, String ssin) {
         return invalidStructure(in, name, ssin, I18N.getLocalizedString("invalidStructure.ssin.detail", ssin));
+    }
+
+    public static InputValidationIssue unknownSsin(Input<String> ssinInput) {
+        return unknownSsin(ssinInput.getIn(), ssinInput.getName(), ssinInput.getValue());
     }
 
     public static InputValidationIssue unknownSsin(InEnum in, String name, String ssin) {
