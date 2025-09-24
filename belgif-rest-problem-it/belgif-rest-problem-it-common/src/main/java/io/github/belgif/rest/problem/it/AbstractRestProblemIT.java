@@ -170,6 +170,8 @@ public abstract class AbstractRestProblemIT {
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("detail", equalTo("The input message is incorrect"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
                 .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[0].in", equalTo("query"))
                 .body("issues[0].name", equalTo("param"))

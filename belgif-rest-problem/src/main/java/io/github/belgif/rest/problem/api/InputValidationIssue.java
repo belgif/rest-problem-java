@@ -65,6 +65,12 @@ public class InputValidationIssue {
         this.title = title;
     }
 
+    public InputValidationIssue(URI type, URI href, String title) {
+        this.type = type;
+        this.href = href;
+        this.title = title;
+    }
+
     public InputValidationIssue(InEnum in, String name, Object value) {
         this.in = in;
         this.name = name;
