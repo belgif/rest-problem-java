@@ -23,7 +23,7 @@
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
     <version.spring.boot.2>2.7.18</version.spring.boot.2>
     <version.spring.boot.3>3.4.1</version.spring.boot.3>
-    <version.quarkus>3.26.4</version.quarkus>
+    <version.quarkus>3.28.1</version.quarkus>
   </properties>
 
   <dependencyManagement>
@@ -38,7 +38,7 @@
       <dependency>
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
-        <version>3.27.5</version>
+        <version>3.27.6</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -137,7 +137,7 @@
         <plugin>
           <groupId>org.sonatype.central</groupId>
           <artifactId>central-publishing-maven-plugin</artifactId>
-          <version>0.8.0</version>
+          <version>0.9.0</version>
         </plugin>
         <plugin>
           <groupId>org.asciidoctor</groupId>
@@ -157,12 +157,12 @@
         <plugin>
           <groupId>com.diffplug.spotless</groupId>
           <artifactId>spotless-maven-plugin</artifactId>
-          <version>2.46.1</version>
+          <version>3.0.0</version>
         </plugin>
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.15.0</version>
+          <version>7.16.0</version>
         </plugin>
         <plugin>
           <groupId>io.swagger.codegen.v3</groupId>
