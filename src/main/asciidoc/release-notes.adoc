@@ -16,6 +16,7 @@
 
 *belgif-rest-problem:*
 
+* Add href property with documentation URL for belgif (e.g. https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html) and belgif-ext (e.g. https://www.belgif.be/specification/rest/api-guide/issues/ext/invalidStructure.html) issue types
 * Add Input parameter alternatives in InputValidationIssues for invalidSsin, unknownSsin, canceledSsin and replacedSsin
 
 == Version 0.17

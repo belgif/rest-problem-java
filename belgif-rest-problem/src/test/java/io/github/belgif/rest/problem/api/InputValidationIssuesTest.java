@@ -54,12 +54,14 @@ class InputValidationIssuesTest {
         InputValidationIssue issue =
                 InputValidationIssues.schemaViolation(InEnum.BODY, "test", "value", "detail");
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
+        assertThat(issue.getHref())
+                .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html");
         assertThat(issue.getTitle()).isEqualTo("Input value is invalid with respect to the schema");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("detail");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @Test
@@ -67,12 +69,14 @@ class InputValidationIssuesTest {
         InputValidationIssue issue =
                 InputValidationIssues.unknownInput(InEnum.BODY, "oops", "value");
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:unknownInput");
+        assertThat(issue.getHref())
+                .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/unknownInput.html");
         assertThat(issue.getTitle()).isEqualTo("Unknown input");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("oops");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("Input oops is unknown");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @Test
@@ -80,12 +84,14 @@ class InputValidationIssuesTest {
         InputValidationIssue issue =
                 InputValidationIssues.invalidInput(InEnum.BODY, "oops", "value", "detail");
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+        assertThat(issue.getHref())
+                .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
         assertThat(issue.getTitle()).isEqualTo("Invalid input");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("oops");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("detail");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @ParameterizedTest
@@ -95,16 +101,20 @@ class InputValidationIssuesTest {
                 InputValidationIssues.invalidStructure(InEnum.BODY, "test", "value", "detail");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/invalidStructure.html");
             assertThat(issue.getTitle()).isEqualTo("Input value has invalid structure");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("detail");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @ParameterizedTest
@@ -114,9 +124,13 @@ class InputValidationIssuesTest {
                 InputValidationIssues.outOfRange(InEnum.BODY, "test", 6, 1, 5);
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:outOfRange");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/outOfRange.html");
             assertThat(issue.getTitle()).isEqualTo("Input value is out of range");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
@@ -124,7 +138,7 @@ class InputValidationIssuesTest {
         assertThat(issue.getValue()).isEqualTo(6);
         assertThat(issue.getDetail()).isEqualTo("Input value test = 6 is out of range [1, 5]");
         assertThat(issue.getAdditionalProperties()).containsOnly(entry("minimum", "1"), entry("maximum", "5"));
-        assertThat(issue).extracting("href", "inputs").allMatch(this::isEmpty);
+        assertThat(issue.getInputs()).isEmpty();
     }
 
     @ParameterizedTest
@@ -134,9 +148,13 @@ class InputValidationIssuesTest {
                 InputValidationIssues.outOfRange(InEnum.BODY, "test", 0, 1, null);
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:outOfRange");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/outOfRange.html");
             assertThat(issue.getTitle()).isEqualTo("Input value is out of range");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
@@ -144,7 +162,7 @@ class InputValidationIssuesTest {
         assertThat(issue.getValue()).isEqualTo(0);
         assertThat(issue.getDetail()).isEqualTo("Input value test = 0 should be at least 1");
         assertThat(issue.getAdditionalProperties()).containsExactly(entry("minimum", "1"));
-        assertThat(issue).extracting("href", "inputs").allMatch(this::isEmpty);
+        assertThat(issue.getInputs()).isEmpty();
     }
 
     @ParameterizedTest
@@ -154,9 +172,13 @@ class InputValidationIssuesTest {
                 InputValidationIssues.outOfRange(InEnum.BODY, "test", 6, null, 5);
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:outOfRange");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/outOfRange.html");
             assertThat(issue.getTitle()).isEqualTo("Input value is out of range");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
@@ -164,7 +186,7 @@ class InputValidationIssuesTest {
         assertThat(issue.getValue()).isEqualTo(6);
         assertThat(issue.getDetail()).isEqualTo("Input value test = 6 should not exceed 5");
         assertThat(issue.getAdditionalProperties()).containsExactly(entry("maximum", "5"));
-        assertThat(issue).extracting("href", "inputs").allMatch(this::isEmpty);
+        assertThat(issue.getInputs()).isEmpty();
     }
 
     @Test
@@ -179,12 +201,15 @@ class InputValidationIssuesTest {
         InputValidationIssue issue =
                 InputValidationIssues.referencedResourceNotFound(InEnum.BODY, "test", "value");
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
+        assertThat(issue.getHref())
+                .hasToString(
+                        "https://www.belgif.be/specification/rest/api-guide/issues/referencedResourceNotFound.html");
         assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("Referenced resource test = 'value' does not exist");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @Test
@@ -192,12 +217,15 @@ class InputValidationIssuesTest {
         InputValidationIssue issue =
                 InputValidationIssues.referencedResourceNotFound(InEnum.BODY, "partners", "organization", "0123456789");
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
+        assertThat(issue.getHref())
+                .hasToString(
+                        "https://www.belgif.be/specification/rest/api-guide/issues/referencedResourceNotFound.html");
         assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("partners");
         assertThat(issue.getValue()).isEqualTo("0123456789");
         assertThat(issue.getDetail()).isEqualTo("Referenced resource organization = '0123456789' does not exist");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @Test
@@ -206,12 +234,15 @@ class InputValidationIssuesTest {
                 InputValidationIssues.referencedResourceNotFound(InEnum.BODY, "partners", 123,
                         Arrays.asList(1, 123, 3));
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
+        assertThat(issue.getHref())
+                .hasToString(
+                        "https://www.belgif.be/specification/rest/api-guide/issues/referencedResourceNotFound.html");
         assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("partners[1]");
         assertThat(issue.getValue()).isEqualTo(123);
         assertThat(issue.getDetail()).isEqualTo("Referenced resource partners[1] = '123' does not exist");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @ParameterizedTest
@@ -221,16 +252,20 @@ class InputValidationIssuesTest {
                 InputValidationIssues.rejectedInput(InEnum.BODY, "test", "value");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:rejectedInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/rejectedInput.html");
             assertThat(issue.getTitle()).isEqualTo("Input is not allowed in this context");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("Input test is not allowed in this context");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @ParameterizedTest
@@ -240,16 +275,20 @@ class InputValidationIssuesTest {
                 InputValidationIssues.requiredInput(InEnum.BODY, "test");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:requiredInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/requiredInput.html");
             assertThat(issue.getTitle()).isEqualTo("Input is required in this context");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isNull();
         assertThat(issue.getDetail()).isEqualTo("Input test is required in this context");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @ParameterizedTest
@@ -260,9 +299,13 @@ class InputValidationIssuesTest {
         InputValidationIssue issue = InputValidationIssues.requiredInputsIfPresent(target, inputs);
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:requiredInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/requiredInput.html");
             assertThat(issue.getTitle()).isEqualTo("Input is required in this context");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getDetail()).isEqualTo("All of these inputs must be present if x is present: a, b");
@@ -275,7 +318,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getName()).isEqualTo(target.getName());
             assertThat(issue.getValue()).isEqualTo(target.getValue());
         }
-        assertThat(issue).extracting("href", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue.getAdditionalProperties()).isEmpty();
     }
 
     @Test
@@ -289,7 +332,7 @@ class InputValidationIssuesTest {
         assertThat(issue.getValue()).isEqualTo("00000000196");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 has been replaced by 00000000295");
         assertThat(issue.getAdditionalProperties()).containsExactly(entry("replacedBy", "00000000295"));
-        assertThat(issue).extracting("href", "inputs").allMatch(this::isEmpty);
+        assertThat(issue.getInputs()).extracting("href", "inputs").allMatch(this::isEmpty);
     }
 
     @Test
@@ -353,16 +396,20 @@ class InputValidationIssuesTest {
         InputValidationIssue issue = InputValidationIssues.invalidSsin(InEnum.BODY, "ssin", "00000000195");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/invalidStructure.html");
             assertThat(issue.getTitle()).isEqualTo("Input value has invalid structure");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("ssin");
         assertThat(issue.getValue()).isEqualTo("00000000195");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000195 is invalid");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @ParameterizedTest
@@ -371,40 +418,48 @@ class InputValidationIssuesTest {
         InputValidationIssue issue = InputValidationIssues.invalidSsin(Input.body("ssin", "00000000195"));
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/invalidStructure.html");
             assertThat(issue.getTitle()).isEqualTo("Input value has invalid structure");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("ssin");
         assertThat(issue.getValue()).isEqualTo("00000000195");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000195 is invalid");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @Test
     void unknownSsin() {
         InputValidationIssue issue = InputValidationIssues.unknownSsin(InEnum.BODY, "ssin", "00000000196");
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
+        assertThat(issue.getHref()).hasToString(
+                "https://www.belgif.be/specification/rest/api-guide/issues/referencedResourceNotFound.html");
         assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("ssin");
         assertThat(issue.getValue()).isEqualTo("00000000196");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 does not exist");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @Test
     void unknownSsinInput() {
         InputValidationIssue issue = InputValidationIssues.unknownSsin(Input.body("ssin", "00000000196"));
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
+        assertThat(issue.getHref()).hasToString(
+                "https://www.belgif.be/specification/rest/api-guide/issues/referencedResourceNotFound.html");
         assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("ssin");
         assertThat(issue.getValue()).isEqualTo("00000000196");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 does not exist");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @ParameterizedTest
@@ -414,16 +469,20 @@ class InputValidationIssuesTest {
                 InputValidationIssues.invalidPeriod(InEnum.BODY, "period", "value");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidPeriod");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/invalidPeriod.html");
             assertThat(issue.getTitle()).isEqualTo("Period is invalid");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("period");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("endDate should not precede startDate");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @ParameterizedTest
@@ -434,9 +493,13 @@ class InputValidationIssuesTest {
         InputValidationIssue issue = InputValidationIssues.invalidPeriod(startDate, endDate);
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidPeriod");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/invalidPeriod.html");
             assertThat(issue.getTitle()).isEqualTo("Period is invalid");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         if (extInputsArray) {
@@ -445,7 +508,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getInputs()).isEmpty();
         }
         assertThat(issue.getDetail()).isEqualTo("endDate should not precede startDate");
-        assertThat(issue).extracting("href", "in", "name", "value", "additionalProperties")
+        assertThat(issue).extracting("in", "name", "value", "additionalProperties")
                 .allMatch(this::isEmpty);
     }
 
@@ -459,9 +522,13 @@ class InputValidationIssuesTest {
         InputValidationIssue issue = InputValidationIssues.invalidPeriod(startDateTime, endDateTime);
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidPeriod");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/invalidPeriod.html");
             assertThat(issue.getTitle()).isEqualTo("Period is invalid");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         if (extInputsArray) {
@@ -470,7 +537,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getInputs()).isEmpty();
         }
         assertThat(issue.getDetail()).isEqualTo("endDateTime should not precede startDateTime");
-        assertThat(issue).extracting("href", "in", "name", "value", "additionalProperties")
+        assertThat(issue).extracting("in", "name", "value", "additionalProperties")
                 .allMatch(this::isEmpty);
     }
 
@@ -481,16 +548,20 @@ class InputValidationIssuesTest {
                 InputValidationIssues.invalidIncompleteDate(InEnum.BODY, "test", "2024-00-01");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/invalidStructure.html");
             assertThat(issue.getTitle()).isEqualTo("Input value has invalid structure");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("2024-00-01");
         assertThat(issue.getDetail()).isEqualTo("Incomplete date 2024-00-01 is invalid");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @ParameterizedTest
@@ -500,16 +571,20 @@ class InputValidationIssuesTest {
                 InputValidationIssues.invalidYearMonth(InEnum.BODY, "test", "2024-13");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/invalidStructure.html");
             assertThat(issue.getTitle()).isEqualTo("Input value has invalid structure");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("2024-13");
         assertThat(issue.getDetail()).isEqualTo("Year month 2024-13 is invalid");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @ParameterizedTest
@@ -519,16 +594,20 @@ class InputValidationIssuesTest {
                 InputValidationIssues.invalidEnterpriseNumber(InEnum.BODY, "test", "0000000001");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/invalidStructure.html");
             assertThat(issue.getTitle()).isEqualTo("Input value has invalid structure");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("0000000001");
         assertThat(issue.getDetail()).isEqualTo("Enterprise number 0000000001 is invalid");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @ParameterizedTest
@@ -538,16 +617,20 @@ class InputValidationIssuesTest {
                 InputValidationIssues.invalidEstablishmentUnitNumber(InEnum.BODY, "test", "0000000001");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/invalidStructure.html");
             assertThat(issue.getTitle()).isEqualTo("Input value has invalid structure");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getValue()).isEqualTo("0000000001");
         assertThat(issue.getDetail()).isEqualTo("Establishment unit number 0000000001 is invalid");
-        assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
+        assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @ParameterizedTest
@@ -558,9 +641,13 @@ class InputValidationIssuesTest {
         if (extIssueTypes) {
             assertThat(issue.getType())
                     .hasToString("urn:problem-type:belgif-ext:input-validation:exactlyOneOfExpected");
+            assertThat(issue.getHref()).hasToString(
+                    "https://www.belgif.be/specification/rest/api-guide/issues/ext/exactlyOneOfExpected.html");
             assertThat(issue.getTitle()).isEqualTo("Exactly one of these inputs must be present");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         if (extInputsArray) {
@@ -569,7 +656,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getInputs()).isEmpty();
         }
         assertThat(issue.getDetail()).isEqualTo("Exactly one of these inputs must be present: a, b");
-        assertThat(issue).extracting("href", "in", "name", "value", "additionalProperties")
+        assertThat(issue).extracting("in", "name", "value", "additionalProperties")
                 .allMatch(this::isEmpty);
     }
 
@@ -580,9 +667,13 @@ class InputValidationIssuesTest {
         InputValidationIssue issue = InputValidationIssues.anyOfExpected(inputs);
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:anyOfExpected");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/anyOfExpected.html");
             assertThat(issue.getTitle()).isEqualTo("Any of these inputs must be present");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         if (extInputsArray) {
@@ -591,7 +682,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getInputs()).isEmpty();
         }
         assertThat(issue.getDetail()).isEqualTo("Any of these inputs must be present: a, b");
-        assertThat(issue).extracting("href", "in", "name", "value", "additionalProperties")
+        assertThat(issue).extracting("in", "name", "value", "additionalProperties")
                 .allMatch(this::isEmpty);
     }
 
@@ -603,9 +694,13 @@ class InputValidationIssuesTest {
         if (extIssueTypes) {
             assertThat(issue.getType())
                     .hasToString("urn:problem-type:belgif-ext:input-validation:zeroOrExactlyOneOfExpected");
+            assertThat(issue.getHref()).hasToString(
+                    "https://www.belgif.be/specification/rest/api-guide/issues/ext/zeroOrExactlyOneOfExpected.html");
             assertThat(issue.getTitle()).isEqualTo("Exactly one or none of these inputs must be present");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         if (extInputsArray) {
@@ -614,7 +709,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getInputs()).isEmpty();
         }
         assertThat(issue.getDetail()).isEqualTo("Exactly one or none of these inputs must be present: a, b");
-        assertThat(issue).extracting("href", "in", "name", "value", "additionalProperties")
+        assertThat(issue).extracting("in", "name", "value", "additionalProperties")
                 .allMatch(this::isEmpty);
     }
 
@@ -625,9 +720,13 @@ class InputValidationIssuesTest {
         InputValidationIssue issue = InputValidationIssues.zeroOrAllOfExpected(inputs);
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:zeroOrAllOfExpected");
+            assertThat(issue.getHref()).hasToString(
+                    "https://www.belgif.be/specification/rest/api-guide/issues/ext/zeroOrAllOfExpected.html");
             assertThat(issue.getTitle()).isEqualTo("All or none of these inputs must be present");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         if (extInputsArray) {
@@ -636,7 +735,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getInputs()).isEmpty();
         }
         assertThat(issue.getDetail()).isEqualTo("All or none of these inputs must be present: a, b");
-        assertThat(issue).extracting("href", "in", "name", "value", "additionalProperties")
+        assertThat(issue).extracting("in", "name", "value", "additionalProperties")
                 .allMatch(this::isEmpty);
     }
 
@@ -647,9 +746,13 @@ class InputValidationIssuesTest {
         InputValidationIssue issue = InputValidationIssues.equalExpected(inputs);
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:equalExpected");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/ext/equalExpected.html");
             assertThat(issue.getTitle()).isEqualTo("These inputs must be equal");
         } else {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getHref())
+                    .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         if (extInputsArray) {
@@ -658,7 +761,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getInputs()).isEmpty();
         }
         assertThat(issue.getDetail()).isEqualTo("These inputs must be equal: a, b");
-        assertThat(issue).extracting("href", "in", "name", "value", "additionalProperties")
+        assertThat(issue).extracting("in", "name", "value", "additionalProperties")
                 .allMatch(this::isEmpty);
     }
 

@@ -3,7 +3,9 @@ package io.github.belgif.rest.problem.api;
 import java.net.URI;
 import java.time.temporal.Temporal;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import io.github.belgif.rest.problem.config.ProblemConfig;
@@ -57,24 +59,26 @@ public class InputValidationIssues {
     public static final URI ISSUE_TYPE_EQUAL_EXPECTED =
             URI.create("urn:problem-type:belgif-ext:input-validation:equalExpected");
 
+    private static final Map<URI, URI> BELGIF_ISSUE_TYPE_HREFS = new HashMap<>();
+
     private InputValidationIssues() {
     }
 
     public static InputValidationIssue schemaViolation(InEnum in, String name, Object value, String detail) {
-        return new InputValidationIssue(ISSUE_TYPE_SCHEMA_VIOLATION,
+        return new InputValidationIssue(ISSUE_TYPE_SCHEMA_VIOLATION, getHref(ISSUE_TYPE_SCHEMA_VIOLATION),
                 "Input value is invalid with respect to the schema")
                         .detail(detail)
                         .in(in, name, value);
     }
 
     public static InputValidationIssue unknownInput(InEnum in, String name, Object value) {
-        return new InputValidationIssue(ISSUE_TYPE_UNKNOWN_INPUT, "Unknown input")
+        return new InputValidationIssue(ISSUE_TYPE_UNKNOWN_INPUT, getHref(ISSUE_TYPE_UNKNOWN_INPUT), "Unknown input")
                 .localizedDetail("unknownInput", name)
                 .in(in, name, value);
     }
 
     public static InputValidationIssue invalidInput(InEnum in, String name, Object value, String detail) {
-        return new InputValidationIssue(ISSUE_TYPE_INVALID_INPUT, "Invalid input")
+        return new InputValidationIssue(ISSUE_TYPE_INVALID_INPUT, getHref(ISSUE_TYPE_INVALID_INPUT), "Invalid input")
                 .detail(detail)
                 .in(in, name, value);
     }
@@ -112,9 +116,10 @@ public class InputValidationIssues {
 
     public static InputValidationIssue referencedResourceNotFound(InEnum in, String parameterName, String resourceName,
             Object value) {
-        return new InputValidationIssue(ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND, "Referenced resource not found")
-                .localizedDetail("referencedResourceNotFound", resourceName, value)
-                .in(in, parameterName, value);
+        return new InputValidationIssue(ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND,
+                getHref(ISSUE_TYPE_REFERENCED_RESOURCE_NOT_FOUND), "Referenced resource not found")
+                        .localizedDetail("referencedResourceNotFound", resourceName, value)
+                        .in(in, parameterName, value);
     }
 
     /**
@@ -296,10 +301,21 @@ public class InputValidationIssues {
 
     private static InputValidationIssue invalidInputExt(URI extIssueType, String extTitle) {
         if (!ProblemConfig.isExtIssueTypesEnabled()) {
-            return new InputValidationIssue(ISSUE_TYPE_INVALID_INPUT, "Invalid input");
+            return new InputValidationIssue(ISSUE_TYPE_INVALID_INPUT, getHref(ISSUE_TYPE_INVALID_INPUT),
+                    "Invalid input");
         } else {
-            return new InputValidationIssue(extIssueType, extTitle);
+            return new InputValidationIssue(extIssueType, getHref(extIssueType), extTitle);
         }
+    }
+
+    private static URI getHref(URI issueType) {
+        return BELGIF_ISSUE_TYPE_HREFS.computeIfAbsent(issueType,
+                t -> URI.create(issueType.toString()
+                        .replace("urn:problem-type:belgif:input-validation:",
+                                "https://www.belgif.be/specification/rest/api-guide/issues/")
+                        .replace("urn:problem-type:belgif-ext:input-validation:",
+                                "https://www.belgif.be/specification/rest/api-guide/issues/ext/")
+                        + ".html"));
     }
 
 }
