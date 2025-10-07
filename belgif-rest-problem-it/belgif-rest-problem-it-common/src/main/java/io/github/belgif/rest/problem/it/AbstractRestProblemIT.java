@@ -192,6 +192,8 @@ public abstract class AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
                 .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[0].in", equalTo("query"))
                 .body("issues[0].name", equalTo("param"))
@@ -208,12 +210,16 @@ public abstract class AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
                 .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[0].detail", equalTo("size must be between 0 and 5"))
                 .body("issues[0].in", equalTo("query"))
                 .body("issues[0].name", equalTo("other"))
                 .body("issues[0].value", equalTo("TOO_LONG"))
                 .body("issues[1].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[1].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
                 .body("issues[1].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[1].detail", equalTo("must be greater than 0"))
                 .body("issues[1].in", equalTo("query"))
@@ -228,6 +234,8 @@ public abstract class AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
                 .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[0].in", equalTo("header"))
                 .body("issues[0].name", equalTo("param"))
@@ -247,6 +255,8 @@ public abstract class AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
                 .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[0].in", equalTo("header"))
                 .body("issues[0].name", equalTo("param"))
@@ -261,6 +271,8 @@ public abstract class AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
                 .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[0].in", equalTo("path"))
                 .body("issues[0].name", equalTo("param"))
@@ -391,12 +403,16 @@ public abstract class AbstractRestProblemIT {
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("detail", equalTo("Het input bericht is ongeldig"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
                 .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[0].detail", equalTo("grootte moet tussen 0 en 5 liggen"))
                 .body("issues[0].in", equalTo("query"))
                 .body("issues[0].name", equalTo("other"))
                 .body("issues[0].value", equalTo("TOO_LONG"))
                 .body("issues[1].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[1].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
                 .body("issues[1].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[1].detail", equalTo("moet groter dan 0 zijn"))
                 .body("issues[1].in", equalTo("query"))
@@ -474,12 +490,16 @@ public abstract class AbstractRestProblemIT {
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("detail", equalTo("The input message is incorrect"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:invalidInput"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html"))
                 .body("issues[0].title", equalTo("Invalid input"))
                 .body("issues[0].detail", equalTo("SSIN 999999999999 is invalid"))
                 .body("issues[0].in", equalTo("query"))
                 .body("issues[0].name", equalTo("ssin"))
                 .body("issues[0].value", equalTo("999999999999"))
                 .body("issues[1].type", equalTo("urn:problem-type:belgif:input-validation:invalidInput"))
+                .body("issues[1].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html"))
                 .body("issues[1].title", equalTo("Invalid input"))
                 .body("issues[1].detail", equalTo("All or none of these inputs must be present: a, b"));
     }
