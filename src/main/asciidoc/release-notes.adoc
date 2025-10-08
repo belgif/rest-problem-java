@@ -18,6 +18,10 @@
 
 * Add Input parameter alternatives in InputValidationIssues for invalidSsin, unknownSsin, canceledSsin and replacedSsin
 
+*belgif-rest-problem-validator:*
+
+* Add validator for Belgif openapi-employment-identifier https://github.com/belgif/openapi-employment-identifier/blob/main/src/main/openapi/employment/identifier/v1/employment-identifier-v1.yaml[EmployerId]
+
 == Version 0.17
 
 [WARNING]

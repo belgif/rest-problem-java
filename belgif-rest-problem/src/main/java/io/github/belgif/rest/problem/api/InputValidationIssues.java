@@ -239,6 +239,11 @@ public class InputValidationIssues {
                 I18N.getLocalizedString("invalidStructure.establishmentUnitNumber.detail", establishmentUnitNumber));
     }
 
+    public static InputValidationIssue invalidEmployerId(InEnum in, String name, Long employerId) {
+        return invalidStructure(in, name, employerId,
+                I18N.getLocalizedString("invalidStructure.employerId.detail", employerId));
+    }
+
     public static InputValidationIssue exactlyOneOfExpected(List<Input<?>> inputs) {
         InputValidationIssue issue =
                 invalidInputExt(ISSUE_TYPE_EXACTLY_ONE_OF_EXPECTED, "Exactly one of these inputs must be present")
