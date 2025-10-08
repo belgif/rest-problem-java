@@ -18,7 +18,7 @@ jobs:
         server-username: MAVEN_CENTRAL_USER
         server-password: MAVEN_CENTRAL_TOKEN
     - name: Login to registry.redhat.io
-      uses: docker/login-action@v3.5.0
+      uses: docker/login-action@v3.6.0
       with:
         username: ${{ secrets.REDHAT_REGISTRY_USER }}
         password: ${{ secrets.REDHAT_REGISTRY_TOKEN }}
