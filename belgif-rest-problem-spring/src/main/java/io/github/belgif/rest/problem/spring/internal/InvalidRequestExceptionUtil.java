@@ -6,8 +6,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletRequest;
-
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,7 +69,7 @@ public class InvalidRequestExceptionUtil {
     }
 
     public static String getBodyValue(String name, AtomicReference<JsonNode> requestBodyReference,
-            HttpServletRequest request, ObjectMapper mapper) {
+                                      HttpServletRequest request, ObjectMapper mapper) {
         JsonNode requestBody = getRequestBody(requestBodyReference, request, mapper);
         if (requestBody == null) {
             return null;
