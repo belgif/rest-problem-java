@@ -1,5 +1,6 @@
 package io.github.belgif.rest.problem.spring;
 
+import org.springframework.boot.restclient.RestTemplateCustomizer;
 import org.springframework.boot.web.client.RestTemplateCustomizer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
