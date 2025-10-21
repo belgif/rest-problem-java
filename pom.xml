@@ -21,8 +21,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Aligns with version used on JBoss EAP 7.4 -->
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
-    <version.spring.boot.2>2.7.18</version.spring.boot.2>
-    <version.spring.boot.3>3.4.1</version.spring.boot.3>
+    <version.spring.boot.3>3.5.3</version.spring.boot.3>
     <version.quarkus>3.28.4</version.quarkus>
   </properties>
 
@@ -73,7 +72,6 @@
     <module>belgif-rest-problem-validator</module>
     <module>belgif-rest-problem-java-ee</module>
     <module>belgif-rest-problem-spring</module>
-    <module>belgif-rest-problem-spring-boot-2</module>
     <module>belgif-rest-problem-spring-boot-3</module>
     <module>belgif-rest-problem-quarkus</module>
     <module>belgif-rest-problem-quarkus-deployment</module>
