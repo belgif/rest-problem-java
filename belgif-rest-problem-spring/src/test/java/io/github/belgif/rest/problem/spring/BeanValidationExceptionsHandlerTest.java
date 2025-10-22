@@ -44,7 +44,7 @@ class BeanValidationExceptionsHandlerTest {
                                 null, PathImpl.createPathFromString("second"), null, null, null),
                         ConstraintViolationImpl.forParameterValidation(null, null, null, null, null, null, null,
                                 null, PathImpl.createPathFromString("first"), null, null, null)))));
-        assertThat(entity.getStatusCodeValue()).isEqualTo(400);
+        assertThat(entity.getStatusCode().value()).isEqualTo(400);
         assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
         assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
             assertThat(problem.getIssues()).hasSize(2);
@@ -65,7 +65,7 @@ class BeanValidationExceptionsHandlerTest {
                 new MethodArgumentNotValidException(MethodParameter.forParameter(
                         Service.class.getMethod("requestBody", Object.class).getParameters()[0]),
                         bindingResult));
-        assertThat(entity.getStatusCodeValue()).isEqualTo(400);
+        assertThat(entity.getStatusCode().value()).isEqualTo(400);
         assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
         assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
             assertThat(problem.getIssues()).hasSize(2);
@@ -90,7 +90,7 @@ class BeanValidationExceptionsHandlerTest {
         bindingResult.rejectValue("second", "error", "secondDetail");
         ResponseEntity<Problem> entity = handler.handleBindException(new BindException(bindingResult),
                 new ServletWebRequest(new MockHttpServletRequest()));
-        assertThat(entity.getStatusCodeValue()).isEqualTo(400);
+        assertThat(entity.getStatusCode().value()).isEqualTo(400);
         assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
         assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
             assertThat(problem.getIssues()).hasSize(2);
@@ -112,7 +112,7 @@ class BeanValidationExceptionsHandlerTest {
                         MethodParameter.forParameter(
                                 Service.class.getMethod("requestParam", Integer.class).getParameters()[0]),
                         new RuntimeException()));
-        assertThat(entity.getStatusCodeValue()).isEqualTo(400);
+        assertThat(entity.getStatusCode().value()).isEqualTo(400);
         assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
         assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
             assertThat(problem.getIssues()).hasSize(1);
@@ -130,7 +130,7 @@ class BeanValidationExceptionsHandlerTest {
                         MethodParameter.forParameter(
                                 Service.class.getMethod("requestParam", Integer.class).getParameters()[0]),
                         new RuntimeException()));
-        assertThat(entity.getStatusCodeValue()).isEqualTo(400);
+        assertThat(entity.getStatusCode().value()).isEqualTo(400);
         assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
         assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
             assertThat(problem.getIssues()).hasSize(1);

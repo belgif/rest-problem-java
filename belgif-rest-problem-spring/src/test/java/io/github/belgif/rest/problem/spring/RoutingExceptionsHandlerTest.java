@@ -10,9 +10,7 @@ import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.core.MethodParameter;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.mock.http.MockHttpInputMessage;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -38,7 +36,7 @@ class RoutingExceptionsHandlerTest {
     void handleMissingServletRequestParameterException() {
         ResponseEntity<Problem> entity = handler.handleMissingServletRequestParameterException(
                 new MissingServletRequestParameterException("name", "String"));
-        assertThat(entity.getStatusCodeValue()).isEqualTo(400);
+        assertThat(entity.getStatusCode().value()).isEqualTo(400);
         assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
         assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
             assertThat(problem.getIssues()).hasSize(1);
@@ -55,7 +53,7 @@ class RoutingExceptionsHandlerTest {
         ResponseEntity<Problem> entity = handler.handleMissingRequestHeaderException(
                 new MissingRequestHeaderException("name", MethodParameter.forParameter(
                         Objects.class.getMethod("toString", Object.class).getParameters()[0])));
-        assertThat(entity.getStatusCodeValue()).isEqualTo(400);
+        assertThat(entity.getStatusCode().value()).isEqualTo(400);
         assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
         assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
             assertThat(problem.getIssues()).hasSize(1);
@@ -72,8 +70,9 @@ class RoutingExceptionsHandlerTest {
         MismatchedInputException exception = MismatchedInputException.from(null, Object.class, "detail");
         exception.prependPath(new JsonMappingException.Reference(null, "id"));
         ResponseEntity<Problem> entity =
-                handler.handleHttpMessageNotReadable(new HttpMessageNotReadableException(null, exception));
-        assertThat(entity.getStatusCodeValue()).isEqualTo(400);
+                handler.handleHttpMessageNotReadable(
+                        new HttpMessageNotReadableException(null, exception, new MockHttpInputMessage(new byte[0])));
+        assertThat(entity.getStatusCode().value()).isEqualTo(400);
         assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
         assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
             assertThat(problem.getIssues()).hasSize(1);
@@ -93,8 +92,9 @@ class RoutingExceptionsHandlerTest {
         exception.setStackTrace(
                 new StackTraceElement[] { new StackTraceElement(RestTemplate.class.getName(), "test", "test", 1) });
         ResponseEntity<Problem> entity =
-                handler.handleHttpMessageNotReadable(new HttpMessageNotReadableException(null, exception));
-        assertThat(entity.getStatusCodeValue()).isEqualTo(500);
+                handler.handleHttpMessageNotReadable(
+                        new HttpMessageNotReadableException(null, exception, new MockHttpInputMessage(new byte[0])));
+        assertThat(entity.getStatusCode().value()).isEqualTo(500);
         assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
         assertThat(entity.getBody()).isInstanceOf(InternalServerErrorProblem.class);
     }
@@ -107,7 +107,7 @@ class RoutingExceptionsHandlerTest {
                         "io.github.belgif.rest.problem.FrontendController.beanValidationBody" +
                         "(io.github.belgif.rest.problem.model.Model)",
                         new MockHttpInputMessage("dummy".getBytes(StandardCharsets.UTF_8))));
-        assertThat(entity.getStatusCodeValue()).isEqualTo(400);
+        assertThat(entity.getStatusCode().value()).isEqualTo(400);
         assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
         assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
             assertThat(problem.getIssues()).hasSize(1);
@@ -126,7 +126,7 @@ class RoutingExceptionsHandlerTest {
                         "from String \"12/07/1991\": Failed to deserialize java.time.LocalDate: " +
                         "(java.time.format.DateTimeParseException) Text '12/07/1991' could not be parsed at index 0",
                         new MockHttpInputMessage("dummy".getBytes(StandardCharsets.UTF_8))));
-        assertThat(entity.getStatusCodeValue()).isEqualTo(400);
+        assertThat(entity.getStatusCode().value()).isEqualTo(400);
         assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
         assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
             assertThat(problem.getIssues()).hasSize(1);
@@ -142,7 +142,7 @@ class RoutingExceptionsHandlerTest {
         ResponseEntity<Problem> entity = handler.handleHttpMessageNotReadable(
                 new HttpMessageNotReadableException("Other non-sanitized message",
                         new MockHttpInputMessage("dummy".getBytes(StandardCharsets.UTF_8))));
-        assertThat(entity.getStatusCodeValue()).isEqualTo(400);
+        assertThat(entity.getStatusCode().value()).isEqualTo(400);
         assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
         assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
             assertThat(problem.getIssues()).hasSize(1);
@@ -157,7 +157,7 @@ class RoutingExceptionsHandlerTest {
     void handleHttpRequestMethodNotSupported() {
         ResponseEntity<Void> response = handler.handleHttpRequestMethodNotSupported(
                 new HttpRequestMethodNotSupportedException("POST", Arrays.asList("GET", "PUT")));
-        assertThat(response.getStatusCodeValue()).isEqualTo(405);
+        assertThat(response.getStatusCode().value()).isEqualTo(405);
         assertThat(response.getHeaders().getAllow()).containsExactly(HttpMethod.GET, HttpMethod.PUT);
     }
 
@@ -165,7 +165,7 @@ class RoutingExceptionsHandlerTest {
     void handleHttpMediaTypeNotAcceptable() {
         ResponseEntity<Void> response = handler.handleHttpMediaTypeNotAcceptable(
                 new HttpMediaTypeNotAcceptableException(Collections.singletonList(MediaType.APPLICATION_JSON)));
-        assertThat(response.getStatusCodeValue()).isEqualTo(406);
+        assertThat(response.getStatusCode().value()).isEqualTo(406);
     }
 
     @Test
@@ -173,7 +173,7 @@ class RoutingExceptionsHandlerTest {
         ResponseEntity<Void> response = handler.handleHttpMediaTypeNotSupported(
                 new HttpMediaTypeNotSupportedException(MediaType.APPLICATION_XML,
                         Collections.singletonList(MediaType.APPLICATION_JSON)));
-        assertThat(response.getStatusCodeValue()).isEqualTo(415);
+        assertThat(response.getStatusCode().value()).isEqualTo(415);
     }
 
 }

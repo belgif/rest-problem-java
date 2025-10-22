@@ -24,7 +24,7 @@ class ProblemMediaTypeTest {
         BadRequestProblem problem = new BadRequestProblem();
         ResponseEntity<Problem> response = ProblemMediaType.INSTANCE.toResponse(problem);
         assertThat(response.getBody()).isEqualTo(problem);
-        assertThat(response.getStatusCodeValue()).isEqualTo(400);
+        assertThat(response.getStatusCode().value()).isEqualTo(400);
         assertThat(response.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
     }
 
@@ -34,9 +34,9 @@ class ProblemMediaTypeTest {
         problem.setRetryAfterSec(120L);
         ResponseEntity<Problem> response = ProblemMediaType.INSTANCE.toResponse(problem);
         assertThat(response.getBody()).isEqualTo(problem);
-        assertThat(response.getStatusCodeValue()).isEqualTo(429);
+        assertThat(response.getStatusCode().value()).isEqualTo(429);
         assertThat(response.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
-        assertThat(response.getHeaders()).containsEntry("Retry-After", Collections.singletonList("120"));
+        assertThat(response.getHeaders().get("Retry-After")).isEqualTo(Collections.singletonList("120"));
     }
 
 }
