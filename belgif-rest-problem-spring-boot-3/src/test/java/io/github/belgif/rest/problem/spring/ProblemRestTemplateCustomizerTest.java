@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 class ProblemRestTemplateCustomizerTest {
 

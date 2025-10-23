@@ -11,10 +11,9 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.github.belgif.rest.problem.DefaultProblem;
 import io.github.belgif.rest.problem.api.Problem;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * RestTemplate/RestClient error handler that converts problem responses to Problem exceptions.

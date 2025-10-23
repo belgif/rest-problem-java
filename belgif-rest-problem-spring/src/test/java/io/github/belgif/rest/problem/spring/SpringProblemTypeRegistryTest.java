@@ -11,12 +11,11 @@ import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.fasterxml.jackson.databind.jsontype.NamedType;
-
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.ClientProblem;
 import io.github.belgif.rest.problem.api.ProblemType;
 import io.github.belgif.rest.problem.registry.ProblemTypeRegistry;
+import tools.jackson.databind.jsontype.NamedType;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = { ProblemAutoConfiguration.class, JacksonAutoConfiguration.class })

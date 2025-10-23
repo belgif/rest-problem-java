@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.atlassian.oai.validator.report.ValidationReport;
 import com.atlassian.oai.validator.springmvc.InvalidRequestException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.ResourceNotFoundProblem;
@@ -29,6 +27,8 @@ import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.spring.internal.InvalidRequestExceptionUtil;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * RestController exception handler for InvalidRequestException thrown by Atlassian swagger-request-validator library.
@@ -77,6 +77,20 @@ public class InvalidRequestExceptionHandler {
         return new ArrayList<>(issues);
     }
 
+    // TODO: shouldn't this return JsonNode? This doesn't support objects like in example from
+    // https://www.belgif.be/specification/rest/api-guide/#bad-request
+    // {
+    // "type": "urn:problem-type:belgif:input-validation:invalidInput",
+    // "href": "https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html",
+    // "title": "Invalid input",
+    // "detail": "endDate of a period should be after its startDate",
+    // "in": "body",
+    // "name": "boardMembers[0].period",
+    // "value": {
+    // "startDate": "2020-12-31",
+    // "endDate": "2020-01-01"
+    // }
+    // }
     private String getValue(ValidationReport.Message message, InEnum in, String name, HttpServletRequest request,
             AtomicReference<JsonNode> requestBody) {
         switch (in) {

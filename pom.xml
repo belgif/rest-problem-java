@@ -35,6 +35,14 @@
         <scope>import</scope>
       </dependency>
       <dependency>
+        <!-- TODO: can't stay here -->
+        <groupId>tools.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
+        <version>3.0.1</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
         <version>3.27.6</version>
@@ -69,12 +77,13 @@
 
   <modules>
     <module>belgif-rest-problem</module>
-    <module>belgif-rest-problem-validator</module>
-    <module>belgif-rest-problem-java-ee</module>
+<!--    <module>belgif-rest-problem-validator</module>-->
+<!--    <module>belgif-rest-problem-java-ee</module>-->
     <module>belgif-rest-problem-spring</module>
     <module>belgif-rest-problem-spring-boot-3</module>
-    <module>belgif-rest-problem-quarkus</module>
-    <module>belgif-rest-problem-quarkus-deployment</module>
+<!-- temp disabling quarkus -->
+<!--    <module>belgif-rest-problem-quarkus</module>-->
+<!--    <module>belgif-rest-problem-quarkus-deployment</module>-->
     <module>belgif-rest-problem-it</module>
     <module>belgif-rest-problem-bom</module>
   </modules>

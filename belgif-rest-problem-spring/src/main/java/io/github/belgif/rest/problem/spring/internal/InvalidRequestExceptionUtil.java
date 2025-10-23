@@ -12,12 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.atlassian.oai.validator.report.ValidationReport;
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.belgif.rest.problem.api.InEnum;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Internal utility class for parsing validation report message from Atlassian swagger-request-validator library.
@@ -76,7 +76,14 @@ public class InvalidRequestExceptionUtil {
             return null;
         }
         JsonNode valueNode = requestBody.at(JsonPointer.compile(name));
-        return valueNode.asText().isEmpty() ? null : valueNode.asText();
+        // TODO: verify impact of change. Jackson 3 doesn't do asString if not a string node.
+        if (valueNode.isMissingNode()) {
+            return null;
+        } else if (valueNode.isString()) {
+            return valueNode.asString();
+        } else {
+            return mapper.writeValueAsString(valueNode);
+        }
     }
 
     public static String getDetail(ValidationReport.Message message) {

@@ -14,14 +14,13 @@ import com.atlassian.oai.validator.model.ApiOperation;
 import com.atlassian.oai.validator.model.ApiPath;
 import com.atlassian.oai.validator.model.ApiPathImpl;
 import com.atlassian.oai.validator.report.ValidationReport;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.belgif.rest.problem.api.InEnum;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 class InvalidRequestExceptionUtilTest {
 
@@ -115,7 +114,7 @@ class InvalidRequestExceptionUtilTest {
     }
 
     @Test
-    void testGetBodyValueWithReference() throws JsonProcessingException {
+    void testGetBodyValueWithReference() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         String requestBody = "{\"myProperty\": \"myDummyValue\"}";
         JsonNode node = new ObjectMapper().readTree(requestBody);

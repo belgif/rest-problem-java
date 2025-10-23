@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestClient;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 class ProblemRestClientCustomizerTest {
 

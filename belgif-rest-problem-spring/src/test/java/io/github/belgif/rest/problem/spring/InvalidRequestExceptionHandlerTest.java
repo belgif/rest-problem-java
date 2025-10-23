@@ -17,7 +17,6 @@ import com.atlassian.oai.validator.model.ApiPath;
 import com.atlassian.oai.validator.model.ApiPathImpl;
 import com.atlassian.oai.validator.report.ValidationReport;
 import com.atlassian.oai.validator.springmvc.InvalidRequestException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.ResourceNotFoundProblem;
@@ -27,6 +26,7 @@ import io.github.belgif.rest.problem.api.Problem;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import tools.jackson.databind.ObjectMapper;
 
 class InvalidRequestExceptionHandlerTest {
 

@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.boot.web.server.test.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 
 import io.github.belgif.rest.problem.it.AbstractRestProblemSpringBootIT;

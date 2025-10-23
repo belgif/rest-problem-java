@@ -20,13 +20,12 @@ import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.InternalServerErrorProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.Problem;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.exc.MismatchedInputException;
 
 class RoutingExceptionsHandlerTest {
 
@@ -68,7 +67,7 @@ class RoutingExceptionsHandlerTest {
     @Test
     void handleHttpMessageNotReadableJacksonMismatchedInputException() {
         MismatchedInputException exception = MismatchedInputException.from(null, Object.class, "detail");
-        exception.prependPath(new JsonMappingException.Reference(null, "id"));
+        exception.prependPath(new JacksonException.Reference(null, "id"));
         ResponseEntity<Problem> entity =
                 handler.handleHttpMessageNotReadable(
                         new HttpMessageNotReadableException(null, exception, new MockHttpInputMessage(new byte[0])));
@@ -88,7 +87,7 @@ class RoutingExceptionsHandlerTest {
     @Test
     void handleHttpMessageNotReadableJacksonMismatchedInputExceptionFromRestTemplate() {
         MismatchedInputException exception = MismatchedInputException.from(null, Object.class, "detail");
-        exception.prependPath(new JsonMappingException.Reference(null, "id"));
+        exception.prependPath(new JacksonException.Reference(null, "id"));
         exception.setStackTrace(
                 new StackTraceElement[] { new StackTraceElement(RestTemplate.class.getName(), "test", "test", 1) });
         ResponseEntity<Problem> entity =

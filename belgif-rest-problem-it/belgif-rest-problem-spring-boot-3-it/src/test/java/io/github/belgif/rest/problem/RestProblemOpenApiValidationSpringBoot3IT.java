@@ -1,7 +1,7 @@
 package io.github.belgif.rest.problem;
 
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.boot.web.server.test.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 
 import io.github.belgif.rest.problem.it.AbstractOpenApiValidationSpringBootIT;

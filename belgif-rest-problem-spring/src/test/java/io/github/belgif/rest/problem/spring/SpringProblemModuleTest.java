@@ -7,13 +7,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.fasterxml.jackson.databind.Module.SetupContext;
+import tools.jackson.databind.JacksonModule;
 
 @ExtendWith(MockitoExtension.class)
 class SpringProblemModuleTest {
 
     @Mock
-    private SetupContext setupContext;
+    private JacksonModule.SetupContext setupContext;
 
     @Test
     void module() {

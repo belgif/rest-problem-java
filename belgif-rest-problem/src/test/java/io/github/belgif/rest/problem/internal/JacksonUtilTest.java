@@ -8,12 +8,12 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.exc.MismatchedInputException;
 
 class JacksonUtilTest {
 
@@ -74,7 +74,7 @@ class JacksonUtilTest {
             assertThat(issue.getName()).isEqualTo("id");
             assertThat(issue.getValue()).isNull();
             assertThat(issue.getDetail()).isEqualTo(
-                    "Cannot deserialize value of type `int` from String \"one two three\": not a valid `int` value");
+                    "Cannot deserialize value of type `java.lang.Integer` from String \"one two three\": not a valid `java.lang.Integer` value");
         });
     }
 

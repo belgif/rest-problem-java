@@ -7,8 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
+import org.springframework.boot.restclient.RestTemplateBuilder;
+import org.springframework.boot.web.server.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

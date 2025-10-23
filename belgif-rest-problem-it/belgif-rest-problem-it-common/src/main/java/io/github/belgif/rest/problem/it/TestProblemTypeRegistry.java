@@ -3,11 +3,10 @@ package io.github.belgif.rest.problem.it;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.jsontype.NamedType;
-
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.api.ProblemType;
 import io.github.belgif.rest.problem.registry.ProblemTypeRegistry;
+import tools.jackson.databind.jsontype.NamedType;
 
 public class TestProblemTypeRegistry implements ProblemTypeRegistry {
 

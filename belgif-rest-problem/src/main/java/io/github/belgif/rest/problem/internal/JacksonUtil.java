@@ -2,12 +2,11 @@ package io.github.belgif.rest.problem.internal;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonMappingException.Reference;
-
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DatabindException;
 
 /**
  * Internal jackson utility class.
@@ -23,23 +22,23 @@ public class JacksonUtil {
      * @param e the JsonMappingException
      * @return the BadRequestProblem
      */
-    public static BadRequestProblem toBadRequestProblem(JsonMappingException e) {
+    public static BadRequestProblem toBadRequestProblem(DatabindException e) {
         StringBuilder name = new StringBuilder();
-        for (Reference reference : e.getPath()) {
-            if (reference.getFrom() instanceof List) {
+        for (JacksonException.Reference reference : e.getPath()) {
+            if (reference.from() instanceof List) {
                 name.append("[").append(reference.getIndex()).append("]");
             } else {
                 if (name.length() > 0) {
                     name.append(".");
                 }
-                name.append(reference.getFieldName());
+                name.append(reference.getPropertyName());
             }
         }
         return new BadRequestProblem(
                 InputValidationIssues.schemaViolation(InEnum.BODY, name.toString(), null, getDetailMessage(e)));
     }
 
-    private static String getDetailMessage(JsonMappingException e) {
+    private static String getDetailMessage(DatabindException e) {
         if (e.getOriginalMessage().startsWith("Missing required")) {
             return "must not be null";
         } else {

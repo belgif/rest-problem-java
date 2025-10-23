@@ -16,10 +16,16 @@
   </description>
 
   <dependencies>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
+<!--    <dependency>-->
+<!--      <groupId>com.fasterxml.jackson.core</groupId>-->
+<!--      <artifactId>jackson-databind</artifactId>-->
+<!--      <version>${version.jackson.minimal}</version>-->
+<!--      <scope>provided</scope>-->
+<!--    </dependency>-->
+    <dependency> <!-- TODO -->
+      <groupId>tools.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>${version.jackson.minimal}</version>
+      <version>3.0.1</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

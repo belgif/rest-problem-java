@@ -4,32 +4,30 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.PropertyName;
-import com.fasterxml.jackson.databind.deser.BeanDeserializerBuilder;
-import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.type.SimpleType;
-import com.fasterxml.jackson.databind.type.TypeBindings;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.databind.type.TypeModifier;
-
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.registry.ProblemTypeRegistry;
+import tools.jackson.databind.*;
+import tools.jackson.databind.deser.BeanDeserializerBuilder;
+import tools.jackson.databind.deser.ValueDeserializerModifier;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.module.SimpleModule;
+import tools.jackson.databind.type.SimpleType;
+import tools.jackson.databind.type.TypeBindings;
+import tools.jackson.databind.type.TypeFactory;
+import tools.jackson.databind.type.TypeModifier;
 
 /**
- * Problem module that can be registered on jackson {@link com.fasterxml.jackson.databind.ObjectMapper}.
+ * Problem module that can be registered on jackson {@link tools.jackson.databind.ObjectMapper}.
  *
- * @see com.fasterxml.jackson.databind.ObjectMapper#registerModule(Module)
+ * @see JsonMapper#builder()
+ * @see tools.jackson.databind.cfg.MapperBuilder#addModule(JacksonModule)
  */
 public class ProblemModule extends SimpleModule {
 
     private static final TypeModifier PROBLEM_TYPE_MODIFIER = new NonThrowableProblemTypeModifier();
 
-    private static final BeanDeserializerModifier PROBLEM_DESERIALIZER_MODIFIER = new ProblemBeanDeserializerModifier();
+    private static final ValueDeserializerModifier PROBLEM_DESERIALIZER_MODIFIER =
+            new ProblemBeanDeserializerModifier();
 
     public ProblemModule(ProblemTypeRegistry problemTypeRegistry) {
         registerSubtypes(problemTypeRegistry.getProblemTypes());
@@ -39,7 +37,7 @@ public class ProblemModule extends SimpleModule {
     public void setupModule(SetupContext context) {
         super.setupModule(context);
         context.addTypeModifier(PROBLEM_TYPE_MODIFIER);
-        context.addBeanDeserializerModifier(PROBLEM_DESERIALIZER_MODIFIER);
+        context.addDeserializerModifier(PROBLEM_DESERIALIZER_MODIFIER);
     }
 
     /**
@@ -75,13 +73,13 @@ public class ProblemModule extends SimpleModule {
      * BeanDeserializerModifier that ignores setCause(Throwable) and setStackTrace(StackTraceElement[]) properties
      * of problems during deserialization, so they can instead be treated as additionalProperties.
      */
-    private static class ProblemBeanDeserializerModifier extends BeanDeserializerModifier {
+    private static class ProblemBeanDeserializerModifier extends ValueDeserializerModifier {
 
         private static final List<PropertyName> IGNORED_PROPERTIES =
                 Arrays.asList(new PropertyName("cause"), new PropertyName("stackTrace"));
 
         @Override
-        public BeanDeserializerBuilder updateBuilder(DeserializationConfig config, BeanDescription beanDesc,
+        public BeanDeserializerBuilder updateBuilder(DeserializationConfig config, BeanDescription.Supplier beanDesc,
                 BeanDeserializerBuilder builder) {
             if (Problem.class.isAssignableFrom(beanDesc.getBeanClass()) && beanDesc.getType().isConcrete()) {
                 for (PropertyName property : IGNORED_PROPERTIES) {

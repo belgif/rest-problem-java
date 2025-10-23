@@ -35,6 +35,11 @@
       <version>${version.jackson.minimal}</version>
       <scope>provided</scope>
     </dependency>
+    <dependency> <!-- TODO -->
+      <groupId>tools.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>

@@ -13,10 +13,9 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.jsontype.NamedType;
-
 import io.github.belgif.rest.problem.api.ProblemType;
 import io.github.belgif.rest.problem.registry.ProblemTypeRegistry;
+import tools.jackson.databind.jsontype.NamedType;
 
 /**
  * ProblemTypeRegistry implementation for Spring Boot applications.

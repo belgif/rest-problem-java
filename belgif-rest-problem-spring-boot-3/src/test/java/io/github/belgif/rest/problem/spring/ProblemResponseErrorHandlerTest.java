@@ -19,11 +19,10 @@ import org.springframework.mock.http.client.MockClientHttpResponse;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.UnknownHttpStatusCodeException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.DefaultProblem;
 import io.github.belgif.rest.problem.api.Problem;
+import tools.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
 class ProblemResponseErrorHandlerTest {

@@ -18,13 +18,12 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.internal.JacksonUtil;
+import tools.jackson.databind.exc.MismatchedInputException;
 
 /**
  * RestController exception handler for routing-related exceptions.
