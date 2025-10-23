@@ -23,8 +23,9 @@ public class DefaultProblem extends Problem implements FluentProblem<DefaultProb
 
     @JsonCreator
     public DefaultProblem(@JsonProperty("type") URI type, @JsonProperty("href") URI href,
-            @JsonProperty("title") String title, @JsonProperty("status") int status) {
-        super(type, href, title, status);
+            @JsonProperty("title") String title, @JsonProperty("status") Integer status) {
+        // fallback to 0 if status is absent, see https://github.com/belgif/rest-problem-java/issues/246
+        super(type, href, title, status == null ? 0 : status);
     }
 
 }
