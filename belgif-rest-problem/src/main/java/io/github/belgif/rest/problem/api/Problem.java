@@ -46,25 +46,25 @@ public abstract class Problem extends RuntimeException {
     private final URI type;
     private URI href;
     private final String title;
-    private final Integer status;
+    private final int status;
     private String detail;
     private URI instance;
 
     private final Map<String, Object> additionalProperties = new HashMap<>();
 
-    protected Problem(URI type, String title, Integer status) {
+    protected Problem(URI type, String title, int status) {
         this(type, null, title, status, null);
     }
 
-    protected Problem(URI type, URI href, String title, Integer status) {
+    protected Problem(URI type, URI href, String title, int status) {
         this(type, href, title, status, null);
     }
 
-    protected Problem(URI type, String title, Integer status, Throwable cause) {
+    protected Problem(URI type, String title, int status, Throwable cause) {
         this(type, null, title, status, cause);
     }
 
-    protected Problem(URI type, URI href, String title, Integer status, Throwable cause) {
+    protected Problem(URI type, URI href, String title, int status, Throwable cause) {
         super(title, cause);
         this.type = type;
         this.href = href;
@@ -72,7 +72,7 @@ public abstract class Problem extends RuntimeException {
         this.status = status;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
@@ -141,8 +141,7 @@ public abstract class Problem extends RuntimeException {
             return false;
         }
         Problem problem = (Problem) o;
-        return Objects.equals(status, problem.status) && Objects.equals(type, problem.type)
-                && Objects.equals(href, problem.href)
+        return status == problem.status && Objects.equals(type, problem.type) && Objects.equals(href, problem.href)
                 && Objects.equals(title, problem.title) && Objects.equals(detail, problem.detail)
                 && Objects.equals(instance, problem.instance)
                 && Objects.equals(additionalProperties, problem.additionalProperties);

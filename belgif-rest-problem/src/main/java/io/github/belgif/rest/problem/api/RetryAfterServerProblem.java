@@ -15,19 +15,19 @@ public abstract class RetryAfterServerProblem extends ServerProblem implements R
 
     private Long retryAfterSec;
 
-    protected RetryAfterServerProblem(URI type, String title, Integer status) {
+    protected RetryAfterServerProblem(URI type, String title, int status) {
         super(type, title, status);
     }
 
-    protected RetryAfterServerProblem(URI type, URI href, String title, Integer status) {
+    protected RetryAfterServerProblem(URI type, URI href, String title, int status) {
         super(type, href, title, status);
     }
 
-    protected RetryAfterServerProblem(URI type, String title, Integer status, Throwable cause) {
+    protected RetryAfterServerProblem(URI type, String title, int status, Throwable cause) {
         super(type, title, status, cause);
     }
 
-    protected RetryAfterServerProblem(URI type, URI href, String title, Integer status, Throwable cause) {
+    protected RetryAfterServerProblem(URI type, URI href, String title, int status, Throwable cause) {
         super(type, href, title, status, cause);
     }
 

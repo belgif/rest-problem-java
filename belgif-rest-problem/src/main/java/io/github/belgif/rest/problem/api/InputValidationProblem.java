@@ -30,19 +30,19 @@ public abstract class InputValidationProblem extends ClientProblem {
     @Deprecated
     private final List<InvalidParam> invalidParams = new ArrayList<>();
 
-    protected InputValidationProblem(URI type, URI href, String title, Integer status) {
+    protected InputValidationProblem(URI type, URI href, String title, int status) {
         super(type, href, title, status);
     }
 
-    protected InputValidationProblem(URI type, String title, Integer status) {
+    protected InputValidationProblem(URI type, String title, int status) {
         super(type, title, status);
     }
 
-    protected InputValidationProblem(URI type, URI href, String title, Integer status, Throwable cause) {
+    protected InputValidationProblem(URI type, URI href, String title, int status, Throwable cause) {
         super(type, href, title, status, cause);
     }
 
-    protected InputValidationProblem(URI type, String title, Integer status, Throwable cause) {
+    protected InputValidationProblem(URI type, String title, int status, Throwable cause) {
         super(type, title, status, cause);
     }
 

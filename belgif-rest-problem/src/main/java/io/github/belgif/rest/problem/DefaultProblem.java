@@ -21,12 +21,11 @@ public class DefaultProblem extends Problem implements FluentProblem<DefaultProb
 
     private static final long serialVersionUID = 1L;
 
-    // TODO: status changed to Integer to enable Jackson 3. Do we want to keep this?
-    // https://github.com/belgif/rest-problem-java/issues/246
     @JsonCreator
     public DefaultProblem(@JsonProperty("type") URI type, @JsonProperty("href") URI href,
-            @JsonProperty("title") String title, @JsonProperty(value = "status") Integer status) {
-        super(type, href, title, status);
+            @JsonProperty("title") String title, @JsonProperty("status") Integer status) {
+        // fallback to 0 if status is absent, see https://github.com/belgif/rest-problem-java/issues/246
+        super(type, href, title, status == null ? 0 : status);
     }
 
 }
