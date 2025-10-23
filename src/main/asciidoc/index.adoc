@@ -24,7 +24,6 @@ The library consists of these modules:
 
 * *belgif-rest-problem*: library for RFC 9457 standardized Belgif problems
 * *belgif-rest-problem-java-ee*: Java EE / Jakarta EE integration for belgif-rest-problem
-* *belgif-rest-problem-spring-boot-2*: Spring Boot 2.x integration for belgif-rest-problem
 * *belgif-rest-problem-spring-boot-3*: Spring Boot 3.x integration for belgif-rest-problem
 * *belgif-rest-problem-quarkus*: Quarkus integration for belgif-rest-problem
 * *belgif-rest-problem-validator*: validation library that generates Belgif-compliant BadRequestProblem with InputValidationIssues
@@ -60,22 +59,6 @@ See xref:release-notes.adoc[Release Notes].
 .Spring Boot 3 (Gradle)
 ----
 compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:{revnumber}'
-----
-
-[source,xml,role="secondary",subs="attributes+"]
-.Spring Boot 2 (Maven)
-----
-<dependency>
-  <groupId>io.github.belgif.rest.problem</groupId>
-  <artifactId>belgif-rest-problem-spring-boot-2</artifactId>
-  <version>{revnumber}</version>
-</dependency>
-----
-
-[source,role="secondary",subs="attributes+"]
-.Spring Boot 2 (Gradle)
-----
-compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-2:{revnumber}'
 ----
 
 [[dependencies-jakarta-ee]]
@@ -214,11 +197,7 @@ Otherwise, you will see parameter names like `arg0`.
 
 InvalidRequestExceptions thrown by the https://bitbucket.org/atlassian/swagger-request-validator[Atlassian swagger-request-validator] are automatically converted to a proper RFC 9457 `application/problem+json` response.
 
-* For Spring Boot 3, use https://bitbucket.org/atlassian/swagger-request-validator/src/master/swagger-request-validator-spring-webmvc[swagger-request-validator-spring-webmvc].
-* For Spring Boot 2, use https://bitbucket.org/atlassian/swagger-request-validator/src/master/swagger-request-validator-springmvc[swagger-request-validator-springmvc].
-+
-WARNING: On Spring Boot 2, `validation.request.path.missing` should be set to level IGNORE in order to return a 404 error for a missing path.
-See https://bitbucket.org/atlassian/swagger-request-validator/src/master/swagger-request-validator-core/README.md[documentation] of the Atlassian library for more information.
+For Spring Boot 3, use https://bitbucket.org/atlassian/swagger-request-validator/src/master/swagger-request-validator-spring-webmvc[swagger-request-validator-spring-webmvc].
 
 ==== RestTemplate
 
@@ -835,18 +814,6 @@ io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
 * *RoutingExceptionsHandler:* an exception handler for RestControllers that converts routing related validation exceptions to HTTP 400 BadRequestProblem.
 
 In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.
-
-[[belgif-rest-problem-spring-boot-2]]
-==== belgif-rest-problem-spring-boot-2
-
-Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 2.x users are recommended to depend on `belgif-rest-problem-spring-boot-2`, which adds some Spring Boot 2.x specific integrations:
-
-* *ProblemWebClientCustomizer:* a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
-This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
-* *ProblemResponseErrorHandler:* a RestTemplate error handler that converts problem responses to Problem exceptions.
-* *ProblemRestTemplateCustomizer:* a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.
-* *AnnotationParameterNameDiscoverer:* a bean validation ParameterNameDiscoverer that retrieves parameter names from Spring MVC annotations
-* *ProblemValidatorConfiguration:* registers a LocalValidatorFactoryBean with the AnnotationParameterNameDiscoverer
 
 [[belgif-rest-problem-spring-boot-3]]
 ==== belgif-rest-problem-spring-boot-3
