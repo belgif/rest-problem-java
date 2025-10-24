@@ -11,10 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.acme.custom.CustomProblem;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.cfg.PackageVersion;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.DefaultProblem;
@@ -26,6 +22,10 @@ import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.config.ProblemConfig;
+import tools.jackson.core.json.PackageVersion;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.json.JsonMapper;
 
 public abstract class AbstractJacksonSerializationTest {
 
@@ -38,11 +38,12 @@ public abstract class AbstractJacksonSerializationTest {
 
     @BeforeEach
     public void setUp() {
-        mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
         TestProblemTypeRegistry registry = new TestProblemTypeRegistry();
         registry.registerProblemType(BadRequestProblem.class, CustomProblem.class, TooManyRequestsProblem.class);
-        mapper.registerModule(new ProblemModule(registry));
+        mapper = new JsonMapper().builder()
+                .enable(SerializationFeature.INDENT_OUTPUT)
+                .addModule(new ProblemModule(registry))
+                .build();
     }
 
     @AfterEach
@@ -51,7 +52,7 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void badRequestProblem() throws JsonProcessingException {
+    public void badRequestProblem() {
         BadRequestProblem problem = new BadRequestProblem();
         problem.setDetail("my detail message");
         problem.setAdditionalProperty("additional", "property");
@@ -59,14 +60,14 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void customProblem() throws JsonProcessingException {
+    public void customProblem() {
         CustomProblem problem = new CustomProblem("custom");
         problem.setAdditionalProperty("additional", "property");
         assertSerializationRoundtrip(problem);
     }
 
     @Test
-    public void retryAfterProblem() throws JsonProcessingException {
+    public void retryAfterProblem() {
         TooManyRequestsProblem problem = new TooManyRequestsProblem();
         problem.setRetryAfterSec(60L);
         problem.setAdditionalProperty("additional", "property");
@@ -74,14 +75,14 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void badRequestProblemReplacedSsin() throws JsonProcessingException {
+    public void badRequestProblemReplacedSsin() {
         BadRequestProblem problem = new BadRequestProblem(
                 InputValidationIssues.replacedSsin(InEnum.BODY, "parent[1].ssin", "12345678901", "23456789012"));
         assertSerializationRoundtrip(problem);
     }
 
     @Test
-    public void badRequestProblemMultipleInputs() throws JsonProcessingException {
+    public void badRequestProblemMultipleInputs() {
         ProblemConfig.setExtInputsArrayEnabled(true);
         BadRequestProblem problem = new BadRequestProblem();
         problem.setDetail("my detail message");
@@ -96,7 +97,7 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void badRequestProblemWithInNameValueAndInputsArray() throws JsonProcessingException {
+    public void badRequestProblemWithInNameValueAndInputsArray() {
         String json = "{\n"
                 + "  \"type\": \"urn:problem-type:belgif:badRequest\",\n"
                 + "  \"href\": \"https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html\",\n"
@@ -127,7 +128,7 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void badRequestProblemWithInputsArrayAndInNameValue() throws JsonProcessingException {
+    public void badRequestProblemWithInputsArrayAndInNameValue() {
         String json = "{\n"
                 + "  \"type\": \"urn:problem-type:belgif:badRequest\",\n"
                 + "  \"href\": \"https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html\",\n"
@@ -157,9 +158,8 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void unmappedProblem() throws JsonProcessingException {
-        mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    public void unmappedProblem() {
+        mapper = new JsonMapper().builder().enable(SerializationFeature.INDENT_OUTPUT).build();
 
         BadRequestProblem problem = new BadRequestProblem();
         problem.setDetail("my detail message");
@@ -172,7 +172,7 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void legacyInvalidParamProblem() throws JsonProcessingException {
+    public void legacyInvalidParamProblem() {
         String json = "{\n"
                 + "   \"type\": \"urn:problem-type:belgif:badRequest\",\n"
                 + "   \"href\": \"https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html\",\n"
@@ -195,7 +195,7 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void unknownProblemWithMessage() throws JsonProcessingException {
+    public void unknownProblemWithMessage() {
         String json = "{\n"
                 + "  \"id\" : \"08eb8aa6-d4a5-44fc-b25d-007b9f6a272a\",\n"
                 + "  \"code\" : \"Bad Request\",\n"
@@ -214,7 +214,7 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void additionalExceptionProperties() throws JsonProcessingException {
+    public void additionalExceptionProperties() {
         BadRequestProblem problem = new BadRequestProblem();
         problem.setAdditionalProperty("cause", "cause");
         problem.setAdditionalProperty("stackTrace", "stackTrace");
@@ -225,7 +225,7 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void issueWithStatusAndInstance() throws JsonProcessingException {
+    public void issueWithStatusAndInstance() {
         BadRequestProblem problem = new BadRequestProblem();
         problem.setDetail("my detail message");
         InputValidationIssue issue = new InputValidationIssue().detail("test");
@@ -236,7 +236,7 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void issueWithNullValue() throws JsonProcessingException {
+    public void issueWithNullValue() {
         BadRequestProblem problem = new BadRequestProblem(
                 new InputValidationIssue(InEnum.BODY, "id", null));
         String json = mapper.writeValueAsString(problem);
@@ -245,7 +245,7 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void issueWithNullInputValue() throws JsonProcessingException {
+    public void issueWithNullInputValue() {
         ProblemConfig.setExtInputsArrayEnabled(true);
         BadRequestProblem problem = new BadRequestProblem(new InputValidationIssue()
                 .inputs(Input.body("a", null), Input.body("b", null)));
@@ -254,17 +254,11 @@ public abstract class AbstractJacksonSerializationTest {
         assertSerializationRoundtrip(problem);
     }
 
-    protected void assertSerializationRoundtrip(Problem problem) throws JsonProcessingException {
+    protected void assertSerializationRoundtrip(Problem problem) {
         String json = mapper.writeValueAsString(problem);
         print(json);
         Problem result = mapper.readValue(json, Problem.class);
-        assertThat(result).withRepresentation(p -> {
-            try {
-                return mapper.writeValueAsString(p);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-        }).isEqualTo(problem);
+        assertThat(result).withRepresentation(p -> mapper.writeValueAsString(p)).isEqualTo(problem);
     }
 
     private static void print(String value) {

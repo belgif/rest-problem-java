@@ -29,13 +29,13 @@
       <version>8.0.0</version>
       <scope>provided</scope>
     </dependency>
+<!--    <dependency>-->  <!-- TODO: let it coexist -->
+<!--      <groupId>com.fasterxml.jackson.core</groupId>-->
+<!--      <artifactId>jackson-databind</artifactId>-->
+<!--      <version>${version.jackson.minimal}</version>-->
+<!--      <scope>provided</scope>-->
+<!--    </dependency>-->
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>${version.jackson.minimal}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency> <!-- TODO -->
       <groupId>tools.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <scope>provided</scope>
