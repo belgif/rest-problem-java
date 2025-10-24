@@ -21,7 +21,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Aligns with version used on JBoss EAP 7.4 -->
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
-    <version.spring.boot.3>4.0.0-M3</version.spring.boot.3>
+    <version.spring.boot.3>4.0.0-RC1</version.spring.boot.3>
     <version.quarkus>3.28.4</version.quarkus>
   </properties>
 
@@ -43,6 +43,13 @@
         <scope>import</scope>
       </dependency>
       <dependency>
+        <groupId>io.rest-assured</groupId>
+        <artifactId>rest-assured-bom</artifactId>
+        <version>5.5.6</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
         <version>3.27.6</version>
@@ -58,12 +65,6 @@
         <groupId>org.junit-pioneer</groupId>
         <artifactId>junit-pioneer</artifactId>
         <version>2.3.0</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.rest-assured</groupId>
-        <artifactId>rest-assured</artifactId>
-        <version>5.4.0</version>
         <scope>test</scope>
       </dependency>
       <dependency>
