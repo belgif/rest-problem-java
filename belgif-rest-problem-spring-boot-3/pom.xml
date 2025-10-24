@@ -12,6 +12,10 @@
   <artifactId>belgif-rest-problem-spring-boot-3</artifactId>
   <packaging>jar</packaging>
 
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+  </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
