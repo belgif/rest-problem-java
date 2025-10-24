@@ -450,7 +450,6 @@
                 <excludeArtifact>belgif-rest-problem-jakarta-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-java-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-quarkus-it</excludeArtifact>
-                <excludeArtifact>belgif-rest-problem-spring-boot-2-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-spring-boot-3-it</excludeArtifact>
               </excludeArtifacts>
             </configuration>
@@ -475,7 +474,6 @@
         <module>belgif-rest-problem-validator</module>
         <module>belgif-rest-problem-java-ee</module>
         <module>belgif-rest-problem-spring</module>
-        <module>belgif-rest-problem-spring-boot-2</module>
         <module>belgif-rest-problem-spring-boot-3</module>
         <module>belgif-rest-problem-quarkus</module>
         <module>belgif-rest-problem-quarkus-deployment</module>
