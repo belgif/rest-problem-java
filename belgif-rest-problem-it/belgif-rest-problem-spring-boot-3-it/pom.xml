@@ -10,7 +10,11 @@
   </parent>
 
   <artifactId>belgif-rest-problem-spring-boot-3-it</artifactId>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
+
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+  </properties>
 
   <dependencyManagement>
     <dependencies>
