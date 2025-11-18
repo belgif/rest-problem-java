@@ -83,6 +83,24 @@ class RequestValidatorTest {
     }
 
     @Test
+    void employerIdValid() {
+        assertValid(new RequestValidator().employerId(Input.body("employerId", 312345625L)));
+    }
+
+    @Test
+    void employerIdNull() {
+        assertValid(new RequestValidator().employerId(null));
+        assertValid(new RequestValidator().employerId(Input.body("employerId", null)));
+    }
+
+    @Test
+    void employerIdInvalid() {
+        assertInvalid(
+                new RequestValidator().employerId(Input.body("employerId", 5678901279L)),
+                InputValidationIssues.invalidEmployerId(BODY, "employerId", 5678901279L));
+    }
+
+    @Test
     void periodValid() {
         InputPeriod period = new InputPeriod(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 12, 31));
         assertValid(new RequestValidator().period(Input.body("period", period)));
