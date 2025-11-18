@@ -14,6 +14,13 @@
 
 == Version 0.18
 
+[WARNING]
+====
+*Breaking change*
+====
+
+Spring Boot 2 support has been dropped from this release (module `belgif-rest-problem-spring-boot-2`).
+
 *belgif-rest-problem:*
 
 * Add href property with documentation URL for belgif (e.g. https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html) and belgif-ext (e.g. https://www.belgif.be/specification/rest/api-guide/issues/ext/invalidStructure.html) issue types

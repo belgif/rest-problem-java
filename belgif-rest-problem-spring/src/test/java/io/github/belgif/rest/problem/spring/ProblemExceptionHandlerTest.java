@@ -16,21 +16,21 @@ class ProblemExceptionHandlerTest {
     @Test
     void handleProblem() {
         ResponseEntity<Problem> response = handler.handleProblem(new BadRequestProblem());
-        assertThat(response.getStatusCodeValue()).isEqualTo(400);
+        assertThat(response.getStatusCode().value()).isEqualTo(400);
         assertThat(response.getBody()).isInstanceOf(BadRequestProblem.class);
     }
 
     @Test
     void handleRuntimeException() {
         ResponseEntity<Problem> response = handler.handleException(new RuntimeException("runtime"));
-        assertThat(response.getStatusCodeValue()).isEqualTo(500);
+        assertThat(response.getStatusCode().value()).isEqualTo(500);
         assertThat(response.getBody()).isInstanceOf(InternalServerErrorProblem.class);
     }
 
     @Test
     void handleCheckedException() {
         ResponseEntity<Problem> response = handler.handleException(new Exception("checked"));
-        assertThat(response.getStatusCodeValue()).isEqualTo(500);
+        assertThat(response.getStatusCode().value()).isEqualTo(500);
         assertThat(response.getBody()).isInstanceOf(InternalServerErrorProblem.class);
     }
 

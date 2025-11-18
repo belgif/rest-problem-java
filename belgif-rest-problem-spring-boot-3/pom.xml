@@ -12,6 +12,10 @@
   <artifactId>belgif-rest-problem-spring-boot-3</artifactId>
   <packaging>jar</packaging>
 
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+  </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -28,7 +32,6 @@
     <dependency>
       <groupId>io.github.belgif.rest.problem</groupId>
       <artifactId>belgif-rest-problem-spring</artifactId>
-      <classifier>jakarta</classifier>
       <version>${project.version}</version>
     </dependency>
     <dependency>
