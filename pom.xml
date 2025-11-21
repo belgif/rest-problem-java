@@ -21,7 +21,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Aligns with version used on JBoss EAP 7.4 -->
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
-    <version.spring.boot.3>4.0.0-RC1</version.spring.boot.3>
+    <version.spring.boot.3>4.0.0</version.spring.boot.3>
     <version.quarkus>3.28.4</version.quarkus>
   </properties>
 
@@ -38,7 +38,7 @@
         <!-- TODO: can't stay here -->
         <groupId>tools.jackson</groupId>
         <artifactId>jackson-bom</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
