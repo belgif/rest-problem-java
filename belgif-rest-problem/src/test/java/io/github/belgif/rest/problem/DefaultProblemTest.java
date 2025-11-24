@@ -18,4 +18,11 @@ class DefaultProblemTest {
         assertThat(problem.getStatus()).isEqualTo(499);
     }
 
+    @Test
+    void missingStatus() {
+        DefaultProblem problem = new DefaultProblem(URI.create("urn:problem-type:belgif:test"),
+                URI.create("https://www.belgif.be"), "Title", null);
+        assertThat(problem.getStatus()).isEqualTo(0);
+    }
+
 }
