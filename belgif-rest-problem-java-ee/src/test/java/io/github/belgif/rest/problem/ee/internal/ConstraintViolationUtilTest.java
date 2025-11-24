@@ -3,8 +3,10 @@ package io.github.belgif.rest.problem.ee.internal;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
@@ -12,6 +14,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -161,6 +165,28 @@ class ConstraintViolationUtilTest {
         assertThat(issue.getDetail()).isEqualTo("must be less than or equal to 5");
     }
 
+    @Test
+    void beanParam() throws Exception {
+        Set<ConstraintViolation<Resource>> violations =
+                validator.forExecutables().validateParameters(new Resource(),
+                        Resource.class.getMethod("beanParam", Bean.class), new Object[] { new Bean("x", 10) });
+
+        assertThat(violations).hasSize(2);
+
+        List<InputValidationIssue> issues =
+                violations.stream().map(ConstraintViolationUtil::convertToInputValidationIssue)
+                        .sorted(Comparator.comparing(InputValidationIssue::getName)).collect(Collectors.toList());
+
+        assertThat(issues.get(0).getIn()).isEqualTo(InEnum.PATH);
+        assertThat(issues.get(0).getName()).isEqualTo("name");
+        assertThat(issues.get(0).getValue()).isEqualTo("x");
+        assertThat(issues.get(0).getDetail()).isEqualTo("size must be between 2 and 256");
+        assertThat(issues.get(1).getIn()).isEqualTo(InEnum.QUERY);
+        assertThat(issues.get(1).getName()).isEqualTo("value");
+        assertThat(issues.get(1).getValue()).isEqualTo(10);
+        assertThat(issues.get(1).getDetail()).isEqualTo("must be less than or equal to 5");
+    }
+
     interface Interface {
         Response paramFromInterface(@QueryParam("value") @Max(5) int value);
     }
@@ -189,6 +215,10 @@ class ConstraintViolationUtilTest {
             return null;
         }
 
+        public Response beanParam(@Valid @BeanParam Bean bean) {
+            return null;
+        }
+
         @Override
         public Response paramFromSuperClass(int value) {
             return super.paramFromSuperClass(value);
@@ -197,6 +227,20 @@ class ConstraintViolationUtilTest {
         @Override
         public Response paramFromInterface(int value) {
             return null;
+        }
+    }
+
+    static class Bean {
+        @PathParam("name")
+        @Size(min = 2, max = 256)
+        String name;
+        @QueryParam("value")
+        @Max(5)
+        Integer value;
+
+        Bean(String name, Integer value) {
+            this.name = name;
+            this.value = value;
         }
     }
 
