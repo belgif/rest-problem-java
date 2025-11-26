@@ -152,6 +152,20 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
     }
 
     /**
+     * Validate the structure of a Belgif openapi-employment-identifier EmployerId.
+     *
+     * @param employerId the employer id
+     * @return this request validator
+     * @see <a href="https://github.com/belgif/openapi-employment-identifier">openapi-employment-identifier</a>
+     */
+    public SELF employerId(Input<Long> employerId) {
+        if (employerId != null && employerId.getValue() != null) {
+            addValidator(new EmployerIdValidator(employerId));
+        }
+        return getThis();
+    }
+
+    /**
      * Validate the structure of a Belgif openapi-time Period or PeriodOptionalEnd.
      *
      * @param period the Period or PeriodOptionalEnd to validate
