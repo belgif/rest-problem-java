@@ -9,32 +9,32 @@ public class Bean {
 
     @PathParam("name")
     @Size(min = 2, max = 256)
-    private String name;
+    private String theName;
     @QueryParam("value")
     @Max(5)
-    private Integer value;
+    private Integer theValue;
 
     public String getName() {
-        return name;
+        return theName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.theName = name;
     }
 
     public Integer getValue() {
-        return value;
+        return theValue;
     }
 
     public void setValue(Integer value) {
-        this.value = value;
+        this.theValue = value;
     }
 
     @Override
     public String toString() {
         return "Bean{" +
-                "name='" + name + '\'' +
-                ", value=" + value +
+                "name='" + theName + '\'' +
+                ", value=" + theValue +
                 '}';
     }
 

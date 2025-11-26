@@ -188,44 +188,44 @@ class ConstraintViolationUtilTest {
     }
 
     interface Interface {
-        Response paramFromInterface(@QueryParam("value") @Max(5) int value);
+        Response paramFromInterface(@QueryParam("value") @Max(5) int theValue);
     }
 
     static class SuperClass {
-        public Response paramFromSuperClass(@QueryParam("value") @Max(5) int value) {
+        public Response paramFromSuperClass(@QueryParam("value") @Max(5) int theValue) {
             return null;
         }
     }
 
     static class Resource extends SuperClass implements Interface {
 
-        public Response bodyParam(@Valid @NotNull Body body) {
+        public Response bodyParam(@Valid @NotNull Body theBody) {
             return null;
         }
 
-        public Response queryParam(@QueryParam("value") @Max(5) int value) {
+        public Response queryParam(@QueryParam("value") @Max(5) int theValue) {
             return null;
         }
 
-        public Response pathParam(@PathParam("value") @Max(5) int value) {
+        public Response pathParam(@PathParam("value") @Max(5) int theValue) {
             return null;
         }
 
-        public Response headerParam(@HeaderParam("value") @Max(5) int value) {
+        public Response headerParam(@HeaderParam("value") @Max(5) int theValue) {
             return null;
         }
 
-        public Response beanParam(@Valid @BeanParam Bean bean) {
+        public Response beanParam(@Valid @BeanParam Bean theBean) {
             return null;
         }
 
         @Override
-        public Response paramFromSuperClass(int value) {
-            return super.paramFromSuperClass(value);
+        public Response paramFromSuperClass(int theValue) {
+            return super.paramFromSuperClass(theValue);
         }
 
         @Override
-        public Response paramFromInterface(int value) {
+        public Response paramFromInterface(int theValue) {
             return null;
         }
     }
@@ -233,14 +233,14 @@ class ConstraintViolationUtilTest {
     static class Bean {
         @PathParam("name")
         @Size(min = 2, max = 256)
-        String name;
+        String theName;
         @QueryParam("value")
         @Max(5)
-        Integer value;
+        Integer theValue;
 
         Bean(String name, Integer value) {
-            this.name = name;
-            this.value = value;
+            this.theName = name;
+            this.theValue = value;
         }
     }
 

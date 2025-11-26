@@ -21,6 +21,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 
 import io.github.belgif.rest.problem.api.InEnum;
+import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.internal.AnnotationUtil;
@@ -65,27 +66,28 @@ public class ConstraintViolationUtil {
                 propertyName.add(p.toString());
             }
         }
-        InEnum in = determineSource(violation, propertyPath, methodNode);
-        String name = String.join(".", propertyName);
-        if (in == InEnum.BODY && propertyPath.get(propertyPath.size() - 1).getKind() == ElementKind.PARAMETER) {
-            name = null;
-        }
-        return InputValidationIssues.schemaViolation(in, name, violation.getInvalidValue(), violation.getMessage());
+        Input<Object> input = determineInput(violation, methodNode, propertyPath, propertyName);
+        return InputValidationIssues.schemaViolation(input.getIn(), input.getName(), input.getValue(),
+                violation.getMessage());
     }
 
-    private static InEnum determineSource(ConstraintViolation<?> violation, List<Node> propertyPath,
-            MethodNode methodNode) {
+    private static Input<Object> determineInput(ConstraintViolation<?> violation,
+            MethodNode methodNode, List<Node> propertyPath, List<String> propertyName) {
+        Input<Object> input = new Input<>();
+        input.setIn(InEnum.BODY);
+        input.setName(String.join(".", propertyName));
+        input.setValue(violation.getInvalidValue());
         Node last = propertyPath.get(propertyPath.size() - 1);
         Node parent = propertyPath.size() > 1 ? propertyPath.get(propertyPath.size() - 2) : null;
         if (last.getKind() == ElementKind.PARAMETER) {
             if (methodNode != null) {
                 ParameterNode param = last.as(ParameterNode.class);
                 Method method = findMethod(violation.getRootBeanClass(), methodNode);
-                return AnnotationUtil.findParamAnnotation(method, param.getParameterIndex(), ANNOTATIONS)
+                AnnotationUtil.findParamAnnotation(method, param.getParameterIndex(), ANNOTATIONS)
                         .map(Annotation::annotationType).map(SOURCE_MAPPING::get)
-                        .orElse(InEnum.BODY);
+                        .ifPresent(input::setIn);
             } else {
-                return InEnum.QUERY;
+                input.setIn(InEnum.QUERY);
             }
         } else if (last.getKind() == ElementKind.PROPERTY && parent != null
                 && parent.getKind() == ElementKind.PARAMETER && methodNode != null) {
@@ -99,16 +101,22 @@ public class ConstraintViolationUtil {
                     Field field = beanParamClass.getDeclaredField(last.getName());
                     for (Annotation annotation : field.getAnnotations()) {
                         if (SOURCE_MAPPING.containsKey(annotation.annotationType())) {
-                            return SOURCE_MAPPING.get(annotation.annotationType());
+                            input.setIn(SOURCE_MAPPING.get(annotation.annotationType()));
+                            input.setName((String) annotation.annotationType().getMethod("value").invoke(annotation));
                         }
                     }
-                    return InEnum.BODY;
                 } catch (NoSuchFieldException e) {
                     throw new IllegalStateException("Field " + last.getName() + " not found on " + beanParamClass, e);
+                } catch (ReflectiveOperationException e) {
+                    throw new IllegalStateException(e);
                 }
             }
         }
-        return InEnum.BODY;
+        if (input.getIn() == InEnum.BODY
+                && propertyPath.get(propertyPath.size() - 1).getKind() == ElementKind.PARAMETER) {
+            input.setName(null);
+        }
+        return input;
     }
 
     private static Method findMethod(Class<?> clazz, MethodNode methodNode) {
