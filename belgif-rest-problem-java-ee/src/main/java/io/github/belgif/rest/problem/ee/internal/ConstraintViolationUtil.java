@@ -16,7 +16,10 @@ import javax.validation.Path.MethodNode;
 import javax.validation.Path.Node;
 import javax.validation.Path.ParameterNode;
 import javax.ws.rs.BeanParam;
+import javax.ws.rs.CookieParam;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.HeaderParam;
+import javax.ws.rs.MatrixParam;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 
@@ -40,6 +43,9 @@ public class ConstraintViolationUtil {
         SOURCE_MAPPING.put(QueryParam.class, InEnum.QUERY);
         SOURCE_MAPPING.put(PathParam.class, InEnum.PATH);
         SOURCE_MAPPING.put(HeaderParam.class, InEnum.HEADER);
+        SOURCE_MAPPING.put(FormParam.class, InEnum.BODY);
+        SOURCE_MAPPING.put(MatrixParam.class, InEnum.PATH);
+        SOURCE_MAPPING.put(CookieParam.class, InEnum.HEADER);
     }
 
     @SuppressWarnings("unchecked")
@@ -83,9 +89,14 @@ public class ConstraintViolationUtil {
             if (methodNode != null) {
                 ParameterNode param = last.as(ParameterNode.class);
                 Method method = findMethod(violation.getRootBeanClass(), methodNode);
-                AnnotationUtil.findParamAnnotation(method, param.getParameterIndex(), ANNOTATIONS)
-                        .map(Annotation::annotationType).map(SOURCE_MAPPING::get)
-                        .ifPresent(input::setIn);
+                Optional<Annotation> paramAnnotation =
+                        AnnotationUtil.findParamAnnotation(method, param.getParameterIndex(), ANNOTATIONS);
+                if (paramAnnotation.isPresent()) {
+                    input.setIn(SOURCE_MAPPING.get(paramAnnotation.get().annotationType()));
+                } else {
+                    input.setIn(InEnum.BODY);
+                    input.setName(null);
+                }
             } else {
                 input.setIn(InEnum.QUERY);
             }
@@ -111,10 +122,6 @@ public class ConstraintViolationUtil {
                     throw new IllegalStateException(e);
                 }
             }
-        }
-        if (input.getIn() == InEnum.BODY
-                && propertyPath.get(propertyPath.size() - 1).getKind() == ElementKind.PARAMETER) {
-            input.setName(null);
         }
         return input;
     }

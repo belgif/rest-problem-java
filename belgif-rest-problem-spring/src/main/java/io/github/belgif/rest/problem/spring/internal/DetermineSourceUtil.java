@@ -15,6 +15,8 @@ import javax.validation.Path.MethodNode;
 import javax.validation.Path.Node;
 import javax.validation.Path.ParameterNode;
 
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -34,6 +36,8 @@ public class DetermineSourceUtil {
         SOURCE_MAPPING.put(PathVariable.class, InEnum.PATH);
         SOURCE_MAPPING.put(RequestHeader.class, InEnum.HEADER);
         SOURCE_MAPPING.put(RequestBody.class, InEnum.BODY);
+        SOURCE_MAPPING.put(MatrixVariable.class, InEnum.PATH);
+        SOURCE_MAPPING.put(CookieValue.class, InEnum.HEADER);
     }
 
     @SuppressWarnings("unchecked")
