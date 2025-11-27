@@ -12,7 +12,7 @@
 
 // tag::recent-versions[]
 
-== Version 0.18
+== Version 0.19
 
 [WARNING]
 ====
@@ -20,6 +20,8 @@
 ====
 
 Spring Boot 2 support has been dropped from this release (module `belgif-rest-problem-spring-boot-2`).
+
+== Version 0.18
 
 *belgif-rest-problem:*
 
