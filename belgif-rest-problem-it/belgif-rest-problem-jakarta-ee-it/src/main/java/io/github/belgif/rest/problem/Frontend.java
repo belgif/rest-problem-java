@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import jakarta.ws.rs.BeanParam;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
@@ -13,6 +14,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
 
+import io.github.belgif.rest.problem.it.model.Bean;
 import io.github.belgif.rest.problem.it.model.ChildModel;
 import io.github.belgif.rest.problem.it.model.JacksonModel;
 import io.github.belgif.rest.problem.it.model.Model;
@@ -97,6 +99,10 @@ public interface Frontend {
     @POST
     @Path("/beanValidation/body/inheritance")
     Response beanValidationBodyInheritance(@Valid ChildModel body);
+
+    @GET
+    @Path("/beanValidation/beanParam/{name}")
+    Response beanValidationBeanParam(@Valid @BeanParam Bean bean);
 
     @POST
     @Path("/jackson/mismatchedInputException")

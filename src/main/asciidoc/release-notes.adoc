@@ -23,6 +23,15 @@
 
 * Add validator for Belgif openapi-employment-identifier https://github.com/belgif/openapi-employment-identifier/blob/main/src/main/openapi/employment/identifier/v1/employment-identifier-v1.yaml[EmployerId]
 
+*belgif-rest-problem-java-ee:*
+
+* Correctly determine input source for bean validation issues from properties in https://jakarta.ee/specifications/platform/10/apidocs/jakarta/ws/rs/beanparam[@BeanParam] class
+* Improve bean validation support for @FormParam, @MatrixParam and @CookieParam
+
+*belgif-rest-problem-spring:*
+
+* Improve bean validation support for @MatrixVariable and @CookieValue
+
 == Version 0.17
 
 [WARNING]
