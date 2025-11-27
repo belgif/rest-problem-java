@@ -27,6 +27,7 @@ import io.github.belgif.rest.problem.ServiceUnavailableProblem;
 import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.i18n.I18N;
+import io.github.belgif.rest.problem.it.model.Bean;
 import io.github.belgif.rest.problem.it.model.ChildModel;
 import io.github.belgif.rest.problem.it.model.JacksonModel;
 import io.github.belgif.rest.problem.it.model.Model;
@@ -310,6 +311,11 @@ public class FrontendImpl implements Frontend {
     @Override
     public Response beanValidationBodyInheritance(ChildModel body) {
         return Response.ok("body: " + body).build();
+    }
+
+    @Override
+    public Response beanValidationBeanParam(Bean bean) {
+        return Response.ok("bean: " + bean).build();
     }
 
     @Override

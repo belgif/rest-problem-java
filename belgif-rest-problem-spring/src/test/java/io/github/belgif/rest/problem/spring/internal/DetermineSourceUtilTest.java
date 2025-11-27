@@ -15,6 +15,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -34,6 +36,10 @@ class DetermineSourceUtilTest {
         void requestHeader(@RequestHeader String requestHeader);
 
         void requestBody(@RequestBody String requestBody);
+
+        void cookieValue(@CookieValue String cookieValue);
+
+        void matrixVariable(@MatrixVariable String matrixVariable);
     }
 
     private static Stream<Arguments> serviceMethodToInEnum() {
@@ -41,7 +47,9 @@ class DetermineSourceUtilTest {
                 Arguments.of("requestParam", InEnum.QUERY),
                 Arguments.of("pathVariable", InEnum.PATH),
                 Arguments.of("requestHeader", InEnum.HEADER),
-                Arguments.of("requestBody", InEnum.BODY));
+                Arguments.of("requestBody", InEnum.BODY),
+                Arguments.of("cookieValue", InEnum.HEADER),
+                Arguments.of("matrixVariable", InEnum.PATH));
     }
 
     @ParameterizedTest
