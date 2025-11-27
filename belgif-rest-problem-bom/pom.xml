@@ -10,6 +10,7 @@
   </parent>
 
   <artifactId>belgif-rest-problem-bom</artifactId>
+  <name>${project.groupId}:${project.artifactId}</name>
   <packaging>pom</packaging>
   <description>Maven BOM (Bill of Materials) for dependency versions of belgif-rest-problem modules</description>
 
