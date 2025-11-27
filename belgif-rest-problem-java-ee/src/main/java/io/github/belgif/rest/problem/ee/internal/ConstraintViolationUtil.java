@@ -79,10 +79,7 @@ public class ConstraintViolationUtil {
 
     private static Input<Object> determineInput(ConstraintViolation<?> violation,
             MethodNode methodNode, List<Node> propertyPath, List<String> propertyName) {
-        Input<Object> input = new Input<>();
-        input.setIn(InEnum.BODY);
-        input.setName(String.join(".", propertyName));
-        input.setValue(violation.getInvalidValue());
+        Input<Object> input = Input.body(String.join(".", propertyName), violation.getInvalidValue());
         Node last = propertyPath.get(propertyPath.size() - 1);
         Node parent = propertyPath.size() > 1 ? propertyPath.get(propertyPath.size() - 2) : null;
         if (last.getKind() == ElementKind.PARAMETER) {
