@@ -10,6 +10,7 @@
   </parent>
 
   <artifactId>belgif-rest-problem</artifactId>
+  <name>${project.groupId}:${project.artifactId}</name>
   <packaging>jar</packaging>
   <description>Support classes for generating standardized problem types
     (https://www.belgif.be/specification/rest/api-guide/#standardized-problem-types).
