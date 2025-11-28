@@ -10,6 +10,7 @@
   </parent>
 
   <artifactId>belgif-rest-problem-spring</artifactId>
+  <name>${project.groupId}:${project.artifactId}</name>
   <packaging>jar</packaging>
 
   <dependencyManagement>

@@ -10,6 +10,7 @@
   </parent>
 
   <artifactId>jacoco-aggregator</artifactId>
+  <name>${project.groupId}:${project.artifactId}</name>
   <packaging>pom</packaging>
 
   <dependencies>
