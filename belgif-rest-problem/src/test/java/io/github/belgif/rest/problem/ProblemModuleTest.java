@@ -1,7 +1,10 @@
 package io.github.belgif.rest.problem;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +27,11 @@ import com.fasterxml.jackson.databind.type.TypeModifier;
 class ProblemModuleTest {
 
     private final ProblemModule module = new ProblemModule(
-            () -> new NamedType[] { new NamedType(BadRequestProblem.class, "urn:problem-type:belgif:badRequest") });
+            () -> {
+                Map<String, Class<?>> problemTypes = new HashMap<>();
+                problemTypes.put("urn:problem-type:belgif:badRequest", BadRequestProblem.class);
+                return problemTypes;
+            });
 
     @Mock
     private SetupContext context;

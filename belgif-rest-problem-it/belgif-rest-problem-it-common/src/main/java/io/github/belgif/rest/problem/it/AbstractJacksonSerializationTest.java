@@ -1,57 +1,52 @@
 package io.github.belgif.rest.problem.it;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import com.acme.custom.CustomProblem;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.cfg.PackageVersion;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.DefaultProblem;
-import io.github.belgif.rest.problem.ProblemModule;
 import io.github.belgif.rest.problem.TooManyRequestsProblem;
-import io.github.belgif.rest.problem.api.InEnum;
-import io.github.belgif.rest.problem.api.Input;
-import io.github.belgif.rest.problem.api.InputValidationIssue;
-import io.github.belgif.rest.problem.api.InputValidationIssues;
-import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.api.*;
 import io.github.belgif.rest.problem.config.ProblemConfig;
 
-public abstract class AbstractJacksonSerializationTest {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+abstract class AbstractJacksonSerializationTest {
 
-    private ObjectMapper mapper;
+    protected interface JacksonWrapper {
+        String getVersion();
+
+        void createMapper(Object module);
+
+        Problem readProblem(String json) throws IOException;
+
+        String writeValueAsString(Problem problem) throws IOException;
+    }
+
+    protected final JacksonWrapper jacksonWrapper = createJacksonWrapper();
 
     @BeforeAll
-    static void printJacksonVersion() {
-        print("jackson version: " + PackageVersion.VERSION);
+    void printJacksonVersion() {
+        print("jackson version: " + jacksonWrapper.getVersion());
     }
 
     @BeforeEach
-    public void setUp() {
-        mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        TestProblemTypeRegistry registry = new TestProblemTypeRegistry();
-        registry.registerProblemType(BadRequestProblem.class, CustomProblem.class, TooManyRequestsProblem.class);
-        mapper.registerModule(new ProblemModule(registry));
-    }
+    protected abstract void setUp();
 
     @AfterEach
-    public void resetProblemConfig() {
+    void resetProblemConfig() {
         ProblemConfig.reset();
     }
 
     @Test
-    public void badRequestProblem() throws JsonProcessingException {
+    void badRequestProblem() throws IOException {
         BadRequestProblem problem = new BadRequestProblem();
         problem.setDetail("my detail message");
         problem.setAdditionalProperty("additional", "property");
@@ -59,14 +54,14 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void customProblem() throws JsonProcessingException {
+    void customProblem() throws IOException {
         CustomProblem problem = new CustomProblem("custom");
         problem.setAdditionalProperty("additional", "property");
         assertSerializationRoundtrip(problem);
     }
 
     @Test
-    public void retryAfterProblem() throws JsonProcessingException {
+    void retryAfterProblem() throws IOException {
         TooManyRequestsProblem problem = new TooManyRequestsProblem();
         problem.setRetryAfterSec(60L);
         problem.setAdditionalProperty("additional", "property");
@@ -74,14 +69,14 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void badRequestProblemReplacedSsin() throws JsonProcessingException {
+    void badRequestProblemReplacedSsin() throws IOException {
         BadRequestProblem problem = new BadRequestProblem(
                 InputValidationIssues.replacedSsin(InEnum.BODY, "parent[1].ssin", "12345678901", "23456789012"));
         assertSerializationRoundtrip(problem);
     }
 
     @Test
-    public void badRequestProblemMultipleInputs() throws JsonProcessingException {
+    void badRequestProblemMultipleInputs() throws IOException {
         ProblemConfig.setExtInputsArrayEnabled(true);
         BadRequestProblem problem = new BadRequestProblem();
         problem.setDetail("my detail message");
@@ -96,7 +91,7 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void badRequestProblemWithInNameValueAndInputsArray() throws JsonProcessingException {
+    void badRequestProblemWithInNameValueAndInputsArray() throws IOException {
         String json = "{\n"
                 + "  \"type\": \"urn:problem-type:belgif:badRequest\",\n"
                 + "  \"href\": \"https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html\",\n"
@@ -118,16 +113,16 @@ public abstract class AbstractJacksonSerializationTest {
                 + "    }\n"
                 + "  ]\n"
                 + "}";
-        Problem result = mapper.readValue(json, Problem.class);
+        Problem result = jacksonWrapper.readProblem(json);
         assertThat(result).isInstanceOf(BadRequestProblem.class);
         InputValidationIssue issue = ((BadRequestProblem) result).getIssues().get(0);
         assertThat(issue.getName()).isEqualTo("test");
         assertThat(issue.getInputs().get(0).getName()).isEqualTo("test");
-        assertThat(mapper.writeValueAsString(result)).isEqualToIgnoringWhitespace(json);
+        assertThat(jacksonWrapper.writeValueAsString(result)).isEqualToIgnoringWhitespace(json);
     }
 
     @Test
-    public void badRequestProblemWithInputsArrayAndInNameValue() throws JsonProcessingException {
+    void badRequestProblemWithInputsArrayAndInNameValue() throws IOException {
         String json = "{\n"
                 + "  \"type\": \"urn:problem-type:belgif:badRequest\",\n"
                 + "  \"href\": \"https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html\",\n"
@@ -149,7 +144,7 @@ public abstract class AbstractJacksonSerializationTest {
                 + "    }\n"
                 + "  ]\n"
                 + "}";
-        Problem result = mapper.readValue(json, Problem.class);
+        Problem result = jacksonWrapper.readProblem(json);
         assertThat(result).isInstanceOf(BadRequestProblem.class);
         InputValidationIssue issue = ((BadRequestProblem) result).getIssues().get(0);
         assertThat(issue.getName()).isEqualTo("test");
@@ -157,22 +152,21 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void unmappedProblem() throws JsonProcessingException {
-        mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    void unmappedProblem() throws IOException {
+        jacksonWrapper.createMapper(null);
 
         BadRequestProblem problem = new BadRequestProblem();
         problem.setDetail("my detail message");
         problem.setAdditionalProperty("additional", "property");
-        String json = mapper.writeValueAsString(problem);
+        String json = jacksonWrapper.writeValueAsString(problem);
         print(json);
-        Problem result = mapper.readValue(json, Problem.class);
+        Problem result = jacksonWrapper.readProblem(json);
         assertThat(result).isInstanceOf(DefaultProblem.class);
-        assertThat(mapper.writeValueAsString(result)).isEqualTo(json);
+        assertThat(jacksonWrapper.writeValueAsString(result)).isEqualTo(json);
     }
 
     @Test
-    public void legacyInvalidParamProblem() throws JsonProcessingException {
+    void legacyInvalidParamProblem() throws IOException {
         String json = "{\n"
                 + "   \"type\": \"urn:problem-type:belgif:badRequest\",\n"
                 + "   \"href\": \"https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html\",\n"
@@ -187,22 +181,22 @@ public abstract class AbstractJacksonSerializationTest {
                 + "      \"issueType\": \"schemaViolation\"\n"
                 + "   }]\n"
                 + "}";
-        Problem problem = mapper.readValue(json, Problem.class);
+        Problem problem = jacksonWrapper.readProblem(json);
         assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
         assertThat(badRequestProblem.getInvalidParams()).isNotEmpty();
-        assertThat(mapper.writeValueAsString(badRequestProblem)).isEqualToIgnoringWhitespace(json);
+        assertThat(jacksonWrapper.writeValueAsString(badRequestProblem)).isEqualToIgnoringWhitespace(json);
     }
 
     @Test
-    public void unknownProblemWithMessage() throws JsonProcessingException {
+    void unknownProblemWithMessage() throws IOException {
         String json = "{\n"
                 + "  \"id\" : \"08eb8aa6-d4a5-44fc-b25d-007b9f6a272a\",\n"
                 + "  \"code\" : \"Bad Request\",\n"
                 + "  \"message\" : \"552-Id Value is invalid\",\n"
                 + "  \"details\" : [ ]\n"
                 + "}";
-        Problem problem = mapper.readValue(json, Problem.class);
+        Problem problem = jacksonWrapper.readProblem(json);
         assertThat(problem).isInstanceOf(DefaultProblem.class);
         DefaultProblem defaultProblem = (DefaultProblem) problem;
         assertThat(defaultProblem.getAdditionalProperties())
@@ -214,7 +208,7 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void additionalExceptionProperties() throws JsonProcessingException {
+    void additionalExceptionProperties() throws IOException {
         BadRequestProblem problem = new BadRequestProblem();
         problem.setAdditionalProperty("cause", "cause");
         problem.setAdditionalProperty("stackTrace", "stackTrace");
@@ -225,7 +219,7 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void issueWithStatusAndInstance() throws JsonProcessingException {
+    void issueWithStatusAndInstance() throws IOException {
         BadRequestProblem problem = new BadRequestProblem();
         problem.setDetail("my detail message");
         InputValidationIssue issue = new InputValidationIssue().detail("test");
@@ -236,32 +230,32 @@ public abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
-    public void issueWithNullValue() throws JsonProcessingException {
+    void issueWithNullValue() throws IOException {
         BadRequestProblem problem = new BadRequestProblem(
                 new InputValidationIssue(InEnum.BODY, "id", null));
-        String json = mapper.writeValueAsString(problem);
+        String json = jacksonWrapper.writeValueAsString(problem);
         assertThat(json).doesNotContain("null");
         assertSerializationRoundtrip(problem);
     }
 
     @Test
-    public void issueWithNullInputValue() throws JsonProcessingException {
+    void issueWithNullInputValue() throws IOException {
         ProblemConfig.setExtInputsArrayEnabled(true);
         BadRequestProblem problem = new BadRequestProblem(new InputValidationIssue()
                 .inputs(Input.body("a", null), Input.body("b", null)));
-        String json = mapper.writeValueAsString(problem);
+        String json = jacksonWrapper.writeValueAsString(problem);
         assertThat(json).doesNotContain("null");
         assertSerializationRoundtrip(problem);
     }
 
-    protected void assertSerializationRoundtrip(Problem problem) throws JsonProcessingException {
-        String json = mapper.writeValueAsString(problem);
+    protected void assertSerializationRoundtrip(Problem problem) throws IOException {
+        String json = jacksonWrapper.writeValueAsString(problem);
         print(json);
-        Problem result = mapper.readValue(json, Problem.class);
+        Problem result = jacksonWrapper.readProblem(json);
         assertThat(result).withRepresentation(p -> {
             try {
-                return mapper.writeValueAsString(p);
-            } catch (JsonProcessingException e) {
+                return jacksonWrapper.writeValueAsString((Problem) p);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }).isEqualTo(problem);
@@ -270,5 +264,7 @@ public abstract class AbstractJacksonSerializationTest {
     private static void print(String value) {
         System.out.println(value); // SUPPRESS CHECKSTYLE
     }
+
+    protected abstract JacksonWrapper createJacksonWrapper();
 
 }

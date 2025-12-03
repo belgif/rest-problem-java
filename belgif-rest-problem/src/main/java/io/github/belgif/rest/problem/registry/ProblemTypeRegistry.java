@@ -1,6 +1,6 @@
 package io.github.belgif.rest.problem.registry;
 
-import com.fasterxml.jackson.databind.jsontype.NamedType;
+import java.util.Map;
 
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.api.ProblemType;
@@ -10,6 +10,6 @@ import io.github.belgif.rest.problem.api.ProblemType;
  */
 public interface ProblemTypeRegistry {
 
-    NamedType[] getProblemTypes();
+    Map<String, Class<?>> getProblemTypes();
 
 }

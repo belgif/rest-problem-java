@@ -1,7 +1,7 @@
 package io.github.belgif.rest.problem.ee;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -13,9 +13,6 @@ import javax.enterprise.inject.spi.WithAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsontype.NamedType;
-
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.api.ProblemType;
 import io.github.belgif.rest.problem.registry.ProblemTypeRegistry;
@@ -24,7 +21,7 @@ import io.github.belgif.rest.problem.registry.ProblemTypeRegistry;
  * CDI extension for dynamic discovery of {@link Problem} classes annotated with @{@link ProblemType}.
  *
  * <p>
- * This class exposes a {@link NamedType}[] array that can be used to configure the Jackson {@link ObjectMapper}
+ * This class exposes a Map<String, Class> that can be used to configure the Jackson Object mapper
  * for polymorphic deserialization of problem types.
  * </p>
  *
@@ -35,9 +32,9 @@ public class CdiProblemTypeRegistry implements Extension, ProblemTypeRegistry {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CdiProblemTypeRegistry.class);
 
-    private final Set<NamedType> registeredProblemTypes = ConcurrentHashMap.newKeySet();
+    private final Map<String, Class<?>> registeredProblemTypes = new HashMap<>();
 
-    private NamedType[] problemTypes;
+    private Map<String, Class<?>> problemTypes;
 
     void processAnnotatedType(
             @Observes @WithAnnotations(ProblemType.class) ProcessAnnotatedType<? extends Problem> problemType) {
@@ -50,19 +47,19 @@ public class CdiProblemTypeRegistry implements Extension, ProblemTypeRegistry {
         } else {
             String type = annotation.value();
             LOGGER.debug("Registered problem {}: {}", clazz, type);
-            registeredProblemTypes.add(new NamedType(clazz, type));
+            registeredProblemTypes.put(type, clazz);
         }
         // no further processing required, CDI container can ignore this type
         problemType.veto();
     }
 
     void afterTypeDiscovery(@Observes AfterTypeDiscovery atd) {
-        problemTypes = registeredProblemTypes.toArray(new NamedType[0]);
+        problemTypes = registeredProblemTypes;
     }
 
     @Override
-    public NamedType[] getProblemTypes() {
-        return problemTypes.clone();
+    public Map<String, Class<?>> getProblemTypes() {
+        return new HashMap<>(problemTypes);
     }
 
 }
