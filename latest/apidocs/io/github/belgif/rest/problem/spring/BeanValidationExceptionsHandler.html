@@ -92,7 +92,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@RestControllerAdvice
-@ConditionalOnClass(javax.validation.ConstraintViolationException.class)
+@ConditionalOnClass(jakarta.validation.ConstraintViolationException.class)
 @ConditionalOnWebApplication
 @Order(1)
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">BeanValidationExceptionsHandler</span>
@@ -130,7 +130,7 @@ loadScripts(document, 'script');</script>
  org.springframework.web.context.request.ServletWebRequest&nbsp;request)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.springframework.http.ResponseEntity<wbr>&lt;<a href="../api/Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleConstraintViolationException(javax.validation.ConstraintViolationException)" class="member-name-link">handleConstraintViolationException</a><wbr>(javax.validation.ConstraintViolationException&nbsp;exception)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleConstraintViolationException(jakarta.validation.ConstraintViolationException)" class="member-name-link">handleConstraintViolationException</a><wbr>(jakarta.validation.ConstraintViolationException&nbsp;exception)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.springframework.http.ResponseEntity<wbr>&lt;<a href="../api/Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleMethodArgumentNotValidException(org.springframework.web.bind.MethodArgumentNotValidException)" class="member-name-link">handleMethodArgumentNotValidException</a><wbr>(org.springframework.web.bind.MethodArgumentNotValidException&nbsp;exception)</code></div>
@@ -170,10 +170,10 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="handleConstraintViolationException(javax.validation.ConstraintViolationException)">
+<section class="detail" id="handleConstraintViolationException(jakarta.validation.ConstraintViolationException)">
 <h3>handleConstraintViolationException</h3>
-<div class="member-signature"><span class="annotations">@ExceptionHandler(javax.validation.ConstraintViolationException.class)
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">org.springframework.http.ResponseEntity&lt;<a href="../api/Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a>&gt;</span>&nbsp;<span class="element-name">handleConstraintViolationException</span><wbr><span class="parameters">(javax.validation.ConstraintViolationException&nbsp;exception)</span></div>
+<div class="member-signature"><span class="annotations">@ExceptionHandler(jakarta.validation.ConstraintViolationException.class)
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">org.springframework.http.ResponseEntity&lt;<a href="../api/Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a>&gt;</span>&nbsp;<span class="element-name">handleConstraintViolationException</span><wbr><span class="parameters">(jakarta.validation.ConstraintViolationException&nbsp;exception)</span></div>
 </section>
 </li>
 <li>
