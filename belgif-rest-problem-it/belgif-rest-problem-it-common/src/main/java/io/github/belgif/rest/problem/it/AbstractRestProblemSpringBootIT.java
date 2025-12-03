@@ -78,4 +78,14 @@ public abstract class AbstractRestProblemSpringBootIT extends AbstractRestProble
                 .body("issues[1].detail", equalTo("must not be blank"));
     }
 
+    // On Spring Boot, a proper resourceNotFound problem is returned
+    @Override
+    @Test
+    public void notFound() {
+        getSpec().when().get("/not/found").then().assertThat()
+                .statusCode(404)
+                .body("type", equalTo("urn:problem-type:belgif:resourceNotFound"))
+                .body("detail", equalTo("No resource /frontend/not/found found"));
+    }
+
 }

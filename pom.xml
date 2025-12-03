@@ -21,7 +21,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Aligns with version used on JBoss EAP 7.4 -->
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
-    <version.spring.boot.2>2.7.18</version.spring.boot.2>
     <version.spring.boot.3>3.5.6</version.spring.boot.3>
     <version.quarkus>3.30.1</version.quarkus>
   </properties>
@@ -67,19 +66,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <modules>
-    <module>belgif-rest-problem</module>
-    <module>belgif-rest-problem-validator</module>
-    <module>belgif-rest-problem-java-ee</module>
-    <module>belgif-rest-problem-spring</module>
-    <module>belgif-rest-problem-spring-boot-2</module>
-    <module>belgif-rest-problem-spring-boot-3</module>
-    <module>belgif-rest-problem-quarkus</module>
-    <module>belgif-rest-problem-quarkus-deployment</module>
-    <module>belgif-rest-problem-it</module>
-    <module>belgif-rest-problem-bom</module>
-  </modules>
 
   <build>
     <pluginManagement>
@@ -376,6 +362,22 @@
 
   <profiles>
     <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>belgif-rest-problem</module>
+        <module>belgif-rest-problem-validator</module>
+        <module>belgif-rest-problem-java-ee</module>
+        <module>belgif-rest-problem-spring-boot-3</module>
+        <module>belgif-rest-problem-quarkus</module>
+        <module>belgif-rest-problem-quarkus-deployment</module>
+        <module>belgif-rest-problem-it</module>
+        <module>belgif-rest-problem-bom</module>
+      </modules>
+    </profile>
+    <profile>
       <id>release</id>
       <build>
         <plugins>
@@ -443,7 +445,6 @@
                 <excludeArtifact>belgif-rest-problem-jakarta-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-java-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-quarkus-it</excludeArtifact>
-                <excludeArtifact>belgif-rest-problem-spring-boot-2-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-spring-boot-3-it</excludeArtifact>
               </excludeArtifacts>
             </configuration>
@@ -467,8 +468,6 @@
         <module>belgif-rest-problem</module>
         <module>belgif-rest-problem-validator</module>
         <module>belgif-rest-problem-java-ee</module>
-        <module>belgif-rest-problem-spring</module>
-        <module>belgif-rest-problem-spring-boot-2</module>
         <module>belgif-rest-problem-spring-boot-3</module>
         <module>belgif-rest-problem-quarkus</module>
         <module>belgif-rest-problem-quarkus-deployment</module>
@@ -508,6 +507,21 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <id>spring-only</id>
+      <modules>
+        <module>belgif-rest-problem</module>
+        <module>belgif-rest-problem-spring-boot-3</module>
+        <!-- All relevant ITs -->
+        <module>belgif-rest-problem-it/belgif-rest-problem-apt</module>
+        <module>belgif-rest-problem-it/belgif-rest-problem-codegen-it</module>
+        <module>belgif-rest-problem-it/belgif-rest-problem-it-common</module>
+        <module>belgif-rest-problem-it/belgif-rest-problem-jackson-latest-it</module>
+        <module>belgif-rest-problem-it/belgif-rest-problem-jackson-minimal-it</module>
+        <module>belgif-rest-problem-it/belgif-rest-problem-spring-boot-3-it</module>
+        <module>belgif-rest-problem-bom</module>
+      </modules>
     </profile>
   </profiles>
 
