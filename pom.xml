@@ -510,21 +510,16 @@
     </profile>
     <profile>
       <id>spring-only</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-
       <modules>
         <module>belgif-rest-problem</module>
         <module>belgif-rest-problem-spring-boot-3</module>
-<!--          All relevant ITs-->
+        <!-- All relevant ITs -->
         <module>belgif-rest-problem-it/belgif-rest-problem-apt</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-codegen-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-it-common</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-jackson-latest-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-jackson-minimal-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-spring-boot-3-it</module>
-
         <module>belgif-rest-problem-bom</module>
       </modules>
     </profile>

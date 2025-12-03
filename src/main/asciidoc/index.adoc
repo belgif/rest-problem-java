@@ -793,8 +793,8 @@ public void setClient(Client client) {
 * *Jakarta EE 9+*: the main belgif-rest-problem-java-ee artifact targets Java EE (javax package namespace).
 A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is available with `<classifier>jakarta</classifier>`.
 
-[[belgif-rest-problem-spring]]
-=== belgif-rest-problem-spring
+[[belgif-rest-problem-spring-boot-3]]
+=== belgif-rest-problem-spring-boot-3
 
 This module provides auto-configuration for components that handle Spring Boot integration with the belgif-rest-problem library:
 
@@ -812,14 +812,6 @@ io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
 * *BeanValidationExceptionsHandler:* an exception handler for RestControllers that converts bean validation related exceptions to HTTP 400 BadRequestProblem.
 * *InvalidRequestExceptionHandler:* an exception handler for the link:https://bitbucket.org/atlassian/swagger-request-validator/src/master/[Atlassian swagger-request-validator] that converts InvalidRequestException to the correct Problem type.
 * *RoutingExceptionsHandler:* an exception handler for RestControllers that converts routing related validation exceptions to HTTP 400 BadRequestProblem.
-
-In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.
-
-[[belgif-rest-problem-spring-boot-3]]
-==== belgif-rest-problem-spring-boot-3
-
-Rather than depending on <<belgif-rest-problem-spring>> directly, Spring Boot 3.x users are recommended to depend on `belgif-rest-problem-spring-boot-3`, which adds some Spring Boot 3.x specific integrations:
-
 * *ProblemWebClientCustomizer:* a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
 This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
 * *ProblemResponseErrorHandler:* a RestTemplate and RestClient error handler that converts problem responses to Problem exceptions.
@@ -828,3 +820,6 @@ This handles integration with the https://docs.spring.io/spring-framework/refere
 * *ProblemRestClientCustomizer:* a RestClientCustomizer that registers the ProblemResponseErrorHandler.
 * *AnnotationParameterNameProvider:* a bean validation ParameterNameProvider that retrieves parameter names from Spring MVC annotations
 * *ProblemValidationConfigurationCustomizer:* a ValidationConfigurationCustomizer that registers the AnnotationParameterNameProvider
+
+In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.
+
