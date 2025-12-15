@@ -1,20 +1,27 @@
 package io.github.belgif.rest.problem.it;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.Assertions.*;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import com.acme.custom.CustomProblem;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.DefaultProblem;
 import io.github.belgif.rest.problem.TooManyRequestsProblem;
-import io.github.belgif.rest.problem.api.*;
+import io.github.belgif.rest.problem.api.InEnum;
+import io.github.belgif.rest.problem.api.Input;
+import io.github.belgif.rest.problem.api.InputValidationIssue;
+import io.github.belgif.rest.problem.api.InputValidationIssues;
+import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.config.ProblemConfig;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

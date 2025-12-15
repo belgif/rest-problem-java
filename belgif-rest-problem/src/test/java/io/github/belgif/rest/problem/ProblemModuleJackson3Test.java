@@ -1,6 +1,6 @@
 package io.github.belgif.rest.problem;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
