@@ -15,15 +15,15 @@
   <url>https://github.com/belgif/rest-problem-java</url>
 
   <properties>
-    <revision>latest</revision>
+    <revision>0.18.0</revision>
     <maven.compiler.release>8</maven.compiler.release>
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Aligns with version used on JBoss EAP 7.4 -->
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
     <version.jackson3.minimal>3.0.2</version.jackson3.minimal>
-    <version.spring.boot.3>3.5.6</version.spring.boot.3>
-    <version.quarkus>3.30.1</version.quarkus>
+    <version.spring.boot.3>3.5.8</version.spring.boot.3>
+    <version.quarkus>3.30.2</version.quarkus>
   </properties>
 
   <dependencyManagement>
@@ -56,7 +56,7 @@
       <dependency>
         <groupId>io.rest-assured</groupId>
         <artifactId>rest-assured</artifactId>
-        <version>5.4.0</version>
+        <version>5.5.6</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -159,7 +159,7 @@
         <plugin>
           <groupId>org.sonarsource.scanner.maven</groupId>
           <artifactId>sonar-maven-plugin</artifactId>
-          <version>5.3.0.6276</version>
+          <version>5.5.0.6356</version>
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
@@ -194,7 +194,7 @@
         <plugin>
           <groupId>io.smallrye</groupId>
           <artifactId>jandex-maven-plugin</artifactId>
-          <version>3.5.2</version>
+          <version>3.5.3</version>
         </plugin>
       </plugins>
     </pluginManagement>
