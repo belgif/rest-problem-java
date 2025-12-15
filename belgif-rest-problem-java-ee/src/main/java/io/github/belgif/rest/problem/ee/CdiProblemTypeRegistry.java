@@ -21,7 +21,7 @@ import io.github.belgif.rest.problem.registry.ProblemTypeRegistry;
  * CDI extension for dynamic discovery of {@link Problem} classes annotated with @{@link ProblemType}.
  *
  * <p>
- * This class exposes a Map<String, Class> that can be used to configure the Jackson Object mapper
+ * This class exposes a {@code Map<String, Class>} that can be used to configure the Jackson Object mapper
  * for polymorphic deserialization of problem types.
  * </p>
  *
