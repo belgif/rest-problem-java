@@ -8,7 +8,7 @@ import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.json.JsonMapper;
 
-public class AbstractJackson3SerializationTest extends AbstractJacksonSerializationTest {
+public abstract class AbstractJackson3SerializationTest extends AbstractJacksonSerializationTest {
 
     private ObjectMapper mapper;
 

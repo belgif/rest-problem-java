@@ -11,7 +11,7 @@ import io.github.belgif.rest.problem.ProblemModule;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.registry.ProblemTypeRegistry;
 
-public class AbstractJackson2SerializationTest extends AbstractJacksonSerializationTest {
+public abstract class AbstractJackson2SerializationTest extends AbstractJacksonSerializationTest {
 
     private ObjectMapper mapper;
 
