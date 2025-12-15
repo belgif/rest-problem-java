@@ -4,8 +4,6 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.databind.jsontype.NamedType;
-
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.InternalServerErrorProblem;
 
@@ -22,9 +20,9 @@ class QuarkusProblemTypeRegistryTest {
         QuarkusProblemTypeRegistry registry =
                 new QuarkusProblemTypeRegistry(new Class<?>[] {
                         BadRequestProblem.class, InternalServerErrorProblem.class });
-        assertThat(registry.getProblemTypes()).containsExactly(
-                new NamedType(BadRequestProblem.class, "urn:problem-type:belgif:badRequest"),
-                new NamedType(InternalServerErrorProblem.class, "urn:problem-type:belgif:internalServerError"));
+        assertThat(registry.getProblemTypes())
+                .containsEntry("urn:problem-type:belgif:badRequest", BadRequestProblem.class)
+                .containsEntry("urn:problem-type:belgif:internalServerError", InternalServerErrorProblem.class);
     }
 
 }

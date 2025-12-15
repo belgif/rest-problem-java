@@ -1,7 +1,9 @@
 package io.github.belgif.rest.problem.ee.jaxrs;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
+import java.util.HashMap;
 
 import javax.annotation.Priority;
 import javax.enterprise.inject.Instance;
@@ -16,7 +18,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsontype.NamedType;
 
 import io.github.belgif.rest.problem.ee.CdiProblemTypeRegistry;
 import io.github.belgif.rest.problem.registry.ProblemTypeRegistry;
@@ -39,7 +40,7 @@ class ProblemObjectMapperContextResolverTest {
             mock.when(CDI::current).thenReturn(cdi);
             when(cdi.select(ProblemTypeRegistry.class)).thenReturn(instance);
             when(instance.get()).thenReturn(registry);
-            when(registry.getProblemTypes()).thenReturn(new NamedType[] {});
+            when(registry.getProblemTypes()).thenReturn(new HashMap<>());
             ObjectMapper mapper = new ProblemObjectMapperContextResolver().getContext(null);
             assertThat(mapper.getRegisteredModuleIds()).contains("io.github.belgif.rest.problem.ee.CdiProblemModule");
         }

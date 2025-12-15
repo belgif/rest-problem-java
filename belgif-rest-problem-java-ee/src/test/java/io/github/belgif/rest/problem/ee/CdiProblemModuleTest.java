@@ -3,6 +3,8 @@ package io.github.belgif.rest.problem.ee;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.HashMap;
+
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.CDI;
 
@@ -12,8 +14,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import com.fasterxml.jackson.databind.jsontype.NamedType;
 
 import io.github.belgif.rest.problem.registry.ProblemTypeRegistry;
 
@@ -35,7 +35,7 @@ class CdiProblemModuleTest {
             mock.when(CDI::current).thenReturn(cdi);
             when(cdi.select(ProblemTypeRegistry.class)).thenReturn(instance);
             when(instance.get()).thenReturn(registry);
-            when(registry.getProblemTypes()).thenReturn(new NamedType[] {});
+            when(registry.getProblemTypes()).thenReturn(new HashMap<>());
             CdiProblemModule module = new CdiProblemModule();
             assertThat(module.getModuleName()).isEqualTo("io.github.belgif.rest.problem.ee.CdiProblemModule");
         }

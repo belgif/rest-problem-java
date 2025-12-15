@@ -11,8 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.fasterxml.jackson.databind.jsontype.NamedType;
-
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.DefaultProblem;
 import io.github.belgif.rest.problem.api.ProblemType;
@@ -42,7 +40,7 @@ class CdiProblemTypeRegistryTest {
         registry.afterTypeDiscovery(null);
 
         assertThat(registry.getProblemTypes())
-                .containsExactly(new NamedType(BadRequestProblem.class, "urn:problem-type:belgif:badRequest"));
+                .containsEntry("urn:problem-type:belgif:badRequest", BadRequestProblem.class);
     }
 
     @Test
