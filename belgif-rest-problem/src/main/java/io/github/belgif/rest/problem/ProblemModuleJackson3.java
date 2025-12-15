@@ -83,7 +83,8 @@ public class ProblemModuleJackson3 extends SimpleModule {
         private static final List<PropertyName> IGNORED_PROPERTIES =
                 Arrays.asList(new PropertyName("cause"), new PropertyName("stackTrace"));
 
-        public BeanDeserializerBuilder updateBuilder(DeserializationConfig config, BeanDescription beanDesc,
+        @Override
+        public BeanDeserializerBuilder updateBuilder(DeserializationConfig config, BeanDescription.Supplier beanDesc,
                 BeanDeserializerBuilder builder) {
             if (Problem.class.isAssignableFrom(beanDesc.getBeanClass()) && beanDesc.getType().isConcrete()) {
                 for (PropertyName property : IGNORED_PROPERTIES) {
