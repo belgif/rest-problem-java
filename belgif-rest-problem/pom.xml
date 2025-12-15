@@ -21,6 +21,12 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>${version.jackson.minimal}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>jackson-annotations</artifactId>
+          <groupId>com.fasterxml.jackson.core</groupId>
+        </exclusion>
+      </exclusions>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>

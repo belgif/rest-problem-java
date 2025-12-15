@@ -7,6 +7,7 @@ import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.exc.MismatchedInputException;
 
 /**
  * Internal jackson utility class.
@@ -42,7 +43,15 @@ public class Jackson3Util {
         if (e.getOriginalMessage().startsWith("Missing required")) {
             return "must not be null";
         } else {
-            return e.getOriginalMessage();
+            String message = e.getOriginalMessage();
+            if (message != null && e instanceof MismatchedInputException) {
+                MismatchedInputException mismatchedInputException = (MismatchedInputException) e;
+                if (message.contains(mismatchedInputException.getTargetType().getName())) {
+                    message = message.replace(mismatchedInputException.getTargetType().getName(),
+                            mismatchedInputException.getTargetType().getSimpleName());
+                }
+            }
+            return message;
         }
     }
 
