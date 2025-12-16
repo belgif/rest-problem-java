@@ -11,7 +11,10 @@ public enum InEnum {
     BODY("body"),
     PATH("path"),
     QUERY("query"),
-    HEADER("header");
+    HEADER("header"),
+    FORM("form"),
+    MATRIX("matrix"),
+    COOKIE("cookie");
 
     private final String value;
 

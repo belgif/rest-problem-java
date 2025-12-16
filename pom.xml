@@ -15,7 +15,7 @@
   <url>https://github.com/belgif/rest-problem-java</url>
 
   <properties>
-    <revision>0.18.0</revision>
+    <revision>0.19.0-SNAPSHOT</revision>
     <maven.compiler.release>8</maven.compiler.release>
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
