@@ -37,8 +37,6 @@ class CdiProblemTypeRegistryTest {
 
         verify(processAnnotatedType).veto();
 
-        registry.afterTypeDiscovery(null);
-
         assertThat(registry.getProblemTypes())
                 .containsEntry("urn:problem-type:belgif:badRequest", BadRequestProblem.class);
     }
@@ -52,8 +50,6 @@ class CdiProblemTypeRegistryTest {
         registry.processAnnotatedType(processAnnotatedType);
 
         verify(processAnnotatedType).veto();
-
-        registry.afterTypeDiscovery(null);
 
         assertThat(registry.getProblemTypes()).isEmpty();
     }

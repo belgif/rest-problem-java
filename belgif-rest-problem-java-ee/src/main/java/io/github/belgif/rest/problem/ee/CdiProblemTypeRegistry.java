@@ -1,11 +1,11 @@
 package io.github.belgif.rest.problem.ee;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.AfterTypeDiscovery;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.WithAnnotations;
@@ -32,9 +32,7 @@ public class CdiProblemTypeRegistry implements Extension, ProblemTypeRegistry {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CdiProblemTypeRegistry.class);
 
-    private final Map<String, Class<?>> registeredProblemTypes = new HashMap<>();
-
-    private Map<String, Class<?>> problemTypes;
+    private final Map<String, Class<?>> problemTypes = new HashMap<>();
 
     void processAnnotatedType(
             @Observes @WithAnnotations(ProblemType.class) ProcessAnnotatedType<? extends Problem> problemType) {
@@ -47,19 +45,15 @@ public class CdiProblemTypeRegistry implements Extension, ProblemTypeRegistry {
         } else {
             String type = annotation.value();
             LOGGER.debug("Registered problem {}: {}", clazz, type);
-            registeredProblemTypes.put(type, clazz);
+            problemTypes.put(type, clazz);
         }
         // no further processing required, CDI container can ignore this type
         problemType.veto();
     }
 
-    void afterTypeDiscovery(@Observes AfterTypeDiscovery atd) {
-        problemTypes = registeredProblemTypes;
-    }
-
     @Override
     public Map<String, Class<?>> getProblemTypes() {
-        return new HashMap<>(problemTypes);
+        return Collections.unmodifiableMap(problemTypes);
     }
 
 }

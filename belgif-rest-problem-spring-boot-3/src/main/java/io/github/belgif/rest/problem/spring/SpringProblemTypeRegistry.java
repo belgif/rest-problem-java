@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem.spring;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,14 +36,13 @@ public class SpringProblemTypeRegistry implements ProblemTypeRegistry {
 
     private static final List<String> DEFAULT_SCAN_PACKAGES = Arrays.asList("io.github.belgif.rest.problem");
 
-    private final Map<String, Class<?>> problemTypes;
+    private final Map<String, Class<?>> problemTypes = new HashMap<>();
 
     public SpringProblemTypeRegistry(ProblemConfigurationProperties configuration) {
         ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
         scanner.addIncludeFilter(new AnnotationTypeFilter(ProblemType.class));
         List<String> packagesToScan = new ArrayList<>(DEFAULT_SCAN_PACKAGES);
         packagesToScan.addAll(configuration.getScanAdditionalProblemPackages());
-        Map<String, Class<?>> registeredProblemTypes = new HashMap<>();
         for (String packageToScan : packagesToScan) {
             Set<BeanDefinition> definitions = scanner.findCandidateComponents(packageToScan);
             for (BeanDefinition beanDefinition : definitions) {
@@ -50,19 +50,18 @@ public class SpringProblemTypeRegistry implements ProblemTypeRegistry {
                     Class<?> clazz = Class.forName(beanDefinition.getBeanClassName());
                     String type = clazz.getAnnotation(ProblemType.class).value();
                     LOGGER.debug("Registered problem {}: {}", clazz, type);
-                    registeredProblemTypes.put(type, clazz);
+                    problemTypes.put(type, clazz);
                 } catch (ClassNotFoundException e) {
                     throw new IllegalStateException(e);
                 }
             }
 
         }
-        problemTypes = registeredProblemTypes;
     }
 
     @Override
     public Map<String, Class<?>> getProblemTypes() {
-        return new HashMap<>(problemTypes);
+        return Collections.unmodifiableMap(problemTypes);
     }
 
 }

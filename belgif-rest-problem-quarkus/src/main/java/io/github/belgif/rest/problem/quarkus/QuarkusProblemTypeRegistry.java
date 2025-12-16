@@ -1,9 +1,8 @@
 package io.github.belgif.rest.problem.quarkus;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,24 +18,19 @@ public class QuarkusProblemTypeRegistry implements ProblemTypeRegistry {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuarkusProblemTypeRegistry.class);
 
-    private final Map<String, Class<?>> problemTypes;
+    private final Map<String, Class<?>> problemTypes = new HashMap<>();
 
     public QuarkusProblemTypeRegistry(Class<?>[] problemTypes) {
-        this.problemTypes = Arrays.stream(problemTypes).collect(
-                Collectors.toMap(
-                        clazz -> {
-                            String type = clazz.getAnnotation(ProblemType.class).value();
-                            LOGGER.debug("Registered problem {}: {}", clazz, type);
-                            return type;
-                        },
-                        clazz -> clazz,
-                        (oldVal, newVal) -> oldVal,
-                        HashMap::new));
+        for (Class<?> problemType : problemTypes) {
+            String type = problemType.getAnnotation(ProblemType.class).value();
+            LOGGER.debug("Registered problem {}: {}", problemType, type);
+            this.problemTypes.put(type, problemType);
+        }
     }
 
     @Override
     public Map<String, Class<?>> getProblemTypes() {
-        return problemTypes;
+        return Collections.unmodifiableMap(problemTypes);
     }
 
 }
