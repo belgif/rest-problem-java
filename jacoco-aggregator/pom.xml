@@ -68,12 +68,12 @@
     </dependency>
     <dependency>
       <groupId>io.github.belgif.rest.problem</groupId>
-      <artifactId>belgif-rest-problem-jackson-minimal-it</artifactId>
+      <artifactId>belgif-rest-problem-jackson2-minimal-it</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.github.belgif.rest.problem</groupId>
-      <artifactId>belgif-rest-problem-jackson-latest-it</artifactId>
+      <artifactId>belgif-rest-problem-jackson2-latest-it</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
