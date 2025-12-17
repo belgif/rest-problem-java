@@ -3,22 +3,25 @@
  */
 package io.github.belgif.rest.problem.ee.jaxrs;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
-import io.github.belgif.rest.problem.BadRequestProblem;
-import io.github.belgif.rest.problem.api.InEnum;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static io.github.belgif.rest.problem.api.InputValidationIssues.schemaViolation;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static io.github.belgif.rest.problem.api.InputValidationIssues.schemaViolation;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
+
+import io.github.belgif.rest.problem.BadRequestProblem;
+import io.github.belgif.rest.problem.api.InEnum;
 
 @Provider
 public class JsonMappingExceptionMapper implements ExceptionMapper<JsonMappingException> {
@@ -28,7 +31,8 @@ public class JsonMappingExceptionMapper implements ExceptionMapper<JsonMappingEx
     @Override
     public Response toResponse(JsonMappingException exception) {
         LOGGER.warn(exception.getMessage(), exception);
-        return Response.status(400).entity(new BadRequestProblem(schemaViolation(InEnum.BODY, getPath(exception.getPath()), getValue(exception), getReason(exception.getClass())))).build();
+        return Response.status(400).entity(new BadRequestProblem(schemaViolation(InEnum.BODY,
+                getPath(exception.getPath()), getValue(exception), getReason(exception.getClass())))).build();
     }
 
     private String getReason(Class<? extends JsonMappingException> clazz) {
@@ -68,7 +72,8 @@ public class JsonMappingExceptionMapper implements ExceptionMapper<JsonMappingEx
         String value = null;
         if (exception instanceof InvalidFormatException) {
             value = String.valueOf(((InvalidFormatException) exception).getValue());
-        } else if (exception instanceof ValueInstantiationException && exception.getCause() != null && exception.getCause() instanceof IllegalArgumentException) {
+        } else if (exception instanceof ValueInstantiationException && exception.getCause() != null
+                && exception.getCause() instanceof IllegalArgumentException) {
             IllegalArgumentException e = (IllegalArgumentException) exception.getCause();
             Matcher matcher = UNEXPECTED_VALUE.matcher(e.getMessage());
             if (matcher.matches()) {
