@@ -3,8 +3,10 @@ package io.github.belgif.rest.problem.api;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -43,7 +45,7 @@ import io.github.belgif.rest.problem.DefaultProblem;
 public abstract class Problem extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
-    private static final String[] READ_ONLY_PROPERTIES = { "type", "status", "title" };
+    private static final Set<String> READ_ONLY_PROPERTIES = new HashSet<>(Arrays.asList("type", "status", "title"));
 
     private final URI type;
     private URI href;
@@ -117,7 +119,7 @@ public abstract class Problem extends RuntimeException {
 
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
-        if (Arrays.stream(READ_ONLY_PROPERTIES).noneMatch(s -> s.equalsIgnoreCase(name))) {
+        if (!READ_ONLY_PROPERTIES.contains(name)) {
             additionalProperties.put(name, value);
         }
     }

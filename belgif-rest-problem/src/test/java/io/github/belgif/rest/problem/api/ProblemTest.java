@@ -80,6 +80,15 @@ class ProblemTest {
     }
 
     @Test
+    void additionalPropertiesIgnoresReadOnly() {
+        Problem problem = new MyProblem();
+        problem.setAdditionalProperty("type", "type");
+        problem.setAdditionalProperty("status", "status");
+        problem.setAdditionalProperty("title", "title");
+        assertThat(problem.getAdditionalProperties()).isEmpty();
+    }
+
+    @Test
     void equalsAndHashCode() {
         Problem problem = new MyProblem();
         problem.setDetail("detail");
