@@ -443,6 +443,7 @@
                 <excludeArtifact>belgif-rest-problem-it-common</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-jackson2-latest-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-jackson2-minimal-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-jackson3-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-jakarta-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-java-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-quarkus-it</excludeArtifact>
