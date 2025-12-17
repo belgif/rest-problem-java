@@ -5,6 +5,7 @@ updates:
     schedule:
       interval: "weekly"
     ignore:
+      - dependency-name: "io.github.belgif.rest.problem:*"
       - dependency-name: "jakarta.platform:jakarta.jakartaee-api"
         update-types: ["version-update:semver-major"]
       - dependency-name: "jakarta.enterprise:jakarta.enterprise.cdi-api"
