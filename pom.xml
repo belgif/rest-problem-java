@@ -441,8 +441,8 @@
                 <excludeArtifact>belgif-rest-problem-apt</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-codegen-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-it-common</excludeArtifact>
-                <excludeArtifact>belgif-rest-problem-jackson-latest-it</excludeArtifact>
-                <excludeArtifact>belgif-rest-problem-jackson-minimal-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-jackson2-latest-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-jackson2-minimal-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-jakarta-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-java-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-quarkus-it</excludeArtifact>
@@ -518,8 +518,8 @@
         <module>belgif-rest-problem-it/belgif-rest-problem-apt</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-codegen-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-it-common</module>
-        <module>belgif-rest-problem-it/belgif-rest-problem-jackson-latest-it</module>
-        <module>belgif-rest-problem-it/belgif-rest-problem-jackson-minimal-it</module>
+        <module>belgif-rest-problem-it/belgif-rest-problem-jackson2-latest-it</module>
+        <module>belgif-rest-problem-it/belgif-rest-problem-jackson2-minimal-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-jackson3-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-spring-boot-3-it</module>
         <module>belgif-rest-problem-bom</module>
