@@ -12,9 +12,9 @@ import io.github.belgif.rest.problem.api.InputValidationIssues;
 /**
  * Internal jackson utility class.
  */
-public class JacksonUtil {
+public class Jackson2Util {
 
-    private JacksonUtil() {
+    private Jackson2Util() {
     }
 
     /**

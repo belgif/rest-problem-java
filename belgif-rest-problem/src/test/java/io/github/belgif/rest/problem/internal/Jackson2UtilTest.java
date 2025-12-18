@@ -15,14 +15,14 @@ import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 
-class JacksonUtilTest {
+class Jackson2UtilTest {
 
     @Test
     void mismatchedInput() {
         assertThatExceptionOfType(MismatchedInputException.class).isThrownBy(() -> {
             new ObjectMapper().readValue("{}", Model.class);
         }).satisfies(e -> {
-            BadRequestProblem problem = JacksonUtil.toBadRequestProblem(e);
+            BadRequestProblem problem = Jackson2Util.toBadRequestProblem(e);
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
@@ -37,7 +37,7 @@ class JacksonUtilTest {
         assertThatExceptionOfType(MismatchedInputException.class).isThrownBy(() -> {
             new ObjectMapper().readValue("{\"model\": {}}", Nested.class);
         }).satisfies(e -> {
-            BadRequestProblem problem = JacksonUtil.toBadRequestProblem(e);
+            BadRequestProblem problem = Jackson2Util.toBadRequestProblem(e);
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
@@ -52,7 +52,7 @@ class JacksonUtilTest {
         assertThatExceptionOfType(MismatchedInputException.class).isThrownBy(() -> {
             new ObjectMapper().readValue("{\"models\": [{}]}", NestedWithArray.class);
         }).satisfies(e -> {
-            BadRequestProblem problem = JacksonUtil.toBadRequestProblem(e);
+            BadRequestProblem problem = Jackson2Util.toBadRequestProblem(e);
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
@@ -67,7 +67,7 @@ class JacksonUtilTest {
         assertThatExceptionOfType(MismatchedInputException.class).isThrownBy(() -> {
             new ObjectMapper().readValue("{\"id\":\"one two three\"}", Model.class);
         }).satisfies(e -> {
-            BadRequestProblem problem = JacksonUtil.toBadRequestProblem(e);
+            BadRequestProblem problem = Jackson2Util.toBadRequestProblem(e);
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);

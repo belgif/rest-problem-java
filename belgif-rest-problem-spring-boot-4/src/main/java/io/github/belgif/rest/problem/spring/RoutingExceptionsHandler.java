@@ -18,13 +18,12 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
-import io.github.belgif.rest.problem.internal.Jackson2Util;
+import io.github.belgif.rest.problem.internal.Jackson3Util;
+import tools.jackson.databind.exc.MismatchedInputException;
 
 /**
  * RestController exception handler for routing-related exceptions.
@@ -70,7 +69,7 @@ public class RoutingExceptionsHandler {
                 return DEFAULT_PROBLEM_EXCEPTION_HANDLER.handleException(exception);
             } else {
                 // Otherwise, it relates to an invalid inbound request and should be mapped to HTTP 400 Bad Request
-                return ProblemMediaType.INSTANCE.toResponse(Jackson2Util.toBadRequestProblem(mismatchedInputException));
+                return ProblemMediaType.INSTANCE.toResponse(Jackson3Util.toBadRequestProblem(mismatchedInputException));
             }
         } else {
             LOGGER.info("Transforming HttpMessageNotReadableException " +

@@ -21,8 +21,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Aligns with version used on JBoss EAP 7.4 -->
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
-    <version.jackson3.minimal>3.0.2</version.jackson3.minimal>
+    <version.jackson3.minimal>3.0.3</version.jackson3.minimal>
     <version.spring.boot.3>3.5.8</version.spring.boot.3>
+    <version.spring.boot.4>4.0.1</version.spring.boot.4>
     <version.quarkus>3.30.3</version.quarkus>
   </properties>
 
@@ -226,35 +227,36 @@
           </dependency>
         </dependencies>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>generate-javadoc</id>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>aggregate-no-fork</goal>
-            </goals>
-            <inherited>false</inherited>
-            <configuration>
-              <skippedModules>belgif-rest-problem-it,jacoco-aggregator</skippedModules>
-              <doclint>all,-missing</doclint>
-              <notimestamp>true</notimestamp>
-              <doctitle>belgif-rest-problem ${project.version}</doctitle>
-              <excludePackageNames>*.internal</excludePackageNames>
-              <additionalDependencies>
-                <dependency>
-                  <groupId>jakarta.platform</groupId>
-                  <artifactId>jakarta.jakartaee-api</artifactId>
-                  <version>8.0.0</version>
-                </dependency>
-              </additionalDependencies>
-              <outputDirectory>${project.build.directory}/site</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-javadoc-plugin</artifactId>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>generate-javadoc</id>-->
+<!--            <phase>process-sources</phase>-->
+<!--            <goals>-->
+<!--              <goal>aggregate-no-fork</goal>-->
+<!--            </goals>-->
+<!--            <inherited>false</inherited>-->
+<!--            <configuration>-->
+<!--&lt;!&ndash;              TODO: Modify so javadoc for sb4 works as well&ndash;&gt;-->
+<!--              <skippedModules>belgif-rest-problem-it,jacoco-aggregator,belgif-rest-problem-spring-boot-4</skippedModules>-->
+<!--              <doclint>all,-missing</doclint>-->
+<!--              <notimestamp>true</notimestamp>-->
+<!--              <doctitle>belgif-rest-problem ${project.version}</doctitle>-->
+<!--              <excludePackageNames>*.internal</excludePackageNames>-->
+<!--              <additionalDependencies>-->
+<!--                <dependency>-->
+<!--                  <groupId>jakarta.platform</groupId>-->
+<!--                  <artifactId>jakarta.jakartaee-api</artifactId>-->
+<!--                  <version>8.0.0</version>-->
+<!--                </dependency>-->
+<!--              </additionalDependencies>-->
+<!--              <outputDirectory>${project.build.directory}/site</outputDirectory>-->
+<!--            </configuration>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
@@ -372,6 +374,7 @@
         <module>belgif-rest-problem-validator</module>
         <module>belgif-rest-problem-java-ee</module>
         <module>belgif-rest-problem-spring-boot-3</module>
+        <module>belgif-rest-problem-spring-boot-4</module>
         <module>belgif-rest-problem-quarkus</module>
         <module>belgif-rest-problem-quarkus-deployment</module>
         <module>belgif-rest-problem-it</module>
@@ -448,6 +451,7 @@
                 <excludeArtifact>belgif-rest-problem-java-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-quarkus-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-spring-boot-3-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-spring-boot-4-it</excludeArtifact>
               </excludeArtifacts>
             </configuration>
           </plugin>
@@ -471,6 +475,7 @@
         <module>belgif-rest-problem-validator</module>
         <module>belgif-rest-problem-java-ee</module>
         <module>belgif-rest-problem-spring-boot-3</module>
+        <module>belgif-rest-problem-spring-boot-4</module>
         <module>belgif-rest-problem-quarkus</module>
         <module>belgif-rest-problem-quarkus-deployment</module>
         <module>belgif-rest-problem-it</module>
@@ -515,6 +520,7 @@
       <modules>
         <module>belgif-rest-problem</module>
         <module>belgif-rest-problem-spring-boot-3</module>
+        <module>belgif-rest-problem-spring-boot-4</module>
         <!-- All relevant ITs -->
         <module>belgif-rest-problem-it/belgif-rest-problem-apt</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-codegen-it</module>
@@ -523,6 +529,7 @@
         <module>belgif-rest-problem-it/belgif-rest-problem-jackson2-minimal-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-jackson3-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-spring-boot-3-it</module>
+        <module>belgif-rest-problem-it/belgif-rest-problem-spring-boot-4-it</module>
         <module>belgif-rest-problem-bom</module>
       </modules>
     </profile>
