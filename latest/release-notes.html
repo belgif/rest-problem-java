@@ -627,14 +627,40 @@ window.onload = function() {
 </td>
 <td class="content">
 <div class="paragraph">
-<p><strong>Breaking change</strong></p>
+<p><strong>Breaking change:</strong> Spring Boot 2 support has been dropped from this release.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Spring Boot 2 support has been dropped from this release (module <code>belgif-rest-problem-spring-boot-2</code>).</p>
+<p><strong>belgif-rest-problem-spring-boot-2:</strong> removed module</p>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-spring:</strong> merged module into <code>belgif-rest-problem-spring-boot-3</code></p>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Added support for Jackson 3:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>ProblemTypeRegistry now returns <code>Map&lt;String, Class&lt;?&gt;&gt;</code> instead of <code>NamedType[]</code> to decouple from Jackson version</p>
+</li>
+<li>
+<p>Added <code>io.github.belgif.rest.problem.ProblemModuleJackson3</code></p>
+</li>
+<li>
+<p>Ignore read-only properties "type", "status" and "title" in setAdditionalProperty()</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
 </div>
 </div>
 </div>
