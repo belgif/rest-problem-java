@@ -21,6 +21,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Aligns with version used on JBoss EAP 7.4 -->
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
+    <version.jackson3.minimal>3.0.2</version.jackson3.minimal>
     <version.spring.boot.3>3.5.8</version.spring.boot.3>
     <version.quarkus>3.30.3</version.quarkus>
   </properties>
@@ -440,8 +441,9 @@
                 <excludeArtifact>belgif-rest-problem-apt</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-codegen-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-it-common</excludeArtifact>
-                <excludeArtifact>belgif-rest-problem-jackson-latest-it</excludeArtifact>
-                <excludeArtifact>belgif-rest-problem-jackson-minimal-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-jackson2-latest-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-jackson2-minimal-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-jackson3-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-jakarta-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-java-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-quarkus-it</excludeArtifact>
@@ -517,8 +519,9 @@
         <module>belgif-rest-problem-it/belgif-rest-problem-apt</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-codegen-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-it-common</module>
-        <module>belgif-rest-problem-it/belgif-rest-problem-jackson-latest-it</module>
-        <module>belgif-rest-problem-it/belgif-rest-problem-jackson-minimal-it</module>
+        <module>belgif-rest-problem-it/belgif-rest-problem-jackson2-latest-it</module>
+        <module>belgif-rest-problem-it/belgif-rest-problem-jackson2-minimal-it</module>
+        <module>belgif-rest-problem-it/belgif-rest-problem-jackson3-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-spring-boot-3-it</module>
         <module>belgif-rest-problem-bom</module>
       </modules>

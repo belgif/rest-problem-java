@@ -38,8 +38,9 @@
     <module>belgif-rest-problem-java-ee-it</module>
     <module>belgif-rest-problem-jakarta-ee-it</module>
     <module>belgif-rest-problem-quarkus-it</module>
-    <module>belgif-rest-problem-jackson-minimal-it</module>
-    <module>belgif-rest-problem-jackson-latest-it</module>
+    <module>belgif-rest-problem-jackson2-minimal-it</module>
+    <module>belgif-rest-problem-jackson2-latest-it</module>
+    <module>belgif-rest-problem-jackson3-it</module>
     <module>belgif-rest-problem-codegen-it</module>
   </modules>
 

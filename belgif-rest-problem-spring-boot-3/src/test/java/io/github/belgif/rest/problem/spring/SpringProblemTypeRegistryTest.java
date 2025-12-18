@@ -11,8 +11,6 @@ import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.fasterxml.jackson.databind.jsontype.NamedType;
-
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.ClientProblem;
 import io.github.belgif.rest.problem.api.ProblemType;
@@ -29,9 +27,9 @@ class SpringProblemTypeRegistryTest {
     void getProblemTypes() {
         assertThat(problemTypeRegistry.getProblemTypes()).isNotEmpty();
         assertThat(problemTypeRegistry.getProblemTypes())
-                .contains(new NamedType(BadRequestProblem.class, BadRequestProblem.TYPE));
+                .containsEntry(BadRequestProblem.TYPE, BadRequestProblem.class);
         assertThat(problemTypeRegistry.getProblemTypes())
-                .contains(new NamedType(MyProblem.class, "urn:problem-type:cbss:test:custom"));
+                .containsEntry("urn:problem-type:cbss:test:custom", MyProblem.class);
     }
 
     @ProblemType("urn:problem-type:cbss:test:custom")

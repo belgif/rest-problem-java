@@ -16,10 +16,19 @@
 
 [WARNING]
 ====
-*Breaking change*
+*Breaking change:* Spring Boot 2 support has been dropped from this release.
 ====
 
-Spring Boot 2 support has been dropped from this release (module `belgif-rest-problem-spring-boot-2`).
+*belgif-rest-problem-spring-boot-2:* removed module
+
+*belgif-rest-problem-spring:* merged module into `belgif-rest-problem-spring-boot-3`
+
+*belgif-rest-problem:*
+
+* Added support for Jackson 3:
+** ProblemTypeRegistry now returns `Map<String, Class<?>>` instead of `NamedType[]` to decouple from Jackson version
+** Added `io.github.belgif.rest.problem.ProblemModuleJackson3`
+** Ignore read-only properties "type", "status" and "title" in setAdditionalProperty()
 
 == Version 0.18
 
