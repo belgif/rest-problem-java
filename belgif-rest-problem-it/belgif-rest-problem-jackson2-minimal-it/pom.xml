@@ -9,7 +9,7 @@
     <version>${revision}</version>
   </parent>
 
-  <artifactId>belgif-rest-problem-jackson-minimal-it</artifactId>
+  <artifactId>belgif-rest-problem-jackson2-minimal-it</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
 
   <dependencies>

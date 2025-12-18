@@ -1,9 +1,12 @@
 package io.github.belgif.rest.problem.api;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -19,7 +22,7 @@ import io.github.belgif.rest.problem.DefaultProblem;
 
 /**
  * Abstract base class for problems (RFC 9457).
- *
+ * <p>
  * Maps to Problem in belgif/problem/v1/problem-v1.yaml.
  */
 @JsonTypeInfo(
@@ -42,6 +45,7 @@ import io.github.belgif.rest.problem.DefaultProblem;
 public abstract class Problem extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
+    private static final Set<String> READ_ONLY_PROPERTIES = new HashSet<>(Arrays.asList("type", "status", "title"));
 
     private final URI type;
     private URI href;
@@ -115,7 +119,9 @@ public abstract class Problem extends RuntimeException {
 
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
-        additionalProperties.put(name, value);
+        if (!READ_ONLY_PROPERTIES.contains(name)) {
+            additionalProperties.put(name, value);
+        }
     }
 
     /**
@@ -151,5 +157,4 @@ public abstract class Problem extends RuntimeException {
     public int hashCode() {
         return Objects.hash(type, href, title, status, detail, instance, additionalProperties);
     }
-
 }

@@ -13,20 +13,20 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.Module.SetupContext;
-import com.fasterxml.jackson.databind.PropertyName;
-import com.fasterxml.jackson.databind.deser.BeanDeserializerBuilder;
-import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
-import com.fasterxml.jackson.databind.introspect.BasicBeanDescription;
-import com.fasterxml.jackson.databind.jsontype.NamedType;
-import com.fasterxml.jackson.databind.type.SimpleType;
-import com.fasterxml.jackson.databind.type.TypeModifier;
+import tools.jackson.databind.JacksonModule;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.PropertyName;
+import tools.jackson.databind.deser.BeanDeserializerBuilder;
+import tools.jackson.databind.deser.ValueDeserializerModifier;
+import tools.jackson.databind.introspect.BasicBeanDescription;
+import tools.jackson.databind.jsontype.NamedType;
+import tools.jackson.databind.type.SimpleType;
+import tools.jackson.databind.type.TypeModifier;
 
 @ExtendWith(MockitoExtension.class)
-class ProblemModuleTest {
+class ProblemModuleJackson3Test {
 
-    private final ProblemModule module = new ProblemModule(
+    private final ProblemModuleJackson3 module = new ProblemModuleJackson3(
             () -> {
                 Map<String, Class<?>> problemTypes = new HashMap<>();
                 problemTypes.put("urn:problem-type:belgif:badRequest", BadRequestProblem.class);
@@ -34,7 +34,7 @@ class ProblemModuleTest {
             });
 
     @Mock
-    private SetupContext context;
+    private JacksonModule.SetupContext context;
 
     @Mock
     private BeanDeserializerBuilder beanDeserializerBuilder;
@@ -43,7 +43,7 @@ class ProblemModuleTest {
     private ArgumentCaptor<TypeModifier> typeModifierArgumentCaptor;
 
     @Captor
-    private ArgumentCaptor<BeanDeserializerModifier> beanDeserializerModifierArgumentCaptor;
+    private ArgumentCaptor<ValueDeserializerModifier> beanDeserializerModifierArgumentCaptor;
 
     @Test
     void setupModule() {
@@ -51,7 +51,7 @@ class ProblemModuleTest {
 
         verify(context).registerSubtypes(new NamedType(BadRequestProblem.class, "urn:problem-type:belgif:badRequest"));
         verify(context).addTypeModifier(typeModifierArgumentCaptor.capture());
-        verify(context).addBeanDeserializerModifier(beanDeserializerModifierArgumentCaptor.capture());
+        verify(context).addDeserializerModifier(beanDeserializerModifierArgumentCaptor.capture());
 
         TypeModifier typeModifier = typeModifierArgumentCaptor.getValue();
 
@@ -67,11 +67,14 @@ class ProblemModuleTest {
 
         assertThat(typeModifier.modifyType(regularType, null, null, null)).isSameAs(regularType);
 
-        BeanDeserializerModifier beanDeserializerModifier = beanDeserializerModifierArgumentCaptor.getValue();
+        ValueDeserializerModifier beanDeserializerModifier = beanDeserializerModifierArgumentCaptor.getValue();
+
+        BasicBeanDescription beanDescription = mock(BasicBeanDescription.class);
+        when(beanDescription.getType()).thenReturn(problemType);
+        when(beanDescription.supplier()).thenCallRealMethod();
 
         beanDeserializerModifier.updateBuilder(null,
-                new BasicBeanDescription(null, problemType, null, null) {
-                }, beanDeserializerBuilder);
+                beanDescription.supplier(), beanDeserializerBuilder);
 
         verify(beanDeserializerBuilder).removeProperty(new PropertyName("cause"));
         verify(beanDeserializerBuilder).removeProperty(new PropertyName("stackTrace"));
