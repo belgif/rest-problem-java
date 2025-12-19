@@ -109,11 +109,6 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.12.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-gpg-plugin</artifactId>
           <version>3.2.8</version>
         </plugin>
@@ -197,6 +192,25 @@
           <artifactId>jandex-maven-plugin</artifactId>
           <version>3.5.3</version>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.12.0</version>
+          <configuration>
+            <doclint>all,-missing</doclint>
+            <notimestamp>true</notimestamp>
+            <doctitle>${project.artifactId} ${project.version}</doctitle>
+            <excludePackageNames>*.internal</excludePackageNames>
+            <additionalDependencies>
+              <dependency>
+                <groupId>jakarta.platform</groupId>
+                <artifactId>jakarta.jakartaee-api</artifactId>
+                <version>8.0.0</version>
+              </dependency>
+            </additionalDependencies>
+            <outputDirectory>${project.build.directory}/site</outputDirectory>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -227,36 +241,6 @@
           </dependency>
         </dependencies>
       </plugin>
-<!--      <plugin>-->
-<!--        <groupId>org.apache.maven.plugins</groupId>-->
-<!--        <artifactId>maven-javadoc-plugin</artifactId>-->
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <id>generate-javadoc</id>-->
-<!--            <phase>process-sources</phase>-->
-<!--            <goals>-->
-<!--              <goal>aggregate-no-fork</goal>-->
-<!--            </goals>-->
-<!--            <inherited>false</inherited>-->
-<!--            <configuration>-->
-<!--&lt;!&ndash;              TODO: Modify so javadoc for sb4 works as well&ndash;&gt;-->
-<!--              <skippedModules>belgif-rest-problem-it,jacoco-aggregator,belgif-rest-problem-spring-boot-4</skippedModules>-->
-<!--              <doclint>all,-missing</doclint>-->
-<!--              <notimestamp>true</notimestamp>-->
-<!--              <doctitle>belgif-rest-problem ${project.version}</doctitle>-->
-<!--              <excludePackageNames>*.internal</excludePackageNames>-->
-<!--              <additionalDependencies>-->
-<!--                <dependency>-->
-<!--                  <groupId>jakarta.platform</groupId>-->
-<!--                  <artifactId>jakarta.jakartaee-api</artifactId>-->
-<!--                  <version>8.0.0</version>-->
-<!--                </dependency>-->
-<!--              </additionalDependencies>-->
-<!--              <outputDirectory>${project.build.directory}/site</outputDirectory>-->
-<!--            </configuration>-->
-<!--          </execution>-->
-<!--        </executions>-->
-<!--      </plugin>-->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
