@@ -76,15 +76,7 @@ public class InvalidRequestExceptionUtil {
             return null;
         }
         JsonNode valueNode = requestBody.at(JsonPointer.compile(name));
-//        return valueNode.asString().isEmpty() ? null : valueNode.asString();
-        // TODO: verify impact of change. Jackson 3 doesn't do asString if not a string node.
-        if (valueNode.isMissingNode()) {
-            return null;
-        } else if (valueNode.isString()) {
-            return valueNode.asString();
-        } else {
-            return mapper.writeValueAsString(valueNode);
-        }
+        return extractString(valueNode, mapper);
     }
 
     public static String getDetail(ValidationReport.Message message) {
@@ -114,6 +106,19 @@ public class InvalidRequestExceptionUtil {
             }
         }
         return requestBodyReference.get();
+    }
+
+    private static String extractString(JsonNode valueNode, ObjectMapper mapper) {
+        if (valueNode.isMissingNode()) {
+            return null;
+        }
+        String value;
+        if (valueNode.isString()) {
+            value = valueNode.asString();
+            return value.isEmpty() ? null : value;
+        }
+        value = mapper.writeValueAsString(valueNode);
+        return value.isEmpty() ? null : value;
     }
 
 }
