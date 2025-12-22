@@ -49,16 +49,16 @@ public abstract class CachedAnnotationParameterNameSupport<T> {
     private String getParameterNameFromAnnotations(Parameter parameter) {
         Annotation[] annotations = parameter.getAnnotations();
         for (Annotation annotation : annotations) {
-            if (annotation instanceof RequestParam) {
-                return ((RequestParam) annotation).value();
-            } else if (annotation instanceof PathVariable) {
-                return ((PathVariable) annotation).value();
-            } else if (annotation instanceof RequestHeader) {
-                return ((RequestHeader) annotation).value();
-            } else if (annotation instanceof CookieValue) {
-                return ((CookieValue) annotation).value();
-            } else if (annotation instanceof MatrixVariable) {
-                return ((MatrixVariable) annotation).value();
+            if (annotation instanceof RequestParam param) {
+                return param.value();
+            } else if (annotation instanceof PathVariable pathVariable) {
+                return pathVariable.value();
+            } else if (annotation instanceof RequestHeader header) {
+                return header.value();
+            } else if (annotation instanceof CookieValue value) {
+                return value.value();
+            } else if (annotation instanceof MatrixVariable variable) {
+                return variable.value();
             }
         }
         return null;
