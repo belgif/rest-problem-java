@@ -19,7 +19,7 @@
     <maven.compiler.release>8</maven.compiler.release>
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <!-- Aligns with version used on JBoss EAP 7.4 -->
+        <!-- Aligns with version used on JBoss EAP 7.4 -->
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
     <version.jackson3.minimal>3.0.3</version.jackson3.minimal>
     <version.spring.boot.3>3.5.8</version.spring.boot.3>
@@ -109,6 +109,11 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.12.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-gpg-plugin</artifactId>
           <version>3.2.8</version>
         </plugin>
@@ -192,25 +197,6 @@
           <artifactId>jandex-maven-plugin</artifactId>
           <version>3.5.3</version>
         </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.12.0</version>
-          <configuration>
-            <doclint>all,-missing</doclint>
-            <notimestamp>true</notimestamp>
-            <doctitle>${project.artifactId} ${project.version}</doctitle>
-            <excludePackageNames>*.internal</excludePackageNames>
-            <additionalDependencies>
-              <dependency>
-                <groupId>jakarta.platform</groupId>
-                <artifactId>jakarta.jakartaee-api</artifactId>
-                <version>8.0.0</version>
-              </dependency>
-            </additionalDependencies>
-            <outputDirectory>${project.build.directory}/site</outputDirectory>
-          </configuration>
-        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -240,6 +226,40 @@
             <version>0.6.3</version>
           </dependency>
         </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-javadoc</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>aggregate-no-fork</goal>
+            </goals>
+            <inherited>false</inherited>
+            <configuration>
+              <skippedModules>
+                belgif-rest-problem-it,
+                jacoco-aggregator,
+                belgif-rest-problem-spring-boot-3
+              </skippedModules>
+              <doclint>all,-missing</doclint>
+              <notimestamp>true</notimestamp>
+              <doctitle>belgif-rest-problem ${project.version}</doctitle>
+              <excludePackageNames>*.internal</excludePackageNames>
+              <additionalDependencies>
+                <dependency>
+                  <groupId>jakarta.platform</groupId>
+                  <artifactId>jakarta.jakartaee-api</artifactId>
+                  <version>8.0.0</version>
+                </dependency>
+              </additionalDependencies>
+              <outputDirectory>${project.build.directory}/site</outputDirectory>
+              <release>17</release>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -449,7 +469,8 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.projectName>rest-problem-java</sonar.projectName>
         <sonar.projectKey>belgif_rest-problem-java</sonar.projectKey>
-        <sonar.coverage.jacoco.xmlReportPaths>${maven.multiModuleProjectDirectory}/jacoco-aggregator/target/jacoco.xml
+        <sonar.coverage.jacoco.xmlReportPaths>
+          ${maven.multiModuleProjectDirectory}/jacoco-aggregator/target/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <sonar.coverage.exclusions>**/belgif-rest-problem-it/**</sonar.coverage.exclusions>
         <sonar.cpd.exclusions>**/belgif-rest-problem-it/**,**/src/test/java/**</sonar.cpd.exclusions>
@@ -505,7 +526,7 @@
         <module>belgif-rest-problem</module>
         <module>belgif-rest-problem-spring-boot-3</module>
         <module>belgif-rest-problem-spring-boot-4</module>
-        <!-- All relevant ITs -->
+                <!-- All relevant ITs -->
         <module>belgif-rest-problem-it/belgif-rest-problem-apt</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-codegen-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-it-common</module>
@@ -516,6 +537,19 @@
         <module>belgif-rest-problem-it/belgif-rest-problem-spring-boot-4-it</module>
         <module>belgif-rest-problem-bom</module>
       </modules>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-javadoc</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 
