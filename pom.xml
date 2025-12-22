@@ -242,7 +242,7 @@
               <skippedModules>
                 belgif-rest-problem-it,
                 jacoco-aggregator,
-                belgif-rest-problem-spring-boot-3
+                belgif-rest-problem-spring-boot-3 <!-- javadoc classpath conflict with *-spring-boot-4 -->
               </skippedModules>
               <doclint>all,-missing</doclint>
               <notimestamp>true</notimestamp>
