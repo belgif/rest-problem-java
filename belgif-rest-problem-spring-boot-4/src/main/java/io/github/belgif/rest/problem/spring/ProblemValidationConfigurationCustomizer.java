@@ -11,11 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConditionalOnClass(Configuration.class)
-public class ProblemValidationConfigurationCustomizer implements ValidationConfigurationCustomizer {
-
-    @Override
-    public void customize(Configuration<?> configuration) {
-        configuration.parameterNameProvider(new AnnotationParameterNameProvider());
-    }
+public class ProblemValidationConfigurationCustomizer extends AbstractProblemValidationConfigurationCustomizer
+        implements ValidationConfigurationCustomizer {
 
 }

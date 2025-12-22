@@ -1,18 +1,18 @@
 package io.github.belgif.rest.problem.spring;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-class ProblemRestTemplateCustomizerTest {
+class AbstractProblemRestTemplateCustomizerTest {
 
     @Test
     void customize() {
-        ProblemResponseErrorHandler handler = new ProblemResponseErrorHandler(new ObjectMapper());
-        ProblemRestTemplateCustomizer customizer = new ProblemRestTemplateCustomizer(handler);
+        AbstractProblemResponseErrorHandler handler = mock(AbstractProblemResponseErrorHandler.class);
+        AbstractProblemRestTemplateCustomizer customizer = new AbstractProblemRestTemplateCustomizer(handler) {
+        };
         RestTemplate restTemplate = new RestTemplate();
         customizer.customize(restTemplate);
 

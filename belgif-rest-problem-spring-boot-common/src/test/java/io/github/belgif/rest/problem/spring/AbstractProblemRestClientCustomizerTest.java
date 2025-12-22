@@ -1,6 +1,7 @@
 package io.github.belgif.rest.problem.spring;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
@@ -8,14 +9,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestClient;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-class ProblemRestClientCustomizerTest {
+class AbstractProblemRestClientCustomizerTest {
 
     @Test
     void customize() {
-        ProblemResponseErrorHandler handler = new ProblemResponseErrorHandler(new ObjectMapper());
-        ProblemRestClientCustomizer customizer = new ProblemRestClientCustomizer(handler);
+        AbstractProblemResponseErrorHandler handler = mock(AbstractProblemResponseErrorHandler.class);
+        AbstractProblemRestClientCustomizer customizer = new AbstractProblemRestClientCustomizer(handler) {
+        };
         RestClient.Builder builder = RestClient.builder();
         customizer.customize(builder);
 

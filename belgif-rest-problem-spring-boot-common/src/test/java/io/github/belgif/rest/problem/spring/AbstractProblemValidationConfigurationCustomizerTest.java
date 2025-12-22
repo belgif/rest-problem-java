@@ -1,7 +1,7 @@
 package io.github.belgif.rest.problem.spring;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import jakarta.validation.Configuration;
 import jakarta.validation.ParameterNameProvider;
@@ -14,9 +14,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ProblemValidationConfigurationCustomizerTest {
+class AbstractProblemValidationConfigurationCustomizerTest {
 
-    private final ProblemValidationConfigurationCustomizer customizer = new ProblemValidationConfigurationCustomizer();
+    private final AbstractProblemValidationConfigurationCustomizer customizer =
+            new AbstractProblemValidationConfigurationCustomizer() {
+            };
 
     @Mock
     private Configuration configuration;

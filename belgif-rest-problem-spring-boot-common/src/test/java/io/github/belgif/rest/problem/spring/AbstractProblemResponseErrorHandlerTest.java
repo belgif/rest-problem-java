@@ -1,7 +1,7 @@
 package io.github.belgif.rest.problem.spring;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -22,13 +22,13 @@ import org.springframework.web.client.UnknownHttpStatusCodeException;
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.DefaultProblem;
 import io.github.belgif.rest.problem.api.Problem;
-import tools.jackson.databind.ObjectMapper;
+import io.github.belgif.rest.problem.spring.AbstractProblemResponseErrorHandler.ProblemReader;
 
 @ExtendWith(MockitoExtension.class)
-class ProblemResponseErrorHandlerTest {
+class AbstractProblemResponseErrorHandlerTest {
 
     @Mock
-    private ObjectMapper objectMapper;
+    private ProblemReader problemReader;
 
     @InjectMocks
     private ProblemResponseErrorHandler handler;
@@ -40,7 +40,7 @@ class ProblemResponseErrorHandlerTest {
         response.getHeaders().setContentType(ProblemMediaType.INSTANCE);
 
         Problem problem = new BadRequestProblem();
-        when(objectMapper.readValue(entityStream, Problem.class)).thenReturn(problem);
+        when(problemReader.read(entityStream)).thenReturn(problem);
         assertThatExceptionOfType(BadRequestProblem.class)
                 .isThrownBy(() -> handler.handleError(URI.create("test"), HttpMethod.GET, response))
                 .isEqualTo(problem);
@@ -53,7 +53,7 @@ class ProblemResponseErrorHandlerTest {
         response.getHeaders().setContentType(ProblemMediaType.APPLICATION_JSON);
 
         Problem problem = new BadRequestProblem();
-        when(objectMapper.readValue(entityStream, Problem.class)).thenReturn(problem);
+        when(problemReader.read(entityStream)).thenReturn(problem);
         assertThatExceptionOfType(BadRequestProblem.class)
                 .isThrownBy(() -> handler.handleError(URI.create("test"), HttpMethod.GET, response))
                 .isEqualTo(problem);
@@ -76,7 +76,7 @@ class ProblemResponseErrorHandlerTest {
         response.getHeaders().setContentType(ProblemMediaType.INSTANCE);
 
         Problem problem = new DefaultProblem(URI.create("type"), URI.create("href"), "Title", 400);
-        when(objectMapper.readValue(entityStream, Problem.class)).thenReturn(problem);
+        when(problemReader.read(entityStream)).thenReturn(problem);
         assertThatExceptionOfType(DefaultProblem.class)
                 .isThrownBy(() -> handler.handleError(URI.create("test"), HttpMethod.GET, response))
                 .isEqualTo(problem);
@@ -90,6 +90,14 @@ class ProblemResponseErrorHandlerTest {
 
         assertThatExceptionOfType(HttpClientErrorException.BadRequest.class)
                 .isThrownBy(() -> handler.handleError(URI.create("test"), HttpMethod.GET, response));
+    }
+
+    public static class ProblemResponseErrorHandler extends AbstractProblemResponseErrorHandler {
+
+        ProblemResponseErrorHandler(ProblemReader problemReader) {
+            super(problemReader);
+        }
+
     }
 
 }

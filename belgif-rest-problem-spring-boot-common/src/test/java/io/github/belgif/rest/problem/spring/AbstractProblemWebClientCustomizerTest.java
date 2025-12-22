@@ -1,8 +1,7 @@
 package io.github.belgif.rest.problem.spring;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,9 +20,10 @@ import io.github.belgif.rest.problem.api.Problem;
 import reactor.core.publisher.Mono;
 
 @ExtendWith(MockitoExtension.class)
-class ProblemWebClientCustomizerTest {
+class AbstractProblemWebClientCustomizerTest {
 
-    private final ProblemWebClientCustomizer customizer = new ProblemWebClientCustomizer();
+    private final AbstractProblemWebClientCustomizer customizer = new AbstractProblemWebClientCustomizer() {
+    };
 
     @Mock
     private WebClient.Builder builder;
