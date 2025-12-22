@@ -19,8 +19,9 @@ class EmployerIdValidator extends AbstractSingleInputValidator<Long> {
 
     @Override
     public Optional<InputValidationIssue> validate() {
-        // Belgif openapi-employment-identifier EmployerId already enforces 197 -> 5999999999 range:
-        // we only need to validate the checksum here
+        if (getValue() < 197L || getValue() > 5999999999L) {
+            return Optional.of(InputValidationIssues.invalidEmployerId(getIn(), getName(), getValue()));
+        }
         int checksum = (int) (getValue() % 100);
         if (!(checksum == calculateNssoChecksum() || (isInPlaRange() && checksum == calculatePlaChecksum()))) {
             return Optional.of(InputValidationIssues.invalidEmployerId(getIn(), getName(), getValue()));

@@ -30,7 +30,7 @@ class EmployerIdValidatorTest {
     }
 
     @ParameterizedTest
-    @ValueSource(longs = { 4000000100L, 6999999999L, 5678901279L, 1000000047L, 5000000121L })
+    @ValueSource(longs = { 196L, 4000000100L, 6999999999L, 5678901279L, 1000000047L, 5000000121L })
     void nok(Long employerId) {
         assertThat(new EmployerIdValidator(Input.body("test", employerId)).validate())
                 .contains(InputValidationIssues.invalidEmployerId(BODY, "test", employerId));
