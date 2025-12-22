@@ -377,6 +377,7 @@
         <module>belgif-rest-problem</module>
         <module>belgif-rest-problem-validator</module>
         <module>belgif-rest-problem-java-ee</module>
+        <module>belgif-rest-problem-spring-boot-common</module>
         <module>belgif-rest-problem-spring-boot-3</module>
         <module>belgif-rest-problem-spring-boot-4</module>
         <module>belgif-rest-problem-quarkus</module>
@@ -479,6 +480,7 @@
         <module>belgif-rest-problem</module>
         <module>belgif-rest-problem-validator</module>
         <module>belgif-rest-problem-java-ee</module>
+        <module>belgif-rest-problem-spring-boot-common</module>
         <module>belgif-rest-problem-spring-boot-3</module>
         <module>belgif-rest-problem-spring-boot-4</module>
         <module>belgif-rest-problem-quarkus</module>
@@ -524,6 +526,7 @@
       <id>spring-only</id>
       <modules>
         <module>belgif-rest-problem</module>
+        <module>belgif-rest-problem-spring-boot-common</module>
         <module>belgif-rest-problem-spring-boot-3</module>
         <module>belgif-rest-problem-spring-boot-4</module>
                 <!-- All relevant ITs -->

@@ -9,8 +9,9 @@
     <version>${revision}</version>
   </parent>
 
-  <artifactId>belgif-rest-problem-spring-boot-3</artifactId>
+  <artifactId>belgif-rest-problem-spring-boot-common</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
+  <description>Contains shared components that are common between Spring Boot versions</description>
   <packaging>jar</packaging>
 
   <properties>
@@ -33,11 +34,6 @@
     <dependency>
       <groupId>io.github.belgif.rest.problem</groupId>
       <artifactId>belgif-rest-problem</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.github.belgif.rest.problem</groupId>
-      <artifactId>belgif-rest-problem-spring-boot-common</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -108,5 +104,23 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-javadoc</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>aggregate-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
