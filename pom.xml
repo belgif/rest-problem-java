@@ -22,9 +22,9 @@
     <!-- Aligns with version used on JBoss EAP 7.4 -->
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
     <version.jackson3.minimal>3.0.3</version.jackson3.minimal>
-    <version.spring.boot.3>3.5.8</version.spring.boot.3>
+    <version.spring.boot.3>3.5.9</version.spring.boot.3>
     <version.spring.boot.4>4.0.1</version.spring.boot.4>
-    <version.quarkus>3.30.3</version.quarkus>
+    <version.quarkus>3.30.4</version.quarkus>
   </properties>
 
   <dependencyManagement>
@@ -150,7 +150,7 @@
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.17.0</version>
+          <version>7.18.0</version>
         </plugin>
         <plugin>
           <groupId>io.swagger.codegen.v3</groupId>
@@ -185,7 +185,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>
-          <version>3.6.2</version>
+          <version>3.6.3</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
