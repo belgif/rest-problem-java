@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.Input;
@@ -20,6 +21,8 @@ import io.github.belgif.rest.problem.api.InputValidationIssues;
  */
 class IncompleteDateValidator extends AbstractSingleInputValidator<String> {
 
+    private static final Pattern PATTERN = Pattern.compile("^[0-9]{4}-[0-1][0-9]-[0-3][0-9]$");
+
     /** maximum valid value of month part. */
     private static final int MONTH_MAX = 12;
 
@@ -32,7 +35,9 @@ class IncompleteDateValidator extends AbstractSingleInputValidator<String> {
 
     @Override
     public Optional<InputValidationIssue> validate() throws BadRequestProblem {
-
+        if (!PATTERN.matcher(getValue()).matches()) {
+            return Optional.of(InputValidationIssues.invalidIncompleteDate(getIn(), getName(), getValue()));
+        }
         try {
             TemporalAccessor temporal =
                     DateTimeFormatter.ISO_LOCAL_DATE.parseUnresolved(getValue(), new ParsePosition(0));
