@@ -61,6 +61,7 @@
               <apiPackage>io.github.belgif.rest.problem.codegen.openapi.api</apiPackage>
               <configOptions>
                 <interfaceOnly>true</interfaceOnly>
+                <openApiNullable>false</openApiNullable>
               </configOptions>
               <!-- tag::openapi-generator-maven-plugin[] -->
               <schemaMappings>
