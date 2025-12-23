@@ -111,6 +111,16 @@ class SsinValidatorTest {
         assertInvalidSsin("81050103521");
     }
 
+    @Test
+    void nokNotNumeric() {
+        assertInvalidSsin("test");
+    }
+
+    @Test
+    void nokTooShort() {
+        assertInvalidSsin("196");
+    }
+
     private void assertValidSsin(String ssin) {
         assertThat(new SsinValidator(Input.body("test", ssin)).validate()).isEmpty();
     }

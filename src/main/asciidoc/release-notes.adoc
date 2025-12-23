@@ -30,6 +30,10 @@
 ** Added `io.github.belgif.rest.problem.ProblemModuleJackson3`
 ** Ignore read-only properties "type", "status" and "title" in setAdditionalProperty()
 
+*belgif-rest-problem-validator:*
+
+* Stop relying on openapi schema validation: implement all validation aspects, including those already specified by the schema
+
 == Version 0.18
 
 *belgif-rest-problem:*

@@ -4,6 +4,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.Input;
@@ -16,6 +17,8 @@ import io.github.belgif.rest.problem.api.InputValidationIssues;
  * @see <a href="https://github.com/belgif/openapi-person-identifier">openapi-person-identifier</a>
  */
 class SsinValidator extends AbstractSingleInputValidator<String> {
+
+    private static final Pattern PATTERN = Pattern.compile("^\\d{11}$");
 
     private static final long YEAR_2000_PREFIX = 200_000_000_000L;
 
@@ -35,7 +38,9 @@ class SsinValidator extends AbstractSingleInputValidator<String> {
     }
 
     private boolean isValidSsin(String value) {
-        // Belgif openapi-person-identifier Ssin already enforces ^\d{11}$ regex
+        if (!PATTERN.matcher(value).matches()) {
+            return false;
+        }
         long ssin = Long.parseLong(value);
         // extract parts
         int counterPart = (int) ((ssin / 100) % 1000);
