@@ -314,7 +314,7 @@ public class FrontendImpl implements Frontend {
     }
 
     @Override
-    public Response beanValidationBeanParam(Bean bean) {
+    public Response beanValidationBeanParameter(Bean bean) {
         return Response.ok("bean: " + bean).build();
     }
 
