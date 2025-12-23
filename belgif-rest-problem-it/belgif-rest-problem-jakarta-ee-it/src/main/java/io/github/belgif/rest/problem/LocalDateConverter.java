@@ -1,12 +1,13 @@
 package io.github.belgif.rest.problem;
 
-import jakarta.ws.rs.ext.ParamConverter;
+import static io.github.belgif.rest.problem.api.InputValidationIssues.schemaViolation;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
-import static io.github.belgif.rest.problem.api.InputValidationIssues.schemaViolation;
+import jakarta.ws.rs.ext.ParamConverter;
 
 public class LocalDateConverter implements ParamConverter<LocalDate> {
 
