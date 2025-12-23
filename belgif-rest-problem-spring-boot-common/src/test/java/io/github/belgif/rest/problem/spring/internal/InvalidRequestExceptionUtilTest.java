@@ -2,21 +2,15 @@ package io.github.belgif.rest.problem.spring.internal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.atlassian.oai.validator.model.ApiOperation;
 import com.atlassian.oai.validator.model.ApiPath;
 import com.atlassian.oai.validator.model.ApiPathImpl;
 import com.atlassian.oai.validator.report.ValidationReport;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.belgif.rest.problem.api.InEnum;
 import io.swagger.v3.oas.models.Operation;
@@ -98,31 +92,6 @@ class InvalidRequestExceptionUtilTest {
         assertEquals("firstValue", InvalidRequestExceptionUtil.getPathValue(message, "myFirstParam"));
         assertEquals("secondValue", InvalidRequestExceptionUtil.getPathValue(message, "mySecondParam"));
         assertEquals("thirdValue", InvalidRequestExceptionUtil.getPathValue(message, "myThirdParam"));
-    }
-
-    @Test
-    void testGetBodyValueWithEmptyReference() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        String requestBody = "{\"myProperty\": \"myDummyValue\"}";
-        request.setContent(requestBody.getBytes(StandardCharsets.UTF_8));
-        request.setContentType("application/json");
-
-        AtomicReference<JsonNode> reference = new AtomicReference<>();
-        assertNull(reference.get());
-        assertEquals("myDummyValue",
-                InvalidRequestExceptionUtil.getBodyValue("/myProperty", reference, request, new ObjectMapper()));
-        assertNotNull(reference.get());
-    }
-
-    @Test
-    void testGetBodyValueWithReference() throws JsonProcessingException {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        String requestBody = "{\"myProperty\": \"myDummyValue\"}";
-        JsonNode node = new ObjectMapper().readTree(requestBody);
-        AtomicReference<JsonNode> reference = new AtomicReference<>(node);
-        assertNotNull(reference.get());
-        assertEquals("myDummyValue",
-                InvalidRequestExceptionUtil.getBodyValue("/myProperty", reference, request, new ObjectMapper()));
     }
 
     @Test
