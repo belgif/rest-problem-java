@@ -5,15 +5,14 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.internal.JacksonUtil;
 
 /**
- * ExceptionMapper for mapping jackson MismatchedInputException to BadRequestProblem.
+ * ExceptionMapper for mapping jackson JsonMappingException to BadRequestProblem.
  *
- * @see MismatchedInputException
+ * @see JsonMappingException
  * @see BadRequestProblem
  */
 @Provider
