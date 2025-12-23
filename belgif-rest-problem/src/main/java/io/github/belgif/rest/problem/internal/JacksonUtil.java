@@ -1,9 +1,17 @@
 package io.github.belgif.rest.problem.internal;
 
-import java.util.List;
+import static io.github.belgif.rest.problem.api.InputValidationIssues.invalidStructure;
 
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.io.JsonEOFException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
@@ -24,27 +32,101 @@ public class JacksonUtil {
      * @return the BadRequestProblem
      */
     public static BadRequestProblem toBadRequestProblem(JsonMappingException e) {
-        StringBuilder name = new StringBuilder();
-        for (Reference reference : e.getPath()) {
+        if (e.getCause() instanceof JsonParseException) {
+            return new BadRequestProblem(
+                    InputValidationIssues.invalidStructure(InEnum.BODY, getName(e.getPath()), getValue(e),
+                            getDetailMessage(e)));
+        } else {
+            return new BadRequestProblem(
+                    InputValidationIssues.schemaViolation(InEnum.BODY, getName(e.getPath()), getValue(e),
+                            getDetailMessage(e)));
+        }
+    }
+
+    private static String getName(List<Reference> path) {
+        if (path.isEmpty()) {
+            return null;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (Reference reference : path) {
             if (reference.getFrom() instanceof List) {
-                name.append("[").append(reference.getIndex()).append("]");
+                builder.append("[").append(reference.getIndex()).append("]");
             } else {
-                if (name.length() > 0) {
-                    name.append(".");
+                if (builder.length() > 0) {
+                    builder.append(".");
                 }
-                name.append(reference.getFieldName());
+                builder.append(reference.getFieldName());
             }
         }
-        return new BadRequestProblem(
-                InputValidationIssues.schemaViolation(InEnum.BODY, name.toString(), null, getDetailMessage(e)));
+        return builder.toString();
+    }
+
+    /**
+     * Convert the given JsonParseException to a BadRequestProblem.
+     *
+     * @param e the JsonParseException
+     * @return the BadRequestProblem
+     */
+    public static BadRequestProblem toBadRequestProblem(JsonParseException e) {
+        return new BadRequestProblem(invalidStructure(InEnum.BODY, null,
+                e.getRequestPayloadAsString(), getDetailMessage(e.getClass())));
+    }
+
+    private static String getDetailMessage(Class<? extends JsonParseException> clazz) {
+        if (clazz == JsonEOFException.class) {
+            return "invalid json data (end-of-input reached unexpectedly)";
+        } else {
+            return "invalid json data";
+        }
     }
 
     private static String getDetailMessage(JsonMappingException e) {
-        if (e.getOriginalMessage().startsWith("Missing required")) {
+        if (e.getCause() != null && e.getCause() instanceof JsonParseException) {
+            return getDetailMessage((Class<? extends JsonParseException>) e.getCause().getClass());
+        } else if (e instanceof InvalidFormatException) {
+            Matcher matcher = INVALID_FORMAT_PATTERN.matcher(e.getOriginalMessage());
+            if (matcher.matches()) {
+                return matcher.group(3)
+                        .replace("accepted for Enum class", "accepted for enumeration")
+                        .replace("java.lang.Integer", "int")
+                        .replace("java.lang.Short", "int")
+                        .replace("java.lang.Long", "int")
+                        .replace("java.lang.String", "string")
+                        .replace("java.lang.Float", "number")
+                        .replace("java.lang.Double", "number");
+            } else {
+                return e.getOriginalMessage();
+            }
+        } else if (e instanceof ValueInstantiationException) {
+            Matcher matcher = VALUE_INSTANTIATION_PATTERN.matcher(e.getOriginalMessage());
+            if (matcher.matches()) {
+                return matcher.group(2);
+            } else {
+                return e.getOriginalMessage();
+            }
+        } else if (e.getOriginalMessage().startsWith("Missing required")) {
             return "must not be null";
         } else {
             return e.getOriginalMessage();
         }
     }
+
+    private static String getValue(JsonMappingException e) {
+        Matcher matcher = VALUE_PATTERN.matcher(e.getOriginalMessage());
+        if (matcher.find()) {
+            return matcher.group(1);
+        } else {
+            return null;
+        }
+    }
+
+    private static final Pattern VALUE_PATTERN = Pattern.compile("from String \"(.+)\"");
+
+    private static final Pattern INVALID_FORMAT_PATTERN =
+            Pattern.compile("^Cannot deserialize value of type `(.+)` from String \"(.+)\": (.+)$");
+
+    private static final Pattern VALUE_INSTANTIATION_PATTERN =
+            Pattern.compile("^Cannot construct instance of `([^`]+)`, problem: (.+)$");
 
 }

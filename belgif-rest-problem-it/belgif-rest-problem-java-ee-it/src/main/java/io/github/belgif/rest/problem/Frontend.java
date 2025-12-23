@@ -1,5 +1,7 @@
 package io.github.belgif.rest.problem;
 
+import java.time.LocalDate;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -77,6 +79,10 @@ public interface Frontend {
             @QueryParam("other") @Size(max = 5) String o);
 
     @GET
+    @Path("/beanValidation/queryParameter/date")
+    Response beanValidationQueryParameterDate(@QueryParam("date") @NotNull LocalDate date);
+
+    @GET
     @Path("/beanValidation/headerParameter")
     Response beanValidationHeaderParameter(@HeaderParam("param") @NotNull @Positive Integer p);
 
@@ -101,8 +107,8 @@ public interface Frontend {
     Response beanValidationBodyInheritance(@Valid ChildModel body);
 
     @GET
-    @Path("/beanValidation/beanParam/{name}")
-    Response beanValidationBeanParam(@Valid @BeanParam Bean bean);
+    @Path("/beanValidation/beanParameter/{name}")
+    Response beanValidationBeanParameter(@Valid @BeanParam Bean bean);
 
     @POST
     @Path("/jackson/mismatchedInputException")

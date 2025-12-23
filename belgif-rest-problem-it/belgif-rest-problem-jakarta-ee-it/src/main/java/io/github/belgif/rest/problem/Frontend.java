@@ -101,8 +101,8 @@ public interface Frontend {
     Response beanValidationBodyInheritance(@Valid ChildModel body);
 
     @GET
-    @Path("/beanValidation/beanParam/{name}")
-    Response beanValidationBeanParam(@Valid @BeanParam Bean bean);
+    @Path("/beanValidation/beanParameter/{name}")
+    Response beanValidationBeanParameter(@Valid @BeanParam Bean bean);
 
     @POST
     @Path("/jackson/mismatchedInputException")

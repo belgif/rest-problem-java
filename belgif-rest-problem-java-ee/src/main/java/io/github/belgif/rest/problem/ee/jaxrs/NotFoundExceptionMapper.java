@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
+import io.github.belgif.rest.problem.ResourceNotFoundProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 
@@ -52,9 +53,9 @@ public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundExceptio
                 problem.addIssue(issue);
             }
 
-            return Response.status(400).entity(problem).build();
+            return ProblemMediaType.INSTANCE.toResponse(problem);
         } else {
-            throw exception;
+            return ProblemMediaType.INSTANCE.toResponse(new ResourceNotFoundProblem());
         }
     }
 

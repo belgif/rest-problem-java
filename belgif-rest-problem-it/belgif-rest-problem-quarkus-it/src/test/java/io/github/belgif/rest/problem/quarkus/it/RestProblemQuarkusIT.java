@@ -33,7 +33,7 @@ class RestProblemQuarkusIT extends AbstractRestProblemIT {
     void constraintViolationBeanParam() {
         getSpec().when()
                 .queryParam("value", 10)
-                .get("/beanValidation/beanParam/x").then().assertThat()
+                .get("/beanValidation/beanParameter/x").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))

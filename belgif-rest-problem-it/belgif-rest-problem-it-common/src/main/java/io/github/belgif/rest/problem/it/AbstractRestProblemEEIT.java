@@ -19,7 +19,7 @@ public abstract class AbstractRestProblemEEIT extends AbstractRestProblemIT {
     public void constraintViolationBeanParam() {
         getSpec().when()
                 .queryParam("value", 10)
-                .get("/beanValidation/beanParam/x").then().assertThat()
+                .get("/beanValidation/beanParameter/x").then().assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
@@ -38,6 +38,91 @@ public abstract class AbstractRestProblemEEIT extends AbstractRestProblemIT {
                 .body("issues[1].in", equalTo("query"))
                 .body("issues[1].name", equalTo("value"))
                 .body("issues[1].value", equalTo(10));
+    }
+
+    @Test
+    public void constraintViolationQueryParam() {
+        getSpec().when()
+                .queryParam("date", "2025-13-12")
+                .get("/beanValidation/queryParameter/date").then().assertThat()
+                .log().all()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[0].detail", equalTo("date has invalid format"))
+                .body("issues[0].in", equalTo("query"))
+                .body("issues[0].name", equalTo("date"))
+                .body("issues[0].value", equalTo("2025-13-12"));
+    }
+
+    @Test
+    public void invalidJsonEOF() {
+        getSpec().when().body("{" +
+                "\"name\": \"Jim\", " +
+                "\"email\": \"jim@mymail.com\"")
+                .contentType("application/json")
+                .post("/beanValidation/body").then().assertThat()
+                .log().all()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:invalidInput"))
+                .body("issues[0].title", equalTo("Invalid input"))
+                .body("issues[0].detail", equalTo("invalid json data (end-of-input reached unexpectedly)"))
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].name", emptyOrNullString());
+    }
+
+    @Test
+    public void invalidJson() {
+        getSpec().when().body("{ \"name\": \"Jim\" " +
+                "\"email\": \"jim@mymail.com\" }")
+                .contentType("application/json")
+                .post("/beanValidation/body").then().assertThat()
+                .log().all()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:invalidInput"))
+                .body("issues[0].title", equalTo("Invalid input"))
+                .body("issues[0].detail", equalTo("invalid json data"))
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].name", emptyOrNullString());
+    }
+
+    @Test
+    public void invalidJsonType() {
+        getSpec().when().body("{ \"name\": \"Jim\", " +
+                "\"email\": \"jim@mymail.com\", " +
+                "\"age\": \"twenty-two\" }")
+                .contentType("application/json")
+                .post("/beanValidation/body/inheritance").then().assertThat()
+                .log().all()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[0].detail", equalTo("not a valid `int` value"))
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].name", equalTo("age"))
+                .body("issues[0].value", equalTo("twenty-two"));
+    }
+
+    @Test
+    public void invalidJsonFormat() {
+        getSpec().when().body("{ \"name\": \"Jim\", " +
+                "\"email: \"jim@mymail.com\" }")
+                .contentType("application/json")
+                .post("/beanValidation/body").then().assertThat()
+                .log().all()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:invalidInput"))
+                .body("issues[0].title", equalTo("Invalid input"))
+                .body("issues[0].detail", equalTo("invalid json data"))
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].name", emptyOrNullString());
     }
 
 }
