@@ -18,7 +18,7 @@ class EnterpriseNumberValidatorTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "test", "54321", "2111111111", "0884303370" })
+    @ValueSource(strings = { "test", "54321", "20000000032", "2111111111", "0884303370" })
     void nok(String value) {
         assertThat(new EnterpriseNumberValidator(Input.body("test", value)).validate())
                 .contains(InputValidationIssues.invalidEnterpriseNumber(BODY, "test", value));

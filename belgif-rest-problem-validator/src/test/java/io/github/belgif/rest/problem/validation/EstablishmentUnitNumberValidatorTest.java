@@ -18,7 +18,7 @@ class EstablishmentUnitNumberValidatorTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "test", "54321", "2111111111", "2297964445" })
+    @ValueSource(strings = { "test", "54321", "0884303369", "2111111111", "2297964445" })
     void nok(String value) {
         assertThat(new EstablishmentUnitNumberValidator(Input.body("test", value)).validate())
                 .contains(InputValidationIssues.invalidEstablishmentUnitNumber(BODY, "test", value));
