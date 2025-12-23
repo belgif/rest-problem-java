@@ -9,12 +9,19 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
+import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.internal.JacksonUtil;
 
+/**
+ * ExceptionMapper for mapping jackson JsonParseException to BadRequestProblem.
+ *
+ * @see JsonParseException
+ * @see BadRequestProblem
+ */
 @Provider
-public class JsonParseExceptionMapper implements ExceptionMapper<JsonParseException> {
+public class JacksonJsonParseExceptionMapper implements ExceptionMapper<JsonParseException> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JsonParseExceptionMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JacksonJsonParseExceptionMapper.class);
 
     @Override
     public Response toResponse(JsonParseException exception) {
