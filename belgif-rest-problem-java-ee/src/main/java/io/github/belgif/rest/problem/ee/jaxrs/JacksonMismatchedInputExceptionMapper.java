@@ -7,7 +7,7 @@ import javax.ws.rs.ext.Provider;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
-import io.github.belgif.rest.problem.internal.JacksonUtil;
+import io.github.belgif.rest.problem.internal.Jackson2Util;
 
 /**
  * ExceptionMapper for mapping jackson MismatchedInputException to BadRequestProblem.
@@ -23,7 +23,7 @@ public class JacksonMismatchedInputExceptionMapper implements ExceptionMapper<Mi
     @Override
     public Response toResponse(MismatchedInputException exception) {
         try {
-            return ProblemMediaType.INSTANCE.toResponse(JacksonUtil.toBadRequestProblem(exception));
+            return ProblemMediaType.INSTANCE.toResponse(Jackson2Util.toBadRequestProblem(exception));
         } catch (RuntimeException e) {
             return DEFAULT_MAPPER.toResponse(e);
         }
