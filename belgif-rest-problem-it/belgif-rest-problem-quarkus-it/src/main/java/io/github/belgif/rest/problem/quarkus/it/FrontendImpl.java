@@ -1,6 +1,7 @@
 package io.github.belgif.rest.problem.quarkus.it;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.concurrent.ExecutionException;
 
 import jakarta.annotation.PostConstruct;
@@ -273,6 +274,11 @@ public class FrontendImpl implements Frontend {
     @Override
     public Response beanValidationQueryParameter(Integer p, String o) {
         return Response.ok("param: " + p + ", other: " + o).build();
+    }
+
+    @Override
+    public Response beanValidationQueryParameterDate(LocalDate date) {
+        return Response.ok("date: " + date).build();
     }
 
     @Override

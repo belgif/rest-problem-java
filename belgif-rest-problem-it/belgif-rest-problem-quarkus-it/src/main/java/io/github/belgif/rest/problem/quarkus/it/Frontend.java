@@ -1,5 +1,7 @@
 package io.github.belgif.rest.problem.quarkus.it;
 
+import java.time.LocalDate;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -71,6 +73,10 @@ public interface Frontend {
     @Path("/beanValidation/queryParameter")
     Response beanValidationQueryParameter(@QueryParam("param") @NotNull @Positive Integer p,
             @QueryParam("other") @Size(max = 5) String o);
+
+    @GET
+    @Path("/beanValidation/queryParameter/date")
+    Response beanValidationQueryParameterDate(@QueryParam("date") @NotNull LocalDate date);
 
     @GET
     @Path("/beanValidation/headerParameter")
