@@ -66,11 +66,11 @@ public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundExceptio
         } else if ("Bean".equals(location)) {
             return InEnum.BODY;
         } else if ("Form".equals(location)) {
-            return InEnum.FORM;
+            return InEnum.BODY;
         } else if ("Matrix".equals(location)) {
-            return InEnum.MATRIX;
+            return InEnum.PATH;
         } else if ("Cookie".equals(location)) {
-            return InEnum.COOKIE;
+            return InEnum.HEADER;
         } else {
             return null;
         }
