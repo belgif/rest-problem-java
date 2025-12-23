@@ -29,10 +29,17 @@ import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.InternalServerErrorProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.internal.Jackson2Util;
 
-class RoutingExceptionsHandlerTest {
+class AbstractRoutingExceptionsHandlerTest {
 
-    private final RoutingExceptionsHandler handler = new RoutingExceptionsHandler();
+    private final AbstractRoutingExceptionsHandler<MismatchedInputException> handler =
+            new AbstractRoutingExceptionsHandler<>(MismatchedInputException.class) {
+                @Override
+                protected BadRequestProblem toBadRequestProblem(MismatchedInputException mismatchedInputException) {
+                    return Jackson2Util.toBadRequestProblem(mismatchedInputException);
+                }
+            };
 
     @Test
     void handleMissingServletRequestParameterException() {
