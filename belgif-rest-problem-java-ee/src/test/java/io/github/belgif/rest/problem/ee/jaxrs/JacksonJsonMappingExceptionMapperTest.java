@@ -54,7 +54,7 @@ class JacksonJsonMappingExceptionMapperTest {
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("id");
         assertThat(issue.getValue()).isNull();
-        assertThat(issue.getDetail()).isEqualTo("detail");
+        assertThat(issue.getDetail()).isEqualTo("Unexpected value 'XXL'");
     }
 
 }

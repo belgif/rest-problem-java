@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Smals
- */
 package io.github.belgif.rest.problem.ee.jaxrs;
 
 import static io.github.belgif.rest.problem.api.InputValidationIssues.schemaViolation;
