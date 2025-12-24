@@ -4,10 +4,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.ConstraintViolation;
@@ -16,12 +14,6 @@ import javax.validation.Path.MethodNode;
 import javax.validation.Path.Node;
 import javax.validation.Path.ParameterNode;
 import javax.ws.rs.BeanParam;
-import javax.ws.rs.CookieParam;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.MatrixParam;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
 
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.Input;
@@ -37,19 +29,7 @@ import io.github.belgif.rest.problem.internal.AnnotationUtil;
  */
 public class ConstraintViolationUtil {
 
-    private static final Map<Class<? extends Annotation>, InEnum> SOURCE_MAPPING = new HashMap<>();
-
-    static {
-        SOURCE_MAPPING.put(QueryParam.class, InEnum.QUERY);
-        SOURCE_MAPPING.put(PathParam.class, InEnum.PATH);
-        SOURCE_MAPPING.put(HeaderParam.class, InEnum.HEADER);
-        SOURCE_MAPPING.put(FormParam.class, InEnum.BODY);
-        SOURCE_MAPPING.put(MatrixParam.class, InEnum.PATH);
-        SOURCE_MAPPING.put(CookieParam.class, InEnum.HEADER);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static final Class<? extends Annotation>[] ANNOTATIONS = SOURCE_MAPPING.keySet().toArray(new Class[0]);
+    private static final Class<? extends Annotation>[] ANNOTATIONS = ParameterSourceMapper.getAnnotations();
 
     private ConstraintViolationUtil() {
     }
@@ -89,7 +69,7 @@ public class ConstraintViolationUtil {
                 Optional<Annotation> paramAnnotation =
                         AnnotationUtil.findParamAnnotation(method, param.getParameterIndex(), ANNOTATIONS);
                 if (paramAnnotation.isPresent()) {
-                    input.setIn(SOURCE_MAPPING.get(paramAnnotation.get().annotationType()));
+                    input.setIn(ParameterSourceMapper.map(paramAnnotation.get().annotationType()));
                 } else {
                     input.setIn(InEnum.BODY);
                     input.setName(null);
@@ -108,8 +88,9 @@ public class ConstraintViolationUtil {
                 try {
                     Field field = beanParamClass.getDeclaredField(last.getName());
                     for (Annotation annotation : field.getAnnotations()) {
-                        if (SOURCE_MAPPING.containsKey(annotation.annotationType())) {
-                            input.setIn(SOURCE_MAPPING.get(annotation.annotationType()));
+                        InEnum in = ParameterSourceMapper.map(annotation.annotationType());
+                        if (in != null) {
+                            input.setIn(in);
                             input.setName((String) annotation.annotationType().getMethod("value").invoke(annotation));
                         }
                     }

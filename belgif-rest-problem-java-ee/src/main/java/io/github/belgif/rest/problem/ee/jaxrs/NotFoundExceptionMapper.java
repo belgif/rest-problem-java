@@ -1,6 +1,6 @@
 package io.github.belgif.rest.problem.ee.jaxrs;
 
-import static io.github.belgif.rest.problem.api.InputValidationIssues.schemaViolation;
+import static io.github.belgif.rest.problem.api.InputValidationIssues.*;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.ResourceNotFoundProblem;
-import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
+import io.github.belgif.rest.problem.ee.internal.ParameterSourceMapper;
 
 /**
  * {@link javax.ws.rs.ext.ParamConverter} errors are wrapped into a {@link javax.ws.rs.NotFoundException} in JBoss EAP.
@@ -28,7 +28,7 @@ public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundExceptio
     private static final Logger LOGGER = LoggerFactory.getLogger(NotFoundExceptionMapper.class);
 
     private static final Pattern PARAM_PATTERN =
-            Pattern.compile("(javax|jakarta).ws.rs.(Path|Query|Header|Bean|Form|Cookie|Matrix)Param\\(\"(.*)\"\\)");
+            Pattern.compile("(javax|jakarta).ws.rs.((?:Path|Query|Header|Bean|Form|Cookie|Matrix)Param)\\(\"(.*)\"\\)");
 
     @Override
     public Response toResponse(NotFoundException exception) {
@@ -42,7 +42,7 @@ public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundExceptio
 
             Matcher matcher = PARAM_PATTERN.matcher(exception.getMessage());
             if (matcher.find()) {
-                issue.in(mapLocation(matcher.group(2)));
+                issue.in(ParameterSourceMapper.map(matcher.group(2)));
                 issue.name(matcher.group(3));
             }
 
@@ -53,26 +53,6 @@ public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundExceptio
             return ProblemMediaType.INSTANCE.toResponse(problem);
         } else {
             return ProblemMediaType.INSTANCE.toResponse(new ResourceNotFoundProblem());
-        }
-    }
-
-    private InEnum mapLocation(String location) {
-        if ("Query".equals(location)) {
-            return InEnum.QUERY;
-        } else if ("Path".equals(location)) {
-            return InEnum.PATH;
-        } else if ("Header".equals(location)) {
-            return InEnum.HEADER;
-        } else if ("Bean".equals(location)) {
-            return InEnum.BODY;
-        } else if ("Form".equals(location)) {
-            return InEnum.BODY;
-        } else if ("Matrix".equals(location)) {
-            return InEnum.PATH;
-        } else if ("Cookie".equals(location)) {
-            return InEnum.HEADER;
-        } else {
-            return null;
         }
     }
 
