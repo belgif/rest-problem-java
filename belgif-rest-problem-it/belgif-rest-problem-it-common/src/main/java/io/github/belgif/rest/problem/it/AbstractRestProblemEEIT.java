@@ -16,7 +16,7 @@ public abstract class AbstractRestProblemEEIT extends AbstractRestProblemIT {
     }
 
     @Test
-    public void constraintViolationBeanParam() {
+    public void constraintViolationBeanParameter() {
         getSpec().when()
                 .queryParam("value", 10)
                 .get("/beanValidation/beanParameter/x").then().assertThat()

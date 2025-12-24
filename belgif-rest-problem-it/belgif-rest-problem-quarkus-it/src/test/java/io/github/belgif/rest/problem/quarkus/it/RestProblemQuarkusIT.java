@@ -30,7 +30,7 @@ class RestProblemQuarkusIT extends AbstractRestProblemIT {
     }
 
     @Test
-    void constraintViolationBeanParam() {
+    void constraintViolationBeanParameter() {
         getSpec().when()
                 .queryParam("value", 10)
                 .get("/beanValidation/beanParameter/x").then().assertThat()
