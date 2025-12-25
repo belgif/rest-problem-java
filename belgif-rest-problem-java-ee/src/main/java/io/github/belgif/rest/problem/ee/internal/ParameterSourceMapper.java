@@ -54,4 +54,8 @@ public class ParameterSourceMapper {
         return NAME_MAPPING.get(annotationName);
     }
 
+    public static boolean isParameterAnnotation(Class<? extends Annotation> annotation) {
+        return ANNOTATION_MAPPING.containsKey(annotation);
+    }
+
 }

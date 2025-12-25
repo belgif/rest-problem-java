@@ -1,7 +1,5 @@
 package io.github.belgif.rest.problem.ee.jaxrs;
 
-import static io.github.belgif.rest.problem.api.InputValidationIssues.*;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,23 +31,19 @@ public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundExceptio
     @Override
     public Response toResponse(NotFoundException exception) {
         LOGGER.warn(exception.getMessage(), exception);
-
         if (exception.getCause() instanceof BadRequestProblem) {
             BadRequestProblem problem = (BadRequestProblem) exception.getCause();
-
-            InputValidationIssue issue = problem.getIssues().isEmpty() ? schemaViolation(null, null, null, null)
-                    : problem.getIssues().get(0);
-
-            Matcher matcher = PARAM_PATTERN.matcher(exception.getMessage());
-            if (matcher.find()) {
-                issue.in(ParameterSourceMapper.map(matcher.group(2)));
-                issue.name(matcher.group(3));
+            if (!problem.getIssues().isEmpty()) {
+                InputValidationIssue issue = problem.getIssues().get(0);
+                if (issue.getIn() == null && issue.getName() == null) {
+                    // best-effort to enrich the InputValidationIssue based on the exception message
+                    Matcher matcher = PARAM_PATTERN.matcher(exception.getMessage());
+                    if (matcher.find()) {
+                        issue.in(ParameterSourceMapper.map(matcher.group(2)));
+                        issue.name(matcher.group(3));
+                    }
+                }
             }
-
-            if (problem.getIssues().isEmpty()) {
-                problem.addIssue(issue);
-            }
-
             return ProblemMediaType.INSTANCE.toResponse(problem);
         } else {
             return ProblemMediaType.INSTANCE.toResponse(new ResourceNotFoundProblem());

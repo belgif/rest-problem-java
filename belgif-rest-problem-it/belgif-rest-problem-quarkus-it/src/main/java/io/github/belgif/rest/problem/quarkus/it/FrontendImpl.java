@@ -276,8 +276,9 @@ public class FrontendImpl implements Frontend {
         return Response.ok("param: " + p + ", other: " + o).build();
     }
 
+    // On Quarkus, this only works if the @QueryParam is defined on the implementation class
     @Override
-    public Response beanValidationQueryParameterDate(LocalDate date) {
+    public Response beanValidationQueryParameterDate(@QueryParam("date") LocalDate date) {
         return Response.ok("date: " + date).build();
     }
 

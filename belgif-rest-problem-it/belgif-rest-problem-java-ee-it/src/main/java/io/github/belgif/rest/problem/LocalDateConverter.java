@@ -1,21 +1,29 @@
 package io.github.belgif.rest.problem;
 
-import static io.github.belgif.rest.problem.api.InputValidationIssues.schemaViolation;
+import static io.github.belgif.rest.problem.api.InputValidationIssues.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
-import javax.ws.rs.ext.ParamConverter;
+import javax.ws.rs.ext.Provider;
 
-public class LocalDateConverter implements ParamConverter<LocalDate> {
+import io.github.belgif.rest.problem.api.InEnum;
+import io.github.belgif.rest.problem.ee.jaxrs.AbstractInputParamConverterProvider;
+
+@Provider
+public class LocalDateConverter extends AbstractInputParamConverterProvider<LocalDate> {
 
     private static final DateTimeFormatter LOCAL_DATE_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
 
+    public LocalDateConverter() {
+        super(LocalDate.class);
+    }
+
     @Override
-    public LocalDate fromString(final String value) {
+    protected LocalDate fromString(InEnum in, String name, String value) {
         if (value == null) {
             throw new IllegalArgumentException("value may not be null");
         }
@@ -23,12 +31,12 @@ public class LocalDateConverter implements ParamConverter<LocalDate> {
         try {
             return LocalDate.parse(value, LOCAL_DATE_FORMATTER);
         } catch (DateTimeParseException e) {
-            throw new BadRequestProblem(schemaViolation(null, null, value, "date has invalid format"));
+            throw new BadRequestProblem(schemaViolation(in, name, value, "date has invalid format"));
         }
     }
 
     @Override
-    public String toString(final LocalDate value) {
+    protected String toString(LocalDate value) {
         return LOCAL_DATE_FORMATTER.format(value);
     }
 
