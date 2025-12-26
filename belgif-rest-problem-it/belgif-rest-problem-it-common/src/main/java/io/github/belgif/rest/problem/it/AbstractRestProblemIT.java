@@ -504,4 +504,22 @@ public abstract class AbstractRestProblemIT {
                 .body("issues[1].detail", equalTo("All or none of these inputs must be present: a, b"));
     }
 
+    @Test
+    public void invalidJsonType() {
+        getSpec().when().body("{ \"name\": \"Jim\", " +
+                "\"email\": \"jim@mymail.com\", " +
+                "\"age\": \"twenty-two\" }")
+                .contentType("application/json")
+                .post("/beanValidation/body/inheritance").then().assertThat()
+                .log().all()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[0].detail", equalTo("not a valid `int` value"))
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].name", equalTo("age"))
+                .body("issues[0].value", equalTo("twenty-two"));
+    }
+
 }

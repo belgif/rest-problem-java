@@ -1,6 +1,7 @@
 package io.github.belgif.rest.problem.quarkus.it;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.concurrent.ExecutionException;
 
 import jakarta.annotation.PostConstruct;
@@ -9,6 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -275,9 +277,21 @@ public class FrontendImpl implements Frontend {
         return Response.ok("param: " + p + ", other: " + o).build();
     }
 
+    // On Quarkus, this only works if the @QueryParam is defined on the implementation class
+    @Override
+    public Response beanValidationQueryParameterConverter(@QueryParam("date") LocalDate date) {
+        return Response.ok("date: " + date).build();
+    }
+
     @Override
     public Response beanValidationHeaderParameter(Integer p) {
         return Response.ok("param: " + p).build();
+    }
+
+    // On Quarkus, this only works if the @HeaderParam is defined on the implementation class
+    @Override
+    public Response beanValidationHeaderParameterConverter(@HeaderParam("date") LocalDate date) {
+        return Response.ok("date: " + date).build();
     }
 
     @GET
@@ -314,7 +328,7 @@ public class FrontendImpl implements Frontend {
     }
 
     @Override
-    public Response beanValidationBeanParam(Bean bean) {
+    public Response beanValidationBeanParameter(Bean bean) {
         return Response.ok("bean: " + bean).build();
     }
 

@@ -1,6 +1,7 @@
 package io.github.belgif.rest.problem;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.concurrent.ExecutionException;
 
 import javax.ejb.EJB;
@@ -269,8 +270,18 @@ public class FrontendImpl implements Frontend {
     }
 
     @Override
+    public Response beanValidationQueryParameterConverter(LocalDate date) {
+        return Response.ok("date: " + date).build();
+    }
+
+    @Override
     public Response beanValidationHeaderParameter(Integer p) {
         return Response.ok("header: " + p).build();
+    }
+
+    @Override
+    public Response beanValidationHeaderParameterConverter(LocalDate date) {
+        return Response.ok("date: " + date).build();
     }
 
     @GET
@@ -307,7 +318,7 @@ public class FrontendImpl implements Frontend {
     }
 
     @Override
-    public Response beanValidationBeanParam(Bean bean) {
+    public Response beanValidationBeanParameter(Bean bean) {
         return Response.ok("bean: " + bean).build();
     }
 
