@@ -34,24 +34,6 @@ class RestProblemQuarkusIT extends AbstractRestProblemEEIT {
     public void ejb() {
     }
 
-    @Test
-    @Override
-    @Disabled("Does not work on Quarkus (yet)")
-    public void invalidJsonEOF() {
-    }
-
-    @Test
-    @Override
-    @Disabled("Does not work on Quarkus (yet)")
-    public void invalidJson() {
-    }
-
-    @Test
-    @Override
-    @Disabled("Does not work on Quarkus (yet)")
-    public void invalidJsonFormat() {
-    }
-
     @Override
     protected Stream<String> getClients() {
         return Arrays.stream(Client.values()).map(Client::name);
