@@ -76,11 +76,15 @@ public interface Frontend {
 
     @GET
     @Path("/beanValidation/queryParameter/date")
-    Response beanValidationQueryParameterDate(@QueryParam("date") @NotNull LocalDate date);
+    Response beanValidationQueryParameterConverter(@QueryParam("date") @NotNull LocalDate date);
 
     @GET
     @Path("/beanValidation/headerParameter")
     Response beanValidationHeaderParameter(@HeaderParam("param") @NotNull @Positive Integer p);
+
+    @GET
+    @Path("/beanValidation/headerParameter/date")
+    Response beanValidationHeaderParameterConverter(@HeaderParam("date") @NotNull LocalDate date);
 
     @GET
     @Path("/beanValidation/pathParameter/inherited/{param}")

@@ -55,7 +55,7 @@ class RestProblemQuarkusIT extends AbstractRestProblemIT {
     }
 
     @Test
-    public void constraintViolationQueryParam() {
+    public void constraintViolationQueryParamConverter() {
         getSpec().when()
                 .queryParam("date", "2025-13-12")
                 .get("/beanValidation/queryParameter/date").then().assertThat()
@@ -68,6 +68,24 @@ class RestProblemQuarkusIT extends AbstractRestProblemIT {
                 .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[0].detail", equalTo("date has invalid format"))
                 .body("issues[0].in", equalTo("query"))
+                .body("issues[0].name", equalTo("date"))
+                .body("issues[0].value", equalTo("2025-13-12"));
+    }
+
+    @Test
+    public void constraintViolationHeaderParamConverter() {
+        getSpec().when()
+                .header("date", "2025-13-12")
+                .get("/beanValidation/headerParameter/date").then().assertThat()
+                .log().all()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[0].detail", equalTo("date has invalid format"))
+                .body("issues[0].in", equalTo("header"))
                 .body("issues[0].name", equalTo("date"))
                 .body("issues[0].value", equalTo("2025-13-12"));
     }

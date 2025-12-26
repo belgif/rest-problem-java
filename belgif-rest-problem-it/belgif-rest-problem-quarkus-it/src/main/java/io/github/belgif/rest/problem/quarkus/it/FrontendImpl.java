@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -278,13 +279,19 @@ public class FrontendImpl implements Frontend {
 
     // On Quarkus, this only works if the @QueryParam is defined on the implementation class
     @Override
-    public Response beanValidationQueryParameterDate(@QueryParam("date") LocalDate date) {
+    public Response beanValidationQueryParameterConverter(@QueryParam("date") LocalDate date) {
         return Response.ok("date: " + date).build();
     }
 
     @Override
     public Response beanValidationHeaderParameter(Integer p) {
         return Response.ok("param: " + p).build();
+    }
+
+    // On Quarkus, this only works if the @HeaderParam is defined on the implementation class
+    @Override
+    public Response beanValidationHeaderParameterConverter(@HeaderParam("date") LocalDate date) {
+        return Response.ok("date: " + date).build();
     }
 
     @GET

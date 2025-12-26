@@ -270,13 +270,18 @@ public class FrontendImpl implements Frontend {
     }
 
     @Override
-    public Response beanValidationQueryParameterDate(LocalDate date) {
+    public Response beanValidationQueryParameterConverter(LocalDate date) {
         return Response.ok("date: " + date).build();
     }
 
     @Override
     public Response beanValidationHeaderParameter(Integer p) {
         return Response.ok("header: " + p).build();
+    }
+
+    @Override
+    public Response beanValidationHeaderParameterConverter(LocalDate date) {
+        return Response.ok("date: " + date).build();
     }
 
     @GET
