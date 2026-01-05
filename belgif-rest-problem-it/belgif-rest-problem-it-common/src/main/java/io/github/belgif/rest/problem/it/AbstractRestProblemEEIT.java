@@ -87,7 +87,7 @@ public abstract class AbstractRestProblemEEIT extends AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
-                .body("issues[0].title", equalTo("Invalid input"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[0].detail", equalTo("invalid json data (end-of-input reached unexpectedly)"))
                 .body("issues[0].in", equalTo("body"))
                 .body("issues[0].name", emptyOrNullString());
@@ -103,7 +103,7 @@ public abstract class AbstractRestProblemEEIT extends AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
-                .body("issues[0].title", equalTo("Invalid input"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[0].detail", equalTo("invalid json data"))
                 .body("issues[0].in", equalTo("body"))
                 .body("issues[0].name", emptyOrNullString());
@@ -119,7 +119,7 @@ public abstract class AbstractRestProblemEEIT extends AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
-                .body("issues[0].title", equalTo("Invalid input"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[0].detail", equalTo("invalid json data"))
                 .body("issues[0].in", equalTo("body"))
                 .body("issues[0].name", emptyOrNullString());
