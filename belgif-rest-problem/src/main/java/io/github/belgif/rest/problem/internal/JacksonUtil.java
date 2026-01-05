@@ -121,10 +121,10 @@ public class JacksonUtil {
         }
     }
 
-    private static final Pattern VALUE_PATTERN = Pattern.compile("from String \"(.+)\"");
+    private static final Pattern VALUE_PATTERN = Pattern.compile("from String \"([^\"]+)\"");
 
     private static final Pattern INVALID_FORMAT_PATTERN =
-            Pattern.compile("^Cannot deserialize value of type `(.+)` from String \"(.+)\": (.+)$");
+            Pattern.compile("^Cannot deserialize value of type `([^`]+)` from String \"([^\"]+)\": (.+)$");
 
     private static final Pattern VALUE_INSTANTIATION_PATTERN =
             Pattern.compile("^Cannot construct instance of `([^`]+)`, problem: (.+)$");
