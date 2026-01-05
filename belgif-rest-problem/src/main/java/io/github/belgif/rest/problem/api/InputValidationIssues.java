@@ -59,6 +59,8 @@ public class InputValidationIssues {
     public static final URI ISSUE_TYPE_EQUAL_EXPECTED =
             URI.create("urn:problem-type:belgif-ext:input-validation:equalExpected");
 
+    public static final String DETAIL_JSON_SYNTAX_ERROR = "JSON syntax error";
+
     private static final Map<URI, URI> BELGIF_ISSUE_TYPE_HREFS = new HashMap<>();
 
     private InputValidationIssues() {

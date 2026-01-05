@@ -1,7 +1,6 @@
 package io.github.belgif.rest.problem.internal;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 
@@ -91,9 +90,9 @@ class JacksonUtilTest {
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-            assertThat(issue.getName()).isEqualTo("model");
+            assertThat(issue.getName()).isNull();
             assertThat(issue.getValue()).isNull();
-            assertThat(issue.getDetail()).isEqualTo("invalid json data");
+            assertThat(issue.getDetail()).isEqualTo("JSON syntax error");
         });
     }
 
@@ -108,7 +107,7 @@ class JacksonUtilTest {
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
             assertThat(issue.getName()).isNull();
             assertThat(issue.getValue()).isNull();
-            assertThat(issue.getDetail()).isEqualTo("invalid json data");
+            assertThat(issue.getDetail()).isEqualTo("JSON syntax error");
         });
     }
 
@@ -123,7 +122,7 @@ class JacksonUtilTest {
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
             assertThat(issue.getName()).isNull();
             assertThat(issue.getValue()).isNull();
-            assertThat(issue.getDetail()).isEqualTo("invalid json data (end-of-input reached unexpectedly)");
+            assertThat(issue.getDetail()).isEqualTo("JSON syntax error");
         });
     }
 

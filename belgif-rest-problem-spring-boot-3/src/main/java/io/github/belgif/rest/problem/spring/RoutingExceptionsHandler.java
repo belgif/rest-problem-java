@@ -88,7 +88,7 @@ public class RoutingExceptionsHandler {
                 return "Required request body is missing";
             }
             if (message.startsWith("JSON parse error")) {
-                return "JSON parse error";
+                return InputValidationIssues.DETAIL_JSON_SYNTAX_ERROR;
             }
         }
         return null;

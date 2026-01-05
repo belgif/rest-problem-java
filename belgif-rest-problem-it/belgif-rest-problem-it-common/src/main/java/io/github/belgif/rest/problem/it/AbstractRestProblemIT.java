@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import io.github.belgif.rest.problem.config.ProblemConfig;
 import io.restassured.specification.RequestSpecification;
@@ -502,6 +503,48 @@ public abstract class AbstractRestProblemIT {
                         equalTo("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html"))
                 .body("issues[1].title", equalTo("Invalid input"))
                 .body("issues[1].detail", equalTo("All or none of these inputs must be present: a, b"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            // missing closing brace '}'
+            "{ \"name\": \"Jim\", " +
+                    "\"email\": \"jim@mymail.com\"",
+            // missing comma ','
+            "{ \"name\": \"Jim\" " +
+                    "\"email\": \"jim@mymail.com\" }",
+            // missing quote '"'
+            "{ \"name\": \"Jim\", " +
+                    "\"email: \"jim@mymail.com\" }"
+    })
+    public void invalidJson(String invalidJson) {
+        getSpec().when().body(invalidJson)
+                .contentType("application/json")
+                .post("/beanValidation/body").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[0].detail", equalTo("JSON syntax error"))
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].name", emptyOrNullString());
+    }
+
+    @Test
+    public void invalidJsonNested() {
+        getSpec().when().body("{\"nested\": { \"name: \"jim\" }}")
+                .contentType("application/json")
+                .log().all()
+                .post("/beanValidation/body/nested").then()
+                .log().all()
+                .assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[0].detail", equalTo("JSON syntax error"))
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].name", emptyOrNullString());
     }
 
     @Test

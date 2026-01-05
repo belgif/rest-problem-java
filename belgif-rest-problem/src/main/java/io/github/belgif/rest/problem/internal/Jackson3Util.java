@@ -1,6 +1,6 @@
 package io.github.belgif.rest.problem.internal;
 
-import static io.github.belgif.rest.problem.api.InputValidationIssues.schemaViolation;
+import static io.github.belgif.rest.problem.api.InputValidationIssues.*;
 import static io.github.belgif.rest.problem.internal.JacksonUtil.*;
 
 import java.util.List;
@@ -11,7 +11,6 @@ import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import tools.jackson.core.JacksonException;
 import tools.jackson.core.exc.StreamReadException;
-import tools.jackson.core.exc.UnexpectedEndOfInputException;
 import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.exc.InvalidFormatException;
 import tools.jackson.databind.exc.ValueInstantiationException;
@@ -25,9 +24,20 @@ public class Jackson3Util {
     }
 
     /**
-     * Convert the given JsonMappingException to a BadRequestProblem.
+     * Convert the given StreamReadException to a BadRequestProblem.
      *
-     * @param e the JsonMappingException
+     * @param e the StreamReadException
+     * @return the BadRequestProblem
+     */
+    public static BadRequestProblem toBadRequestProblem(StreamReadException e) {
+        return new BadRequestProblem(schemaViolation(InEnum.BODY, null,
+                null, InputValidationIssues.DETAIL_JSON_SYNTAX_ERROR));
+    }
+
+    /**
+     * Convert the given DatabindException to a BadRequestProblem.
+     *
+     * @param e the DatabindException
      * @return the BadRequestProblem
      */
     public static BadRequestProblem toBadRequestProblem(DatabindException e) {
@@ -40,7 +50,6 @@ public class Jackson3Util {
         if (path.isEmpty()) {
             return null;
         }
-
         StringBuilder name = new StringBuilder();
         for (JacksonException.Reference reference : path) {
             if (reference.from() instanceof List) {
@@ -55,29 +64,8 @@ public class Jackson3Util {
         return name.toString();
     }
 
-    /**
-     * Convert the given JsonParseException to a BadRequestProblem.
-     *
-     * @param e the JsonParseException
-     * @return the BadRequestProblem
-     */
-    public static BadRequestProblem toBadRequestProblem(StreamReadException e) {
-        return new BadRequestProblem(schemaViolation(InEnum.BODY, getName(e.getPath()),
-                null, getDetailMessage(e.getClass())));
-    }
-
-    private static String getDetailMessage(Class<? extends StreamReadException> clazz) {
-        if (clazz == UnexpectedEndOfInputException.class) {
-            return "invalid json data (end-of-input reached unexpectedly)";
-        } else {
-            return "invalid json data";
-        }
-    }
-
     private static String getDetailMessage(DatabindException e) {
-        if (e.getCause() != null && e.getCause() instanceof StreamReadException) {
-            return getDetailMessage((Class<? extends StreamReadException>) e.getCause().getClass());
-        } else if (e instanceof InvalidFormatException) {
+        if (e instanceof InvalidFormatException) {
             Matcher matcher = INVALID_FORMAT_PATTERN.matcher(e.getOriginalMessage());
             if (matcher.matches()) {
                 return matcher.group(3)
