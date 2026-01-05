@@ -534,9 +534,7 @@ public abstract class AbstractRestProblemIT {
     public void invalidJsonNested() {
         getSpec().when().body("{\"nested\": { \"name: \"jim\" }}")
                 .contentType("application/json")
-                .log().all()
                 .post("/beanValidation/body/nested").then()
-                .log().all()
                 .assertThat()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
@@ -554,7 +552,6 @@ public abstract class AbstractRestProblemIT {
                 "\"age\": \"twenty-two\" }")
                 .contentType("application/json")
                 .post("/beanValidation/body/inheritance").then().assertThat()
-                .log().all()
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
