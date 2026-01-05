@@ -32,15 +32,9 @@ public class JacksonUtil {
      * @return the BadRequestProblem
      */
     public static BadRequestProblem toBadRequestProblem(JsonMappingException e) {
-        if (e.getCause() instanceof JsonParseException) {
-            return new BadRequestProblem(
-                    InputValidationIssues.invalidStructure(InEnum.BODY, getName(e.getPath()), getValue(e),
-                            getDetailMessage(e)));
-        } else {
-            return new BadRequestProblem(
-                    InputValidationIssues.schemaViolation(InEnum.BODY, getName(e.getPath()), getValue(e),
-                            getDetailMessage(e)));
-        }
+        return new BadRequestProblem(
+                InputValidationIssues.schemaViolation(InEnum.BODY, getName(e.getPath()), getValue(e),
+                        getDetailMessage(e)));
     }
 
     private static String getName(List<Reference> path) {

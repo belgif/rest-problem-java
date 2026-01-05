@@ -89,7 +89,7 @@ class JacksonUtilTest {
         }).satisfies(e -> {
             BadRequestProblem problem = JacksonUtil.toBadRequestProblem(e);
             InputValidationIssue issue = problem.getIssues().get(0);
-            assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
+            assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
             assertThat(issue.getName()).isEqualTo("model");
             assertThat(issue.getValue()).isNull();
