@@ -1,12 +1,11 @@
 package io.github.belgif.rest.problem.ee.jaxrs;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
+import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.internal.JacksonUtil;
 
 /**
@@ -16,17 +15,15 @@ import io.github.belgif.rest.problem.internal.JacksonUtil;
  * @see BadRequestProblem
  */
 @Provider
-public class JacksonMismatchedInputExceptionMapper implements ExceptionMapper<MismatchedInputException> {
+public class JacksonMismatchedInputExceptionMapper extends AbstractProblemExceptionMapper<MismatchedInputException> {
 
-    private static final DefaultExceptionMapper DEFAULT_MAPPER = new DefaultExceptionMapper();
+    public JacksonMismatchedInputExceptionMapper() {
+        super(MismatchedInputException.class);
+    }
 
     @Override
-    public Response toResponse(MismatchedInputException exception) {
-        try {
-            return ProblemMediaType.INSTANCE.toResponse(JacksonUtil.toBadRequestProblem(exception));
-        } catch (RuntimeException e) {
-            return DEFAULT_MAPPER.toResponse(e);
-        }
+    public Problem toProblem(MismatchedInputException exception) {
+        return JacksonUtil.toBadRequestProblem(exception);
     }
 
 }

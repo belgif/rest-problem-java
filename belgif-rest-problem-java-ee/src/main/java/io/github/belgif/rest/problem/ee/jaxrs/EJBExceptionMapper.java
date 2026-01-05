@@ -1,7 +1,6 @@
 package io.github.belgif.rest.problem.ee.jaxrs;
 
 import javax.ejb.EJBException;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
@@ -22,18 +21,18 @@ import io.github.belgif.rest.problem.api.Problem;
  * @see DefaultExceptionMapper
  */
 @Provider
-public class EJBExceptionMapper implements ExceptionMapper<EJBException> {
+public class EJBExceptionMapper extends AbstractProblemExceptionMapper<EJBException> {
 
-    private static final ProblemExceptionMapper PROBLEM_MAPPER = new ProblemExceptionMapper();
-
-    private static final DefaultExceptionMapper DEFAULT_MAPPER = new DefaultExceptionMapper();
+    public EJBExceptionMapper() {
+        super(EJBException.class);
+    }
 
     @Override
-    public Response toResponse(EJBException exception) {
+    public Problem toProblem(EJBException exception) {
         if (exception.getCause() instanceof Problem) {
-            return PROBLEM_MAPPER.toResponse((Problem) exception.getCause());
+            return (Problem) exception.getCause();
         } else {
-            return DEFAULT_MAPPER.toResponse(exception);
+            return null;
         }
     }
 
