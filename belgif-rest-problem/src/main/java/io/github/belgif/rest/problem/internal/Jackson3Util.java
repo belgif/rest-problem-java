@@ -1,6 +1,6 @@
 package io.github.belgif.rest.problem.internal;
 
-import static io.github.belgif.rest.problem.api.InputValidationIssues.invalidStructure;
+import static io.github.belgif.rest.problem.api.InputValidationIssues.schemaViolation;
 import static io.github.belgif.rest.problem.internal.JacksonUtil.*;
 
 import java.util.List;
@@ -31,15 +31,9 @@ public class Jackson3Util {
      * @return the BadRequestProblem
      */
     public static BadRequestProblem toBadRequestProblem(DatabindException e) {
-        if (e.getCause() instanceof StreamReadException) {
-            return new BadRequestProblem(
-                    InputValidationIssues.invalidStructure(InEnum.BODY, getName(e.getPath()), getValue(e),
-                            getDetailMessage(e)));
-        } else {
-            return new BadRequestProblem(
-                    InputValidationIssues.schemaViolation(InEnum.BODY, getName(e.getPath()), getValue(e),
-                            getDetailMessage(e)));
-        }
+        return new BadRequestProblem(
+                InputValidationIssues.schemaViolation(InEnum.BODY, getName(e.getPath()), getValue(e),
+                        getDetailMessage(e)));
     }
 
     private static String getName(List<JacksonException.Reference> path) {
@@ -68,7 +62,7 @@ public class Jackson3Util {
      * @return the BadRequestProblem
      */
     public static BadRequestProblem toBadRequestProblem(StreamReadException e) {
-        return new BadRequestProblem(invalidStructure(InEnum.BODY, getName(e.getPath()),
+        return new BadRequestProblem(schemaViolation(InEnum.BODY, getName(e.getPath()),
                 null, getDetailMessage(e.getClass())));
     }
 

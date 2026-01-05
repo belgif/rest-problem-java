@@ -1,6 +1,6 @@
 package io.github.belgif.rest.problem.internal;
 
-import static io.github.belgif.rest.problem.api.InputValidationIssues.invalidStructure;
+import static io.github.belgif.rest.problem.api.InputValidationIssues.schemaViolation;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -69,7 +69,7 @@ public class JacksonUtil {
      * @return the BadRequestProblem
      */
     public static BadRequestProblem toBadRequestProblem(JsonParseException e) {
-        return new BadRequestProblem(invalidStructure(InEnum.BODY, null,
+        return new BadRequestProblem(schemaViolation(InEnum.BODY, null,
                 e.getRequestPayloadAsString(), getDetailMessage(e.getClass())));
     }
 
