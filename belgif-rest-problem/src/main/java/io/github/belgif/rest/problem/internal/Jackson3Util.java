@@ -1,11 +1,5 @@
 package io.github.belgif.rest.problem.internal;
 
-import static io.github.belgif.rest.problem.api.InputValidationIssues.invalidStructure;
-
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
@@ -15,6 +9,12 @@ import tools.jackson.core.exc.UnexpectedEndOfInputException;
 import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.exc.InvalidFormatException;
 import tools.jackson.databind.exc.ValueInstantiationException;
+
+import java.util.List;
+import java.util.regex.Matcher;
+
+import static io.github.belgif.rest.problem.api.InputValidationIssues.invalidStructure;
+import static io.github.belgif.rest.problem.internal.JacksonUtil.*;
 
 /**
  * Internal jackson utility class.
@@ -119,13 +119,5 @@ public class Jackson3Util {
             return null;
         }
     }
-
-    private static final Pattern VALUE_PATTERN = Pattern.compile("from String \"(.+)\"");
-
-    private static final Pattern INVALID_FORMAT_PATTERN =
-            Pattern.compile("^Cannot deserialize value of type `([^`]+)` from String \"(.+)\": (.+)$");
-
-    private static final Pattern VALUE_INSTANTIATION_PATTERN =
-            Pattern.compile("^Cannot construct instance of `([^`]+)`, problem: (.+)$");
 
 }
