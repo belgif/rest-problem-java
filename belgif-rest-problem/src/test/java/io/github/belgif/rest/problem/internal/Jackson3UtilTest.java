@@ -98,7 +98,7 @@ class Jackson3UtilTest {
     }
 
     @Test
-    void jsonParseExceptionColon() {
+    void streamReadExceptionColon() {
         assertThatExceptionOfType(StreamReadException.class).isThrownBy(() -> {
             new ObjectMapper().readValue("{ \"id: \"123\" }", Model.class);
         }).satisfies(e -> {
@@ -113,7 +113,7 @@ class Jackson3UtilTest {
     }
 
     @Test
-    void jsonParseExceptionEOF() {
+    void streamReadExceptionEOF() {
         assertThatExceptionOfType(StreamReadException.class).isThrownBy(() -> {
             new ObjectMapper().readValue("{ \"id\": \"123\" ", Model.class);
         }).satisfies(e -> {
@@ -143,7 +143,7 @@ class Jackson3UtilTest {
     }
 
     @Test
-    void mismatchedInputNestedWithArray() {
+    void DatabindExceptionWithArray() {
         assertThatExceptionOfType(DatabindException.class).isThrownBy(() -> {
             new ObjectMapper().readValue("{\"models\": [{}]}", NestedWithArray.class);
         }).satisfies(e -> {

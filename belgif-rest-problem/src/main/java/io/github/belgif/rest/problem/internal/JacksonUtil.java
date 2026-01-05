@@ -9,8 +9,6 @@ import java.util.regex.Pattern;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
@@ -20,6 +18,14 @@ import io.github.belgif.rest.problem.api.InputValidationIssues;
  * Internal jackson utility class.
  */
 public class JacksonUtil {
+
+    private static final Pattern VALUE_PATTERN = Pattern.compile("from String \"([^\"]+)\"");
+
+    private static final Pattern INVALID_FORMAT_PATTERN =
+            Pattern.compile("^Cannot deserialize value of type `([^`]+)` from String \"([^\"]+)\": (.+)$");
+
+    private static final Pattern VALUE_INSTANTIATION_PATTERN =
+            Pattern.compile("^Cannot construct instance of `([^`]+)`, problem: (.+)$");
 
     private JacksonUtil() {
     }
@@ -46,8 +52,8 @@ public class JacksonUtil {
             return toBadRequestProblem((JsonParseException) e.getCause());
         } else {
             return new BadRequestProblem(
-                    InputValidationIssues.schemaViolation(InEnum.BODY, getName(e.getPath()), getValue(e),
-                            getDetailMessage(e)));
+                    InputValidationIssues.schemaViolation(InEnum.BODY, getName(e.getPath()),
+                            getValue(e, e.getOriginalMessage()), getDetailMessage(e, e.getOriginalMessage())));
         }
     }
 
@@ -69,9 +75,10 @@ public class JacksonUtil {
         return builder.toString();
     }
 
-    private static String getDetailMessage(JsonMappingException e) {
-        if (e instanceof InvalidFormatException) {
-            Matcher matcher = INVALID_FORMAT_PATTERN.matcher(e.getOriginalMessage());
+    @SuppressWarnings("java:S1872")
+    static String getDetailMessage(Exception e, String originalMessage) {
+        if (e.getClass().getSimpleName().equals("InvalidFormatException")) {
+            Matcher matcher = INVALID_FORMAT_PATTERN.matcher(originalMessage);
             if (matcher.matches()) {
                 return matcher.group(3)
                         .replace("accepted for Enum class", "accepted for enumeration")
@@ -82,37 +89,29 @@ public class JacksonUtil {
                         .replace("java.lang.Float", "number")
                         .replace("java.lang.Double", "number");
             } else {
-                return e.getOriginalMessage();
+                return originalMessage;
             }
-        } else if (e instanceof ValueInstantiationException) {
-            Matcher matcher = VALUE_INSTANTIATION_PATTERN.matcher(e.getOriginalMessage());
+        } else if (e.getClass().getSimpleName().equals("ValueInstantiationException")) {
+            Matcher matcher = VALUE_INSTANTIATION_PATTERN.matcher(originalMessage);
             if (matcher.matches()) {
                 return matcher.group(2);
             } else {
-                return e.getOriginalMessage();
+                return originalMessage;
             }
-        } else if (e.getOriginalMessage().startsWith("Missing required")) {
+        } else if (originalMessage.startsWith("Missing required")) {
             return "must not be null";
         } else {
-            return e.getOriginalMessage();
+            return originalMessage;
         }
     }
 
-    private static String getValue(JsonMappingException e) {
-        Matcher matcher = VALUE_PATTERN.matcher(e.getOriginalMessage());
+    static String getValue(Exception e, String originalMessage) {
+        Matcher matcher = VALUE_PATTERN.matcher(originalMessage);
         if (matcher.find()) {
             return matcher.group(1);
         } else {
             return null;
         }
     }
-
-    static final Pattern VALUE_PATTERN = Pattern.compile("from String \"([^\"]+)\"");
-
-    static final Pattern INVALID_FORMAT_PATTERN =
-            Pattern.compile("^Cannot deserialize value of type `([^`]+)` from String \"([^\"]+)\": (.+)$");
-
-    static final Pattern VALUE_INSTANTIATION_PATTERN =
-            Pattern.compile("^Cannot construct instance of `([^`]+)`, problem: (.+)$");
 
 }
