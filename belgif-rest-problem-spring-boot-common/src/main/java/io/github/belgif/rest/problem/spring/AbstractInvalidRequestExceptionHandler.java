@@ -76,29 +76,24 @@ public abstract class AbstractInvalidRequestExceptionHandler<J> {
             HttpServletRequest request);
 
     private InputValidationIssue handleSpecialCases(ValidationReport.Message message) {
-        switch (message.getKey()) {
-            case "validation.schema.invalidJson":
-            case "validation.request.body.schema.invalidJson": {
-                return InputValidationIssues.schemaViolation(InEnum.BODY, null, null, "Unable to parse JSON");
-            }
-            case "validation.schema.unknownError": {
+        return switch (message.getKey()) {
+            case "validation.schema.invalidJson", "validation.request.body.schema.invalidJson" ->
+                InputValidationIssues.schemaViolation(InEnum.BODY, null, null, "Unable to parse JSON");
+            case "validation.schema.unknownError" -> {
                 LOGGER.error("An unknown error occurred during schema validation: {}", message.getMessage());
-                return InputValidationIssues.schemaViolation(null, null, null,
+                yield InputValidationIssues.schemaViolation(null, null, null,
                         "An error occurred during schema validation");
             }
-            default:
-                return null;
-        }
+            default -> null;
+        };
     }
 
     private InputValidationIssue buildIssue(ValidationReport.Message message, InEnum in, String name,
             String value, String detail) {
-        switch (message.getKey()) {
-            case "validation.request.parameter.query.unexpected":
-                return InputValidationIssues.unknownInput(in, name, value);
-            default:
-                return InputValidationIssues.schemaViolation(in, name, value, detail);
+        if (message.getKey().equals("validation.request.parameter.query.unexpected")) {
+            return InputValidationIssues.unknownInput(in, name, value);
         }
+        return InputValidationIssues.schemaViolation(in, name, value, detail);
     }
 
     private boolean isNonExistingPath(InvalidRequestException ex) {

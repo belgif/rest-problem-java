@@ -40,30 +40,30 @@ public class InvalidRequestExceptionHandler extends AbstractInvalidRequestExcept
     @Override
     protected String getBodyValue(String name, AtomicReference<JsonNode> requestBodyReference,
             HttpServletRequest request) {
-        JsonNode requestBody = getRequestBody(requestBodyReference, request, mapper);
+        JsonNode requestBody = getRequestBody(requestBodyReference, request);
         if (requestBody == null) {
             return null;
         }
-        JsonNode valueNode = requestBody.at(JsonPointer.compile(name));
-        return extractString(valueNode, mapper);
+        return extractString(requestBody.at(JsonPointer.compile(name)));
     }
 
-    private static JsonNode getRequestBody(AtomicReference<JsonNode> requestBodyReference, HttpServletRequest request,
-            ObjectMapper mapper) {
+    private JsonNode getRequestBody(AtomicReference<JsonNode> requestBodyReference, HttpServletRequest request) {
         if (requestBodyReference.get() == null) {
-            try {
-                InputStream inputStream = request.getInputStream();
-                requestBodyReference.set(mapper.readTree(inputStream));
-            } catch (IOException ex) {
-                LOGGER.error("Error reading input stream", ex);
-            } catch (NullPointerException ex) {
+            if (request == null) {
                 LOGGER.error("Cannot read requestBody because HttpRequest is null");
+            } else {
+                try {
+                    InputStream inputStream = request.getInputStream();
+                    requestBodyReference.set(mapper.readTree(inputStream));
+                } catch (IOException ex) {
+                    LOGGER.error("Error reading input stream", ex);
+                }
             }
         }
         return requestBodyReference.get();
     }
 
-    private static String extractString(JsonNode valueNode, ObjectMapper mapper) {
+    private String extractString(JsonNode valueNode) {
         if (valueNode.isMissingNode()) {
             return null;
         }

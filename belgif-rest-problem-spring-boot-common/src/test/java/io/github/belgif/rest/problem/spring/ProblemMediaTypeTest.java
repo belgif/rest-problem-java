@@ -36,7 +36,7 @@ class ProblemMediaTypeTest {
         assertThat(response.getBody()).isEqualTo(problem);
         assertThat(response.getStatusCode().value()).isEqualTo(429);
         assertThat(response.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
-        assertThat(response.getHeaders().get("Retry-After")).isEqualTo(Collections.singletonList("120"));
+        assertThat(response.getHeaders()).containsEntry("Retry-After", Collections.singletonList("120"));
     }
 
 }

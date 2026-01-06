@@ -39,7 +39,7 @@ public class InvalidRequestExceptionHandler extends AbstractInvalidRequestExcept
     @Override
     protected String getBodyValue(String name, AtomicReference<JsonNode> requestBodyReference,
             HttpServletRequest request) {
-        JsonNode requestBody = getRequestBody(requestBodyReference, request, mapper);
+        JsonNode requestBody = getRequestBody(requestBodyReference, request);
         if (requestBody == null) {
             return null;
         }
@@ -47,16 +47,17 @@ public class InvalidRequestExceptionHandler extends AbstractInvalidRequestExcept
         return valueNode.asText().isEmpty() ? null : valueNode.asText();
     }
 
-    private static JsonNode getRequestBody(AtomicReference<JsonNode> requestBodyReference, HttpServletRequest request,
-            ObjectMapper mapper) {
+    private JsonNode getRequestBody(AtomicReference<JsonNode> requestBodyReference, HttpServletRequest request) {
         if (requestBodyReference.get() == null) {
-            try {
-                InputStream inputStream = request.getInputStream();
-                requestBodyReference.set(mapper.readTree(inputStream));
-            } catch (IOException ex) {
-                LOGGER.error("Error reading input stream", ex);
-            } catch (NullPointerException ex) {
+            if (request == null) {
                 LOGGER.error("Cannot read requestBody because HttpRequest is null");
+            } else {
+                try {
+                    InputStream inputStream = request.getInputStream();
+                    requestBodyReference.set(mapper.readTree(inputStream));
+                } catch (IOException ex) {
+                    LOGGER.error("Error reading input stream", ex);
+                }
             }
         }
         return requestBodyReference.get();
