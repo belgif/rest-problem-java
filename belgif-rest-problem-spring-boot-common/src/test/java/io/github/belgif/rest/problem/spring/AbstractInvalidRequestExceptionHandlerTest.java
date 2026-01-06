@@ -219,7 +219,7 @@ class AbstractInvalidRequestExceptionHandlerTest {
         Problem problem = handler.handleInvalidRequestException(exception, request).getBody();
         assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
-        assertThat(badRequestProblem.getIssues().size()).isEqualTo(2);
+        assertThat(badRequestProblem.getIssues()).hasSize(2);
     }
 
     @Test
@@ -237,7 +237,7 @@ class AbstractInvalidRequestExceptionHandlerTest {
         Problem problem = handler.handleInvalidRequestException(exception, request).getBody();
         assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
-        assertThat(badRequestProblem.getIssues().size()).isEqualTo(1);
+        assertThat(badRequestProblem.getIssues()).hasSize(1);
     }
 
     @Test
