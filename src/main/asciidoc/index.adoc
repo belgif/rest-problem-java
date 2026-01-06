@@ -61,6 +61,22 @@ See xref:release-notes.adoc[Release Notes].
 compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:{revnumber}'
 ----
 
+[source,xml,role="secondary",subs="attributes+"]
+.Spring Boot 4 (Maven)
+----
+<dependency>
+  <groupId>io.github.belgif.rest.problem</groupId>
+  <artifactId>belgif-rest-problem-spring-boot-4</artifactId>
+  <version>{revnumber}</version>
+</dependency>
+----
+
+[source,role="secondary",subs="attributes+"]
+.Spring Boot 4 (Gradle)
+----
+compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-4:{revnumber}'
+----
+
 [[dependencies-jakarta-ee]]
 ==== Jakarta EE
 
@@ -807,7 +823,7 @@ A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is a
 [[belgif-rest-problem-spring-boot-3]]
 === belgif-rest-problem-spring-boot-3
 
-This module provides auto-configuration for components that handle Spring Boot integration with the belgif-rest-problem library:
+This module provides auto-configuration for components that handle Spring Boot 3 integration with the belgif-rest-problem library:
 
 * *SpringProblemTypeRegistry:* ProblemTypeRegistry implementation that uses classpath scanning to detect @ProblemType annotations.
 By default, only package `io.github.belgif.rest.problem` is scanned for @ProblemType annotations.
@@ -834,3 +850,9 @@ This handles integration with the https://docs.spring.io/spring-framework/refere
 
 In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.
 
+[[belgif-rest-problem-spring-boot-4]]
+=== belgif-rest-problem-spring-boot-4
+
+This module provides auto-configuration for components that handle Spring Boot 4 integration with the belgif-rest-problem library.
+In general, this is very similar to the Spring Boot 3 module.
+The main differences are the upgrade to Jackson 3, and handling the package renames of some auto configuration interfaces in Spring Boot 4.
