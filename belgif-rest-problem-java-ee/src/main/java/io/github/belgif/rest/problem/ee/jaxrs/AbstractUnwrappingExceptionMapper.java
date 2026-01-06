@@ -11,6 +11,11 @@ import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.ee.internal.ParameterSourceMapper;
 
+/**
+ * Abstract base class for unwrapping BadRequestProblem cause from WebApplicationExceptions.
+ *
+ * @param <T> the WebApplicatinException type
+ */
 public abstract class AbstractUnwrappingExceptionMapper<T extends WebApplicationException>
         implements ExceptionMapper<T> {
 
