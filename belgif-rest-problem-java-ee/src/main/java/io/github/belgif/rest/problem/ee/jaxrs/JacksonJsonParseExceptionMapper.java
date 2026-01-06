@@ -18,9 +18,15 @@ import io.github.belgif.rest.problem.internal.JacksonUtil;
 @Provider
 public class JacksonJsonParseExceptionMapper implements ExceptionMapper<JsonParseException> {
 
+    private static final DefaultExceptionMapper DEFAULT_MAPPER = new DefaultExceptionMapper();
+
     @Override
     public Response toResponse(JsonParseException exception) {
-        return ProblemMediaType.INSTANCE.toResponse(JacksonUtil.toBadRequestProblem(exception));
+        try {
+            return ProblemMediaType.INSTANCE.toResponse(JacksonUtil.toBadRequestProblem(exception));
+        } catch (RuntimeException e) {
+            return DEFAULT_MAPPER.toResponse(e);
+        }
     }
 
 }
