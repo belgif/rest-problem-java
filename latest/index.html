@@ -732,6 +732,7 @@ window.onload = function() {
 <li><a href="#problem-type-registry">8.1. @ProblemType and ProblemTypeRegistry</a></li>
 <li><a href="#belgif-rest-problem-java-ee">8.2. belgif-rest-problem-java-ee</a></li>
 <li><a href="#belgif-rest-problem-spring-boot-3">8.3. belgif-rest-problem-spring-boot-3</a></li>
+<li><a href="#belgif-rest-problem-spring-boot-4">8.4. belgif-rest-problem-spring-boot-4</a></li>
 </ul>
 </li>
 </ul>
@@ -804,7 +805,10 @@ window.onload = function() {
 <p><strong>belgif-rest-problem-spring-boot-2:</strong> removed module</p>
 </div>
 <div class="paragraph">
-<p><strong>belgif-rest-problem-spring:</strong> merged module into <code>belgif-rest-problem-spring-boot-3</code></p>
+<p><strong>belgif-rest-problem-spring-boot-4:</strong> Added new module for Spring Boot 4 and Jackson 3</p>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-spring:</strong> renamed to belgif-rest-problem-spring-boot-common</p>
 </div>
 <div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
@@ -1213,6 +1217,22 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 <div class="title">Spring Boot 3 (Gradle)</div>
 <div class="content">
 <pre class="CodeRay highlight"><code>compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:latest'</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Spring Boot 4 (Maven)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
+  <span class="tag">&lt;groupId&gt;</span>io.github.belgif.rest.problem<span class="tag">&lt;/groupId&gt;</span>
+  <span class="tag">&lt;artifactId&gt;</span>belgif-rest-problem-spring-boot-4<span class="tag">&lt;/artifactId&gt;</span>
+  <span class="tag">&lt;version&gt;</span>latest<span class="tag">&lt;/version&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Spring Boot 4 (Gradle)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code>compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-4:latest'</code></pre>
 </div>
 </div>
 </div>
@@ -2382,7 +2402,7 @@ A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is a
 <div class="sect2">
 <h3 id="belgif-rest-problem-spring-boot-3"><a class="anchor" href="#belgif-rest-problem-spring-boot-3"></a>8.3. belgif-rest-problem-spring-boot-3</h3>
 <div class="paragraph">
-<p>This module provides auto-configuration for components that handle Spring Boot integration with the belgif-rest-problem library:</p>
+<p>This module provides auto-configuration for components that handle Spring Boot 3 integration with the belgif-rest-problem library:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2441,6 +2461,14 @@ This handles integration with the <a href="https://docs.spring.io/spring-framewo
 </div>
 <div class="paragraph">
 <p>In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="belgif-rest-problem-spring-boot-4"><a class="anchor" href="#belgif-rest-problem-spring-boot-4"></a>8.4. belgif-rest-problem-spring-boot-4</h3>
+<div class="paragraph">
+<p>This module provides auto-configuration for components that handle Spring Boot 4 integration with the belgif-rest-problem library.
+In general, this is very similar to the Spring Boot 3 module.
+The main differences are the upgrade to Jackson 3, and handling the package renames of some auto configuration interfaces in Spring Boot 4.</p>
 </div>
 </div>
 </div>

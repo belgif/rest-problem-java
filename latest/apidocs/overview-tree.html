@@ -72,12 +72,42 @@ loadScripts(document, 'script');</script>
 <section class="hierarchy">
 <h2 title="Class Hierarchy">Class Hierarchy</h2>
 <ul>
-<li class="circle">java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" class="type-name-link external-link" title="class or interface in java.lang">Object</a>
+<li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" class="type-name-link external-link" title="class or interface in java.lang">Object</a>
 <ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/AbstractInvalidRequestExceptionHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">AbstractInvalidRequestExceptionHandler</a>&lt;J&gt;
+<ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/InvalidRequestExceptionHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">InvalidRequestExceptionHandler</a></li>
+</ul>
+</li>
 <li class="circle">io.github.belgif.rest.problem.validation.<a href="io/github/belgif/rest/problem/validation/AbstractMultiInputValidator.html" class="type-name-link" title="class in io.github.belgif.rest.problem.validation">AbstractMultiInputValidator</a>&lt;V&gt; (implements io.github.belgif.rest.problem.validation.<a href="io/github/belgif/rest/problem/validation/InputValidator.html" title="interface in io.github.belgif.rest.problem.validation">InputValidator</a>)</li>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/AbstractProblemRestClientCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">AbstractProblemRestClientCustomizer</a>
+<ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/ProblemRestClientCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemRestClientCustomizer</a> (implements org.springframework.boot.restclient.RestClientCustomizer)</li>
+</ul>
+</li>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/AbstractProblemRestTemplateCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">AbstractProblemRestTemplateCustomizer</a>
+<ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/ProblemRestTemplateCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemRestTemplateCustomizer</a> (implements org.springframework.boot.restclient.RestTemplateCustomizer)</li>
+</ul>
+</li>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/AbstractProblemValidationConfigurationCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">AbstractProblemValidationConfigurationCustomizer</a>
+<ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/ProblemValidationConfigurationCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemValidationConfigurationCustomizer</a> (implements org.springframework.boot.validation.autoconfigure.ValidationConfigurationCustomizer)</li>
+</ul>
+</li>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/AbstractProblemWebClientCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">AbstractProblemWebClientCustomizer</a>
+<ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/ProblemWebClientCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemWebClientCustomizer</a> (implements org.springframework.boot.webclient.WebClientCustomizer)</li>
+</ul>
+</li>
 <li class="circle">io.github.belgif.rest.problem.validation.<a href="io/github/belgif/rest/problem/validation/AbstractRequestValidator.html" class="type-name-link" title="class in io.github.belgif.rest.problem.validation">AbstractRequestValidator</a>&lt;SELF&gt;
 <ul>
 <li class="circle">io.github.belgif.rest.problem.validation.<a href="io/github/belgif/rest/problem/validation/RequestValidator.html" class="type-name-link" title="class in io.github.belgif.rest.problem.validation">RequestValidator</a></li>
+</ul>
+</li>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/AbstractRoutingExceptionsHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">AbstractRoutingExceptionsHandler</a>&lt;T&gt;
+<ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/RoutingExceptionsHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">RoutingExceptionsHandler</a></li>
 </ul>
 </li>
 <li class="circle">io.github.belgif.rest.problem.validation.<a href="io/github/belgif/rest/problem/validation/AbstractSingleInputValidator.html" class="type-name-link" title="class in io.github.belgif.rest.problem.validation">AbstractSingleInputValidator</a>&lt;V&gt; (implements io.github.belgif.rest.problem.validation.<a href="io/github/belgif/rest/problem/validation/InputValidator.html" title="interface in io.github.belgif.rest.problem.validation">InputValidator</a>)</li>
@@ -97,7 +127,11 @@ loadScripts(document, 'script');</script>
 <li class="circle">io.github.belgif.rest.problem.ee.jaxrs.<a href="io/github/belgif/rest/problem/ee/jaxrs/DefaultExceptionMapper.html" class="type-name-link" title="class in io.github.belgif.rest.problem.ee.jaxrs">DefaultExceptionMapper</a> (implements javax.ws.rs.ext.ExceptionMapper&lt;E&gt;)</li>
 <li class="circle">org.springframework.web.client.DefaultResponseErrorHandler (implements org.springframework.web.client.ResponseErrorHandler)
 <ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/AbstractProblemResponseErrorHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">AbstractProblemResponseErrorHandler</a>
+<ul>
 <li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/ProblemResponseErrorHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemResponseErrorHandler</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="circle">io.github.belgif.rest.problem.ee.jaxrs.<a href="io/github/belgif/rest/problem/ee/jaxrs/EJBExceptionMapper.html" class="type-name-link" title="class in io.github.belgif.rest.problem.ee.jaxrs">EJBExceptionMapper</a> (implements javax.ws.rs.ext.ExceptionMapper&lt;E&gt;)</li>
@@ -108,13 +142,16 @@ loadScripts(document, 'script');</script>
 <li class="circle">io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/InputValidationIssue.html" class="type-name-link" title="class in io.github.belgif.rest.problem.api">InputValidationIssue</a></li>
 <li class="circle">io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/InputValidationIssues.html" class="type-name-link" title="class in io.github.belgif.rest.problem.api">InputValidationIssues</a></li>
 <li class="circle">io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/InvalidParam.html" class="type-name-link" title="class in io.github.belgif.rest.problem.api">InvalidParam</a></li>
-<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/InvalidRequestExceptionHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">InvalidRequestExceptionHandler</a></li>
 <li class="circle">io.github.belgif.rest.problem.ee.jaxrs.<a href="io/github/belgif/rest/problem/ee/jaxrs/JacksonMismatchedInputExceptionMapper.html" class="type-name-link" title="class in io.github.belgif.rest.problem.ee.jaxrs">JacksonMismatchedInputExceptionMapper</a> (implements javax.ws.rs.ext.ExceptionMapper&lt;E&gt;)</li>
 <li class="circle">tools.jackson.databind.JacksonModule (implements tools.jackson.core.Versioned)
 <ul>
-<li class="circle">tools.jackson.databind.module.SimpleModule (implements java.io.<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
+<li class="circle">tools.jackson.databind.module.SimpleModule (implements java.io.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
 <ul>
-<li class="circle">io.github.belgif.rest.problem.<a href="io/github/belgif/rest/problem/ProblemModuleJackson3.html" class="type-name-link" title="class in io.github.belgif.rest.problem">ProblemModuleJackson3</a></li>
+<li class="circle">io.github.belgif.rest.problem.<a href="io/github/belgif/rest/problem/ProblemModuleJackson3.html" class="type-name-link" title="class in io.github.belgif.rest.problem">ProblemModuleJackson3</a>
+<ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/SpringProblemModule.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">SpringProblemModule</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -127,9 +164,9 @@ loadScripts(document, 'script');</script>
 <li class="circle">io.github.belgif.rest.problem.ee.jaxrs.<a href="io/github/belgif/rest/problem/ee/jaxrs/ProblemMediaType.html" class="type-name-link" title="class in io.github.belgif.rest.problem.ee.jaxrs">ProblemMediaType</a></li>
 </ul>
 </li>
-<li class="circle">org.springframework.util.MimeType (implements java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;T&gt;, java.io.<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
+<li class="circle">org.springframework.util.MimeType (implements java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;T&gt;, java.io.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
 <ul>
-<li class="circle">org.springframework.http.MediaType (implements java.io.<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
+<li class="circle">org.springframework.http.MediaType (implements java.io.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
 <ul>
 <li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/ProblemMediaType.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemMediaType</a></li>
 </ul>
@@ -138,12 +175,11 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="circle">com.fasterxml.jackson.databind.Module (implements com.fasterxml.jackson.core.Versioned)
 <ul>
-<li class="circle">com.fasterxml.jackson.databind.module.SimpleModule (implements java.io.<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
+<li class="circle">com.fasterxml.jackson.databind.module.SimpleModule (implements java.io.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
 <ul>
 <li class="circle">io.github.belgif.rest.problem.<a href="io/github/belgif/rest/problem/ProblemModule.html" class="type-name-link" title="class in io.github.belgif.rest.problem">ProblemModule</a>
 <ul>
 <li class="circle">io.github.belgif.rest.problem.ee.<a href="io/github/belgif/rest/problem/ee/CdiProblemModule.html" class="type-name-link" title="class in io.github.belgif.rest.problem.ee">CdiProblemModule</a></li>
-<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/SpringProblemModule.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">SpringProblemModule</a></li>
 </ul>
 </li>
 </ul>
@@ -167,25 +203,20 @@ loadScripts(document, 'script');</script>
 </ul>
 </li>
 <li class="circle">io.github.belgif.rest.problem.ee.jaxrs.client.<a href="io/github/belgif/rest/problem/ee/jaxrs/client/ProblemResponseExceptionMapper.html" class="type-name-link" title="class in io.github.belgif.rest.problem.ee.jaxrs.client">ProblemResponseExceptionMapper</a> (implements org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper&lt;T&gt;)</li>
-<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/ProblemRestClientCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemRestClientCustomizer</a> (implements org.springframework.boot.web.client.RestClientCustomizer)</li>
 <li class="circle">io.github.belgif.rest.problem.ee.jaxrs.client.<a href="io/github/belgif/rest/problem/ee/jaxrs/client/ProblemRestClientListener.html" class="type-name-link" title="class in io.github.belgif.rest.problem.ee.jaxrs.client">ProblemRestClientListener</a> (implements org.eclipse.microprofile.rest.client.spi.RestClientListener)</li>
-<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/ProblemRestTemplateCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemRestTemplateCustomizer</a> (implements org.springframework.boot.web.client.RestTemplateCustomizer)</li>
 <li class="circle">io.github.belgif.rest.problem.ee.jaxrs.client.<a href="io/github/belgif/rest/problem/ee/jaxrs/client/ProblemSupport.html" class="type-name-link" title="class in io.github.belgif.rest.problem.ee.jaxrs.client">ProblemSupport</a></li>
-<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/ProblemValidationConfigurationCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemValidationConfigurationCustomizer</a> (implements org.springframework.boot.autoconfigure.validation.ValidationConfigurationCustomizer)</li>
-<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/ProblemWebClientCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemWebClientCustomizer</a> (implements org.springframework.boot.web.reactive.function.client.WebClientCustomizer)</li>
 <li class="circle">io.github.belgif.rest.problem.quarkus.i18n.<a href="io/github/belgif/rest/problem/quarkus/i18n/QuarkusLocaleResolver.html" class="type-name-link" title="class in io.github.belgif.rest.problem.quarkus.i18n">QuarkusLocaleResolver</a> (implements io.github.belgif.rest.problem.i18n.<a href="io/github/belgif/rest/problem/i18n/LocaleResolver.html" title="interface in io.github.belgif.rest.problem.i18n">LocaleResolver</a>)</li>
 <li class="circle">io.github.belgif.rest.problem.quarkus.<a href="io/github/belgif/rest/problem/quarkus/QuarkusProblemConfigurator.html" class="type-name-link" title="class in io.github.belgif.rest.problem.quarkus">QuarkusProblemConfigurator</a></li>
 <li class="circle">io.github.belgif.rest.problem.quarkus.<a href="io/github/belgif/rest/problem/quarkus/QuarkusProblemExtension.html" class="type-name-link" title="class in io.github.belgif.rest.problem.quarkus">QuarkusProblemExtension</a> (implements jakarta.enterprise.inject.build.compatible.spi.BuildCompatibleExtension)</li>
 <li class="circle">io.github.belgif.rest.problem.quarkus.<a href="io/github/belgif/rest/problem/quarkus/QuarkusProblemExtension.QuarkusProblemTypeRegistryCreator.html" class="type-name-link" title="class in io.github.belgif.rest.problem.quarkus">QuarkusProblemExtension.QuarkusProblemTypeRegistryCreator</a> (implements jakarta.enterprise.inject.build.compatible.spi.SyntheticBeanCreator&lt;T&gt;)</li>
 <li class="circle">io.github.belgif.rest.problem.quarkus.<a href="io/github/belgif/rest/problem/quarkus/QuarkusProblemTypeRegistry.html" class="type-name-link" title="class in io.github.belgif.rest.problem.quarkus">QuarkusProblemTypeRegistry</a> (implements io.github.belgif.rest.problem.registry.<a href="io/github/belgif/rest/problem/registry/ProblemTypeRegistry.html" title="interface in io.github.belgif.rest.problem.registry">ProblemTypeRegistry</a>)</li>
-<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/RoutingExceptionsHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">RoutingExceptionsHandler</a></li>
 <li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/SpringProblemTypeRegistry.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">SpringProblemTypeRegistry</a> (implements io.github.belgif.rest.problem.registry.<a href="io/github/belgif/rest/problem/registry/ProblemTypeRegistry.html" title="interface in io.github.belgif.rest.problem.registry">ProblemTypeRegistry</a>)</li>
 <li class="circle">io.github.belgif.rest.problem.ee.jaxrs.i18n.<a href="io/github/belgif/rest/problem/ee/jaxrs/i18n/ThreadLocalLocaleResolver.html" class="type-name-link" title="class in io.github.belgif.rest.problem.ee.jaxrs.i18n">ThreadLocalLocaleResolver</a> (implements io.github.belgif.rest.problem.i18n.<a href="io/github/belgif/rest/problem/i18n/LocaleResolver.html" title="interface in io.github.belgif.rest.problem.i18n">LocaleResolver</a>)</li>
-<li class="circle">java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html" class="type-name-link external-link" title="class or interface in java.lang">Throwable</a> (implements java.io.<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
+<li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" class="type-name-link external-link" title="class or interface in java.lang">Throwable</a> (implements java.io.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
 <ul>
-<li class="circle">java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Exception.html" class="type-name-link external-link" title="class or interface in java.lang">Exception</a>
+<li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" class="type-name-link external-link" title="class or interface in java.lang">Exception</a>
 <ul>
-<li class="circle">java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/RuntimeException.html" class="type-name-link external-link" title="class or interface in java.lang">RuntimeException</a>
+<li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/RuntimeException.html" class="type-name-link external-link" title="class or interface in java.lang">RuntimeException</a>
 <ul>
 <li class="circle">io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/Problem.html" class="type-name-link" title="class in io.github.belgif.rest.problem.api">Problem</a>
 <ul>
@@ -244,7 +275,7 @@ loadScripts(document, 'script');</script>
 <ul>
 <li class="circle">com.fasterxml.jackson.core.ObjectCodec (implements com.fasterxml.jackson.core.Versioned)
 <ul>
-<li class="circle">com.fasterxml.jackson.databind.ObjectMapper (implements java.io.<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>, com.fasterxml.jackson.core.Versioned)
+<li class="circle">com.fasterxml.jackson.databind.ObjectMapper (implements java.io.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>, com.fasterxml.jackson.core.Versioned)
 <ul>
 <li class="circle">io.github.belgif.rest.problem.ee.jaxrs.<a href="io/github/belgif/rest/problem/ee/jaxrs/ProblemObjectMapper.html" class="type-name-link" title="class in io.github.belgif.rest.problem.ee.jaxrs">ProblemObjectMapper</a></li>
 </ul>
@@ -261,6 +292,7 @@ loadScripts(document, 'script');</script>
 <section class="hierarchy">
 <h2 title="Interface Hierarchy">Interface Hierarchy</h2>
 <ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="io/github/belgif/rest/problem/spring/AbstractProblemResponseErrorHandler.ProblemReader.html" class="type-name-link" title="interface in io.github.belgif.rest.problem.spring">AbstractProblemResponseErrorHandler.ProblemReader</a></li>
 <li class="circle">io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/FluentProblem.html" class="type-name-link" title="interface in io.github.belgif.rest.problem.api">FluentProblem</a>&lt;SELF&gt;
 <ul>
 <li class="circle">io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/FluentInputValidationProblem.html" class="type-name-link" title="interface in io.github.belgif.rest.problem.api">FluentInputValidationProblem</a>&lt;SELF&gt;</li>
@@ -278,19 +310,19 @@ loadScripts(document, 'script');</script>
 </ul>
 </section>
 <section class="hierarchy">
-<h2 title="Annotation Type Hierarchy">Annotation Type Hierarchy</h2>
+<h2 title="Annotation Interface Hierarchy">Annotation Interface Hierarchy</h2>
 <ul>
-<li class="circle">io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/ProblemType.html" class="type-name-link" title="annotation in io.github.belgif.rest.problem.api">ProblemType</a> (implements java.lang.annotation.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Annotation.html" title="class or interface in java.lang.annotation" class="external-link">Annotation</a>)</li>
+<li class="circle">io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/ProblemType.html" class="type-name-link" title="annotation interface in io.github.belgif.rest.problem.api">ProblemType</a> (implements java.lang.annotation.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/annotation/Annotation.html" title="class or interface in java.lang.annotation" class="external-link">Annotation</a>)</li>
 </ul>
 </section>
 <section class="hierarchy">
-<h2 title="Enum Hierarchy">Enum Hierarchy</h2>
+<h2 title="Enum Class Hierarchy">Enum Class Hierarchy</h2>
 <ul>
-<li class="circle">java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" class="type-name-link external-link" title="class or interface in java.lang">Object</a>
+<li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" class="type-name-link external-link" title="class or interface in java.lang">Object</a>
 <ul>
-<li class="circle">java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html" class="type-name-link external-link" title="class or interface in java.lang">Enum</a>&lt;E&gt; (implements java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;T&gt;, java.io.<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
+<li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" class="type-name-link external-link" title="class or interface in java.lang">Enum</a>&lt;E&gt; (implements java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;T&gt;, java.lang.constant.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a>, java.io.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
 <ul>
-<li class="circle">io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/InEnum.html" class="type-name-link" title="enum in io.github.belgif.rest.problem.api">InEnum</a></li>
+<li class="circle">io.github.belgif.rest.problem.api.<a href="io/github/belgif/rest/problem/api/InEnum.html" class="type-name-link" title="enum class in io.github.belgif.rest.problem.api">InEnum</a></li>
 </ul>
 </li>
 </ul>
@@ -300,7 +332,7 @@ loadScripts(document, 'script');</script>
 </main>
 <footer role="contentinfo">
 <hr>
-<p class="legal-copy"><small>Copyright &#169; 2025. All rights reserved.</small></p>
+<p class="legal-copy"><small>Copyright &#169; 2026. All rights reserved.</small></p>
 </footer>
 </div>
 </div>

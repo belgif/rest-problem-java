@@ -86,8 +86,10 @@ loadScripts(document, 'script');</script>
 <div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">io.github.belgif.rest.problem.spring</a></div>
 <h1 title="Class InvalidRequestExceptionHandler" class="title">Class InvalidRequestExceptionHandler</h1>
 </div>
-<div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="AbstractInvalidRequestExceptionHandler.html" title="class in io.github.belgif.rest.problem.spring">io.github.belgif.rest.problem.spring.AbstractInvalidRequestExceptionHandler</a>&lt;tools.jackson.databind.JsonNode&gt;
 <div class="inheritance">io.github.belgif.rest.problem.spring.InvalidRequestExceptionHandler</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
@@ -96,7 +98,7 @@ loadScripts(document, 'script');</script>
 @ConditionalOnClass(com.atlassian.oai.validator.springmvc.InvalidRequestException.class)
 @Order(1)
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">InvalidRequestExceptionHandler</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<span class="extends-implements">extends <a href="AbstractInvalidRequestExceptionHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractInvalidRequestExceptionHandler</a>&lt;tools.jackson.databind.JsonNode&gt;</span></div>
 <div class="block">RestController exception handler for InvalidRequestException thrown by Atlassian swagger-request-validator library.</div>
 </section>
 <section class="summary">
@@ -109,7 +111,7 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(com.fasterxml.jackson.databind.ObjectMapper)" class="member-name-link">InvalidRequestExceptionHandler</a><wbr>(com.fasterxml.jackson.databind.ObjectMapper&nbsp;mapper)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(tools.jackson.databind.ObjectMapper)" class="member-name-link">InvalidRequestExceptionHandler</a><wbr>(tools.jackson.databind.ObjectMapper&nbsp;mapper)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -125,16 +127,20 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.springframework.http.ResponseEntity<wbr>&lt;<a href="../api/Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleInvalidRequestException(com.atlassian.oai.validator.springmvc.InvalidRequestException,jakarta.servlet.http.HttpServletRequest)" class="member-name-link">handleInvalidRequestException</a><wbr>(com.atlassian.oai.validator.springmvc.InvalidRequestException&nbsp;ex,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBodyValue(java.lang.String,java.util.concurrent.atomic.AtomicReference,jakarta.servlet.http.HttpServletRequest)" class="member-name-link">getBodyValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicReference.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicReference</a>&lt;tools.jackson.databind.JsonNode&gt;&nbsp;requestBodyReference,
  jakarta.servlet.http.HttpServletRequest&nbsp;request)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
-<code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#clone--" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#equals-java.lang.Object-" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#finalize--" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#getClass--" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#hashCode--" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#notify--" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#notifyAll--" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#toString--" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#wait--" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#wait-long-" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#wait-long-int-" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<h3 id="methods-inherited-from-class-io.github.belgif.rest.problem.spring.AbstractInvalidRequestExceptionHandler">Methods inherited from class&nbsp;io.github.belgif.rest.problem.spring.<a href="AbstractInvalidRequestExceptionHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractInvalidRequestExceptionHandler</a></h3>
+<code><a href="AbstractInvalidRequestExceptionHandler.html#handleInvalidRequestException(com.atlassian.oai.validator.springmvc.InvalidRequestException,jakarta.servlet.http.HttpServletRequest)">handleInvalidRequestException</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
+<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 </section>
 </li>
 </ul>
@@ -147,9 +153,9 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(com.fasterxml.jackson.databind.ObjectMapper)">
+<section class="detail" id="&lt;init&gt;(tools.jackson.databind.ObjectMapper)">
 <h3>InvalidRequestExceptionHandler</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">InvalidRequestExceptionHandler</span><wbr><span class="parameters">(com.fasterxml.jackson.databind.ObjectMapper&nbsp;mapper)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">InvalidRequestExceptionHandler</span><wbr><span class="parameters">(tools.jackson.databind.ObjectMapper&nbsp;mapper)</span></div>
 </section>
 </li>
 </ul>
@@ -161,11 +167,15 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="handleInvalidRequestException(com.atlassian.oai.validator.springmvc.InvalidRequestException,jakarta.servlet.http.HttpServletRequest)">
-<h3>handleInvalidRequestException</h3>
-<div class="member-signature"><span class="annotations">@ExceptionHandler(com.atlassian.oai.validator.springmvc.InvalidRequestException.class)
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">org.springframework.http.ResponseEntity&lt;<a href="../api/Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a>&gt;</span>&nbsp;<span class="element-name">handleInvalidRequestException</span><wbr><span class="parameters">(com.atlassian.oai.validator.springmvc.InvalidRequestException&nbsp;ex,
+<section class="detail" id="getBodyValue(java.lang.String,java.util.concurrent.atomic.AtomicReference,jakarta.servlet.http.HttpServletRequest)">
+<h3>getBodyValue</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getBodyValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicReference.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicReference</a>&lt;tools.jackson.databind.JsonNode&gt;&nbsp;requestBodyReference,
  jakarta.servlet.http.HttpServletRequest&nbsp;request)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="AbstractInvalidRequestExceptionHandler.html#getBodyValue(java.lang.String,java.util.concurrent.atomic.AtomicReference,jakarta.servlet.http.HttpServletRequest)">getBodyValue</a></code>&nbsp;in class&nbsp;<code><a href="AbstractInvalidRequestExceptionHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractInvalidRequestExceptionHandler</a>&lt;tools.jackson.databind.JsonNode&gt;</code></dd>
+</dl>
 </section>
 </li>
 </ul>
@@ -177,7 +187,7 @@ loadScripts(document, 'script');</script>
 </main>
 <footer role="contentinfo">
 <hr>
-<p class="legal-copy"><small>Copyright &#169; 2025. All rights reserved.</small></p>
+<p class="legal-copy"><small>Copyright &#169; 2026. All rights reserved.</small></p>
 </footer>
 </div>
 </div>

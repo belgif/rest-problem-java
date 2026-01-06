@@ -86,10 +86,10 @@ loadScripts(document, 'script');</script>
 <div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">io.github.belgif.rest.problem.spring</a></div>
 <h1 title="Class SpringProblemModule" class="title">Class SpringProblemModule</h1>
 </div>
-<div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">com.fasterxml.jackson.databind.Module
-<div class="inheritance">com.fasterxml.jackson.databind.module.SimpleModule
-<div class="inheritance"><a href="../ProblemModule.html" title="class in io.github.belgif.rest.problem">io.github.belgif.rest.problem.ProblemModule</a>
+<div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance">tools.jackson.databind.JacksonModule
+<div class="inheritance">tools.jackson.databind.module.SimpleModule
+<div class="inheritance"><a href="../ProblemModuleJackson3.html" title="class in io.github.belgif.rest.problem">io.github.belgif.rest.problem.ProblemModuleJackson3</a>
 <div class="inheritance">io.github.belgif.rest.problem.spring.SpringProblemModule</div>
 </div>
 </div>
@@ -98,12 +98,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code>com.fasterxml.jackson.core.Versioned</code>, <code><a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code>tools.jackson.core.Versioned</code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="annotations">@Component
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">SpringProblemModule</span>
-<span class="extends-implements">extends <a href="../ProblemModule.html" title="class in io.github.belgif.rest.problem">ProblemModule</a></span></div>
+<span class="extends-implements">extends <a href="../ProblemModuleJackson3.html" title="class in io.github.belgif.rest.problem">ProblemModuleJackson3</a></span></div>
 <div class="block">ProblemModule implementation for Spring Boot applications.</div>
 <dl class="notes">
 <dt>See Also:</dt>
@@ -122,8 +122,8 @@ loadScripts(document, 'script');</script>
 <section class="nested-class-summary" id="nested-class-summary">
 <h2>Nested Class Summary</h2>
 <div class="inherited-list">
-<h2 id="nested-classes-inherited-from-class-com.fasterxml.jackson.databind.Module">Nested classes/interfaces inherited from class&nbsp;com.fasterxml.jackson.databind.Module</h2>
-<code>com.fasterxml.jackson.databind.Module.SetupContext</code></div>
+<h2 id="nested-classes-inherited-from-class-tools.jackson.databind.JacksonModule">Nested classes/interfaces inherited from class&nbsp;tools.jackson.databind.JacksonModule</h2>
+<code>tools.jackson.databind.JacksonModule.SetupContext</code></div>
 </section>
 </li>
 <!-- =========== FIELD SUMMARY =========== -->
@@ -131,8 +131,8 @@ loadScripts(document, 'script');</script>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
 <div class="inherited-list">
-<h3 id="fields-inherited-from-class-com.fasterxml.jackson.databind.module.SimpleModule">Fields inherited from class&nbsp;com.fasterxml.jackson.databind.module.SimpleModule</h3>
-<code>_abstractTypes, _deserializerModifier, _deserializers, _hasExplicitName, _keyDeserializers, _keySerializers, _mixins, _name, _namingStrategy, _serializerModifier, _serializers, _subtypes, _valueInstantiators, _version</code></div>
+<h3 id="fields-inherited-from-class-tools.jackson.databind.module.SimpleModule">Fields inherited from class&nbsp;tools.jackson.databind.module.SimpleModule</h3>
+<code>_abstractTypes, _defaultNullKeySerializer, _defaultNullValueSerializer, _deserializerModifier, _deserializers, _id, _keyDeserializers, _keySerializers, _mixins, _name, _namingStrategy, _serializerModifier, _serializers, _subtypes, _valueInstantiators, _version</code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -153,17 +153,17 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-io.github.belgif.rest.problem.ProblemModule">Methods inherited from class&nbsp;io.github.belgif.rest.problem.<a href="../ProblemModule.html" title="class in io.github.belgif.rest.problem">ProblemModule</a></h3>
-<code><a href="../ProblemModule.html#setupModule(com.fasterxml.jackson.databind.Module.SetupContext)">setupModule</a></code></div>
+<h3 id="methods-inherited-from-class-io.github.belgif.rest.problem.ProblemModuleJackson3">Methods inherited from class&nbsp;io.github.belgif.rest.problem.<a href="../ProblemModuleJackson3.html" title="class in io.github.belgif.rest.problem">ProblemModuleJackson3</a></h3>
+<code><a href="../ProblemModuleJackson3.html#setupModule(tools.jackson.databind.JacksonModule.SetupContext)">setupModule</a></code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-com.fasterxml.jackson.databind.module.SimpleModule">Methods inherited from class&nbsp;com.fasterxml.jackson.databind.module.SimpleModule</h3>
-<code>_checkNotNull, addAbstractTypeMapping, addDeserializer, addKeyDeserializer, addKeySerializer, addSerializer, addSerializer, addValueInstantiator, getModuleName, getTypeId, registerSubtypes, registerSubtypes, registerSubtypes, setAbstractTypes, setDeserializerModifier, setDeserializers, setKeyDeserializers, setKeySerializers, setMixInAnnotation, setNamingStrategy, setSerializerModifier, setSerializers, setValueInstantiators, version</code></div>
+<h3 id="methods-inherited-from-class-tools.jackson.databind.module.SimpleModule">Methods inherited from class&nbsp;tools.jackson.databind.module.SimpleModule</h3>
+<code>_checkNotNull, addAbstractTypeMapping, addDeserializer, addKeyDeserializer, addKeySerializer, addSerializer, addSerializer, addValueInstantiator, getModuleName, getRegistrationId, registerSubtypes, registerSubtypes, registerSubtypes, setAbstractTypes, setDefaultNullKeySerializer, setDefaultNullValueSerializer, setDeserializerModifier, setDeserializers, setKeyDeserializers, setKeySerializers, setMixInAnnotation, setNamingStrategy, setSerializerModifier, setSerializers, setValueInstantiators, version</code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-com.fasterxml.jackson.databind.Module">Methods inherited from class&nbsp;com.fasterxml.jackson.databind.Module</h3>
+<h3 id="methods-inherited-from-class-tools.jackson.databind.JacksonModule">Methods inherited from class&nbsp;tools.jackson.databind.JacksonModule</h3>
 <code>getDependencies</code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
-<code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#clone--" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#equals-java.lang.Object-" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#finalize--" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#getClass--" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#hashCode--" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#notify--" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#notifyAll--" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#toString--" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#wait--" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#wait-long-" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#wait-long-int-" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
+<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 </section>
 </li>
 </ul>
@@ -190,7 +190,7 @@ loadScripts(document, 'script');</script>
 </main>
 <footer role="contentinfo">
 <hr>
-<p class="legal-copy"><small>Copyright &#169; 2025. All rights reserved.</small></p>
+<p class="legal-copy"><small>Copyright &#169; 2026. All rights reserved.</small></p>
 </footer>
 </div>
 </div>

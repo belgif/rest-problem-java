@@ -58,8 +58,38 @@ loadScripts(document, 'script');</script>
 <section class="hierarchy">
 <h2 title="Class Hierarchy">Class Hierarchy</h2>
 <ul>
-<li class="circle">java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" class="type-name-link external-link" title="class or interface in java.lang">Object</a>
+<li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" class="type-name-link external-link" title="class or interface in java.lang">Object</a>
 <ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="AbstractInvalidRequestExceptionHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">AbstractInvalidRequestExceptionHandler</a>&lt;J&gt;
+<ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="InvalidRequestExceptionHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">InvalidRequestExceptionHandler</a></li>
+</ul>
+</li>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="AbstractProblemRestClientCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">AbstractProblemRestClientCustomizer</a>
+<ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="ProblemRestClientCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemRestClientCustomizer</a> (implements org.springframework.boot.restclient.RestClientCustomizer)</li>
+</ul>
+</li>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="AbstractProblemRestTemplateCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">AbstractProblemRestTemplateCustomizer</a>
+<ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="ProblemRestTemplateCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemRestTemplateCustomizer</a> (implements org.springframework.boot.restclient.RestTemplateCustomizer)</li>
+</ul>
+</li>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="AbstractProblemValidationConfigurationCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">AbstractProblemValidationConfigurationCustomizer</a>
+<ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="ProblemValidationConfigurationCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemValidationConfigurationCustomizer</a> (implements org.springframework.boot.validation.autoconfigure.ValidationConfigurationCustomizer)</li>
+</ul>
+</li>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="AbstractProblemWebClientCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">AbstractProblemWebClientCustomizer</a>
+<ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="ProblemWebClientCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemWebClientCustomizer</a> (implements org.springframework.boot.webclient.WebClientCustomizer)</li>
+</ul>
+</li>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="AbstractRoutingExceptionsHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">AbstractRoutingExceptionsHandler</a>&lt;T&gt;
+<ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="RoutingExceptionsHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">RoutingExceptionsHandler</a></li>
+</ul>
+</li>
 <li class="circle">io.github.belgif.rest.problem.spring.<a href="BeanValidationExceptionsHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">BeanValidationExceptionsHandler</a></li>
 <li class="circle">io.github.belgif.rest.problem.spring.internal.CachedAnnotationParameterNameSupport&lt;T&gt;
 <ul>
@@ -68,28 +98,31 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="circle">org.springframework.web.client.DefaultResponseErrorHandler (implements org.springframework.web.client.ResponseErrorHandler)
 <ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="AbstractProblemResponseErrorHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">AbstractProblemResponseErrorHandler</a>
+<ul>
 <li class="circle">io.github.belgif.rest.problem.spring.<a href="ProblemResponseErrorHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemResponseErrorHandler</a></li>
 </ul>
 </li>
-<li class="circle">io.github.belgif.rest.problem.spring.<a href="InvalidRequestExceptionHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">InvalidRequestExceptionHandler</a></li>
-<li class="circle">org.springframework.util.MimeType (implements java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;T&gt;, java.io.<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
-<ul>
-<li class="circle">org.springframework.http.MediaType (implements java.io.<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
-<ul>
-<li class="circle">io.github.belgif.rest.problem.spring.<a href="ProblemMediaType.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemMediaType</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="circle">com.fasterxml.jackson.databind.Module (implements com.fasterxml.jackson.core.Versioned)
+<li class="circle">tools.jackson.databind.JacksonModule (implements tools.jackson.core.Versioned)
 <ul>
-<li class="circle">com.fasterxml.jackson.databind.module.SimpleModule (implements java.io.<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
+<li class="circle">tools.jackson.databind.module.SimpleModule (implements java.io.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
 <ul>
-<li class="circle">io.github.belgif.rest.problem.<a href="../ProblemModule.html" class="type-name-link" title="class in io.github.belgif.rest.problem">ProblemModule</a>
+<li class="circle">io.github.belgif.rest.problem.<a href="../ProblemModuleJackson3.html" class="type-name-link" title="class in io.github.belgif.rest.problem">ProblemModuleJackson3</a>
 <ul>
 <li class="circle">io.github.belgif.rest.problem.spring.<a href="SpringProblemModule.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">SpringProblemModule</a></li>
 </ul>
 </li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="circle">org.springframework.util.MimeType (implements java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;T&gt;, java.io.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
+<ul>
+<li class="circle">org.springframework.http.MediaType (implements java.io.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
+<ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="ProblemMediaType.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemMediaType</a></li>
 </ul>
 </li>
 </ul>
@@ -99,20 +132,21 @@ loadScripts(document, 'script');</script>
 <li class="circle">io.github.belgif.rest.problem.spring.<a href="ProblemConfigurationProperties.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemConfigurationProperties</a> (implements org.springframework.beans.factory.InitializingBean)</li>
 <li class="circle">io.github.belgif.rest.problem.spring.<a href="ProblemExceptionHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemExceptionHandler</a></li>
 <li class="circle">io.github.belgif.rest.problem.spring.<a href="ProblemExtConfigurationProperties.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemExtConfigurationProperties</a> (implements org.springframework.beans.factory.InitializingBean)</li>
-<li class="circle">io.github.belgif.rest.problem.spring.<a href="ProblemRestClientCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemRestClientCustomizer</a> (implements org.springframework.boot.web.client.RestClientCustomizer)</li>
-<li class="circle">io.github.belgif.rest.problem.spring.<a href="ProblemRestTemplateCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemRestTemplateCustomizer</a> (implements org.springframework.boot.web.client.RestTemplateCustomizer)</li>
-<li class="circle">io.github.belgif.rest.problem.spring.<a href="ProblemValidationConfigurationCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemValidationConfigurationCustomizer</a> (implements org.springframework.boot.autoconfigure.validation.ValidationConfigurationCustomizer)</li>
-<li class="circle">io.github.belgif.rest.problem.spring.<a href="ProblemWebClientCustomizer.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">ProblemWebClientCustomizer</a> (implements org.springframework.boot.web.reactive.function.client.WebClientCustomizer)</li>
-<li class="circle">io.github.belgif.rest.problem.spring.<a href="RoutingExceptionsHandler.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">RoutingExceptionsHandler</a></li>
 <li class="circle">io.github.belgif.rest.problem.spring.<a href="SpringProblemTypeRegistry.html" class="type-name-link" title="class in io.github.belgif.rest.problem.spring">SpringProblemTypeRegistry</a> (implements io.github.belgif.rest.problem.registry.<a href="../registry/ProblemTypeRegistry.html" title="interface in io.github.belgif.rest.problem.registry">ProblemTypeRegistry</a>)</li>
 </ul>
 </li>
 </ul>
 </section>
+<section class="hierarchy">
+<h2 title="Interface Hierarchy">Interface Hierarchy</h2>
+<ul>
+<li class="circle">io.github.belgif.rest.problem.spring.<a href="AbstractProblemResponseErrorHandler.ProblemReader.html" class="type-name-link" title="interface in io.github.belgif.rest.problem.spring">AbstractProblemResponseErrorHandler.ProblemReader</a></li>
+</ul>
+</section>
 </main>
 <footer role="contentinfo">
 <hr>
-<p class="legal-copy"><small>Copyright &#169; 2025. All rights reserved.</small></p>
+<p class="legal-copy"><small>Copyright &#169; 2026. All rights reserved.</small></p>
 </footer>
 </div>
 </div>

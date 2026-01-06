@@ -87,10 +87,41 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <div id="class-summary">
-<div class="caption"><span>Classes</span></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab1" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab1', 2)" class="table-tab">Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button></div>
+<div id="class-summary.tabpanel" role="tabpanel" aria-labelledby="class-summary-tab0">
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AbstractInvalidRequestExceptionHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractInvalidRequestExceptionHandler</a>&lt;J&gt;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">RestController exception handler for InvalidRequestException thrown by Atlassian swagger-request-validator library.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AbstractProblemResponseErrorHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractProblemResponseErrorHandler</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">RestTemplate/RestClient error handler that converts problem responses to Problem exceptions.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab1"><a href="AbstractProblemResponseErrorHandler.ProblemReader.html" title="interface in io.github.belgif.rest.problem.spring">AbstractProblemResponseErrorHandler.ProblemReader</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab1">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AbstractProblemRestClientCustomizer.html" title="class in io.github.belgif.rest.problem.spring">AbstractProblemRestClientCustomizer</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">RestClientCustomizer that registers the <a href="AbstractProblemResponseErrorHandler.html" title="class in io.github.belgif.rest.problem.spring"><code>AbstractProblemResponseErrorHandler</code></a>.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AbstractProblemRestTemplateCustomizer.html" title="class in io.github.belgif.rest.problem.spring">AbstractProblemRestTemplateCustomizer</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">RestTemplateCustomizer that registers the <a href="AbstractProblemResponseErrorHandler.html" title="class in io.github.belgif.rest.problem.spring"><code>AbstractProblemResponseErrorHandler</code></a>.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AbstractProblemValidationConfigurationCustomizer.html" title="class in io.github.belgif.rest.problem.spring">AbstractProblemValidationConfigurationCustomizer</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">ValidationConfigurationCustomizer that registers the AnnotationParameterNameProvider.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AbstractProblemWebClientCustomizer.html" title="class in io.github.belgif.rest.problem.spring">AbstractProblemWebClientCustomizer</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AbstractRoutingExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractRoutingExceptionsHandler</a>&lt;T extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">RestController exception handler for routing-related exceptions.</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="AnnotationParameterNameProvider.html" title="class in io.github.belgif.rest.problem.spring">AnnotationParameterNameProvider</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">ParameterNameProvider that retrieves the parameter name from Spring MVC annotations (if present).</div>
@@ -159,13 +190,14 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
+</div>
 </li>
 </ul>
 </section>
 </main>
 <footer role="contentinfo">
 <hr>
-<p class="legal-copy"><small>Copyright &#169; 2025. All rights reserved.</small></p>
+<p class="legal-copy"><small>Copyright &#169; 2026. All rights reserved.</small></p>
 </footer>
 </div>
 </div>

@@ -39,7 +39,7 @@ loadScripts(document, 'script');</script>
 <li>
 <p>Summary:</p>
 <ul>
-<li>Nested</li>
+<li><a href="#nested-class-summary">Nested</a></li>
 <li>Field</li>
 <li><a href="#constructor-summary">Constr</a></li>
 <li><a href="#method-summary">Method</a></li>
@@ -50,7 +50,7 @@ loadScripts(document, 'script');</script>
 <ul>
 <li>Field</li>
 <li><a href="#constructor-detail">Constr</a></li>
-<li><a href="#method-detail">Method</a></li>
+<li>Method</li>
 </ul>
 </li>
 </ul>
@@ -59,7 +59,7 @@ loadScripts(document, 'script');</script>
 <div id="navbar-sub-list">
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested-class-summary">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
@@ -68,7 +68,7 @@ loadScripts(document, 'script');</script>
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method-detail">Method</a></li>
+<li>Method</li>
 </ul>
 </div>
 <div class="nav-list-search"><a href="../../../../../../search.html">SEARCH</a>
@@ -86,9 +86,11 @@ loadScripts(document, 'script');</script>
 <div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">io.github.belgif.rest.problem.spring</a></div>
 <h1 title="Class ProblemResponseErrorHandler" class="title">Class ProblemResponseErrorHandler</h1>
 </div>
-<div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance">org.springframework.web.client.DefaultResponseErrorHandler
+<div class="inheritance"><a href="AbstractProblemResponseErrorHandler.html" title="class in io.github.belgif.rest.problem.spring">io.github.belgif.rest.problem.spring.AbstractProblemResponseErrorHandler</a>
 <div class="inheritance">io.github.belgif.rest.problem.spring.ProblemResponseErrorHandler</div>
+</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
@@ -99,11 +101,20 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="annotations">@Component
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">ProblemResponseErrorHandler</span>
-<span class="extends-implements">extends org.springframework.web.client.DefaultResponseErrorHandler</span></div>
+<span class="extends-implements">extends <a href="AbstractProblemResponseErrorHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractProblemResponseErrorHandler</a></span></div>
 <div class="block">RestTemplate/RestClient error handler that converts problem responses to Problem exceptions.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<li>
+<section class="nested-class-summary" id="nested-class-summary">
+<h2>Nested Class Summary</h2>
+<div class="inherited-list">
+<h2 id="nested-classes-inherited-from-class-io.github.belgif.rest.problem.spring.AbstractProblemResponseErrorHandler">Nested classes/interfaces inherited from class&nbsp;io.github.belgif.rest.problem.spring.<a href="AbstractProblemResponseErrorHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractProblemResponseErrorHandler</a></h2>
+<code><a href="AbstractProblemResponseErrorHandler.ProblemReader.html" title="interface in io.github.belgif.rest.problem.spring">AbstractProblemResponseErrorHandler.ProblemReader</a></code></div>
+</section>
+</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -112,7 +123,7 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(com.fasterxml.jackson.databind.ObjectMapper)" class="member-name-link">ProblemResponseErrorHandler</a><wbr>(com.fasterxml.jackson.databind.ObjectMapper&nbsp;objectMapper)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(tools.jackson.databind.ObjectMapper)" class="member-name-link">ProblemResponseErrorHandler</a><wbr>(tools.jackson.databind.ObjectMapper&nbsp;objectMapper)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -121,27 +132,15 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
-<div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
-<div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Method</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleError(java.net.URI,org.springframework.http.HttpMethod,org.springframework.http.client.ClientHttpResponse)" class="member-name-link">handleError</a><wbr>(<a href="https://docs.oracle.com/javase/8/docs/api/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a>&nbsp;url,
- org.springframework.http.HttpMethod&nbsp;method,
- org.springframework.http.client.ClientHttpResponse&nbsp;response)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-</div>
-</div>
-</div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-io.github.belgif.rest.problem.spring.AbstractProblemResponseErrorHandler">Methods inherited from class&nbsp;io.github.belgif.rest.problem.spring.<a href="AbstractProblemResponseErrorHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractProblemResponseErrorHandler</a></h3>
+<code><a href="AbstractProblemResponseErrorHandler.html#handleError(java.net.URI,org.springframework.http.HttpMethod,org.springframework.http.client.ClientHttpResponse)">handleError</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.springframework.web.client.DefaultResponseErrorHandler">Methods inherited from class&nbsp;org.springframework.web.client.DefaultResponseErrorHandler</h3>
-<code>getCharset, getResponseBody, handleError, handleError, hasError, hasError, hasError, initBodyConvertFunction</code></div>
+<code>getCharset, getResponseBody, handleError, hasError, hasError, initBodyConvertFunction</code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
-<code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#clone--" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#equals-java.lang.Object-" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#finalize--" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#getClass--" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#hashCode--" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#notify--" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#notifyAll--" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#toString--" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#wait--" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#wait-long-" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#wait-long-int-" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
+<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 </section>
 </li>
 </ul>
@@ -154,34 +153,9 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(com.fasterxml.jackson.databind.ObjectMapper)">
+<section class="detail" id="&lt;init&gt;(tools.jackson.databind.ObjectMapper)">
 <h3>ProblemResponseErrorHandler</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ProblemResponseErrorHandler</span><wbr><span class="parameters">(com.fasterxml.jackson.databind.ObjectMapper&nbsp;objectMapper)</span></div>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<!-- ============ METHOD DETAIL ========== -->
-<li>
-<section class="method-details" id="method-detail">
-<h2>Method Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="handleError(java.net.URI,org.springframework.http.HttpMethod,org.springframework.http.client.ClientHttpResponse)">
-<h3>handleError</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">handleError</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a>&nbsp;url,
- org.springframework.http.HttpMethod&nbsp;method,
- org.springframework.http.client.ClientHttpResponse&nbsp;response)</span>
-                 throws <span class="exceptions"><a href="https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code>handleError</code>&nbsp;in interface&nbsp;<code>org.springframework.web.client.ResponseErrorHandler</code></dd>
-<dt>Overrides:</dt>
-<dd><code>handleError</code>&nbsp;in class&nbsp;<code>org.springframework.web.client.DefaultResponseErrorHandler</code></dd>
-<dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code></dd>
-</dl>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ProblemResponseErrorHandler</span><wbr><span class="parameters">(tools.jackson.databind.ObjectMapper&nbsp;objectMapper)</span></div>
 </section>
 </li>
 </ul>
@@ -193,7 +167,7 @@ loadScripts(document, 'script');</script>
 </main>
 <footer role="contentinfo">
 <hr>
-<p class="legal-copy"><small>Copyright &#169; 2025. All rights reserved.</small></p>
+<p class="legal-copy"><small>Copyright &#169; 2026. All rights reserved.</small></p>
 </footer>
 </div>
 </div>

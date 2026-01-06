@@ -52,18 +52,48 @@ loadScripts(document, 'script');</script>
 <h1 title="All Classes and Interfaces" class="title">All Classes and Interfaces</h1>
 </div>
 <div id="all-classes-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="all-classes-table-tab0" role="tab" aria-selected="true" aria-controls="all-classes-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('all-classes-table', 'all-classes-table', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="all-classes-table-tab1" role="tab" aria-selected="false" aria-controls="all-classes-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('all-classes-table', 'all-classes-table-tab1', 2)" class="table-tab">Interfaces</button><button id="all-classes-table-tab2" role="tab" aria-selected="false" aria-controls="all-classes-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('all-classes-table', 'all-classes-table-tab2', 2)" class="table-tab">Classes</button><button id="all-classes-table-tab3" role="tab" aria-selected="false" aria-controls="all-classes-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('all-classes-table', 'all-classes-table-tab3', 2)" class="table-tab">Enums</button><button id="all-classes-table-tab5" role="tab" aria-selected="false" aria-controls="all-classes-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('all-classes-table', 'all-classes-table-tab5', 2)" class="table-tab">Exception Classes</button><button id="all-classes-table-tab6" role="tab" aria-selected="false" aria-controls="all-classes-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('all-classes-table', 'all-classes-table-tab6', 2)" class="table-tab">Annotation Types</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="all-classes-table-tab0" role="tab" aria-selected="true" aria-controls="all-classes-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('all-classes-table', 'all-classes-table', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="all-classes-table-tab1" role="tab" aria-selected="false" aria-controls="all-classes-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('all-classes-table', 'all-classes-table-tab1', 2)" class="table-tab">Interfaces</button><button id="all-classes-table-tab2" role="tab" aria-selected="false" aria-controls="all-classes-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('all-classes-table', 'all-classes-table-tab2', 2)" class="table-tab">Classes</button><button id="all-classes-table-tab3" role="tab" aria-selected="false" aria-controls="all-classes-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('all-classes-table', 'all-classes-table-tab3', 2)" class="table-tab">Enum Classes</button><button id="all-classes-table-tab5" role="tab" aria-selected="false" aria-controls="all-classes-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('all-classes-table', 'all-classes-table-tab5', 2)" class="table-tab">Exception Classes</button><button id="all-classes-table-tab6" role="tab" aria-selected="false" aria-controls="all-classes-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('all-classes-table', 'all-classes-table-tab6', 2)" class="table-tab">Annotation Interfaces</button></div>
 <div id="all-classes-table.tabpanel" role="tabpanel" aria-labelledby="all-classes-table-tab0">
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/validation/AbstractMultiInputValidator.html" title="class in io.github.belgif.rest.problem.validation">AbstractMultiInputValidator&lt;V&gt;</a></div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/spring/AbstractInvalidRequestExceptionHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractInvalidRequestExceptionHandler&lt;J&gt;</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">RestController exception handler for InvalidRequestException thrown by Atlassian swagger-request-validator library.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/validation/AbstractMultiInputValidator.html" title="class in io.github.belgif.rest.problem.validation">AbstractMultiInputValidator&lt;V&gt;</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Abstract base class for <a href="io/github/belgif/rest/problem/validation/InputValidator.html" title="interface in io.github.belgif.rest.problem.validation"><code>InputValidator</code></a> with multiple inputs.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/validation/AbstractRequestValidator.html" title="class in io.github.belgif.rest.problem.validation">AbstractRequestValidator&lt;SELF&gt;</a></div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/spring/AbstractProblemResponseErrorHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractProblemResponseErrorHandler</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">RestTemplate/RestClient error handler that converts problem responses to Problem exceptions.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="io/github/belgif/rest/problem/spring/AbstractProblemResponseErrorHandler.ProblemReader.html" title="interface in io.github.belgif.rest.problem.spring">AbstractProblemResponseErrorHandler.ProblemReader</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab1">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/spring/AbstractProblemRestClientCustomizer.html" title="class in io.github.belgif.rest.problem.spring">AbstractProblemRestClientCustomizer</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">RestClientCustomizer that registers the <a href="io/github/belgif/rest/problem/spring/AbstractProblemResponseErrorHandler.html" title="class in io.github.belgif.rest.problem.spring"><code>AbstractProblemResponseErrorHandler</code></a>.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/spring/AbstractProblemRestTemplateCustomizer.html" title="class in io.github.belgif.rest.problem.spring">AbstractProblemRestTemplateCustomizer</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">RestTemplateCustomizer that registers the <a href="io/github/belgif/rest/problem/spring/AbstractProblemResponseErrorHandler.html" title="class in io.github.belgif.rest.problem.spring"><code>AbstractProblemResponseErrorHandler</code></a>.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/spring/AbstractProblemValidationConfigurationCustomizer.html" title="class in io.github.belgif.rest.problem.spring">AbstractProblemValidationConfigurationCustomizer</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">ValidationConfigurationCustomizer that registers the AnnotationParameterNameProvider.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/spring/AbstractProblemWebClientCustomizer.html" title="class in io.github.belgif.rest.problem.spring">AbstractProblemWebClientCustomizer</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/validation/AbstractRequestValidator.html" title="class in io.github.belgif.rest.problem.validation">AbstractRequestValidator&lt;SELF&gt;</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Abstract base class for <a href="io/github/belgif/rest/problem/validation/RequestValidator.html" title="class in io.github.belgif.rest.problem.validation"><code>RequestValidator</code></a> (for extensible fluent builder pattern).</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/spring/AbstractRoutingExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractRoutingExceptionsHandler&lt;T&gt;</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">RestController exception handler for routing-related exceptions.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/validation/AbstractSingleInputValidator.html" title="class in io.github.belgif.rest.problem.validation">AbstractSingleInputValidator&lt;V&gt;</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
@@ -91,7 +121,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/ee/CdiProblemTypeRegistry.html" title="class in io.github.belgif.rest.problem.ee">CdiProblemTypeRegistry</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
-<div class="block">CDI extension for dynamic discovery of <a href="io/github/belgif/rest/problem/api/Problem.html" title="class in io.github.belgif.rest.problem.api"><code>Problem</code></a> classes annotated with @<a href="io/github/belgif/rest/problem/api/ProblemType.html" title="annotation in io.github.belgif.rest.problem.api"><code>ProblemType</code></a>.</div>
+<div class="block">CDI extension for dynamic discovery of <a href="io/github/belgif/rest/problem/api/Problem.html" title="class in io.github.belgif.rest.problem.api"><code>Problem</code></a> classes annotated with @<a href="io/github/belgif/rest/problem/api/ProblemType.html" title="annotation interface in io.github.belgif.rest.problem.api"><code>ProblemType</code></a>.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab5"><a href="io/github/belgif/rest/problem/api/ClientProblem.html" title="class in io.github.belgif.rest.problem.api">ClientProblem</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab5">
@@ -147,7 +177,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Filter that registers the requested locale, as specified in Accept-Language HTTP header,
  with the <a href="io/github/belgif/rest/problem/quarkus/i18n/LocaleHolder.html" title="class in io.github.belgif.rest.problem.quarkus.i18n"><code>LocaleHolder</code></a> @RequestScoped CDI bean.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="io/github/belgif/rest/problem/api/InEnum.html" title="enum in io.github.belgif.rest.problem.api">InEnum</a></div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="io/github/belgif/rest/problem/api/InEnum.html" title="enum class in io.github.belgif.rest.problem.api">InEnum</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">Enumeration for invalid parameter locations.</div>
 </div>
@@ -328,14 +358,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Utility class for enabling problem support on JAX-RS Clients.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab6"><a href="io/github/belgif/rest/problem/api/ProblemType.html" title="annotation in io.github.belgif.rest.problem.api">ProblemType</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab6"><a href="io/github/belgif/rest/problem/api/ProblemType.html" title="annotation interface in io.github.belgif.rest.problem.api">ProblemType</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab6">
 <div class="block">Annotation used on <a href="io/github/belgif/rest/problem/api/Problem.html" title="class in io.github.belgif.rest.problem.api"><code>Problem</code></a> subclasses for configuring the problem type URI,
  used for Jackson polymorphic deserialization.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="io/github/belgif/rest/problem/registry/ProblemTypeRegistry.html" title="interface in io.github.belgif.rest.problem.registry">ProblemTypeRegistry</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab1">
-<div class="block">Dynamic registry of <a href="io/github/belgif/rest/problem/api/Problem.html" title="class in io.github.belgif.rest.problem.api"><code>Problem</code></a> classes annotated with @<a href="io/github/belgif/rest/problem/api/ProblemType.html" title="annotation in io.github.belgif.rest.problem.api"><code>ProblemType</code></a>.</div>
+<div class="block">Dynamic registry of <a href="io/github/belgif/rest/problem/api/Problem.html" title="class in io.github.belgif.rest.problem.api"><code>Problem</code></a> classes annotated with @<a href="io/github/belgif/rest/problem/api/ProblemType.html" title="annotation interface in io.github.belgif.rest.problem.api"><code>ProblemType</code></a>.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/spring/ProblemValidationConfigurationCustomizer.html" title="class in io.github.belgif.rest.problem.spring">ProblemValidationConfigurationCustomizer</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
@@ -360,7 +390,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/QuarkusProblemExtension.html" title="class in io.github.belgif.rest.problem.quarkus">QuarkusProblemExtension</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
-<div class="block">Build compatible CDI extension for dynamic discovery of <a href="io/github/belgif/rest/problem/api/Problem.html" title="class in io.github.belgif.rest.problem.api"><code>Problem</code></a> classes annotated with @<a href="io/github/belgif/rest/problem/api/ProblemType.html" title="annotation in io.github.belgif.rest.problem.api"><code>ProblemType</code></a>.</div>
+<div class="block">Build compatible CDI extension for dynamic discovery of <a href="io/github/belgif/rest/problem/api/Problem.html" title="class in io.github.belgif.rest.problem.api"><code>Problem</code></a> classes annotated with @<a href="io/github/belgif/rest/problem/api/ProblemType.html" title="annotation interface in io.github.belgif.rest.problem.api"><code>ProblemType</code></a>.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/QuarkusProblemExtension.QuarkusProblemTypeRegistryCreator.html" title="class in io.github.belgif.rest.problem.quarkus">QuarkusProblemExtension.QuarkusProblemTypeRegistryCreator</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
@@ -433,7 +463,7 @@ loadScripts(document, 'script');</script>
 </main>
 <footer role="contentinfo">
 <hr>
-<p class="legal-copy"><small>Copyright &#169; 2025. All rights reserved.</small></p>
+<p class="legal-copy"><small>Copyright &#169; 2026. All rights reserved.</small></p>
 </footer>
 </div>
 </div>
