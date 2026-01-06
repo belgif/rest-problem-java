@@ -24,7 +24,7 @@ import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
-import io.github.belgif.rest.problem.internal.JacksonUtil;
+import io.github.belgif.rest.problem.internal.Jackson2Util;
 
 /**
  * RestController exception handler for routing-related exceptions.
@@ -70,7 +70,7 @@ public class RoutingExceptionsHandler {
                 return DEFAULT_PROBLEM_EXCEPTION_HANDLER.handleException(exception);
             } else {
                 // Otherwise, it relates to an invalid inbound request and should be mapped to HTTP 400 Bad Request
-                return ProblemMediaType.INSTANCE.toResponse(JacksonUtil.toBadRequestProblem(mismatchedInputException));
+                return ProblemMediaType.INSTANCE.toResponse(Jackson2Util.toBadRequestProblem(mismatchedInputException));
             }
         } else {
             LOGGER.info("Transforming HttpMessageNotReadableException " +

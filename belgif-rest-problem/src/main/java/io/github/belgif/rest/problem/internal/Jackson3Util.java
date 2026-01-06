@@ -38,8 +38,8 @@ public class Jackson3Util {
      */
     public static BadRequestProblem toBadRequestProblem(DatabindException e) {
         return new BadRequestProblem(InputValidationIssues.schemaViolation(InEnum.BODY, getName(e.getPath()),
-                JacksonUtil.getValue(e, e.getOriginalMessage()),
-                JacksonUtil.getDetailMessage(e, e.getOriginalMessage())));
+                Jackson2Util.getValue(e, e.getOriginalMessage()),
+                Jackson2Util.getDetailMessage(e, e.getOriginalMessage())));
     }
 
     private static String getName(List<Reference> path) {

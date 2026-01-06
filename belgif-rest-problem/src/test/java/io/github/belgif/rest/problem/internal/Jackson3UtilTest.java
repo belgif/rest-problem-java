@@ -40,7 +40,7 @@ class Jackson3UtilTest {
     @Test
     void mismatchedInputType() {
         assertThatExceptionOfType(MismatchedInputException.class).isThrownBy(() -> {
-            new ObjectMapper().readValue("{ \"id\": \"123\", \"nbr\": \"twenty-two\" }", JacksonUtilTest.Model.class);
+            new ObjectMapper().readValue("{ \"id\": \"123\", \"nbr\": \"twenty-two\" }", Jackson2UtilTest.Model.class);
         }).satisfies(e -> {
             BadRequestProblem problem = Jackson3Util.toBadRequestProblem(e);
             InputValidationIssue issue = problem.getIssues().get(0);
@@ -55,7 +55,7 @@ class Jackson3UtilTest {
     @Test
     void valueInstantiationException() {
         assertThatExceptionOfType(ValueInstantiationException.class).isThrownBy(() -> {
-            new ObjectMapper().readValue("{ \"id\": \"123\", \"size\": \"XXL\" }", JacksonUtilTest.Model.class);
+            new ObjectMapper().readValue("{ \"id\": \"123\", \"size\": \"XXL\" }", Jackson2UtilTest.Model.class);
         }).satisfies(e -> {
             BadRequestProblem problem = Jackson3Util.toBadRequestProblem(e);
             InputValidationIssue issue = problem.getIssues().get(0);
@@ -70,7 +70,7 @@ class Jackson3UtilTest {
     @Test
     void invalidFormatException() {
         assertThatExceptionOfType(InvalidFormatException.class).isThrownBy(() -> {
-            new ObjectMapper().readValue("{ \"id\": \"123\", \"size2\": \"XXL\" }", JacksonUtilTest.Model.class);
+            new ObjectMapper().readValue("{ \"id\": \"123\", \"size2\": \"XXL\" }", Jackson2UtilTest.Model.class);
         }).satisfies(e -> {
             BadRequestProblem problem = Jackson3Util.toBadRequestProblem(e);
             InputValidationIssue issue = problem.getIssues().get(0);

@@ -15,9 +15,9 @@ import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 
 /**
- * Internal jackson utility class.
+ * Internal jackson 2 utility class.
  */
-public class JacksonUtil {
+public class Jackson2Util {
 
     private static final Pattern VALUE_PATTERN = Pattern.compile("from String \"([^\"]+)\"");
 
@@ -27,7 +27,7 @@ public class JacksonUtil {
     private static final Pattern VALUE_INSTANTIATION_PATTERN =
             Pattern.compile("^Cannot construct instance of `([^`]+)`, problem: (.+)$");
 
-    private JacksonUtil() {
+    private Jackson2Util() {
     }
 
     /**
