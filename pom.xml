@@ -23,6 +23,7 @@
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
     <version.jackson3.minimal>3.0.3</version.jackson3.minimal>
     <version.spring.boot.3>3.5.9</version.spring.boot.3>
+    <version.spring.boot.4>4.0.1</version.spring.boot.4>
     <version.quarkus>3.30.5</version.quarkus>
   </properties>
 
@@ -238,7 +239,11 @@
             </goals>
             <inherited>false</inherited>
             <configuration>
-              <skippedModules>belgif-rest-problem-it,jacoco-aggregator</skippedModules>
+              <skippedModules>
+                belgif-rest-problem-it,
+                jacoco-aggregator,
+                belgif-rest-problem-spring-boot-3 <!-- javadoc classpath conflict with *-spring-boot-4 -->
+              </skippedModules>
               <doclint>all,-missing</doclint>
               <notimestamp>true</notimestamp>
               <doctitle>belgif-rest-problem ${project.version}</doctitle>
@@ -251,6 +256,7 @@
                 </dependency>
               </additionalDependencies>
               <outputDirectory>${project.build.directory}/site</outputDirectory>
+              <release>17</release>
             </configuration>
           </execution>
         </executions>
@@ -371,7 +377,9 @@
         <module>belgif-rest-problem</module>
         <module>belgif-rest-problem-validator</module>
         <module>belgif-rest-problem-java-ee</module>
+        <module>belgif-rest-problem-spring-boot-common</module>
         <module>belgif-rest-problem-spring-boot-3</module>
+        <module>belgif-rest-problem-spring-boot-4</module>
         <module>belgif-rest-problem-quarkus</module>
         <module>belgif-rest-problem-quarkus-deployment</module>
         <module>belgif-rest-problem-it</module>
@@ -448,6 +456,7 @@
                 <excludeArtifact>belgif-rest-problem-java-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-quarkus-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-spring-boot-3-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-spring-boot-4-it</excludeArtifact>
               </excludeArtifacts>
             </configuration>
           </plugin>
@@ -461,7 +470,8 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.projectName>rest-problem-java</sonar.projectName>
         <sonar.projectKey>belgif_rest-problem-java</sonar.projectKey>
-        <sonar.coverage.jacoco.xmlReportPaths>${maven.multiModuleProjectDirectory}/jacoco-aggregator/target/jacoco.xml
+        <sonar.coverage.jacoco.xmlReportPaths>
+          ${maven.multiModuleProjectDirectory}/jacoco-aggregator/target/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <sonar.coverage.exclusions>**/belgif-rest-problem-it/**</sonar.coverage.exclusions>
         <sonar.cpd.exclusions>**/belgif-rest-problem-it/**,**/src/test/java/**</sonar.cpd.exclusions>
@@ -470,7 +480,9 @@
         <module>belgif-rest-problem</module>
         <module>belgif-rest-problem-validator</module>
         <module>belgif-rest-problem-java-ee</module>
+        <module>belgif-rest-problem-spring-boot-common</module>
         <module>belgif-rest-problem-spring-boot-3</module>
+        <module>belgif-rest-problem-spring-boot-4</module>
         <module>belgif-rest-problem-quarkus</module>
         <module>belgif-rest-problem-quarkus-deployment</module>
         <module>belgif-rest-problem-it</module>
@@ -514,7 +526,9 @@
       <id>spring-only</id>
       <modules>
         <module>belgif-rest-problem</module>
+        <module>belgif-rest-problem-spring-boot-common</module>
         <module>belgif-rest-problem-spring-boot-3</module>
+        <module>belgif-rest-problem-spring-boot-4</module>
         <!-- All relevant ITs -->
         <module>belgif-rest-problem-it/belgif-rest-problem-apt</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-codegen-it</module>
@@ -523,8 +537,22 @@
         <module>belgif-rest-problem-it/belgif-rest-problem-jackson2-minimal-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-jackson3-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-spring-boot-3-it</module>
+        <module>belgif-rest-problem-it/belgif-rest-problem-spring-boot-4-it</module>
         <module>belgif-rest-problem-bom</module>
       </modules>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-javadoc</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 
