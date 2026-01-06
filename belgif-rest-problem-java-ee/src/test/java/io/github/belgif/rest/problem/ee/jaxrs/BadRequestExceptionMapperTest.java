@@ -1,7 +1,6 @@
 package io.github.belgif.rest.problem.ee.jaxrs;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.Response;
@@ -32,8 +31,8 @@ class BadRequestExceptionMapperTest {
         assertThat(response.getEntity()).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem problem = (BadRequestProblem) response.getEntity();
         InputValidationIssue issue = problem.getIssues().get(0);
-        assertEquals(InEnum.HEADER, issue.getIn());
-        assertEquals("startDate_gt", issue.getName());
+        assertThat(issue.getIn()).isEqualTo(InEnum.HEADER);
+        assertThat(issue.getName()).isEqualTo("startDate_gt");
     }
 
     @Test
@@ -47,8 +46,8 @@ class BadRequestExceptionMapperTest {
         assertThat(response.getEntity()).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem problem = (BadRequestProblem) response.getEntity();
         InputValidationIssue issue = problem.getIssues().get(0);
-        assertEquals(InEnum.HEADER, issue.getIn());
-        assertEquals("startDate_gt", issue.getName());
+        assertThat(issue.getIn()).isEqualTo(InEnum.HEADER);
+        assertThat(issue.getName()).isEqualTo("startDate_gt");
     }
 
     @Test

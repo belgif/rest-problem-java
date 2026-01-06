@@ -1,7 +1,6 @@
 package io.github.belgif.rest.problem.ee.jaxrs;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
@@ -33,8 +32,8 @@ class NotFoundExceptionMapperTest {
         assertThat(response.getEntity()).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem problem = (BadRequestProblem) response.getEntity();
         InputValidationIssue issue = problem.getIssues().get(0);
-        assertEquals(InEnum.QUERY, issue.getIn());
-        assertEquals("startDate_gt", issue.getName());
+        assertThat(issue.getIn()).isEqualTo(InEnum.QUERY);
+        assertThat(issue.getName()).isEqualTo("startDate_gt");
     }
 
     @Test
@@ -48,8 +47,8 @@ class NotFoundExceptionMapperTest {
         assertThat(response.getEntity()).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem problem = (BadRequestProblem) response.getEntity();
         InputValidationIssue issue = problem.getIssues().get(0);
-        assertEquals(InEnum.QUERY, issue.getIn());
-        assertEquals("startDate_gt", issue.getName());
+        assertThat(issue.getIn()).isEqualTo(InEnum.QUERY);
+        assertThat(issue.getName()).isEqualTo("startDate_gt");
     }
 
     @Test
