@@ -1,6 +1,6 @@
 package io.github.belgif.rest.problem.spring.internal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,66 +20,66 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 class InvalidRequestExceptionUtilTest {
 
     @Test
-    void testGetInPath() {
+    void getInPath() {
         ValidationReport.Message.Builder builder =
                 ValidationReport.Message.create("something.crazy.going.on", "My Test Message");
         builder.withContext(ValidationReport.MessageContext.create()
                 .withParameter(new Parameter().in("path").name("myParam")).build());
         ValidationReport.Message message = builder.build();
-        assertEquals(InEnum.PATH, InvalidRequestExceptionUtil.getIn(message));
+        assertThat(InvalidRequestExceptionUtil.getIn(message)).isEqualTo(InEnum.PATH);
     }
 
     @Test
-    void testGetInHeader() {
+    void getInHeader() {
         ValidationReport.Message.Builder builder =
                 ValidationReport.Message.create("something.crazy.going.on", "My Test Message");
         builder.withContext(ValidationReport.MessageContext.create()
                 .withParameter(new Parameter().in("header").name("myParam")).build());
         ValidationReport.Message message = builder.build();
-        assertEquals(InEnum.HEADER, InvalidRequestExceptionUtil.getIn(message));
+        assertThat(InvalidRequestExceptionUtil.getIn(message)).isEqualTo(InEnum.HEADER);
     }
 
     @Test
-    void testGetInQuery() {
+    void getInQuery() {
         ValidationReport.Message.Builder builder =
                 ValidationReport.Message.create("something.crazy.going.on", "My Test Message");
         builder.withContext(ValidationReport.MessageContext.create()
                 .withParameter(new Parameter().in("query").name("myParam")).build());
         ValidationReport.Message message = builder.build();
-        assertEquals(InEnum.QUERY, InvalidRequestExceptionUtil.getIn(message));
+        assertThat(InvalidRequestExceptionUtil.getIn(message)).isEqualTo(InEnum.QUERY);
     }
 
     @Test
-    void testGetInBody() {
+    void getInBody() {
         ValidationReport.Message.Builder builder =
                 ValidationReport.Message.create("something.crazy.going.on", "My Test Message");
         ValidationReport.Message message = builder.build();
-        assertEquals(InEnum.BODY, InvalidRequestExceptionUtil.getIn(message));
+        assertThat(InvalidRequestExceptionUtil.getIn(message)).isEqualTo(InEnum.BODY);
     }
 
     @Test
-    void testGetNameParameter() {
+    void getNameParameter() {
         ValidationReport.Message.Builder builder =
                 ValidationReport.Message.create("something.crazy.going.on", "My Test Message");
         builder.withContext(ValidationReport.MessageContext.create()
                 .withParameter(new Parameter().in("query").name("myParam")).build());
         ValidationReport.Message message = builder.build();
-        assertEquals("myParam", InvalidRequestExceptionUtil.getName(message));
+        assertThat(InvalidRequestExceptionUtil.getName(message)).isEqualTo("myParam");
     }
 
     @Test
-    void testGetNameBody() {
+    void getNameBody() {
         ValidationReport.Message.Builder builder =
                 ValidationReport.Message.create("something.crazy.going.on", "My Test Message");
         builder.withContext(ValidationReport.MessageContext.create()
                 .withPointers("/myProperty", "yes")
                 .build());
         ValidationReport.Message message = builder.build();
-        assertEquals("/myProperty", InvalidRequestExceptionUtil.getName(message));
+        assertThat(InvalidRequestExceptionUtil.getName(message)).isEqualTo("/myProperty");
     }
 
     @Test
-    void testGetPathValue() {
+    void getPathValue() {
         ApiPath path = new ApiPathImpl("/{myFirstParam}/{mySecondParam}/pathSegment/{myThirdParam}/collection",
                 "https://myPrefix.io");
 
@@ -89,13 +89,13 @@ class InvalidRequestExceptionUtilTest {
                 .withApiOperation(new ApiOperation(path, path, PathItem.HttpMethod.GET, new Operation()))
                 .withRequestPath("/firstValue/secondValue/pathSegment/thirdValue/collection").build());
         ValidationReport.Message message = builder.build();
-        assertEquals("firstValue", InvalidRequestExceptionUtil.getPathValue(message, "myFirstParam"));
-        assertEquals("secondValue", InvalidRequestExceptionUtil.getPathValue(message, "mySecondParam"));
-        assertEquals("thirdValue", InvalidRequestExceptionUtil.getPathValue(message, "myThirdParam"));
+        assertThat(InvalidRequestExceptionUtil.getPathValue(message, "myFirstParam")).isEqualTo("firstValue");
+        assertThat(InvalidRequestExceptionUtil.getPathValue(message, "mySecondParam")).isEqualTo("secondValue");
+        assertThat(InvalidRequestExceptionUtil.getPathValue(message, "myThirdParam")).isEqualTo("thirdValue");
     }
 
     @Test
-    void testGetDetailForNormalMessages() {
+    void getDetailForNormalMessages() {
         List<ValidationReport.Message> messages = new ArrayList<>();
         messages.add(ValidationReport.Message.create("validation.schema.firstError", "first issue").build());
         messages.add(ValidationReport.Message.create("validation.schema.secondError", "second issue").build());
@@ -103,11 +103,11 @@ class InvalidRequestExceptionUtilTest {
         ValidationReport.Message message = ValidationReport.Message.create("my.validation.issue", "test message")
                 .build().withNestedMessages(messages);
 
-        assertEquals("test message", InvalidRequestExceptionUtil.getDetail(message));
+        assertThat(InvalidRequestExceptionUtil.getDetail(message)).isEqualTo("test message");
     }
 
     @Test
-    void testGetDetailForOneOfMessages() {
+    void getDetailForOneOfMessages() {
         List<ValidationReport.Message> messages = new ArrayList<>();
         messages.add(ValidationReport.Message.create("validation.schema.firstError", "first issue").build());
         messages.add(ValidationReport.Message.create("validation.schema.secondError", "second issue").build());
@@ -118,13 +118,13 @@ class InvalidRequestExceptionUtilTest {
 
         String detail = InvalidRequestExceptionUtil.getDetail(message);
 
-        assertTrue(detail.contains("test message"));
-        assertTrue(detail.contains("first issue"));
-        assertTrue(detail.contains("second issue"));
+        assertThat(detail.contains("test message")).isTrue();
+        assertThat(detail.contains("first issue")).isTrue();
+        assertThat(detail.contains("second issue")).isTrue();
     }
 
     @Test
-    void testGetDetailForAnyOfMessages() {
+    void getDetailForAnyOfMessages() {
         List<ValidationReport.Message> messages = new ArrayList<>();
         messages.add(ValidationReport.Message.create("validation.schema.firstError", "first issue").build());
         messages.add(ValidationReport.Message.create("validation.schema.secondError", "second issue").build());
@@ -135,9 +135,9 @@ class InvalidRequestExceptionUtilTest {
 
         String detail = InvalidRequestExceptionUtil.getDetail(message);
 
-        assertTrue(detail.contains("test message"));
-        assertTrue(detail.contains("first issue"));
-        assertTrue(detail.contains("second issue"));
+        assertThat(detail.contains("test message")).isTrue();
+        assertThat(detail.contains("first issue")).isTrue();
+        assertThat(detail.contains("second issue")).isTrue();
     }
 
 }

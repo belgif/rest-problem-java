@@ -1,6 +1,6 @@
 package io.github.belgif.rest.problem.spring;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -56,11 +56,11 @@ class AbstractInvalidRequestExceptionHandlerTest {
 
         Problem problem = handler.handleInvalidRequestException(exception, request).getBody();
 
-        assertInstanceOf(BadRequestProblem.class, problem);
+        assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
-        assertEquals(InEnum.BODY, badRequestProblem.getIssues().get(0).getIn());
-        assertEquals("/myProperty", badRequestProblem.getIssues().get(0).getName());
-        assertEquals("myDummyValue", badRequestProblem.getIssues().get(0).getValue());
+        assertThat(badRequestProblem.getIssues().get(0).getIn()).isEqualTo(InEnum.BODY);
+        assertThat(badRequestProblem.getIssues().get(0).getName()).isEqualTo("/myProperty");
+        assertThat(badRequestProblem.getIssues().get(0).getValue()).isEqualTo("myDummyValue");
     }
 
     @Test
@@ -81,10 +81,10 @@ class AbstractInvalidRequestExceptionHandlerTest {
 
         Problem problem = handler.handleInvalidRequestException(exception, request).getBody();
 
-        assertInstanceOf(BadRequestProblem.class, problem);
+        assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
-        assertEquals(InEnum.PATH, badRequestProblem.getIssues().get(0).getIn());
-        assertEquals("myValue", badRequestProblem.getIssues().get(0).getValue());
+        assertThat(badRequestProblem.getIssues().get(0).getIn()).isEqualTo(InEnum.PATH);
+        assertThat(badRequestProblem.getIssues().get(0).getValue()).isEqualTo("myValue");
     }
 
     @Test
@@ -101,12 +101,12 @@ class AbstractInvalidRequestExceptionHandlerTest {
 
         Problem problem = handler.handleInvalidRequestException(exception, request).getBody();
 
-        assertInstanceOf(BadRequestProblem.class, problem);
+        assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
-        assertEquals(InEnum.QUERY, badRequestProblem.getIssues().get(0).getIn());
-        assertEquals("myValue", badRequestProblem.getIssues().get(0).getValue());
-        assertEquals("myParam", badRequestProblem.getIssues().get(0).getName());
-        assertEquals("My Test Message", badRequestProblem.getIssues().get(0).getDetail());
+        assertThat(badRequestProblem.getIssues().get(0).getIn()).isEqualTo(InEnum.QUERY);
+        assertThat(badRequestProblem.getIssues().get(0).getValue()).isEqualTo("myValue");
+        assertThat(badRequestProblem.getIssues().get(0).getName()).isEqualTo("myParam");
+        assertThat(badRequestProblem.getIssues().get(0).getDetail()).isEqualTo("My Test Message");
     }
 
     @Test
@@ -123,12 +123,12 @@ class AbstractInvalidRequestExceptionHandlerTest {
 
         Problem problem = handler.handleInvalidRequestException(exception, request).getBody();
 
-        assertInstanceOf(BadRequestProblem.class, problem);
+        assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
-        assertEquals(InEnum.HEADER, badRequestProblem.getIssues().get(0).getIn());
-        assertEquals("myValue", badRequestProblem.getIssues().get(0).getValue());
-        assertEquals("myParam", badRequestProblem.getIssues().get(0).getName());
-        assertEquals("My Test Message", badRequestProblem.getIssues().get(0).getDetail());
+        assertThat(badRequestProblem.getIssues().get(0).getIn()).isEqualTo(InEnum.HEADER);
+        assertThat(badRequestProblem.getIssues().get(0).getValue()).isEqualTo("myValue");
+        assertThat(badRequestProblem.getIssues().get(0).getName()).isEqualTo("myParam");
+        assertThat(badRequestProblem.getIssues().get(0).getDetail()).isEqualTo("My Test Message");
     }
 
     @Test
@@ -140,8 +140,8 @@ class AbstractInvalidRequestExceptionHandlerTest {
 
         InvalidRequestException exception = new InvalidRequestException(ValidationReport.from(messages));
         Problem problem = handler.handleInvalidRequestException(exception, null).getBody();
-        assertInstanceOf(ResourceNotFoundProblem.class, problem);
-        assertEquals(404, problem.getStatus());
+        assertThat(problem).isInstanceOf(ResourceNotFoundProblem.class);
+        assertThat(problem.getStatus()).isEqualTo(404);
     }
 
     @Test
@@ -154,8 +154,8 @@ class AbstractInvalidRequestExceptionHandlerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         Problem problem = handler.handleInvalidRequestException(exception, request).getBody();
-        assertInstanceOf(BadRequestProblem.class, problem);
-        assertEquals(400, problem.getStatus());
+        assertThat(problem).isInstanceOf(BadRequestProblem.class);
+        assertThat(problem.getStatus()).isEqualTo(400);
     }
 
     @Test
@@ -167,10 +167,10 @@ class AbstractInvalidRequestExceptionHandlerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         Problem problem = handler.handleInvalidRequestException(exception, request).getBody();
-        assertInstanceOf(BadRequestProblem.class, problem);
+        assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
-        assertEquals(InEnum.BODY, badRequestProblem.getIssues().get(0).getIn());
-        assertEquals("Unable to parse JSON", badRequestProblem.getIssues().get(0).getDetail());
+        assertThat(badRequestProblem.getIssues().get(0).getIn()).isEqualTo(InEnum.BODY);
+        assertThat(badRequestProblem.getIssues().get(0).getDetail()).isEqualTo("Unable to parse JSON");
     }
 
     @Test
@@ -183,10 +183,10 @@ class AbstractInvalidRequestExceptionHandlerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         Problem problem = handler.handleInvalidRequestException(exception, request).getBody();
-        assertInstanceOf(BadRequestProblem.class, problem);
+        assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
-        assertEquals(InEnum.BODY, badRequestProblem.getIssues().get(0).getIn());
-        assertEquals("Unable to parse JSON", badRequestProblem.getIssues().get(0).getDetail());
+        assertThat(badRequestProblem.getIssues().get(0).getIn()).isEqualTo(InEnum.BODY);
+        assertThat(badRequestProblem.getIssues().get(0).getDetail()).isEqualTo("Unable to parse JSON");
     }
 
     @Test
@@ -198,9 +198,10 @@ class AbstractInvalidRequestExceptionHandlerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         Problem problem = handler.handleInvalidRequestException(exception, request).getBody();
-        assertInstanceOf(BadRequestProblem.class, problem);
+        assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
-        assertEquals("An error occurred during schema validation", badRequestProblem.getIssues().get(0).getDetail());
+        assertThat(badRequestProblem.getIssues().get(0).getDetail())
+                .isEqualTo("An error occurred during schema validation");
     }
 
     @Test
@@ -216,9 +217,9 @@ class AbstractInvalidRequestExceptionHandlerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         Problem problem = handler.handleInvalidRequestException(exception, request).getBody();
-        assertInstanceOf(BadRequestProblem.class, problem);
+        assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
-        assertEquals(2, badRequestProblem.getIssues().size());
+        assertThat(badRequestProblem.getIssues().size()).isEqualTo(2);
     }
 
     @Test
@@ -234,9 +235,9 @@ class AbstractInvalidRequestExceptionHandlerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         Problem problem = handler.handleInvalidRequestException(exception, request).getBody();
-        assertInstanceOf(BadRequestProblem.class, problem);
+        assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
-        assertEquals(1, badRequestProblem.getIssues().size());
+        assertThat(badRequestProblem.getIssues().size()).isEqualTo(1);
     }
 
     @Test
@@ -248,9 +249,10 @@ class AbstractInvalidRequestExceptionHandlerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         Problem problem = handler.handleInvalidRequestException(exception, request).getBody();
-        assertInstanceOf(BadRequestProblem.class, problem);
+        assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
-        assertEquals(InputValidationIssues.ISSUE_TYPE_SCHEMA_VIOLATION, badRequestProblem.getIssues().get(0).getType());
+        assertThat(badRequestProblem.getIssues().get(0).getType())
+                .isEqualTo(InputValidationIssues.ISSUE_TYPE_SCHEMA_VIOLATION);
     }
 
     @Test
@@ -263,9 +265,10 @@ class AbstractInvalidRequestExceptionHandlerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         Problem problem = handler.handleInvalidRequestException(exception, request).getBody();
-        assertInstanceOf(BadRequestProblem.class, problem);
+        assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
-        assertEquals(InputValidationIssues.ISSUE_TYPE_UNKNOWN_INPUT, badRequestProblem.getIssues().get(0).getType());
+        assertThat(badRequestProblem.getIssues().get(0).getType())
+                .isEqualTo(InputValidationIssues.ISSUE_TYPE_UNKNOWN_INPUT);
     }
 
 }

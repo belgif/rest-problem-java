@@ -1,6 +1,6 @@
 package io.github.belgif.rest.problem.spring;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.nio.charset.StandardCharsets;
 
@@ -40,11 +40,11 @@ class InvalidRequestExceptionHandlerTest {
 
         Problem problem = handler.handleInvalidRequestException(exception, request).getBody();
 
-        assertInstanceOf(BadRequestProblem.class, problem);
+        assertThat(problem).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
-        assertEquals(InEnum.BODY, badRequestProblem.getIssues().get(0).getIn());
-        assertEquals("/myProperty", badRequestProblem.getIssues().get(0).getName());
-        assertEquals("myDummyValue", badRequestProblem.getIssues().get(0).getValue());
+        assertThat(badRequestProblem.getIssues().get(0).getIn()).isEqualTo(InEnum.BODY);
+        assertThat(badRequestProblem.getIssues().get(0).getName()).isEqualTo("/myProperty");
+        assertThat(badRequestProblem.getIssues().get(0).getValue()).isEqualTo("myDummyValue");
     }
 
 }
