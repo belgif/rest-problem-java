@@ -23,6 +23,12 @@
 
 *belgif-rest-problem-spring:* merged module into `belgif-rest-problem-spring-boot-3`
 
+*belgif-rest-problem-java-ee:*
+
+* Added `AbstractInputParamConverterProvider` base class for implementing input-aware ("in" and "name") JAX-RS ParamConverters
+* Unwrap BadRequestProblem exception cause thrown by JAX-RS ParamConverters
+* Added exception mapper for converting Jackson JsonMappingException and JsonParseException to BadRequestProblem with schemaViolation issue type
+
 *belgif-rest-problem:*
 
 * Added support for Jackson 3:
