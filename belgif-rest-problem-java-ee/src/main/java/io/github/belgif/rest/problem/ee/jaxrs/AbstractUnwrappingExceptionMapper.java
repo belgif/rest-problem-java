@@ -7,9 +7,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.ee.internal.ParameterSourceMapper;
@@ -17,14 +14,11 @@ import io.github.belgif.rest.problem.ee.internal.ParameterSourceMapper;
 public abstract class AbstractUnwrappingExceptionMapper<T extends WebApplicationException>
         implements ExceptionMapper<T> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractUnwrappingExceptionMapper.class);
-
     private static final Pattern PARAM_PATTERN =
             Pattern.compile("(javax|jakarta).ws.rs.((?:Path|Query|Header|Bean|Form|Cookie|Matrix)Param)\\(\"(.*)\"\\)");
 
     @Override
     public Response toResponse(T exception) {
-        LOGGER.warn(exception.getMessage(), exception);
         if (exception.getCause() instanceof BadRequestProblem) {
             BadRequestProblem problem = (BadRequestProblem) exception.getCause();
             if (!problem.getIssues().isEmpty()) {
