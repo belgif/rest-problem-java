@@ -251,6 +251,12 @@ If not, you'll need to add these dependencies to your application:
 
 Problem exceptions and framework exceptions (including bean validation) thrown by JAX-RS service components are automatically converted to a proper RFC 9457 `application/problem+json` response.
 
+===== JAX-RS ParamConverter
+
+To implement an input-aware JAX-RS ParamConverter, extend from `io.github.belgif.rest.problem.ee.jaxrs.AbstractInputParamConverterProvider`.
+It provides access to the input parameter name and location.
+Any BadRequestProblem thrown by the JAX-RS ParamConverter will be properly passed on to the client.
+
 ==== JAX-RS client
 
 Problem support is automatically enabled for `@Inject`-ed `javax.ws.rs.client.Client(Builder)`.
@@ -772,6 +778,10 @@ This module provides components that handle Java EE / Jakarta EE integration wit
 Its priority of "Priorities.USER + 200" allows it to be overridden if needed by the client application.
 * *ConstraintViolationExceptionMapper:* a JAX-RS ExceptionMapper that converts ConstraintViolationException to an HTTP 400 BadRequestProblem.
 * *JacksonMismatchedInputExceptionMapper:* a JAX-RS ExceptionMapper that converts jackson MismatchedInputException to an HTTP 400 BadRequestProblem.
+* *JacksonJsonParseExceptionMapper:* a JAX-RS ExceptionMapper that converts jackson JsonParseException to an HTTP 400 BadRequestProblem.
+* *JacksonJsonMappingExceptionMapper:* a JAX-RS ExceptionMapper that converts jackson JsonMappingException to an HTTP 400 BadRequestProblem.
+* *BadRequestExceptionMapper:* a JAX-RS ExceptionMapper that unwraps BadRequestException caused by BadRequestProblem (thrown by JAX-RS ParamConverter)
+* *NotFoundExceptionMapper:* a JAX-RS ExceptionMapper that unwraps NotFoundException caused by BadRequestProblem (thrown by JAX-RS ParamConverter)
 * *ProblemExceptionMapper:* a JAX-RS ExceptionMapper that converts Problem exceptions to a proper application/problem+json response.
 * *WebApplicationExceptionMapper:* a JAX-RS ExceptionMapper that handles WebApplicationExceptions thrown by the JAX-RS runtime itself, to prevent them from being handled by the DefaultExceptionMapper.
 * *DefaultExceptionMapper:* a JAX-RS ExceptionMapper that converts any other uncaught exception to an HTTP 500 InternalServerErrorProblem.
@@ -779,6 +789,7 @@ Its priority of "Priorities.USER + 200" allows it to be overridden if needed by 
 Routes to ProblemExceptionMapper when the EJBException is caused by a Problem exception.
 Otherwise, routes to DefaultExceptionMapper.
 * *JaxRsParameterNameProvider*: a bean validation ParameterNameProvider that retrieves parameter names from JAX-RS annotations
+* *AbstractInputParamConverterProvider*: a base class for implementing input-aware ("in" and "name") JAX-RS ParamConverters
 
 * *JAX-RS Client integration:*
 ** *ProblemClientResponseFilter:* JAX-RS ClientResponseFilter that converts problem response to a ProblemWrapper exception.

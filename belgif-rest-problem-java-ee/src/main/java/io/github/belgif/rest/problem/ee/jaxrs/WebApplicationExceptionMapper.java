@@ -9,6 +9,9 @@ import javax.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 /**
  * ExceptionMapper for unhandled WebApplicationExceptions.
  *
@@ -25,8 +28,21 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebApplicationExceptionMapper.class);
 
+    private static final JacksonJsonParseExceptionMapper JSON_PARSE_EXCEPTION_MAPPER =
+            new JacksonJsonParseExceptionMapper();
+
+    private static final JacksonJsonMappingExceptionMapper JSON_MAPPING_EXCEPTION_MAPPER =
+            new JacksonJsonMappingExceptionMapper();
+
     @Override
     public Response toResponse(WebApplicationException exception) {
+        // On some JAX-RS runtimes (i.e. Quarkus), JsonParseException and JsonMappingException
+        // are wrapped in a WebApplicationException, which gets unwrapped here
+        if (exception.getCause() instanceof JsonParseException) {
+            return JSON_PARSE_EXCEPTION_MAPPER.toResponse((JsonParseException) exception.getCause());
+        } else if (exception.getCause() instanceof JsonMappingException) {
+            return JSON_MAPPING_EXCEPTION_MAPPER.toResponse((JsonMappingException) exception.getCause());
+        }
         Response response = exception.getResponse();
         if (response.getStatusInfo().getFamily() == Status.Family.SERVER_ERROR) {
             LOGGER.error("WebApplicationException [HTTP {}] {}", response.getStatus(), exception.getMessage(),

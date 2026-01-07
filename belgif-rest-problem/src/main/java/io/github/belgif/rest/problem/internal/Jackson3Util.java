@@ -1,16 +1,18 @@
 package io.github.belgif.rest.problem.internal;
 
+import static io.github.belgif.rest.problem.api.InputValidationIssues.*;
+
 import java.util.List;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
-import tools.jackson.core.JacksonException;
+import tools.jackson.core.JacksonException.Reference;
+import tools.jackson.core.exc.StreamReadException;
 import tools.jackson.databind.DatabindException;
-import tools.jackson.databind.exc.MismatchedInputException;
 
 /**
- * Internal jackson utility class.
+ * Internal jackson 3 utility class.
  */
 public class Jackson3Util {
 
@@ -18,14 +20,34 @@ public class Jackson3Util {
     }
 
     /**
-     * Convert the given JsonMappingException to a BadRequestProblem.
+     * Convert the given StreamReadException to a BadRequestProblem.
      *
-     * @param e the JsonMappingException
+     * @param e the StreamReadException
+     * @return the BadRequestProblem
+     */
+    public static BadRequestProblem toBadRequestProblem(StreamReadException e) {
+        return new BadRequestProblem(schemaViolation(InEnum.BODY, null,
+                null, InputValidationIssues.DETAIL_JSON_SYNTAX_ERROR));
+    }
+
+    /**
+     * Convert the given DatabindException to a BadRequestProblem.
+     *
+     * @param e the DatabindException
      * @return the BadRequestProblem
      */
     public static BadRequestProblem toBadRequestProblem(DatabindException e) {
+        return new BadRequestProblem(InputValidationIssues.schemaViolation(InEnum.BODY, getName(e.getPath()),
+                Jackson2Util.getValue(e, e.getOriginalMessage()),
+                Jackson2Util.getDetailMessage(e, e.getOriginalMessage())));
+    }
+
+    private static String getName(List<Reference> path) {
+        if (path.isEmpty()) {
+            return null;
+        }
         StringBuilder name = new StringBuilder();
-        for (JacksonException.Reference reference : e.getPath()) {
+        for (Reference reference : path) {
             if (reference.from() instanceof List) {
                 name.append("[").append(reference.getIndex()).append("]");
             } else {
@@ -35,24 +57,7 @@ public class Jackson3Util {
                 name.append(reference.getPropertyName());
             }
         }
-        return new BadRequestProblem(
-                InputValidationIssues.schemaViolation(InEnum.BODY, name.toString(), null, getDetailMessage(e)));
-    }
-
-    private static String getDetailMessage(DatabindException e) {
-        if (e.getOriginalMessage().startsWith("Missing required")) {
-            return "must not be null";
-        } else {
-            String message = e.getOriginalMessage();
-            if (message != null && e instanceof MismatchedInputException) {
-                MismatchedInputException mismatchedInputException = (MismatchedInputException) e;
-                if (message.contains(mismatchedInputException.getTargetType().getName())) {
-                    message = message.replace(mismatchedInputException.getTargetType().getName(),
-                            mismatchedInputException.getTargetType().getSimpleName());
-                }
-            }
-            return message;
-        }
+        return name.toString();
     }
 
 }

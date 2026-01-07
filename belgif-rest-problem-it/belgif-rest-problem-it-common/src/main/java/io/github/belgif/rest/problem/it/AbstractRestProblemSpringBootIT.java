@@ -49,19 +49,6 @@ public abstract class AbstractRestProblemSpringBootIT extends AbstractRestProble
     }
 
     @Test
-    public void constraintViolationBodyParseError() {
-        getSpec().when().body("{" +
-                "\"email: \"mymail.com\"" +
-                "}")
-                .contentType("application/json")
-                .post("/beanValidation/body").then().assertThat()
-                .statusCode(400)
-                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
-                .body("issues[0].in", equalTo("body"))
-                .body("issues[0].detail", equalTo("JSON parse error"));
-    }
-
-    @Test
     public void constraintViolationQueryParameterNested() {
         getSpec().when()
                 .queryParam("email", "myemail.com")

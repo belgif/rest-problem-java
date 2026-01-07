@@ -140,7 +140,7 @@ class AbstractRoutingExceptionsHandlerTest {
             assertThat(problem.getIssues().get(0).getType()).isEqualTo(ISSUE_TYPE_SCHEMA_VIOLATION);
             assertThat(problem.getIssues().get(0).getIn()).isEqualTo(InEnum.BODY);
             assertThat(problem.getIssues().get(0).getName()).isNull();
-            assertThat(problem.getIssues().get(0).getDetail()).isEqualTo("JSON parse error");
+            assertThat(problem.getIssues().get(0).getDetail()).isEqualTo("JSON syntax error");
         });
     }
 
