@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
  * WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
  */
 @Component
-@ConditionalOnClass(WebClient.class)
+@ConditionalOnClass({ WebClient.class, WebClientCustomizer.class })
 public class ProblemWebClientCustomizer extends AbstractProblemWebClientCustomizer implements WebClientCustomizer {
 
 }

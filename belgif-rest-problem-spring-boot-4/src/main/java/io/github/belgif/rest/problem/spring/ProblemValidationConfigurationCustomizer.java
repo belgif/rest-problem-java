@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * ValidationConfigurationCustomizer that registers the AnnotationParameterNameProvider.
  */
 @Component
-@ConditionalOnClass(Configuration.class)
+@ConditionalOnClass({ Configuration.class, ValidationConfigurationCustomizer.class })
 public class ProblemValidationConfigurationCustomizer extends AbstractProblemValidationConfigurationCustomizer
         implements ValidationConfigurationCustomizer {
 

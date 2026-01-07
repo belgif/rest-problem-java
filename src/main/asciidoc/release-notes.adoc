@@ -12,6 +12,12 @@
 
 // tag::recent-versions[]
 
+== Version 0.20
+
+*belgif-rest-problem-spring-boot-4:*
+
+* Fix conditional loading of optional components
+
 == Version 0.19
 
 [WARNING]
