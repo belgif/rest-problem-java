@@ -643,6 +643,22 @@ window.onload = function() {
 <p><strong>belgif-rest-problem-spring:</strong> renamed to belgif-rest-problem-spring-boot-common</p>
 </div>
 <div class="paragraph">
+<p><strong>belgif-rest-problem-java-ee:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Added <code>AbstractInputParamConverterProvider</code> base class for implementing input-aware ("in" and "name") JAX-RS ParamConverters</p>
+</li>
+<li>
+<p>Unwrap BadRequestProblem exception cause thrown by JAX-RS ParamConverters</p>
+</li>
+<li>
+<p>Added exception mapper for converting Jackson JsonMappingException and JsonParseException to BadRequestProblem with schemaViolation issue type</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
 <p><strong>belgif-rest-problem:</strong></p>
 </div>
 <div class="ulist">

@@ -93,25 +93,51 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ConstraintViolationExceptionMapper.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">ConstraintViolationExceptionMapper</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AbstractInputParamConverterProvider.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">AbstractInputParamConverterProvider</a>&lt;T&gt;</div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">Abstract base class for input-aware ("in" and "name") ParamConverter.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AbstractUnwrappingExceptionMapper.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">AbstractUnwrappingExceptionMapper</a>&lt;T extends javax.ws.rs.WebApplicationException&gt;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">Abstract base class for unwrapping BadRequestProblem cause from WebApplicationExceptions.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="BadRequestExceptionMapper.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">BadRequestExceptionMapper</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">Exception mapper for <code>BadRequestException</code>, with special handling for unwrapping BadRequestProblem
+ cause thrown by <code>ParamConverter</code>.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ConstraintViolationExceptionMapper.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">ConstraintViolationExceptionMapper</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">ExceptionMapper for mapping ConstraintViolationException to BadRequestProblem.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DefaultExceptionMapper.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">DefaultExceptionMapper</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DefaultExceptionMapper.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">DefaultExceptionMapper</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Default ExceptionMapper for mapping unhandled exceptions to InternalServerErrorProblem.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="EJBExceptionMapper.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">EJBExceptionMapper</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="EJBExceptionMapper.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">EJBExceptionMapper</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">ExceptionMapper for unhandled EJBExceptions.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="JacksonMismatchedInputExceptionMapper.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">JacksonMismatchedInputExceptionMapper</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="JacksonJsonMappingExceptionMapper.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">JacksonJsonMappingExceptionMapper</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">ExceptionMapper for mapping jackson JsonMappingException to BadRequestProblem.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="JacksonJsonParseExceptionMapper.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">JacksonJsonParseExceptionMapper</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">ExceptionMapper for mapping jackson JsonParseException to BadRequestProblem.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="JacksonMismatchedInputExceptionMapper.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">JacksonMismatchedInputExceptionMapper</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">ExceptionMapper for mapping jackson MismatchedInputException to BadRequestProblem.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="JaxRsParameterNameProvider.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">JaxRsParameterNameProvider</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="JaxRsParameterNameProvider.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">JaxRsParameterNameProvider</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">A ParameterNameProvider that retrieves the parameter name from JAX-RS annotations (if present).</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="NotFoundExceptionMapper.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">NotFoundExceptionMapper</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">Exception mapper for <code>NotFoundException</code>, with special handling for unwrapping BadRequestProblem
+ cause thrown by <code>ParamConverter</code>.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ProblemConfigurator.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">ProblemConfigurator</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
