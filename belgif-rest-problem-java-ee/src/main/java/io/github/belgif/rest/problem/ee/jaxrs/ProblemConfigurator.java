@@ -22,6 +22,7 @@ public class ProblemConfigurator implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         setBooleanConfig(sce, ProblemConfig.PROPERTY_I18N_ENABLED, ProblemConfig::setI18nEnabled);
+        setBooleanConfig(sce, ProblemConfig.PROPERTY_STACK_TRACE_ENABLED, ProblemConfig::setStackTraceEnabled);
         setBooleanConfig(sce, ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, ProblemConfig::setExtIssueTypesEnabled);
         setBooleanConfig(sce, ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, ProblemConfig::setExtInputsArrayEnabled);
     }
