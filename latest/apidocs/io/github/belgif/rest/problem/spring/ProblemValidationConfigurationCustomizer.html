@@ -98,7 +98,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="annotations">@Component
-@ConditionalOnClass(jakarta.validation.Configuration.class)
+@ConditionalOnClass({jakarta.validation.Configuration.class,org.springframework.boot.validation.autoconfigure.ValidationConfigurationCustomizer.class})
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">ProblemValidationConfigurationCustomizer</span>
 <span class="extends-implements">extends <a href="AbstractProblemValidationConfigurationCustomizer.html" title="class in io.github.belgif.rest.problem.spring">AbstractProblemValidationConfigurationCustomizer</a>
 implements org.springframework.boot.validation.autoconfigure.ValidationConfigurationCustomizer</span></div>

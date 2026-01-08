@@ -98,6 +98,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="annotations">@Component
+@ConditionalOnClass({org.springframework.web.client.RestTemplate.class,org.springframework.boot.restclient.RestTemplateCustomizer.class})
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">ProblemRestTemplateCustomizer</span>
 <span class="extends-implements">extends <a href="AbstractProblemRestTemplateCustomizer.html" title="class in io.github.belgif.rest.problem.spring">AbstractProblemRestTemplateCustomizer</a>
 implements org.springframework.boot.restclient.RestTemplateCustomizer</span></div>
