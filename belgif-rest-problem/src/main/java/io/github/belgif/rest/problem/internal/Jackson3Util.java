@@ -26,7 +26,7 @@ public class Jackson3Util {
      * @return the BadRequestProblem
      */
     public static BadRequestProblem toBadRequestProblem(StreamReadException e) {
-        return new BadRequestProblem(schemaViolation(InEnum.BODY, null,
+        return new BadRequestProblem(schemaViolation(InEnum.BODY, getName(e.getPath()),
                 null, InputValidationIssues.DETAIL_JSON_SYNTAX_ERROR));
     }
 

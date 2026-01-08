@@ -542,7 +542,7 @@ public abstract class AbstractRestProblemIT {
                 .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[0].detail", equalTo("JSON syntax error"))
                 .body("issues[0].in", equalTo("body"))
-                .body("issues[0].name", emptyOrNullString());
+                .body("issues[0].name", equalTo("nested"));
     }
 
     @Test
