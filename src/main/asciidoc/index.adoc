@@ -379,10 +379,10 @@ For problem types related to input parameters, you can extend from `InputValidat
 
 IMPORTANT: Don't forget to add the `@ProblemType` annotation.
 
-On *Jakarta EE* containers, custom problem types are discovered automagically through CDI.
+On *Jakarta EE* and *Quarkus*, custom problem types are discovered automagically through CDI.
 
 On *Spring Boot*, only package `io.github.belgif.rest.problem` is scanned for @ProblemType annotations. +
-Additional packages to scan can be configured in your application.properties:
+Additional packages to scan can be <<io.github.belgif.rest.problem.scan-additional-problem-packages,configured>> in your application.properties:
 
 [source,properties]
 ----
@@ -495,18 +495,7 @@ The default language is English, and translations are available in the 3 officia
 
 An link:apidocs/io/github/belgif/rest/problem/i18n/I18N.html[I18N] helper class is available in case you want to provide localized messages for your own custom problem and issue types.
 
-The I18N feature of the problem library can be disabled by configuring property:
-
-[source,properties]
-----
-io.github.belgif.rest.problem.i18n-enabled=false
-----
-
-On Spring Boot, this can be configured via any of the standard https://docs.spring.io/spring-boot/reference/features/external-config.html[externalized configuration] mechanisms.
-
-On Jakarta EE, this can be configured as a system property, environment variable, or web.xml context-param (in that order of precedence).
-
-On Quarkus, this can be configured via any of the standard https://quarkus.io/guides/config-reference#configuration-sources[MicroProfile Config Sources].
+The I18N feature of the problem library can be disabled by configuring property <<io.github.belgif.rest.problem.i18n-enabled>> (default true).
 
 WARNING: On Quarkus, you also need to add the following configuration property if you want the https://quarkus.io/guides/validation#validation-and-localization[Bean Validation messages to be localized] too: `quarkus.locales=en,fr-BE,nl-BE,de-BE`.
 
@@ -525,11 +514,7 @@ Applications can provide and register their own LocaleResolver if needed (`/META
 [[belgif-ext]]
 == Extensions
 
-The belgif-rest-problem library provides some optional extensions to the Belgif REST guidelines, which can be enabled on-demand by setting the corresponding `io.github.belgif.rest.problem.ext.*` configuration property:
-
-* On Spring Boot, via any of the standard https://docs.spring.io/spring-boot/reference/features/external-config.html[externalized configuration] mechanisms.
-* On Jakarta EE, as a system property, environment variable, or web.xml context-param (in that order of precedence).
-* On Quarkus, via any of the standard https://quarkus.io/guides/config-reference#configuration-sources[MicroProfile Config Sources].
+The belgif-rest-problem library provides some optional extensions to the Belgif REST guidelines, which can be enabled on-demand by setting the corresponding `io.github.belgif.rest.problem.ext.*` <<Configuration>> properties.
 
 [WARNING]
 ====
@@ -540,7 +525,7 @@ They are not an official part of the Belgif REST guidelines, may have an impact 
 [[belgif-ext-issue-types]]
 === Specialized issue types
 
-* Property: `io.github.belgif.rest.problem.ext.issue-types-enabled`
+* Property: <<io.github.belgif.rest.problem.ext.issue-types-enabled>>
 * Related issues: https://github.com/belgif/rest-guide/issues/113[belgif/rest-guide#113], https://github.com/belgif/rest-guide/issues/126[belgif/rest-guide#126]
 
 This extension replaces the generic `urn:problem-type:belgif:input-validation:invalidInput` issue type with more specialized `urn:problem-type:belgif-ext:input-validation:*` issue types, enabling clients to interpret and handle these issues individually (if desired).
@@ -562,7 +547,7 @@ NOTE: You can override the configuration on RequestValidator level with `setExtI
 [[belgif-ext-inputs-array]]
 === Inputs[] array
 
-* Property: `io.github.belgif.rest.problem.ext.inputs-array-enabled`
+* Property: <<io.github.belgif.rest.problem.ext.inputs-array-enabled>>
 * Related issue: https://github.com/belgif/rest-guide/issues/108[belgif/rest-guide#108]
 
 This extension provides an `inputs[]` array of in/name/value objects for input validation issues that relate to multiple inputs, enabling clients to parse this structured information (if desired).
@@ -748,6 +733,46 @@ NOTE: You can override the configuration on RequestValidator level with `setExtI
 }
 ----
 
+[[configuration]]
+== Configuration
+
+This section gives an overview of the available configuration properties and their default values.
+
+On *Jakarta EE*, these can be configured as a system property, environment variable, or web.xml context-param (in that order of precedence).
+
+On *Spring Boot*, these can be configured via any of the standard https://docs.spring.io/spring-boot/reference/features/external-config.html[externalized configuration] mechanisms.
+
+On *Quarkus*, these can be configured via any of the standard https://quarkus.io/guides/config-reference#configuration-sources[MicroProfile Config Sources].
+
+[[properties]]
+=== Properties
+
+[[io.github.belgif.rest.problem.i18n-enabled]]
+==== io.github.belgif.rest.problem.i18n-enabled
+
+Enable <<i18n>>.
+Default `true`.
+
+[[io.github.belgif.rest.problem.ext.issue-types-enabled]]
+==== io.github.belgif.rest.problem.ext.issue-types-enabled
+
+Enable <<belgif-ext-issue-types>> extension.
+Default `false`.
+
+[[io.github.belgif.rest.problem.ext.inputs-array-enabled]]
+==== io.github.belgif.rest.problem.ext.inputs-array-enabled
+
+Enable <<belgif-ext-inputs-array>> extension.
+Default `false`.
+
+[[io.github.belgif.rest.problem.scan-additional-problem-packages]]
+==== io.github.belgif.rest.problem.scan-additional-problem-packages
+
+Scan additional packages for @ProblemType annotations.
+
+This configuration property only applies to *Spring Boot*.
+On Jakarta EE and Quarkus, all problem types are automatically picked up by CDI.
+
 [[implementation-details]]
 == Implementation details
 
@@ -827,7 +852,7 @@ This module provides auto-configuration for components that handle Spring Boot 3
 
 * *SpringProblemTypeRegistry:* ProblemTypeRegistry implementation that uses classpath scanning to detect @ProblemType annotations.
 By default, only package `io.github.belgif.rest.problem` is scanned for @ProblemType annotations.
-Additional packages to scan can be configured in your application.properties:
+Additional packages to scan can be <<io.github.belgif.rest.problem.scan-additional-problem-packages,configured>> in your application.properties:
 
 [source,properties]
 ----
