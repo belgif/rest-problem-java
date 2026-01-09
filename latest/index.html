@@ -728,12 +728,17 @@ window.onload = function() {
 <li><a href="#belgif-ext-example">7.3. Example</a></li>
 </ul>
 </li>
-<li><a href="#implementation-details">8. Implementation details</a>
+<li><a href="#configuration">8. Configuration</a>
 <ul class="sectlevel2">
-<li><a href="#problem-type-registry">8.1. @ProblemType and ProblemTypeRegistry</a></li>
-<li><a href="#belgif-rest-problem-java-ee">8.2. belgif-rest-problem-java-ee</a></li>
-<li><a href="#belgif-rest-problem-spring-boot-3">8.3. belgif-rest-problem-spring-boot-3</a></li>
-<li><a href="#belgif-rest-problem-spring-boot-4">8.4. belgif-rest-problem-spring-boot-4</a></li>
+<li><a href="#properties">8.1. Properties</a></li>
+</ul>
+</li>
+<li><a href="#implementation-details">9. Implementation details</a>
+<ul class="sectlevel2">
+<li><a href="#problem-type-registry">9.1. @ProblemType and ProblemTypeRegistry</a></li>
+<li><a href="#belgif-rest-problem-java-ee">9.2. belgif-rest-problem-java-ee</a></li>
+<li><a href="#belgif-rest-problem-spring-boot-3">9.3. belgif-rest-problem-spring-boot-3</a></li>
+<li><a href="#belgif-rest-problem-spring-boot-4">9.4. belgif-rest-problem-spring-boot-4</a></li>
 </ul>
 </li>
 </ul>
@@ -1780,11 +1785,11 @@ Don&#8217;t forget to add the <code>@ProblemType</code> annotation.
 </table>
 </div>
 <div class="paragraph">
-<p>On <strong>Jakarta EE</strong> containers, custom problem types are discovered automagically through CDI.</p>
+<p>On <strong>Jakarta EE</strong> and <strong>Quarkus</strong>, custom problem types are discovered automagically through CDI.</p>
 </div>
 <div class="paragraph">
 <p>On <strong>Spring Boot</strong>, only package <code>io.github.belgif.rest.problem</code> is scanned for @ProblemType annotations.<br>
-Additional packages to scan can be configured in your application.properties:</p>
+Additional packages to scan can be <a href="#io.github.belgif.rest.problem.scan-additional-problem-packages">configured</a> in your application.properties:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1945,21 +1950,7 @@ This is possible by extending the AbstractRequestValidator base class.</p>
 <p>An <a href="apidocs/io/github/belgif/rest/problem/i18n/I18N.html">I18N</a> helper class is available in case you want to provide localized messages for your own custom problem and issue types.</p>
 </div>
 <div class="paragraph">
-<p>The I18N feature of the problem library can be disabled by configuring property:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="properties">io.github.belgif.rest.problem.i18n-enabled=false</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>On Spring Boot, this can be configured via any of the standard <a href="https://docs.spring.io/spring-boot/reference/features/external-config.html">externalized configuration</a> mechanisms.</p>
-</div>
-<div class="paragraph">
-<p>On Jakarta EE, this can be configured as a system property, environment variable, or web.xml context-param (in that order of precedence).</p>
-</div>
-<div class="paragraph">
-<p>On Quarkus, this can be configured via any of the standard <a href="https://quarkus.io/guides/config-reference#configuration-sources">MicroProfile Config Sources</a>.</p>
+<p>The I18N feature of the problem library can be disabled by configuring property <a href="#io.github.belgif.rest.problem.i18n-enabled">io.github.belgif.rest.problem.i18n-enabled</a> (default true).</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1997,20 +1988,7 @@ On Quarkus, you also need to add the following configuration property if you wan
 <h2 id="belgif-ext"><a class="anchor" href="#belgif-ext"></a>7. Extensions</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The belgif-rest-problem library provides some optional extensions to the Belgif REST guidelines, which can be enabled on-demand by setting the corresponding <code>io.github.belgif.rest.problem.ext.*</code> configuration property:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>On Spring Boot, via any of the standard <a href="https://docs.spring.io/spring-boot/reference/features/external-config.html">externalized configuration</a> mechanisms.</p>
-</li>
-<li>
-<p>On Jakarta EE, as a system property, environment variable, or web.xml context-param (in that order of precedence).</p>
-</li>
-<li>
-<p>On Quarkus, via any of the standard <a href="https://quarkus.io/guides/config-reference#configuration-sources">MicroProfile Config Sources</a>.</p>
-</li>
-</ul>
+<p>The belgif-rest-problem library provides some optional extensions to the Belgif REST guidelines, which can be enabled on-demand by setting the corresponding <code>io.github.belgif.rest.problem.ext.*</code> <a href="#configuration">Configuration</a> properties.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -2032,7 +2010,7 @@ They are not an official part of the Belgif REST guidelines, may have an impact 
 <div class="ulist">
 <ul>
 <li>
-<p>Property: <code>io.github.belgif.rest.problem.ext.issue-types-enabled</code></p>
+<p>Property: <a href="#io.github.belgif.rest.problem.ext.issue-types-enabled">io.github.belgif.rest.problem.ext.issue-types-enabled</a></p>
 </li>
 <li>
 <p>Related issues: <a href="https://github.com/belgif/rest-guide/issues/113">belgif/rest-guide#113</a>, <a href="https://github.com/belgif/rest-guide/issues/126">belgif/rest-guide#126</a></p>
@@ -2101,7 +2079,7 @@ You can override the configuration on RequestValidator level with <code>setExtIs
 <div class="ulist">
 <ul>
 <li>
-<p>Property: <code>io.github.belgif.rest.problem.ext.inputs-array-enabled</code></p>
+<p>Property: <a href="#io.github.belgif.rest.problem.ext.inputs-array-enabled">io.github.belgif.rest.problem.ext.inputs-array-enabled</a></p>
 </li>
 <li>
 <p>Related issue: <a href="https://github.com/belgif/rest-guide/issues/108">belgif/rest-guide#108</a></p>
@@ -2306,13 +2284,64 @@ You can override the configuration on RequestValidator level with <code>setExtIn
 </div>
 </div>
 <div class="sect1">
-<h2 id="implementation-details"><a class="anchor" href="#implementation-details"></a>8. Implementation details</h2>
+<h2 id="configuration"><a class="anchor" href="#configuration"></a>8. Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section gives an overview of the available configuration properties and their default values.</p>
+</div>
+<div class="paragraph">
+<p>On <strong>Jakarta EE</strong>, these can be configured as a system property, environment variable, or web.xml context-param (in that order of precedence).</p>
+</div>
+<div class="paragraph">
+<p>On <strong>Spring Boot</strong>, these can be configured via any of the standard <a href="https://docs.spring.io/spring-boot/reference/features/external-config.html">externalized configuration</a> mechanisms.</p>
+</div>
+<div class="paragraph">
+<p>On <strong>Quarkus</strong>, these can be configured via any of the standard <a href="https://quarkus.io/guides/config-reference#configuration-sources">MicroProfile Config Sources</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="properties"><a class="anchor" href="#properties"></a>8.1. Properties</h3>
+<div class="sect3">
+<h4 id="io.github.belgif.rest.problem.i18n-enabled"><a class="anchor" href="#io.github.belgif.rest.problem.i18n-enabled"></a>8.1.1. io.github.belgif.rest.problem.i18n-enabled</h4>
+<div class="paragraph">
+<p>Enable <a href="#i18n">Internationalization (I18N)</a>.
+Default <code>true</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="io.github.belgif.rest.problem.ext.issue-types-enabled"><a class="anchor" href="#io.github.belgif.rest.problem.ext.issue-types-enabled"></a>8.1.2. io.github.belgif.rest.problem.ext.issue-types-enabled</h4>
+<div class="paragraph">
+<p>Enable <a href="#belgif-ext-issue-types">Specialized issue types</a> extension.
+Default <code>false</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="io.github.belgif.rest.problem.ext.inputs-array-enabled"><a class="anchor" href="#io.github.belgif.rest.problem.ext.inputs-array-enabled"></a>8.1.3. io.github.belgif.rest.problem.ext.inputs-array-enabled</h4>
+<div class="paragraph">
+<p>Enable <a href="#belgif-ext-inputs-array">Inputs[] array</a> extension.
+Default <code>false</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="io.github.belgif.rest.problem.scan-additional-problem-packages"><a class="anchor" href="#io.github.belgif.rest.problem.scan-additional-problem-packages"></a>8.1.4. io.github.belgif.rest.problem.scan-additional-problem-packages</h4>
+<div class="paragraph">
+<p>Scan additional packages for @ProblemType annotations.</p>
+</div>
+<div class="paragraph">
+<p>This configuration property only applies to <strong>Spring Boot</strong>.
+On Jakarta EE and Quarkus, all problem types are automatically picked up by CDI.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="implementation-details"><a class="anchor" href="#implementation-details"></a>9. Implementation details</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section describes the internal implementation details of this library.</p>
 </div>
 <div class="sect2">
-<h3 id="problem-type-registry"><a class="anchor" href="#problem-type-registry"></a>8.1. @ProblemType and ProblemTypeRegistry</h3>
+<h3 id="problem-type-registry"><a class="anchor" href="#problem-type-registry"></a>9.1. @ProblemType and ProblemTypeRegistry</h3>
 <div class="paragraph">
 <p>This library makes use of Jackson&#8217;s <a href="https://github.com/FasterXML/jackson-docs/wiki/JacksonPolymorphicDeserialization">polymorphic deserialization</a> feature, so the Jackson ObjectMapper knows which problem type to instantiate when deserializing a problem.
 The problem subclasses have their problem type URI configured in the
@@ -2336,7 +2365,7 @@ The problem subclasses have their problem type URI configured in the
 </div>
 </div>
 <div class="sect2">
-<h3 id="belgif-rest-problem-java-ee"><a class="anchor" href="#belgif-rest-problem-java-ee"></a>8.2. belgif-rest-problem-java-ee</h3>
+<h3 id="belgif-rest-problem-java-ee"><a class="anchor" href="#belgif-rest-problem-java-ee"></a>9.2. belgif-rest-problem-java-ee</h3>
 <div class="paragraph">
 <p>This module provides components that handle Java EE / Jakarta EE integration with the belgif-rest-problem library:</p>
 </div>
@@ -2453,7 +2482,7 @@ A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is a
 </div>
 </div>
 <div class="sect2">
-<h3 id="belgif-rest-problem-spring-boot-3"><a class="anchor" href="#belgif-rest-problem-spring-boot-3"></a>8.3. belgif-rest-problem-spring-boot-3</h3>
+<h3 id="belgif-rest-problem-spring-boot-3"><a class="anchor" href="#belgif-rest-problem-spring-boot-3"></a>9.3. belgif-rest-problem-spring-boot-3</h3>
 <div class="paragraph">
 <p>This module provides auto-configuration for components that handle Spring Boot 3 integration with the belgif-rest-problem library:</p>
 </div>
@@ -2462,7 +2491,7 @@ A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is a
 <li>
 <p><strong>SpringProblemTypeRegistry:</strong> ProblemTypeRegistry implementation that uses classpath scanning to detect @ProblemType annotations.
 By default, only package <code>io.github.belgif.rest.problem</code> is scanned for @ProblemType annotations.
-Additional packages to scan can be configured in your application.properties:</p>
+Additional packages to scan can be <a href="#io.github.belgif.rest.problem.scan-additional-problem-packages">configured</a> in your application.properties:</p>
 </li>
 </ul>
 </div>
@@ -2517,7 +2546,7 @@ This handles integration with the <a href="https://docs.spring.io/spring-framewo
 </div>
 </div>
 <div class="sect2">
-<h3 id="belgif-rest-problem-spring-boot-4"><a class="anchor" href="#belgif-rest-problem-spring-boot-4"></a>8.4. belgif-rest-problem-spring-boot-4</h3>
+<h3 id="belgif-rest-problem-spring-boot-4"><a class="anchor" href="#belgif-rest-problem-spring-boot-4"></a>9.4. belgif-rest-problem-spring-boot-4</h3>
 <div class="paragraph">
 <p>This module provides auto-configuration for components that handle Spring Boot 4 integration with the belgif-rest-problem library.
 In general, this is very similar to the Spring Boot 3 module.
