@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 import io.github.belgif.rest.problem.DefaultProblem;
+import io.github.belgif.rest.problem.config.ProblemConfig;
 
 /**
  * Abstract base class for problems (RFC 9457).
@@ -69,7 +70,7 @@ public abstract class Problem extends RuntimeException {
     }
 
     protected Problem(URI type, URI href, String title, int status, Throwable cause) {
-        super(title, cause);
+        super(title, cause, true, ProblemConfig.isStackTraceEnabled());
         this.type = type;
         this.href = href;
         this.title = title;

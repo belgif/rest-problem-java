@@ -18,6 +18,8 @@ public class ProblemConfigurationProperties implements InitializingBean {
 
     private Boolean i18nEnabled = null;
 
+    private Boolean stackTraceEnabled = null;
+
     public void setScanAdditionalProblemPackages(List<String> scanAdditionalProblemPackages) {
         this.scanAdditionalProblemPackages = scanAdditionalProblemPackages;
     }
@@ -30,10 +32,17 @@ public class ProblemConfigurationProperties implements InitializingBean {
         this.i18nEnabled = i18nEnabled;
     }
 
+    public void setStackTraceEnabled(Boolean stackTraceEnabled) {
+        this.stackTraceEnabled = stackTraceEnabled;
+    }
+
     @Override
     public void afterPropertiesSet() {
         if (i18nEnabled != null) {
             ProblemConfig.setI18nEnabled(i18nEnabled);
+        }
+        if (stackTraceEnabled != null) {
+            ProblemConfig.setStackTraceEnabled(stackTraceEnabled);
         }
     }
 

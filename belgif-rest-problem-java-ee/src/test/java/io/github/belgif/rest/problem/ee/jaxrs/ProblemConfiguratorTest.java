@@ -34,13 +34,16 @@ class ProblemConfiguratorTest {
     @Test
     void notConfigured() {
         boolean i18nEnabledBefore = ProblemConfig.isI18nEnabled();
+        boolean stackTraceEnabledBefore = ProblemConfig.isStackTraceEnabled();
         boolean extIssueTypesEnabledBefore = ProblemConfig.isExtIssueTypesEnabled();
         boolean extInputsArrayEnabledBefore = ProblemConfig.isExtInputsArrayEnabled();
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_I18N_ENABLED)).thenReturn(null);
+        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_STACK_TRACE_ENABLED)).thenReturn(null);
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED)).thenReturn(null);
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED)).thenReturn(null);
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(i18nEnabledBefore);
+        assertThat(ProblemConfig.isStackTraceEnabled()).isEqualTo(stackTraceEnabledBefore);
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isEqualTo(extIssueTypesEnabledBefore);
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isEqualTo(extInputsArrayEnabledBefore);
     }
@@ -48,10 +51,12 @@ class ProblemConfiguratorTest {
     @Test
     void enabledViaInitParam() {
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_I18N_ENABLED)).thenReturn("true");
+        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_STACK_TRACE_ENABLED)).thenReturn("true");
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED)).thenReturn("true");
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED)).thenReturn("true");
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isTrue();
+        assertThat(ProblemConfig.isStackTraceEnabled()).isTrue();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isTrue();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isTrue();
     }
@@ -59,21 +64,25 @@ class ProblemConfiguratorTest {
     @Test
     void disabledViaInitParam() {
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_I18N_ENABLED)).thenReturn("false");
+        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_STACK_TRACE_ENABLED)).thenReturn("false");
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED)).thenReturn("false");
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED)).thenReturn("false");
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isFalse();
+        assertThat(ProblemConfig.isStackTraceEnabled()).isFalse();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isFalse();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isFalse();
     }
 
     @Test
     @SetSystemProperty(key = ProblemConfig.PROPERTY_I18N_ENABLED, value = "true")
+    @SetSystemProperty(key = ProblemConfig.PROPERTY_STACK_TRACE_ENABLED, value = "true")
     @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "true")
     @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "true")
     void enabledViaSystemProperties() {
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isTrue();
+        assertThat(ProblemConfig.isStackTraceEnabled()).isTrue();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isTrue();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isTrue();
         verifyNoInteractions(servletContext);
@@ -81,11 +90,13 @@ class ProblemConfiguratorTest {
 
     @Test
     @SetSystemProperty(key = ProblemConfig.PROPERTY_I18N_ENABLED, value = "false")
+    @SetSystemProperty(key = ProblemConfig.PROPERTY_STACK_TRACE_ENABLED, value = "false")
     @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "false")
     @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "false")
     void disabledViaSystemProperty() {
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isFalse();
+        assertThat(ProblemConfig.isStackTraceEnabled()).isFalse();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isFalse();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isFalse();
         verifyNoInteractions(servletContext);
@@ -93,11 +104,13 @@ class ProblemConfiguratorTest {
 
     @Test
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_I18N_ENABLED, value = "true")
+    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_STACK_TRACE_ENABLED, value = "true")
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "true")
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "true")
     void enabledViaEnvironmentVariable() {
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isTrue();
+        assertThat(ProblemConfig.isStackTraceEnabled()).isTrue();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isTrue();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isTrue();
         verifyNoInteractions(servletContext);
@@ -105,11 +118,13 @@ class ProblemConfiguratorTest {
 
     @Test
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_I18N_ENABLED, value = "false")
+    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_STACK_TRACE_ENABLED, value = "false")
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "false")
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "false")
     void disabledViaEnvironmentVariable() {
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isFalse();
+        assertThat(ProblemConfig.isStackTraceEnabled()).isFalse();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isFalse();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isFalse();
         verifyNoInteractions(servletContext);
@@ -117,14 +132,17 @@ class ProblemConfiguratorTest {
 
     @Test
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_I18N_ENABLED, value = "false")
+    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_STACK_TRACE_ENABLED, value = "false")
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "false")
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "false")
     @SetSystemProperty(key = ProblemConfig.PROPERTY_I18N_ENABLED, value = "true")
+    @SetSystemProperty(key = ProblemConfig.PROPERTY_STACK_TRACE_ENABLED, value = "true")
     @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "true")
     @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "true")
     void systemPropertyHasPrecedenceOverEnvironmentVariable() {
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isTrue();
+        assertThat(ProblemConfig.isStackTraceEnabled()).isTrue();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isTrue();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isTrue();
         verifyNoInteractions(servletContext);
