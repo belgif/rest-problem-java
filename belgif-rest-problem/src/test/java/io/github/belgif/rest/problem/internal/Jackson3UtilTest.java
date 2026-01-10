@@ -40,7 +40,7 @@ class Jackson3UtilTest {
     @Test
     void mismatchedInputType() {
         assertThatExceptionOfType(MismatchedInputException.class).isThrownBy(() -> {
-            new ObjectMapper().readValue("{ \"id\": \"123\", \"nbr\": \"twenty-two\" }", Jackson2UtilTest.Model.class);
+            new ObjectMapper().readValue("{ \"id\": \"123\", \"nbr\": \"twenty-two\" }", Model.class);
         }).satisfies(e -> {
             BadRequestProblem problem = Jackson3Util.toBadRequestProblem(e);
             InputValidationIssue issue = problem.getIssues().get(0);
@@ -55,7 +55,7 @@ class Jackson3UtilTest {
     @Test
     void valueInstantiationException() {
         assertThatExceptionOfType(ValueInstantiationException.class).isThrownBy(() -> {
-            new ObjectMapper().readValue("{ \"id\": \"123\", \"size\": \"XXL\" }", Jackson2UtilTest.Model.class);
+            new ObjectMapper().readValue("{ \"id\": \"123\", \"size\": \"XXL\" }", Model.class);
         }).satisfies(e -> {
             BadRequestProblem problem = Jackson3Util.toBadRequestProblem(e);
             InputValidationIssue issue = problem.getIssues().get(0);
@@ -70,7 +70,7 @@ class Jackson3UtilTest {
     @Test
     void invalidFormatException() {
         assertThatExceptionOfType(InvalidFormatException.class).isThrownBy(() -> {
-            new ObjectMapper().readValue("{ \"id\": \"123\", \"size2\": \"XXL\" }", Jackson2UtilTest.Model.class);
+            new ObjectMapper().readValue("{ \"id\": \"123\", \"size2\": \"XXL\" }", Model.class);
         }).satisfies(e -> {
             BadRequestProblem problem = Jackson3Util.toBadRequestProblem(e);
             InputValidationIssue issue = problem.getIssues().get(0);
@@ -91,7 +91,7 @@ class Jackson3UtilTest {
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-            assertThat(issue.getName()).isNull();
+            assertThat(issue.getName()).isEqualTo("model");
             assertThat(issue.getValue()).isNull();
             assertThat(issue.getDetail()).isEqualTo("JSON syntax error");
         });

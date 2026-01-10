@@ -49,7 +49,8 @@ public class Jackson2Util {
      */
     public static BadRequestProblem toBadRequestProblem(JsonMappingException e) {
         if (e.getCause() instanceof JsonParseException) {
-            return toBadRequestProblem((JsonParseException) e.getCause());
+            return new BadRequestProblem(schemaViolation(InEnum.BODY, getName(e.getPath()),
+                    null, InputValidationIssues.DETAIL_JSON_SYNTAX_ERROR));
         } else {
             return new BadRequestProblem(
                     InputValidationIssues.schemaViolation(InEnum.BODY, getName(e.getPath()),

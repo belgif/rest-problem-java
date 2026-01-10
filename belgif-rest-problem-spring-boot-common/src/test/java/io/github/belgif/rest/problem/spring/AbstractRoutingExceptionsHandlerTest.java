@@ -22,6 +22,8 @@ import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
@@ -33,11 +35,17 @@ import io.github.belgif.rest.problem.internal.Jackson2Util;
 
 class AbstractRoutingExceptionsHandlerTest {
 
-    private final AbstractRoutingExceptionsHandler<MismatchedInputException> handler =
-            new AbstractRoutingExceptionsHandler<>(MismatchedInputException.class) {
+    private final AbstractRoutingExceptionsHandler<JacksonException> handler =
+            new AbstractRoutingExceptionsHandler<>(JacksonException.class) {
                 @Override
-                protected BadRequestProblem toBadRequestProblem(MismatchedInputException mismatchedInputException) {
-                    return Jackson2Util.toBadRequestProblem(mismatchedInputException);
+                protected BadRequestProblem toBadRequestProblem(JacksonException jacksonException) {
+                    if (jacksonException instanceof JsonMappingException jsonMappingException) {
+                        return Jackson2Util.toBadRequestProblem(jsonMappingException);
+                    } else if (jacksonException instanceof JsonParseException jsonParseException) {
+                        return Jackson2Util.toBadRequestProblem(jsonParseException);
+                    } else {
+                        return null;
+                    }
                 }
             };
 
