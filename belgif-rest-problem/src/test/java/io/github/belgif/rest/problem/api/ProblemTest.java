@@ -139,4 +139,11 @@ class ProblemTest {
         }
     }
 
+    @Test
+    void stackTraceDisabledByDefault() {
+        ProblemConfig.reset();
+        Problem problem = new MyProblem();
+        assertThat(problem.getStackTrace()).isEmpty();
+    }
+
 }

@@ -19,7 +19,7 @@ public class ProblemConfig {
 
     private static final boolean DEFAULT_I18N_ENABLED = true;
 
-    private static final boolean DEFAULT_STACK_TRACE_ENABLED = true;
+    private static final boolean DEFAULT_STACK_TRACE_ENABLED = false;
 
     private static final boolean DEFAULT_EXT_ISSUE_TYPES_ENABLED = false;
 
