@@ -794,6 +794,17 @@ window.onload = function() {
 <div class="sect2">
 <h3 id="_version_0_20"><a class="anchor" href="#_version_0_20"></a>2.1. Version 0.20</h3>
 <div class="paragraph">
+<p><strong>belgif-rest-problem:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Disable stacktrace on Problem exception class by default, as performance optimization.
+You can configure <code>io.github.belgif.rest.problem.stack-trace-enabled</code> = true to opt out of this.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
 <p><strong>belgif-rest-problem-spring-boot-4:</strong></p>
 </div>
 <div class="ulist">
@@ -1671,6 +1682,10 @@ Quarkus support is currently still <strong>experimental</strong>.
 └── DefaultProblem (fallback)</pre>
 </div>
 </div>
+<div class="paragraph">
+<p>The problem class extends java.lang.RuntimeException, but does not populate the exception stack trace by default.
+You can configure <a href="#io.github.belgif.rest.problem.stack-trace-enabled">io.github.belgif.rest.problem.stack-trace-enabled</a> to enable stack traces if needed.</p>
+</div>
 <div class="sect2">
 <h3 id="belgif-problem-types"><a class="anchor" href="#belgif-problem-types"></a>4.1. Belgif problem types</h3>
 <div class="paragraph">
@@ -2308,21 +2323,40 @@ Default <code>true</code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="io.github.belgif.rest.problem.ext.issue-types-enabled"><a class="anchor" href="#io.github.belgif.rest.problem.ext.issue-types-enabled"></a>8.1.2. io.github.belgif.rest.problem.ext.issue-types-enabled</h4>
+<h4 id="io.github.belgif.rest.problem.stack-trace-enabled"><a class="anchor" href="#io.github.belgif.rest.problem.stack-trace-enabled"></a>8.1.2. io.github.belgif.rest.problem.stack-trace-enabled</h4>
+<div class="paragraph">
+<p>Enable stack trace on Problem exception instances.
+Default <code>false</code>.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Exception stack traces have a performance overhead!
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="io.github.belgif.rest.problem.ext.issue-types-enabled"><a class="anchor" href="#io.github.belgif.rest.problem.ext.issue-types-enabled"></a>8.1.3. io.github.belgif.rest.problem.ext.issue-types-enabled</h4>
 <div class="paragraph">
 <p>Enable <a href="#belgif-ext-issue-types">Specialized issue types</a> extension.
 Default <code>false</code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="io.github.belgif.rest.problem.ext.inputs-array-enabled"><a class="anchor" href="#io.github.belgif.rest.problem.ext.inputs-array-enabled"></a>8.1.3. io.github.belgif.rest.problem.ext.inputs-array-enabled</h4>
+<h4 id="io.github.belgif.rest.problem.ext.inputs-array-enabled"><a class="anchor" href="#io.github.belgif.rest.problem.ext.inputs-array-enabled"></a>8.1.4. io.github.belgif.rest.problem.ext.inputs-array-enabled</h4>
 <div class="paragraph">
 <p>Enable <a href="#belgif-ext-inputs-array">Inputs[] array</a> extension.
 Default <code>false</code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="io.github.belgif.rest.problem.scan-additional-problem-packages"><a class="anchor" href="#io.github.belgif.rest.problem.scan-additional-problem-packages"></a>8.1.4. io.github.belgif.rest.problem.scan-additional-problem-packages</h4>
+<h4 id="io.github.belgif.rest.problem.scan-additional-problem-packages"><a class="anchor" href="#io.github.belgif.rest.problem.scan-additional-problem-packages"></a>8.1.5. io.github.belgif.rest.problem.scan-additional-problem-packages</h4>
 <div class="paragraph">
 <p>Scan additional packages for @ProblemType annotations.</p>
 </div>
