@@ -24,9 +24,11 @@ class ProblemConfigurationPropertiesTest {
     @Test
     void empty() {
         boolean i18nEnabledBefore = ProblemConfig.isI18nEnabled();
+        boolean stackTraceEnabledBefore = ProblemConfig.isStackTraceEnabled();
         properties.afterPropertiesSet();
         assertThat(properties.getScanAdditionalProblemPackages()).isEmpty();
         assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(i18nEnabledBefore);
+        assertThat(ProblemConfig.isStackTraceEnabled()).isEqualTo(stackTraceEnabledBefore);
     }
 
     @Test
@@ -48,6 +50,20 @@ class ProblemConfigurationPropertiesTest {
         properties.setI18nEnabled(false);
         properties.afterPropertiesSet();
         assertThat(ProblemConfig.isI18nEnabled()).isFalse();
+    }
+
+    @Test
+    void stackTraceEnabled() {
+        properties.setStackTraceEnabled(true);
+        properties.afterPropertiesSet();
+        assertThat(ProblemConfig.isStackTraceEnabled()).isTrue();
+    }
+
+    @Test
+    void stackTraceDisabled() {
+        properties.setStackTraceEnabled(false);
+        properties.afterPropertiesSet();
+        assertThat(ProblemConfig.isStackTraceEnabled()).isFalse();
     }
 
 }
