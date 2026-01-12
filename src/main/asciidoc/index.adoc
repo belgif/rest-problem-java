@@ -324,6 +324,9 @@ _Problem_
 └── DefaultProblem (fallback)
 ----
 
+The problem class extends java.lang.RuntimeException, but does not populate the exception stack trace by default.
+You can configure <<io.github.belgif.rest.problem.stack-trace-enabled>> to enable stack traces if needed.
+
 [[belgif-problem-types]]
 === Belgif problem types
 
@@ -752,6 +755,14 @@ On *Quarkus*, these can be configured via any of the standard https://quarkus.io
 
 Enable <<i18n>>.
 Default `true`.
+
+[[io.github.belgif.rest.problem.stack-trace-enabled]]
+==== io.github.belgif.rest.problem.stack-trace-enabled
+
+Enable stack trace on Problem exception instances.
+Default `false`.
+
+WARNING: Exception stack traces have a performance overhead!
 
 [[io.github.belgif.rest.problem.ext.issue-types-enabled]]
 ==== io.github.belgif.rest.problem.ext.issue-types-enabled

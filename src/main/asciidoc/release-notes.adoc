@@ -14,6 +14,11 @@
 
 == Version 0.20
 
+*belgif-rest-problem:*
+
+* Disable stacktrace on Problem exception class by default, as performance optimization.
+You can configure `io.github.belgif.rest.problem.stack-trace-enabled` = true to opt out of this.
+
 *belgif-rest-problem-spring-boot-4:*
 
 * Fix conditional loading of optional components

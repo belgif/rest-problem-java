@@ -6,6 +6,8 @@ import java.net.URI;
 
 import org.junit.jupiter.api.Test;
 
+import io.github.belgif.rest.problem.config.ProblemConfig;
+
 class ProblemTest {
 
     static class MyProblem extends Problem {
@@ -113,7 +115,35 @@ class ProblemTest {
         assertThat(problem.getMessage()).isEqualTo("Title");
         problem.setDetail("detail");
         assertThat(problem.getMessage()).isEqualTo("Title: detail");
+    }
 
+    @Test
+    void stackTraceDisabled() {
+        try {
+            ProblemConfig.setStackTraceEnabled(false);
+            Problem problem = new MyProblem();
+            assertThat(problem.getStackTrace()).isEmpty();
+        } finally {
+            ProblemConfig.reset();
+        }
+    }
+
+    @Test
+    void stackTraceEnabled() {
+        try {
+            ProblemConfig.setStackTraceEnabled(true);
+            Problem problem = new MyProblem();
+            assertThat(problem.getStackTrace()).isNotEmpty();
+        } finally {
+            ProblemConfig.reset();
+        }
+    }
+
+    @Test
+    void stackTraceDisabledByDefault() {
+        ProblemConfig.reset();
+        Problem problem = new MyProblem();
+        assertThat(problem.getStackTrace()).isEmpty();
     }
 
 }
