@@ -92,7 +92,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Type Parameters:</dt>
-<dd><code>T</code> - the type of the Jackson MismatchedInputException</dd>
+<dd><code>T</code> - the type of the Jackson exception</dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
@@ -115,7 +115,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>protected </code></div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.Class)" class="member-name-link">AbstractRoutingExceptionsHandler</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="AbstractRoutingExceptionsHandler.html" title="type parameter in AbstractRoutingExceptionsHandler">T</a>&gt;&nbsp;jacksonMismatchedInputExceptionClass)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.Class)" class="member-name-link">AbstractRoutingExceptionsHandler</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="AbstractRoutingExceptionsHandler.html" title="type parameter in AbstractRoutingExceptionsHandler">T</a>&gt;&nbsp;jacksonExceptionClass)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -150,7 +150,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleMissingServletRequestParameterException(org.springframework.web.bind.MissingServletRequestParameterException)" class="member-name-link">handleMissingServletRequestParameterException</a><wbr>(org.springframework.web.bind.MissingServletRequestParameterException&nbsp;exception)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="../BadRequestProblem.html" title="class in io.github.belgif.rest.problem">BadRequestProblem</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#toBadRequestProblem(T)" class="member-name-link">toBadRequestProblem</a><wbr>(<a href="AbstractRoutingExceptionsHandler.html" title="type parameter in AbstractRoutingExceptionsHandler">T</a>&nbsp;mismatchedInputException)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#toBadRequestProblem(T)" class="member-name-link">toBadRequestProblem</a><wbr>(<a href="AbstractRoutingExceptionsHandler.html" title="type parameter in AbstractRoutingExceptionsHandler">T</a>&nbsp;jacksonException)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 </div>
 </div>
@@ -172,7 +172,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="&lt;init&gt;(java.lang.Class)">
 <h3>AbstractRoutingExceptionsHandler</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">AbstractRoutingExceptionsHandler</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="AbstractRoutingExceptionsHandler.html" title="type parameter in AbstractRoutingExceptionsHandler">T</a>&gt;&nbsp;jacksonMismatchedInputExceptionClass)</span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">AbstractRoutingExceptionsHandler</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="AbstractRoutingExceptionsHandler.html" title="type parameter in AbstractRoutingExceptionsHandler">T</a>&gt;&nbsp;jacksonExceptionClass)</span></div>
 </section>
 </li>
 </ul>
@@ -207,7 +207,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="toBadRequestProblem(T)">
 <h3 id="toBadRequestProblem(java.lang.Exception)">toBadRequestProblem</h3>
-<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="../BadRequestProblem.html" title="class in io.github.belgif.rest.problem">BadRequestProblem</a></span>&nbsp;<span class="element-name">toBadRequestProblem</span><wbr><span class="parameters">(<a href="AbstractRoutingExceptionsHandler.html" title="type parameter in AbstractRoutingExceptionsHandler">T</a>&nbsp;mismatchedInputException)</span></div>
+<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="../BadRequestProblem.html" title="class in io.github.belgif.rest.problem">BadRequestProblem</a></span>&nbsp;<span class="element-name">toBadRequestProblem</span><wbr><span class="parameters">(<a href="AbstractRoutingExceptionsHandler.html" title="type parameter in AbstractRoutingExceptionsHandler">T</a>&nbsp;jacksonException)</span></div>
 </section>
 </li>
 <li>

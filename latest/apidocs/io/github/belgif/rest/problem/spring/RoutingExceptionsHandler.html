@@ -87,7 +87,7 @@ loadScripts(document, 'script');</script>
 <h1 title="Class RoutingExceptionsHandler" class="title">Class RoutingExceptionsHandler</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="AbstractRoutingExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">io.github.belgif.rest.problem.spring.AbstractRoutingExceptionsHandler</a>&lt;tools.jackson.databind.exc.MismatchedInputException&gt;
+<div class="inheritance"><a href="AbstractRoutingExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">io.github.belgif.rest.problem.spring.AbstractRoutingExceptionsHandler</a>&lt;tools.jackson.core.JacksonException&gt;
 <div class="inheritance">io.github.belgif.rest.problem.spring.RoutingExceptionsHandler</div>
 </div>
 </div>
@@ -97,7 +97,7 @@ loadScripts(document, 'script');</script>
 @ConditionalOnWebApplication
 @Order(1)
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">RoutingExceptionsHandler</span>
-<span class="extends-implements">extends <a href="AbstractRoutingExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractRoutingExceptionsHandler</a>&lt;tools.jackson.databind.exc.MismatchedInputException&gt;</span></div>
+<span class="extends-implements">extends <a href="AbstractRoutingExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractRoutingExceptionsHandler</a>&lt;tools.jackson.core.JacksonException&gt;</span></div>
 <div class="block">RestController exception handler for routing-related exceptions.</div>
 </section>
 <section class="summary">
@@ -127,7 +127,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../BadRequestProblem.html" title="class in io.github.belgif.rest.problem">BadRequestProblem</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toBadRequestProblem(tools.jackson.databind.exc.MismatchedInputException)" class="member-name-link">toBadRequestProblem</a><wbr>(tools.jackson.databind.exc.MismatchedInputException&nbsp;mismatchedInputException)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toBadRequestProblem(tools.jackson.core.JacksonException)" class="member-name-link">toBadRequestProblem</a><wbr>(tools.jackson.core.JacksonException&nbsp;jacksonException)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -164,12 +164,12 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="toBadRequestProblem(tools.jackson.databind.exc.MismatchedInputException)">
+<section class="detail" id="toBadRequestProblem(tools.jackson.core.JacksonException)">
 <h3>toBadRequestProblem</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../BadRequestProblem.html" title="class in io.github.belgif.rest.problem">BadRequestProblem</a></span>&nbsp;<span class="element-name">toBadRequestProblem</span><wbr><span class="parameters">(tools.jackson.databind.exc.MismatchedInputException&nbsp;mismatchedInputException)</span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../BadRequestProblem.html" title="class in io.github.belgif.rest.problem">BadRequestProblem</a></span>&nbsp;<span class="element-name">toBadRequestProblem</span><wbr><span class="parameters">(tools.jackson.core.JacksonException&nbsp;jacksonException)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="AbstractRoutingExceptionsHandler.html#toBadRequestProblem(T)">toBadRequestProblem</a></code>&nbsp;in class&nbsp;<code><a href="AbstractRoutingExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractRoutingExceptionsHandler</a>&lt;tools.jackson.databind.exc.MismatchedInputException&gt;</code></dd>
+<dd><code><a href="AbstractRoutingExceptionsHandler.html#toBadRequestProblem(T)">toBadRequestProblem</a></code>&nbsp;in class&nbsp;<code><a href="AbstractRoutingExceptionsHandler.html" title="class in io.github.belgif.rest.problem.spring">AbstractRoutingExceptionsHandler</a>&lt;tools.jackson.core.JacksonException&gt;</code></dd>
 </dl>
 </section>
 </li>
