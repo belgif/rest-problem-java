@@ -23,7 +23,7 @@ import io.github.belgif.rest.problem.api.Problem;
 /**
  * RestController exception handler for routing-related exceptions.
  *
- * @param <T> the type of the Jackson MismatchedInputException
+ * @param <T> the type of the Jackson exception
  */
 public abstract class AbstractRoutingExceptionsHandler<T extends Exception> {
 
@@ -31,10 +31,10 @@ public abstract class AbstractRoutingExceptionsHandler<T extends Exception> {
 
     private static final ProblemExceptionHandler DEFAULT_PROBLEM_EXCEPTION_HANDLER = new ProblemExceptionHandler();
 
-    private final Class<T> jacksonMismatchedInputExceptionClass;
+    private final Class<T> jacksonExceptionClass;
 
-    protected AbstractRoutingExceptionsHandler(Class<T> jacksonMismatchedInputExceptionClass) {
-        this.jacksonMismatchedInputExceptionClass = jacksonMismatchedInputExceptionClass;
+    protected AbstractRoutingExceptionsHandler(Class<T> jacksonExceptionClass) {
+        this.jacksonExceptionClass = jacksonExceptionClass;
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
@@ -59,28 +59,27 @@ public abstract class AbstractRoutingExceptionsHandler<T extends Exception> {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @SuppressWarnings("unchecked")
     public ResponseEntity<Problem> handleHttpMessageNotReadable(HttpMessageNotReadableException exception) {
-        if (exception.getCause() != null
-                && jacksonMismatchedInputExceptionClass.isAssignableFrom(exception.getCause().getClass())) {
-            T mismatchedInputException = (T) exception.getCause();
-            if (Arrays.stream(mismatchedInputException.getStackTrace())
+        if (exception.getCause() != null && jacksonExceptionClass.isAssignableFrom(exception.getCause().getClass())) {
+            T jacksonException = (T) exception.getCause();
+            if (Arrays.stream(jacksonException.getStackTrace())
                     .anyMatch(e -> e.getClassName().startsWith("org.springframework.web.client"))) {
                 // When the MismatchedInputException originates from a REST Client API, it relates to an
                 // invalid inbound response and should be mapped to HTTP 500 Internal Server Error
                 return DEFAULT_PROBLEM_EXCEPTION_HANDLER.handleException(exception);
-            } else {
-                // Otherwise, it relates to an invalid inbound request and should be mapped to HTTP 400 Bad Request
-                return ProblemMediaType.INSTANCE.toResponse(toBadRequestProblem(mismatchedInputException));
             }
-        } else {
-            LOGGER.info("Transforming HttpMessageNotReadableException " +
-                    "to a BadRequestProblem with sanitized detail message", exception);
-            return ProblemMediaType.INSTANCE
-                    .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(InEnum.BODY, null, null,
-                            getSanitizedProblemDetailMessage(exception))));
+            BadRequestProblem problem = toBadRequestProblem(jacksonException);
+            if (problem != null) {
+                return ProblemMediaType.INSTANCE.toResponse(problem);
+            }
         }
+        LOGGER.info("Transforming HttpMessageNotReadableException "
+                + "to a BadRequestProblem with sanitized detail message", exception);
+        return ProblemMediaType.INSTANCE
+                .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(InEnum.BODY, null, null,
+                        getSanitizedProblemDetailMessage(exception))));
     }
 
-    protected abstract BadRequestProblem toBadRequestProblem(T mismatchedInputException);
+    protected abstract BadRequestProblem toBadRequestProblem(T jacksonException);
 
     private String getSanitizedProblemDetailMessage(HttpMessageNotReadableException exception) {
         if (exception.getMessage() != null) {

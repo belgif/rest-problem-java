@@ -18,6 +18,7 @@
 
 * Disable stacktrace on Problem exception class by default, as performance optimization.
 You can configure `io.github.belgif.rest.problem.stack-trace-enabled` = true to opt out of this.
+* Add name with JSON location to schemaViolation issue for JSON syntax error
 
 *belgif-rest-problem-spring-boot-4:*
 

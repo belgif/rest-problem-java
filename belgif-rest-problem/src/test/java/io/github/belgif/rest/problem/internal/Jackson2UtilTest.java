@@ -90,7 +90,7 @@ class Jackson2UtilTest {
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-            assertThat(issue.getName()).isNull();
+            assertThat(issue.getName()).isEqualTo("model");
             assertThat(issue.getValue()).isNull();
             assertThat(issue.getDetail()).isEqualTo("JSON syntax error");
         });
