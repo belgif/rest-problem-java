@@ -24,7 +24,7 @@
     <version.jackson3.minimal>3.0.3</version.jackson3.minimal>
     <version.spring.boot.3>3.5.9</version.spring.boot.3>
     <version.spring.boot.4>4.0.1</version.spring.boot.4>
-    <version.quarkus>3.30.5</version.quarkus>
+    <version.quarkus>3.30.6</version.quarkus>
   </properties>
 
   <dependencyManagement>
@@ -32,7 +32,7 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>6.0.1</version>
+        <version>6.0.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -125,7 +125,7 @@
         <plugin>
           <groupId>org.sonatype.central</groupId>
           <artifactId>central-publishing-maven-plugin</artifactId>
-          <version>0.9.0</version>
+          <version>0.10.0</version>
         </plugin>
         <plugin>
           <groupId>org.asciidoctor</groupId>
