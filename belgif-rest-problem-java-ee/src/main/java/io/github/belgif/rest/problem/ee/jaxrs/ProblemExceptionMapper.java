@@ -2,7 +2,6 @@ package io.github.belgif.rest.problem.ee.jaxrs;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
 
 import io.github.belgif.rest.problem.api.Problem;
 
@@ -11,7 +10,6 @@ import io.github.belgif.rest.problem.api.Problem;
  *
  * @see ExceptionMapper
  */
-@Provider
 public class ProblemExceptionMapper implements ExceptionMapper<Problem> {
 
     @Override

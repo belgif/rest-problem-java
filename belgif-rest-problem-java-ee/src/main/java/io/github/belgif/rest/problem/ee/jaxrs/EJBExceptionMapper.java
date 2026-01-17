@@ -3,7 +3,6 @@ package io.github.belgif.rest.problem.ee.jaxrs;
 import javax.ejb.EJBException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
 
 import io.github.belgif.rest.problem.api.Problem;
 
@@ -21,7 +20,6 @@ import io.github.belgif.rest.problem.api.Problem;
  * @see ProblemExceptionMapper
  * @see DefaultExceptionMapper
  */
-@Provider
 public class EJBExceptionMapper implements ExceptionMapper<EJBException> {
 
     private static final ProblemExceptionMapper PROBLEM_MAPPER = new ProblemExceptionMapper();

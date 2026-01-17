@@ -5,6 +5,9 @@ package io.github.belgif.rest.problem.config;
  */
 public class ProblemConfig {
 
+    public static final String PROPERTY_SERVER_SIDE_ENABLED =
+            "io.github.belgif.rest.problem.server-side-enabled";
+
     public static final String PROPERTY_I18N_ENABLED =
             "io.github.belgif.rest.problem.i18n-enabled";
 
@@ -17,6 +20,8 @@ public class ProblemConfig {
     public static final String PROPERTY_EXT_INPUTS_ARRAY_ENABLED =
             "io.github.belgif.rest.problem.ext.inputs-array-enabled";
 
+    private static final boolean DEFAULT_SERVER_SIDE_ENABLED = true;
+
     private static final boolean DEFAULT_I18N_ENABLED = true;
 
     private static final boolean DEFAULT_STACK_TRACE_ENABLED = false;
@@ -24,6 +29,8 @@ public class ProblemConfig {
     private static final boolean DEFAULT_EXT_ISSUE_TYPES_ENABLED = false;
 
     private static final boolean DEFAULT_EXT_INPUTS_ARRAY_ENABLED = false;
+
+    private static boolean serverSideEnabled = DEFAULT_SERVER_SIDE_ENABLED;
 
     private static boolean i18nEnabled = DEFAULT_I18N_ENABLED;
 
@@ -48,6 +55,14 @@ public class ProblemConfig {
     };
 
     private ProblemConfig() {
+    }
+
+    public static boolean isServerSideEnabled() {
+        return serverSideEnabled;
+    }
+
+    public static void setServerSideEnabled(boolean serverSideEnabled) {
+        ProblemConfig.serverSideEnabled = serverSideEnabled;
     }
 
     public static boolean isI18nEnabled() {
@@ -102,6 +117,7 @@ public class ProblemConfig {
     }
 
     public static void reset() {
+        serverSideEnabled = DEFAULT_SERVER_SIDE_ENABLED;
         i18nEnabled = DEFAULT_I18N_ENABLED;
         stackTraceEnabled = DEFAULT_STACK_TRACE_ENABLED;
         extIssueTypesEnabled = DEFAULT_EXT_ISSUE_TYPES_ENABLED;

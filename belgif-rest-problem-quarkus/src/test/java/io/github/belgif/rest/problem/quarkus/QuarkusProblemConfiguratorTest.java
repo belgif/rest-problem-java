@@ -20,7 +20,9 @@ class QuarkusProblemConfiguratorTest {
 
     @Test
     void allEnabled() {
-        new QuarkusProblemConfigurator(Optional.of(true), Optional.of(true), Optional.of(true), Optional.of(true));
+        new QuarkusProblemConfigurator(Optional.of(true), Optional.of(true), Optional.of(true),
+                Optional.of(true), Optional.of(true));
+        assertThat(ProblemConfig.isServerSideEnabled()).isTrue();
         assertThat(ProblemConfig.isI18nEnabled()).isTrue();
         assertThat(ProblemConfig.isStackTraceEnabled()).isTrue();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isTrue();
@@ -29,7 +31,9 @@ class QuarkusProblemConfiguratorTest {
 
     @Test
     void allDisabled() {
-        new QuarkusProblemConfigurator(Optional.of(false), Optional.of(false), Optional.of(false), Optional.of(false));
+        new QuarkusProblemConfigurator(Optional.of(false), Optional.of(false), Optional.of(false),
+                Optional.of(false), Optional.of(false));
+        assertThat(ProblemConfig.isServerSideEnabled()).isFalse();
         assertThat(ProblemConfig.isI18nEnabled()).isFalse();
         assertThat(ProblemConfig.isStackTraceEnabled()).isFalse();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isFalse();
@@ -38,11 +42,14 @@ class QuarkusProblemConfiguratorTest {
 
     @Test
     void notConfigured() {
+        boolean serverSideEnabledBefore = ProblemConfig.isServerSideEnabled();
         boolean i18nEnabledBefore = ProblemConfig.isI18nEnabled();
         boolean stackTraceEnabledBefore = ProblemConfig.isStackTraceEnabled();
         boolean extIssueTypesEnabledBefore = ProblemConfig.isExtIssueTypesEnabled();
         boolean extInputsArrayEnabledBefore = ProblemConfig.isExtInputsArrayEnabled();
-        new QuarkusProblemConfigurator(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        new QuarkusProblemConfigurator(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty());
+        assertThat(ProblemConfig.isServerSideEnabled()).isEqualTo(serverSideEnabledBefore);
         assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(i18nEnabledBefore);
         assertThat(ProblemConfig.isStackTraceEnabled()).isEqualTo(stackTraceEnabledBefore);
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isEqualTo(extIssueTypesEnabledBefore);

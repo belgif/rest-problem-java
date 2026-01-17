@@ -17,14 +17,12 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.MatrixParam;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.ext.Provider;
 
 /**
  * A ParameterNameProvider that retrieves the parameter name from JAX-RS annotations (if present).
  *
  * @see ParameterNameProvider
  */
-@Provider
 public class JaxRsParameterNameProvider implements ParameterNameProvider {
 
     private static final ConcurrentHashMap<Executable, List<String>> PARAMETER_NAME_CACHE = new ConcurrentHashMap<>();

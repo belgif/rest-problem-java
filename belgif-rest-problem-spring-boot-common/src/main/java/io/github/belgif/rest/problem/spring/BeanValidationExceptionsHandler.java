@@ -24,6 +24,7 @@ import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.spring.internal.BeanValidationExceptionUtil;
 import io.github.belgif.rest.problem.spring.internal.DetermineSourceUtil;
+import io.github.belgif.rest.problem.spring.internal.ProblemRestControllerSupport;
 
 /**
  * RestController exception handler for exceptions related to bean validation.
@@ -37,6 +38,9 @@ public class BeanValidationExceptionsHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Problem> handleConstraintViolationException(ConstraintViolationException exception) {
+        if (ProblemRestControllerSupport.isServerSideDisabled()) {
+            throw exception;
+        }
         return ProblemMediaType.INSTANCE.toResponse(
                 new BadRequestProblem(exception.getConstraintViolations().stream()
                         .map(BeanValidationExceptionUtil::convertToInputValidationIssue)
@@ -45,7 +49,11 @@ public class BeanValidationExceptionsHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Problem> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<Problem> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception)
+            throws MethodArgumentNotValidException {
+        if (ProblemRestControllerSupport.isServerSideDisabled()) {
+            throw exception;
+        }
         InEnum in = DetermineSourceUtil.determineSource(exception.getParameter().getParameter());
         List<InputValidationIssue> issues = exception.getFieldErrors().stream()
                 .map(fieldError -> BeanValidationExceptionUtil.convertToInputValidationIssue(fieldError, in))
@@ -55,7 +63,11 @@ public class BeanValidationExceptionsHandler {
     }
 
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<Problem> handleBindException(BindException exception, ServletWebRequest request) {
+    public ResponseEntity<Problem> handleBindException(BindException exception, ServletWebRequest request)
+            throws BindException {
+        if (ProblemRestControllerSupport.isServerSideDisabled()) {
+            throw exception;
+        }
         List<InputValidationIssue> issues = exception.getFieldErrors().stream()
                 .map(fieldError -> BeanValidationExceptionUtil.convertToInputValidationIssue(fieldError,
                         DetermineSourceUtil.determineSource(request, fieldError.getField())))
@@ -67,6 +79,9 @@ public class BeanValidationExceptionsHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Problem>
             handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
+        if (ProblemRestControllerSupport.isServerSideDisabled()) {
+            throw exception;
+        }
         InEnum in = DetermineSourceUtil.determineSource(exception.getParameter().getParameter());
         String name = exception.getName();
         Class<?> requiredType = exception.getRequiredType();

@@ -23,6 +23,7 @@ import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.spring.internal.InvalidRequestExceptionUtil;
+import io.github.belgif.rest.problem.spring.internal.ProblemRestControllerSupport;
 
 /**
  * RestController exception handler for InvalidRequestException thrown by Atlassian swagger-request-validator library.
@@ -36,6 +37,9 @@ public abstract class AbstractInvalidRequestExceptionHandler<J> {
     @ExceptionHandler(value = InvalidRequestException.class)
     public ResponseEntity<Problem> handleInvalidRequestException(InvalidRequestException ex,
             HttpServletRequest request) {
+        if (ProblemRestControllerSupport.isServerSideDisabled()) {
+            throw ex;
+        }
         if (isNonExistingPath(ex)) {
             return ProblemMediaType.INSTANCE.toResponse(new ResourceNotFoundProblem());
         }

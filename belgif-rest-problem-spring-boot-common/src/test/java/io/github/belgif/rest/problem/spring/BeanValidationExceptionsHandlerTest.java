@@ -11,6 +11,8 @@ import jakarta.validation.ConstraintViolationException;
 import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -25,6 +27,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.spring.internal.ProblemRestControllerSupport;
 
 class BeanValidationExceptionsHandlerTest {
 
@@ -81,7 +84,7 @@ class BeanValidationExceptionsHandlerTest {
     }
 
     @Test
-    void handleBindException() {
+    void handleBindException() throws BindException {
         HashMap<Object, Object> map = new HashMap<>();
         map.put("first", "firstValue");
         map.put("second", "secondValue");
@@ -139,6 +142,31 @@ class BeanValidationExceptionsHandlerTest {
             assertThat(problem.getIssues().get(0).getValue()).isEqualTo("value");
             assertThat(problem.getIssues().get(0).getDetail()).isEqualTo("requestParam of incorrect type");
         });
+    }
+
+    @Test
+    void disabled() {
+        try (MockedStatic<ProblemRestControllerSupport> mock = Mockito.mockStatic(ProblemRestControllerSupport.class)) {
+            mock.when(ProblemRestControllerSupport::isServerSideDisabled).thenReturn(true);
+
+            ConstraintViolationException constraintViolationException = new ConstraintViolationException(null);
+            assertThatThrownBy(() -> handler.handleConstraintViolationException(constraintViolationException))
+                    .isSameAs(constraintViolationException);
+
+            MethodArgumentNotValidException methodArgumentNotValidException =
+                    new MethodArgumentNotValidException(null, new MapBindingResult(new HashMap<>(), "map"));
+            assertThatThrownBy(() -> handler.handleMethodArgumentNotValidException(methodArgumentNotValidException))
+                    .isSameAs(methodArgumentNotValidException);
+
+            BindException bindException = new BindException(new MapBindingResult(new HashMap<>(), "map"));
+            assertThatThrownBy(() -> handler.handleBindException(bindException, null)).isSameAs(bindException);
+
+            MethodArgumentTypeMismatchException methodArgumentTypeMismatchException =
+                    new MethodArgumentTypeMismatchException(null, null, null, null, null);
+            assertThatThrownBy(
+                    () -> handler.handleMethodArgumentTypeMismatchException(methodArgumentTypeMismatchException))
+                            .isSameAs(methodArgumentTypeMismatchException);
+        }
     }
 
 }

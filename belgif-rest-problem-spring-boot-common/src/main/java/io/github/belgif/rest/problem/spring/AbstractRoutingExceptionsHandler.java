@@ -19,6 +19,7 @@ import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.spring.internal.ProblemRestControllerSupport;
 
 /**
  * RestController exception handler for routing-related exceptions.
@@ -39,7 +40,10 @@ public abstract class AbstractRoutingExceptionsHandler<T extends Exception> {
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<Problem> handleMissingServletRequestParameterException(
-            MissingServletRequestParameterException exception) {
+            MissingServletRequestParameterException exception) throws MissingServletRequestParameterException {
+        if (ProblemRestControllerSupport.isServerSideDisabled()) {
+            throw exception;
+        }
         String name = exception.getParameterName();
         String detail = exception.getMessage();
         return ProblemMediaType.INSTANCE
@@ -48,7 +52,11 @@ public abstract class AbstractRoutingExceptionsHandler<T extends Exception> {
     }
 
     @ExceptionHandler(MissingRequestHeaderException.class)
-    public ResponseEntity<Problem> handleMissingRequestHeaderException(MissingRequestHeaderException exception) {
+    public ResponseEntity<Problem> handleMissingRequestHeaderException(MissingRequestHeaderException exception)
+            throws MissingRequestHeaderException {
+        if (ProblemRestControllerSupport.isServerSideDisabled()) {
+            throw exception;
+        }
         String name = exception.getHeaderName();
         String detail = exception.getMessage();
         return ProblemMediaType.INSTANCE
@@ -58,7 +66,11 @@ public abstract class AbstractRoutingExceptionsHandler<T extends Exception> {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @SuppressWarnings("unchecked")
-    public ResponseEntity<Problem> handleHttpMessageNotReadable(HttpMessageNotReadableException exception) {
+    public ResponseEntity<Problem> handleHttpMessageNotReadable(HttpMessageNotReadableException exception)
+            throws Exception {
+        if (ProblemRestControllerSupport.isServerSideDisabled()) {
+            throw exception;
+        }
         if (exception.getCause() != null && jacksonExceptionClass.isAssignableFrom(exception.getCause().getClass())) {
             T jacksonException = (T) exception.getCause();
             if (Arrays.stream(jacksonException.getStackTrace())
@@ -95,7 +107,11 @@ public abstract class AbstractRoutingExceptionsHandler<T extends Exception> {
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<Void> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException exception) {
+    public ResponseEntity<Void> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException exception)
+            throws HttpRequestMethodNotSupportedException {
+        if (ProblemRestControllerSupport.isServerSideDisabled()) {
+            throw exception;
+        }
         ResponseEntity.BodyBuilder response = ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED.value());
         if (exception.getSupportedHttpMethods() != null && !exception.getSupportedHttpMethods().isEmpty()) {
             response.allow(exception.getSupportedHttpMethods().toArray(new HttpMethod[0]));
@@ -104,12 +120,20 @@ public abstract class AbstractRoutingExceptionsHandler<T extends Exception> {
     }
 
     @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
-    public ResponseEntity<Void> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException exception) {
+    public ResponseEntity<Void> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException exception)
+            throws HttpMediaTypeNotAcceptableException {
+        if (ProblemRestControllerSupport.isServerSideDisabled()) {
+            throw exception;
+        }
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE.value()).build();
     }
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    public ResponseEntity<Void> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException exception) {
+    public ResponseEntity<Void> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException exception)
+            throws HttpMediaTypeNotSupportedException {
+        if (ProblemRestControllerSupport.isServerSideDisabled()) {
+            throw exception;
+        }
         return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()).build();
     }
 
