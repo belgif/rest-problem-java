@@ -264,16 +264,16 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
+        <configuration>
+          <updatePomFile>true</updatePomFile>
+          <flattenMode>resolveCiFriendliesOnly</flattenMode>
+          <outputDirectory>${project.build.directory}/flattened-pom</outputDirectory>
+          <flattenedPomFilename>${project.artifactId}-${project.version}.pom</flattenedPomFilename>
+        </configuration>
         <executions>
           <execution>
             <id>flatten</id>
             <phase>process-resources</phase>
-            <configuration>
-              <updatePomFile>true</updatePomFile>
-              <flattenMode>resolveCiFriendliesOnly</flattenMode>
-              <outputDirectory>${project.build.directory}/flattened-pom</outputDirectory>
-              <flattenedPomFilename>${project.artifactId}-${project.version}.pom</flattenedPomFilename>
-            </configuration>
             <goals>
               <goal>flatten</goal>
             </goals>
