@@ -57,7 +57,7 @@
       <dependency>
         <groupId>io.rest-assured</groupId>
         <artifactId>rest-assured</artifactId>
-        <version>5.5.6</version>
+        <version>5.5.7</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -150,7 +150,7 @@
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.18.0</version>
+          <version>7.19.0</version>
         </plugin>
         <plugin>
           <groupId>io.swagger.codegen.v3</groupId>
