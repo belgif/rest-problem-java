@@ -21,10 +21,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Aligns with version used on JBoss EAP 7.4 -->
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
-    <version.jackson3.minimal>3.0.3</version.jackson3.minimal>
-    <version.spring.boot.3>3.5.9</version.spring.boot.3>
-    <version.spring.boot.4>4.0.1</version.spring.boot.4>
-    <version.quarkus>3.30.6</version.quarkus>
+    <version.jackson3.minimal>3.0.4</version.jackson3.minimal>
+    <version.spring.boot.3>3.5.10</version.spring.boot.3>
+    <version.spring.boot.4>3.5.10</version.spring.boot.4>
+    <version.quarkus>3.30.8</version.quarkus>
   </properties>
 
   <dependencyManagement>
@@ -39,7 +39,7 @@
       <dependency>
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
-        <version>3.27.6</version>
+        <version>3.27.7</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -145,7 +145,7 @@
         <plugin>
           <groupId>com.diffplug.spotless</groupId>
           <artifactId>spotless-maven-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.2.0</version>
         </plugin>
         <plugin>
           <groupId>org.openapitools</groupId>
@@ -155,7 +155,7 @@
         <plugin>
           <groupId>io.swagger.codegen.v3</groupId>
           <artifactId>swagger-codegen-maven-plugin</artifactId>
-          <version>3.0.75</version>
+          <version>3.0.76</version>
         </plugin>
         <plugin>
           <groupId>org.sonarsource.scanner.maven</groupId>
