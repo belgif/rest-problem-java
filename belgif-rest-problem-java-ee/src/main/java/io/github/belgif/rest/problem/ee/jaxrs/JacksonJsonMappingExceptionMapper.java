@@ -2,7 +2,6 @@ package io.github.belgif.rest.problem.ee.jaxrs;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -15,7 +14,6 @@ import io.github.belgif.rest.problem.internal.Jackson2Util;
  * @see JsonMappingException
  * @see BadRequestProblem
  */
-@Provider
 public class JacksonJsonMappingExceptionMapper implements ExceptionMapper<JsonMappingException> {
 
     private static final DefaultExceptionMapper DEFAULT_MAPPER = new DefaultExceptionMapper();

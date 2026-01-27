@@ -20,6 +20,8 @@ public class QuarkusProblemConfigurator {
     @Inject
     public QuarkusProblemConfigurator(
             @ConfigProperty(
+                    name = ProblemConfig.PROPERTY_SERVER_SIDE_ENABLED) Optional<Boolean> serverSideEnabled,
+            @ConfigProperty(
                     name = ProblemConfig.PROPERTY_I18N_ENABLED) Optional<Boolean> i18nEnabled,
             @ConfigProperty(
                     name = ProblemConfig.PROPERTY_STACK_TRACE_ENABLED) Optional<Boolean> stackTraceEnabled,
@@ -27,6 +29,7 @@ public class QuarkusProblemConfigurator {
                     name = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED) Optional<Boolean> extIssueTypesEnabled,
             @ConfigProperty(
                     name = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED) Optional<Boolean> extInputsArrayEnabled) {
+        serverSideEnabled.ifPresent(ProblemConfig::setServerSideEnabled);
         i18nEnabled.ifPresent(ProblemConfig::setI18nEnabled);
         stackTraceEnabled.ifPresent(ProblemConfig::setStackTraceEnabled);
         extIssueTypesEnabled.ifPresent(ProblemConfig::setExtIssueTypesEnabled);

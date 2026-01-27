@@ -2,6 +2,8 @@ package io.github.belgif.rest.problem.ee.jaxrs;
 
 import static org.assertj.core.api.Assertions.*;
 
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -11,6 +13,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
+import io.github.belgif.rest.problem.ResourceNotFoundProblem;
 
 class WebApplicationExceptionMapperTest {
 
@@ -40,6 +43,18 @@ class WebApplicationExceptionMapperTest {
         Response response =
                 mapper.toResponse(new WebApplicationException(new JsonMappingException(null, "")));
         assertThat(response.getEntity()).isInstanceOf(BadRequestProblem.class);
+    }
+
+    @Test
+    void badRequestException() {
+        Response response = mapper.toResponse(new BadRequestException());
+        assertThat(response.getEntity()).isInstanceOf(BadRequestProblem.class);
+    }
+
+    @Test
+    void notFoundException() {
+        Response response = mapper.toResponse(new NotFoundException());
+        assertThat(response.getEntity()).isInstanceOf(ResourceNotFoundProblem.class);
     }
 
 }

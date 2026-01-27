@@ -14,11 +14,17 @@ import io.github.belgif.rest.problem.config.ProblemConfig;
 @ConfigurationProperties(prefix = "io.github.belgif.rest.problem")
 public class ProblemConfigurationProperties implements InitializingBean {
 
+    private Boolean serverSideEnabled = null;
+
     private List<String> scanAdditionalProblemPackages = new ArrayList<>();
 
     private Boolean i18nEnabled = null;
 
     private Boolean stackTraceEnabled = null;
+
+    public void setServerSideEnabled(Boolean serverSideEnabled) {
+        this.serverSideEnabled = serverSideEnabled;
+    }
 
     public void setScanAdditionalProblemPackages(List<String> scanAdditionalProblemPackages) {
         this.scanAdditionalProblemPackages = scanAdditionalProblemPackages;
@@ -38,6 +44,9 @@ public class ProblemConfigurationProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
+        if (serverSideEnabled != null) {
+            ProblemConfig.setServerSideEnabled(serverSideEnabled);
+        }
         if (i18nEnabled != null) {
             ProblemConfig.setI18nEnabled(i18nEnabled);
         }

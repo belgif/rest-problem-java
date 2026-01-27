@@ -9,6 +9,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import io.github.belgif.rest.problem.ResourceNotFoundProblem;
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.spring.internal.ProblemRestControllerSupport;
 
 @RestControllerAdvice
 @Order(1)
@@ -17,7 +18,10 @@ public class NoResourceFoundExceptionHandler {
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<Problem> handleNoResourceFoundException(
-            NoResourceFoundException exception) {
+            NoResourceFoundException exception) throws NoResourceFoundException {
+        if (ProblemRestControllerSupport.isServerSideDisabled()) {
+            throw exception;
+        }
         ResourceNotFoundProblem problem = new ResourceNotFoundProblem();
         problem.setDetail("No resource %s found".formatted(
                 exception.getResourcePath().startsWith("/") ? exception.getResourcePath()

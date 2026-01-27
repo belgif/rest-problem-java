@@ -23,12 +23,14 @@ class ProblemConfigurationPropertiesTest {
 
     @Test
     void empty() {
+        boolean serverSideEnabledBefore = ProblemConfig.isServerSideEnabled();
         boolean i18nEnabledBefore = ProblemConfig.isI18nEnabled();
         boolean stackTraceEnabledBefore = ProblemConfig.isStackTraceEnabled();
         properties.afterPropertiesSet();
-        assertThat(properties.getScanAdditionalProblemPackages()).isEmpty();
+        assertThat(ProblemConfig.isServerSideEnabled()).isEqualTo(serverSideEnabledBefore);
         assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(i18nEnabledBefore);
         assertThat(ProblemConfig.isStackTraceEnabled()).isEqualTo(stackTraceEnabledBefore);
+        assertThat(properties.getScanAdditionalProblemPackages()).isEmpty();
     }
 
     @Test
@@ -64,6 +66,20 @@ class ProblemConfigurationPropertiesTest {
         properties.setStackTraceEnabled(false);
         properties.afterPropertiesSet();
         assertThat(ProblemConfig.isStackTraceEnabled()).isFalse();
+    }
+
+    @Test
+    void serverSideEnabled() {
+        properties.setServerSideEnabled(true);
+        properties.afterPropertiesSet();
+        assertThat(ProblemConfig.isServerSideEnabled()).isTrue();
+    }
+
+    @Test
+    void serverSideDisabled() {
+        properties.setServerSideEnabled(false);
+        properties.afterPropertiesSet();
+        assertThat(ProblemConfig.isServerSideEnabled()).isFalse();
     }
 
 }

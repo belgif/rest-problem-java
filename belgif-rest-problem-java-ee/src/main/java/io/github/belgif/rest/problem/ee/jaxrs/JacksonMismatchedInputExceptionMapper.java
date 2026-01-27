@@ -2,7 +2,6 @@ package io.github.belgif.rest.problem.ee.jaxrs;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
@@ -14,7 +13,6 @@ import io.github.belgif.rest.problem.BadRequestProblem;
  * @see MismatchedInputException
  * @see BadRequestProblem
  */
-@Provider
 // NOTE: This specific specialization for MismatchedInputException is needed because some runtimes (i.e. Quarkus)
 // provide a default ExceptionMapper for MismatchedInputException, which we need to override
 public class JacksonMismatchedInputExceptionMapper implements ExceptionMapper<MismatchedInputException> {

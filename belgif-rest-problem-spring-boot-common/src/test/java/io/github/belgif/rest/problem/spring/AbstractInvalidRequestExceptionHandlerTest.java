@@ -10,6 +10,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.atlassian.oai.validator.model.ApiOperation;
@@ -24,6 +26,7 @@ import io.github.belgif.rest.problem.ResourceNotFoundProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.spring.internal.ProblemRestControllerSupport;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.parameters.Parameter;
@@ -269,6 +272,16 @@ class AbstractInvalidRequestExceptionHandlerTest {
         BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
         assertThat(badRequestProblem.getIssues().get(0).getType())
                 .isEqualTo(InputValidationIssues.ISSUE_TYPE_UNKNOWN_INPUT);
+    }
+
+    @Test
+    void disabled() {
+        try (MockedStatic<ProblemRestControllerSupport> mock = Mockito.mockStatic(ProblemRestControllerSupport.class)) {
+            mock.when(ProblemRestControllerSupport::isServerSideDisabled).thenReturn(true);
+            InvalidRequestException exception = new InvalidRequestException(null);
+            assertThatThrownBy(() -> handler.handleInvalidRequestException(exception, new MockHttpServletRequest()))
+                    .isSameAs(exception);
+        }
     }
 
 }

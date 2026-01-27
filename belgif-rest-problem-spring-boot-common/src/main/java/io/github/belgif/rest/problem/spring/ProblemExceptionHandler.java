@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import io.github.belgif.rest.problem.InternalServerErrorProblem;
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.spring.internal.ProblemRestControllerSupport;
 
 /**
  * Exception handler for RestControllers.
@@ -26,11 +27,17 @@ public class ProblemExceptionHandler {
 
     @ExceptionHandler(Problem.class)
     public ResponseEntity<Problem> handleProblem(Problem problem) {
+        if (ProblemRestControllerSupport.isServerSideDisabled()) {
+            throw problem;
+        }
         return ProblemMediaType.INSTANCE.toResponse(problem);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Problem> handleException(Exception exception) {
+    public ResponseEntity<Problem> handleException(Exception exception) throws Exception {
+        if (ProblemRestControllerSupport.isServerSideDisabled()) {
+            throw exception;
+        }
         LOGGER.error("Unhandled exception", exception);
         return ProblemMediaType.INSTANCE.toResponse(new InternalServerErrorProblem());
     }

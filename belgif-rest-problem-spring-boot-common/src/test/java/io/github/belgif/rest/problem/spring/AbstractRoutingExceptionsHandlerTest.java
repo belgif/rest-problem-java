@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -32,6 +34,7 @@ import io.github.belgif.rest.problem.InternalServerErrorProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.internal.Jackson2Util;
+import io.github.belgif.rest.problem.spring.internal.ProblemRestControllerSupport;
 
 class AbstractRoutingExceptionsHandlerTest {
 
@@ -50,7 +53,7 @@ class AbstractRoutingExceptionsHandlerTest {
             };
 
     @Test
-    void handleMissingServletRequestParameterException() {
+    void handleMissingServletRequestParameterException() throws MissingServletRequestParameterException {
         ResponseEntity<Problem> entity = handler.handleMissingServletRequestParameterException(
                 new MissingServletRequestParameterException("name", "String"));
         assertThat(entity.getStatusCode().value()).isEqualTo(400);
@@ -83,7 +86,7 @@ class AbstractRoutingExceptionsHandlerTest {
     }
 
     @Test
-    void handleHttpMessageNotReadableJacksonMismatchedInputException() {
+    void handleHttpMessageNotReadableJacksonMismatchedInputException() throws Exception {
         MismatchedInputException exception = MismatchedInputException.from(null, Object.class, "detail");
         exception.prependPath(new JsonMappingException.Reference(null, "id"));
         ResponseEntity<Problem> entity =
@@ -102,7 +105,7 @@ class AbstractRoutingExceptionsHandlerTest {
     }
 
     @Test
-    void handleHttpMessageNotReadableJacksonMismatchedInputExceptionFromRestTemplate() {
+    void handleHttpMessageNotReadableJacksonMismatchedInputExceptionFromRestTemplate() throws Exception {
         MismatchedInputException exception = MismatchedInputException.from(null, Object.class, "detail");
         exception.prependPath(new JsonMappingException.Reference(null, "id"));
         exception.setStackTrace(
@@ -115,7 +118,7 @@ class AbstractRoutingExceptionsHandlerTest {
     }
 
     @Test
-    void handleHttpMessageNotReadableRequiredRequestBodyIsMissing() {
+    void handleHttpMessageNotReadableRequiredRequestBodyIsMissing() throws Exception {
         ResponseEntity<Problem> entity = handler.handleHttpMessageNotReadable(
                 new HttpMessageNotReadableException("Required request body is missing: " +
                         "public org.springframework.http.ResponseEntity<java.lang.String> " +
@@ -134,7 +137,7 @@ class AbstractRoutingExceptionsHandlerTest {
     }
 
     @Test
-    void handleHttpMessageNotReadableJsonParseError() {
+    void handleHttpMessageNotReadableJsonParseError() throws Exception {
         ResponseEntity<Problem> entity = handler.handleHttpMessageNotReadable(
                 new HttpMessageNotReadableException("JSON parse error: " +
                         "Cannot deserialize value of type `java.time.LocalDate` " +
@@ -153,7 +156,7 @@ class AbstractRoutingExceptionsHandlerTest {
     }
 
     @Test
-    void handleHttpMessageNotReadableOther() {
+    void handleHttpMessageNotReadableOther() throws Exception {
         ResponseEntity<Problem> entity = handler.handleHttpMessageNotReadable(
                 new HttpMessageNotReadableException("Other non-sanitized message",
                         new MockHttpInputMessage("dummy".getBytes(StandardCharsets.UTF_8))));
@@ -169,7 +172,7 @@ class AbstractRoutingExceptionsHandlerTest {
     }
 
     @Test
-    void handleHttpRequestMethodNotSupported() {
+    void handleHttpRequestMethodNotSupported() throws HttpRequestMethodNotSupportedException {
         ResponseEntity<Void> response = handler.handleHttpRequestMethodNotSupported(
                 new HttpRequestMethodNotSupportedException("POST", Arrays.asList("GET", "PUT")));
         assertThat(response.getStatusCode().value()).isEqualTo(405);
@@ -177,18 +180,57 @@ class AbstractRoutingExceptionsHandlerTest {
     }
 
     @Test
-    void handleHttpMediaTypeNotAcceptable() {
+    void handleHttpMediaTypeNotAcceptable() throws HttpMediaTypeNotAcceptableException {
         ResponseEntity<Void> response = handler.handleHttpMediaTypeNotAcceptable(
                 new HttpMediaTypeNotAcceptableException(Collections.singletonList(MediaType.APPLICATION_JSON)));
         assertThat(response.getStatusCode().value()).isEqualTo(406);
     }
 
     @Test
-    void handleHttpMediaTypeNotSupported() {
+    void handleHttpMediaTypeNotSupported() throws HttpMediaTypeNotSupportedException {
         ResponseEntity<Void> response = handler.handleHttpMediaTypeNotSupported(
                 new HttpMediaTypeNotSupportedException(MediaType.APPLICATION_XML,
                         Collections.singletonList(MediaType.APPLICATION_JSON)));
         assertThat(response.getStatusCode().value()).isEqualTo(415);
+    }
+
+    @Test
+    void disabled() {
+        try (MockedStatic<ProblemRestControllerSupport> mock = Mockito.mockStatic(ProblemRestControllerSupport.class)) {
+            mock.when(ProblemRestControllerSupport::isServerSideDisabled).thenReturn(true);
+
+            MissingServletRequestParameterException missingServletRequestParameterException =
+                    new MissingServletRequestParameterException("name", "String");
+            assertThatThrownBy(() -> handler
+                    .handleMissingServletRequestParameterException(missingServletRequestParameterException))
+                            .isSameAs(missingServletRequestParameterException);
+
+            MissingRequestHeaderException missingRequestHeaderException =
+                    new MissingRequestHeaderException("name", null);
+            assertThatThrownBy(() -> handler.handleMissingRequestHeaderException(missingRequestHeaderException))
+                    .isSameAs(missingRequestHeaderException);
+
+            HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException(null);
+            assertThatThrownBy(() -> handler.handleHttpMessageNotReadable(httpMessageNotReadableException))
+                    .isSameAs(httpMessageNotReadableException);
+
+            HttpRequestMethodNotSupportedException httpRequestMethodNotSupportedException =
+                    new HttpRequestMethodNotSupportedException("POST");
+            assertThatThrownBy(
+                    () -> handler.handleHttpRequestMethodNotSupported(httpRequestMethodNotSupportedException))
+                            .isSameAs(httpRequestMethodNotSupportedException);
+
+            HttpMediaTypeNotAcceptableException httpMediaTypeNotAcceptableException =
+                    new HttpMediaTypeNotAcceptableException("");
+            assertThatThrownBy(() -> handler.handleHttpMediaTypeNotAcceptable(httpMediaTypeNotAcceptableException))
+                    .isSameAs(httpMediaTypeNotAcceptableException);
+
+            HttpMediaTypeNotSupportedException httpMediaTypeNotSupportedException =
+                    new HttpMediaTypeNotSupportedException(MediaType.APPLICATION_XML,
+                            Collections.singletonList(MediaType.APPLICATION_JSON));
+            assertThatThrownBy(() -> handler.handleHttpMediaTypeNotSupported(httpMediaTypeNotSupportedException))
+                    .isSameAs(httpMediaTypeNotSupportedException);
+        }
     }
 
 }

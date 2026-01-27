@@ -75,4 +75,11 @@ public abstract class AbstractRestProblemSpringBootIT extends AbstractRestProble
                 .body("detail", equalTo("No resource /frontend/not/found found"));
     }
 
+    @Test
+    public void disabled() {
+        getSpec().basePath("/spring/disabled").when().get("/runtime").then().log().all().assertThat()
+                .statusCode(500)
+                .body(not(containsString("urn:problem-type:belgif:internalServerError")));
+    }
+
 }

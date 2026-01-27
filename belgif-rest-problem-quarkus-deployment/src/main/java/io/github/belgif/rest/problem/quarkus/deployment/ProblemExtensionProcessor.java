@@ -19,10 +19,12 @@ import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.ee.jaxrs.ProblemFeature;
 import io.github.belgif.rest.problem.ee.jaxrs.ProblemObjectMapperContextResolver;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemResponseExceptionMapper;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemRestClientListener;
 import io.github.belgif.rest.problem.i18n.I18N;
+import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.CombinedIndexBuildItem;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
@@ -89,6 +91,25 @@ public class ProblemExtensionProcessor {
                 ProblemRestClientListener.ClientProblemObjectMapperContextResolver.class.getName(),
                 ProblemObjectMapperContextResolver.class.getName(),
                 ProblemResponseExceptionMapper.class.getName())
+                .constructors().methods().fields()
+                .build();
+    }
+
+    @BuildStep
+    AdditionalBeanBuildItem registerProblemFeatures() {
+        AdditionalBeanBuildItem.Builder builder = AdditionalBeanBuildItem.builder();
+        builder.setUnremovable();
+        for (Class<?> providerClass : ProblemFeature.DEFAULT_PROVIDER_CLASSES) {
+            builder.addBeanClass(providerClass);
+        }
+        return builder.build();
+    }
+
+    @BuildStep
+    ReflectiveClassBuildItem registerProblemFeaturesForReflection() {
+        return ReflectiveClassBuildItem.builder(Arrays.stream(ProblemFeature.DEFAULT_PROVIDER_CLASSES)
+                .map(Class::getName)
+                .toArray(String[]::new))
                 .constructors().methods().fields()
                 .build();
     }
