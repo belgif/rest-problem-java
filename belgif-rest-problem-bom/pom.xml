@@ -28,8 +28,37 @@
       </dependency>
       <dependency>
         <groupId>io.github.belgif.rest.problem</groupId>
-        <artifactId>belgif-rest-problem-java-ee</artifactId>
-        <classifier>jakarta</classifier>
+        <artifactId>belgif-rest-problem-java-ee-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-java-ee-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-java-ee-server</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-jakarta-ee</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-jakarta-ee-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-jakarta-ee-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-jakarta-ee-server</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

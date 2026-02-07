@@ -93,17 +93,34 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>io.github.belgif.rest.problem</groupId>
-                  <artifactId>belgif-rest-problem-java-ee</artifactId>
-                  <classifier>jakarta</classifier>
+                  <artifactId>belgif-rest-problem-jakarta-ee-core</artifactId>
                   <version>${project.version}</version>
                   <outputDirectory>target/classes</outputDirectory>
                   <excludes>
                     META-INF/MANIFEST.MF,
                     META-INF/services/jakarta.enterprise.inject.spi.Extension,
+                    io/github/belgif/rest/problem/ee/jaxrs/ProblemConfigurator.class,
+                    io/github/belgif/rest/problem/ee/registry/CdiProblemTypeRegistry.class
+                  </excludes>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>io.github.belgif.rest.problem</groupId>
+                  <artifactId>belgif-rest-problem-jakarta-ee-client</artifactId>
+                  <version>${project.version}</version>
+                  <outputDirectory>target/classes</outputDirectory>
+                  <excludes>
+                    META-INF/MANIFEST.MF
+                  </excludes>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>io.github.belgif.rest.problem</groupId>
+                  <artifactId>belgif-rest-problem-jakarta-ee-server</artifactId>
+                  <version>${project.version}</version>
+                  <outputDirectory>target/classes</outputDirectory>
+                  <excludes>
+                    META-INF/MANIFEST.MF,
                     META-INF/services/io.github.belgif.rest.problem.i18n.LocaleResolver,
                     io/github/belgif/rest/problem/ee/jaxrs/EJBExceptionMapper.class,
-                    io/github/belgif/rest/problem/ee/jaxrs/ProblemConfigurator.class,
-                    io/github/belgif/rest/problem/ee/registry/CdiProblemTypeRegistry.class,
                     io/github/belgif/rest/problem/ee/jaxrs/i18n/*
                   </excludes>
                 </artifactItem>
