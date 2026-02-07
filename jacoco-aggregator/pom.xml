@@ -126,7 +126,32 @@
     </dependency>
     <dependency>
       <groupId>io.github.belgif.rest.problem</groupId>
-      <artifactId>belgif-rest-problem-quarkus-deployment</artifactId>
+      <artifactId>belgif-rest-problem-quarkus-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-quarkus-core-deployment</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-quarkus-client</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-quarkus-client-deployment</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-quarkus-server</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-quarkus-server-deployment</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

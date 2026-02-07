@@ -153,6 +153,11 @@ WARNING: Quarkus support is currently still *experimental*.
 compile 'io.github.belgif.rest.problem:belgif-rest-problem-quarkus:{revnumber}'
 ----
 
+Alternatively, if you specifically only want to use problems either client-side or server-side, you can depend on these modules instead:
+
+* belgif-rest-problem-quarkus-client
+* belgif-rest-problem-quarkus-server
+
 [[getting-started-usage]]
 === Usage
 

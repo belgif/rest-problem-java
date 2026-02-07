@@ -118,6 +118,26 @@
       </dependency>
       <dependency>
         <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-quarkus</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-quarkus-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-quarkus-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-quarkus-server</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
         <artifactId>belgif-rest-problem-validator</artifactId>
         <version>${project.version}</version>
       </dependency>

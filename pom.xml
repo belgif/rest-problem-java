@@ -391,7 +391,12 @@
         <module>belgif-rest-problem-spring-boot-4-client</module>
         <module>belgif-rest-problem-spring-boot-4-server</module>
         <module>belgif-rest-problem-quarkus</module>
-        <module>belgif-rest-problem-quarkus-deployment</module>
+        <module>belgif-rest-problem-quarkus-core</module>
+        <module>belgif-rest-problem-quarkus-core-deployment</module>
+        <module>belgif-rest-problem-quarkus-client</module>
+        <module>belgif-rest-problem-quarkus-client-deployment</module>
+        <module>belgif-rest-problem-quarkus-server</module>
+        <module>belgif-rest-problem-quarkus-server-deployment</module>
         <module>belgif-rest-problem-it</module>
         <module>belgif-rest-problem-bom</module>
       </modules>
@@ -510,7 +515,12 @@
         <module>belgif-rest-problem-spring-boot-4-client</module>
         <module>belgif-rest-problem-spring-boot-4-server</module>
         <module>belgif-rest-problem-quarkus</module>
-        <module>belgif-rest-problem-quarkus-deployment</module>
+        <module>belgif-rest-problem-quarkus-core</module>
+        <module>belgif-rest-problem-quarkus-core-deployment</module>
+        <module>belgif-rest-problem-quarkus-client</module>
+        <module>belgif-rest-problem-quarkus-client-deployment</module>
+        <module>belgif-rest-problem-quarkus-server</module>
+        <module>belgif-rest-problem-quarkus-server-deployment</module>
         <module>belgif-rest-problem-it</module>
         <module>belgif-rest-problem-bom</module>
         <module>jacoco-aggregator</module>

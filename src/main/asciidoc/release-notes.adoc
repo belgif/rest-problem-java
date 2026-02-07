@@ -30,7 +30,7 @@ Provide separate modules in case you specifically only want to use problems eith
 * belgif-rest-problem-spring-boot-4-client
 * belgif-rest-problem-spring-boot-4-server
 
-Note that you can keep using `belgif-rest-problem-spring-boot-4` as before if you want both client-side and server-side integration.
+Note that you can keep using `belgif-rest-problem-spring-boot-4` as before when you want both client-side and server-side integration.
 
 *belgif-rest-problem-java-ee:*
 
@@ -43,12 +43,21 @@ Provide separate modules in case you specifically only want to use problems eith
 ** belgif-rest-problem-jakarta-ee-client
 ** belgif-rest-problem-jakarta-ee-server
 
-Note that you can keep using `belgif-rest-problem-java-ee` as before if you want both client-side and server-side integration.
+Note that you can keep using `belgif-rest-problem-java-ee` as before when you want both client-side and server-side integration.
 
 [WARNING]
 ====
 *Breaking change:* The `<classifier>jakarta</classifier>` variant of `belgif-rest-problem-java-ee` no longer exists and should be replaced by `belgif-rest-problem-jakarta-ee`.
 ====
+
+*belgif-rest-problem-quarkus:*
+
+Provide separate modules in case you specifically only want to use problems either client-side or server-side.
+
+* belgif-rest-problem-quarkus-client
+* belgif-rest-problem-quarkus-server
+
+Note that you can keep using `belgif-rest-problem-quarkus` as before when you want both client-side and server-side integration.
 
 == Version 0.20
 
