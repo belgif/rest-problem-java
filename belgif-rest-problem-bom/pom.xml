@@ -39,12 +39,52 @@
       </dependency>
       <dependency>
         <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-spring-boot-common-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-spring-boot-common-server</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
         <artifactId>belgif-rest-problem-spring-boot-3</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-spring-boot-3-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-spring-boot-3-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-spring-boot-3-server</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
         <artifactId>belgif-rest-problem-spring-boot-4</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-spring-boot-4-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-spring-boot-4-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.belgif.rest.problem</groupId>
+        <artifactId>belgif-rest-problem-spring-boot-4-server</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

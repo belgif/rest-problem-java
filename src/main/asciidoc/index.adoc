@@ -25,6 +25,7 @@ The library consists of these modules:
 * *belgif-rest-problem*: library for RFC 9457 standardized Belgif problems
 * *belgif-rest-problem-java-ee*: Java EE / Jakarta EE integration for belgif-rest-problem
 * *belgif-rest-problem-spring-boot-3*: Spring Boot 3.x integration for belgif-rest-problem
+* *belgif-rest-problem-spring-boot-4*: Spring Boot 4.x integration for belgif-rest-problem
 * *belgif-rest-problem-quarkus*: Quarkus integration for belgif-rest-problem
 * *belgif-rest-problem-validator*: validation library that generates Belgif-compliant BadRequestProblem with InputValidationIssues
 
@@ -76,6 +77,15 @@ compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:{revnum
 ----
 compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-4:{revnumber}'
 ----
+
+Alternatively, if you specifically only want to use problems either client-side or server-side, you can depend on these modules instead:
+
+* Spring Boot 3:
+** belgif-rest-problem-spring-boot-3-client
+** belgif-rest-problem-spring-boot-3-server
+* Spring Boot 4:
+** belgif-rest-problem-spring-boot-4-client
+** belgif-rest-problem-spring-boot-4-server
 
 [[dependencies-jakarta-ee]]
 ==== Jakarta EE

@@ -12,6 +12,26 @@
 
 // tag::recent-versions[]
 
+== Version 0.21
+
+*belgif-rest-problem-spring-boot-3:*
+
+Provide separate modules in case you specifically only want to use problems either client-side or server-side.
+
+* belgif-rest-problem-spring-boot-3-client
+* belgif-rest-problem-spring-boot-3-server
+
+Note that you can keep using `belgif-rest-problem-spring-boot-3` as before if you want both client-side and server-side integration.
+
+*belgif-rest-problem-spring-boot-4:*
+
+Provide separate modules in case you specifically only want to use problems either client-side or server-side.
+
+* belgif-rest-problem-spring-boot-4-client
+* belgif-rest-problem-spring-boot-4-server
+
+Note that you can keep using `belgif-rest-problem-spring-boot-4` as before if you want both client-side and server-side integration.
+
 == Version 0.20
 
 *belgif-rest-problem:*
