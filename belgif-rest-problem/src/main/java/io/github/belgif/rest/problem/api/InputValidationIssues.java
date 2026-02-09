@@ -3,9 +3,9 @@ package io.github.belgif.rest.problem.api;
 import java.net.URI;
 import java.time.temporal.Temporal;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import io.github.belgif.rest.problem.config.ProblemConfig;
@@ -61,7 +61,7 @@ public class InputValidationIssues {
 
     public static final String DETAIL_JSON_SYNTAX_ERROR = "JSON syntax error";
 
-    private static final Map<URI, URI> BELGIF_ISSUE_TYPE_HREFS = new HashMap<>();
+    private static final Map<URI, URI> BELGIF_ISSUE_TYPE_HREFS = new ConcurrentHashMap<>();
 
     private InputValidationIssues() {
     }

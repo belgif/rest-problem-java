@@ -14,6 +14,10 @@
 
 == Version 0.21
 
+*belgif-rest-problem:*
+
+* Fix concurrency issue in InputValidationIssues.BELGIF_ISSUE_TYPE_HREFS cache
+
 *belgif-rest-problem-spring-boot-3:*
 
 Provide separate modules in case you specifically only want to use problems either client-side or server-side.
