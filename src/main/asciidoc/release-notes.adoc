@@ -12,6 +12,12 @@
 
 // tag::recent-versions[]
 
+== Version 0.21
+
+*belgif-rest-problem:*
+
+* Fix concurrency issue in InputValidationIssues.BELGIF_ISSUE_TYPE_HREFS cache
+
 == Version 0.20
 
 *belgif-rest-problem:*
