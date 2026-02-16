@@ -440,9 +440,11 @@
             <configuration>
               <publishingServerId>central</publishingServerId>
               <deploymentName>belgif-rest-problem</deploymentName>
+              <!-- temporarily disabled to test snapshots
               <autoPublish>true</autoPublish>
               <waitUntil>published</waitUntil>
               <waitMaxTime>3600</waitMaxTime>
+              -->
               <excludeArtifacts>
                 <excludeArtifact>jacoco-aggregator</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-it</excludeArtifact>
