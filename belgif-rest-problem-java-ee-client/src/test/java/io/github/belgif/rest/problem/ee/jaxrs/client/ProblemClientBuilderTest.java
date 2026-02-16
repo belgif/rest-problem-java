@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemSupport.ClientInvocationHandler;
@@ -60,7 +59,7 @@ class ProblemClientBuilderTest {
         assertThat(result).isInstanceOf(Client.class);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
-        Mockito.verifyNoMoreInteractions(client);
+        verifyNoMoreInteractions(client);
     }
 
     @Test

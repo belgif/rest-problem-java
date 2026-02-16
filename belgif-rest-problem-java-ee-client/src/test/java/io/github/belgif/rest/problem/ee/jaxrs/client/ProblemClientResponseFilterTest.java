@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -102,7 +101,7 @@ class ProblemClientResponseFilterTest {
     @Test
     void microProfile() {
         when(requestContext.getProperty("org.eclipse.microprofile.rest.client.invokedMethod"))
-                .thenReturn(Mockito.mock(Method.class));
+                .thenReturn(mock(Method.class));
         assertThatNoException().isThrownBy(
                 () -> filter.filter(requestContext, responseContext));
         verifyNoMoreInteractions(requestContext, responseContext);

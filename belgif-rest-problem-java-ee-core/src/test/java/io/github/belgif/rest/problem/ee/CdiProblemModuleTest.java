@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import io.github.belgif.rest.problem.registry.ProblemTypeRegistry;
@@ -31,7 +30,7 @@ class CdiProblemModuleTest {
 
     @Test
     void module() {
-        try (MockedStatic<CDI> mock = Mockito.mockStatic(CDI.class)) {
+        try (MockedStatic<CDI> mock = mockStatic(CDI.class)) {
             mock.when(CDI::current).thenReturn(cdi);
             when(cdi.select(ProblemTypeRegistry.class)).thenReturn(instance);
             when(instance.get()).thenReturn(registry);

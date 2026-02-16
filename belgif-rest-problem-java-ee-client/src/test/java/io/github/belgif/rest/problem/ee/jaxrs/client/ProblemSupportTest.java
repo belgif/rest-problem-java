@@ -18,7 +18,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import io.github.belgif.rest.problem.BadGatewayProblem;
@@ -53,13 +52,13 @@ class ProblemSupportTest {
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
 
-        WebTarget target = Mockito.mock(WebTarget.class);
+        WebTarget target = mock(WebTarget.class);
         when(client.target("https://www.belgif.be")).thenReturn(target);
 
-        Invocation.Builder builder = Mockito.mock(Invocation.Builder.class);
+        Invocation.Builder builder = mock(Invocation.Builder.class);
         when(target.request()).thenReturn(builder);
 
-        Invocation invocation = Mockito.mock(Invocation.class);
+        Invocation invocation = mock(Invocation.class);
         when(builder.buildGet()).thenReturn(invocation);
 
         when(invocation.invoke()).thenThrow(new ProblemWrapper(new BadRequestProblem()));
@@ -76,13 +75,13 @@ class ProblemSupportTest {
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
 
-        WebTarget target = Mockito.mock(WebTarget.class);
+        WebTarget target = mock(WebTarget.class);
         when(client.target("https://www.belgif.be")).thenReturn(target);
 
-        Invocation.Builder builder = Mockito.mock(Invocation.Builder.class);
+        Invocation.Builder builder = mock(Invocation.Builder.class);
         when(target.request()).thenReturn(builder);
 
-        Invocation invocation = Mockito.mock(Invocation.class);
+        Invocation invocation = mock(Invocation.class);
         when(builder.buildGet()).thenReturn(invocation);
 
         when(invocation.invoke()).thenThrow(new ProblemWrapper(new BadRequestProblem()));
@@ -97,13 +96,13 @@ class ProblemSupportTest {
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
 
-        WebTarget target = Mockito.mock(WebTarget.class);
+        WebTarget target = mock(WebTarget.class);
         when(client.target("https://www.belgif.be")).thenReturn(target);
 
-        Invocation.Builder builder = Mockito.mock(Invocation.Builder.class);
+        Invocation.Builder builder = mock(Invocation.Builder.class);
         when(target.request()).thenReturn(builder);
 
-        Invocation invocation = Mockito.mock(Invocation.class);
+        Invocation invocation = mock(Invocation.class);
         when(builder.buildGet()).thenReturn(invocation);
 
         Response response = Response.ok().build();
@@ -118,16 +117,16 @@ class ProblemSupportTest {
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
 
-        WebTarget target = Mockito.mock(WebTarget.class);
+        WebTarget target = mock(WebTarget.class);
         when(client.target("https://www.belgif.be")).thenReturn(target);
 
-        Invocation.Builder builder = Mockito.mock(Invocation.Builder.class);
+        Invocation.Builder builder = mock(Invocation.Builder.class);
         when(target.request()).thenReturn(builder);
 
-        AsyncInvoker asyncInvoker = Mockito.mock(AsyncInvoker.class);
+        AsyncInvoker asyncInvoker = mock(AsyncInvoker.class);
         when(builder.async()).thenReturn(asyncInvoker);
 
-        Future<Response> future = Mockito.mock(Future.class);
+        Future<Response> future = mock(Future.class);
         when(asyncInvoker.get()).thenReturn(future);
 
         when(future.get()).thenThrow(new ExecutionException(new ProblemWrapper(new BadRequestProblem())));
@@ -142,16 +141,16 @@ class ProblemSupportTest {
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
 
-        WebTarget target = Mockito.mock(WebTarget.class);
+        WebTarget target = mock(WebTarget.class);
         when(client.target("https://www.belgif.be")).thenReturn(target);
 
-        Invocation.Builder builder = Mockito.mock(Invocation.Builder.class);
+        Invocation.Builder builder = mock(Invocation.Builder.class);
         when(target.request()).thenReturn(builder);
 
-        AsyncInvoker asyncInvoker = Mockito.mock(AsyncInvoker.class);
+        AsyncInvoker asyncInvoker = mock(AsyncInvoker.class);
         when(builder.async()).thenReturn(asyncInvoker);
 
-        Future<Response> future = Mockito.mock(Future.class);
+        Future<Response> future = mock(Future.class);
         when(asyncInvoker.get()).thenReturn(future);
 
         Response response = Response.ok().build();
@@ -166,16 +165,16 @@ class ProblemSupportTest {
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
 
-        WebTarget target = Mockito.mock(WebTarget.class);
+        WebTarget target = mock(WebTarget.class);
         when(client.target("https://www.belgif.be")).thenReturn(target);
 
-        Invocation.Builder builder = Mockito.mock(Invocation.Builder.class);
+        Invocation.Builder builder = mock(Invocation.Builder.class);
         when(target.request()).thenReturn(builder);
 
-        AsyncInvoker asyncInvoker = Mockito.mock(AsyncInvoker.class);
+        AsyncInvoker asyncInvoker = mock(AsyncInvoker.class);
         when(builder.async()).thenReturn(asyncInvoker);
 
-        Future<Response> future = Mockito.mock(Future.class);
+        Future<Response> future = mock(Future.class);
         when(asyncInvoker.get()).thenReturn(future);
 
         when(future.get()).thenThrow(new ExecutionException(new RuntimeException("other")));
@@ -192,10 +191,10 @@ class ProblemSupportTest {
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
 
-        WebTarget target = Mockito.mock(WebTarget.class);
+        WebTarget target = mock(WebTarget.class);
         when(client.target("https://www.belgif.be")).thenReturn(target);
 
-        Invocation.Builder builder = Mockito.mock(Invocation.Builder.class);
+        Invocation.Builder builder = mock(Invocation.Builder.class);
         when(target.request()).thenReturn(builder);
 
         when(builder.get()).thenThrow(new RuntimeException("other"));
@@ -220,7 +219,7 @@ class ProblemSupportTest {
 
     @Test
     void unwrapProblemWrapperInProxyClient() {
-        Service service = Mockito.mock(Service.class);
+        Service service = mock(Service.class);
         Service result = ProblemSupport.enable(service);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ProxyInvocationHandler.class);
@@ -232,7 +231,7 @@ class ProblemSupportTest {
 
     @Test
     void normalResponseFromProxyClient() {
-        Service service = Mockito.mock(Service.class);
+        Service service = mock(Service.class);
         Service result = ProblemSupport.enable(service);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ProxyInvocationHandler.class);
@@ -244,7 +243,7 @@ class ProblemSupportTest {
 
     @Test
     void otherExceptionInProxyClient() {
-        Service service = Mockito.mock(Service.class);
+        Service service = mock(Service.class);
         Service result = ProblemSupport.enable(service);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ProxyInvocationHandler.class);
@@ -262,15 +261,15 @@ class ProblemSupportTest {
 
         when(client.register("test")).thenReturn(client);
 
-        WebTarget target = Mockito.mock(WebTarget.class);
+        WebTarget target = mock(WebTarget.class);
 
         when(target.register("test")).thenReturn(target);
         when(client.target("https://www.belgif.be")).thenReturn(target);
 
-        Invocation.Builder builder = Mockito.mock(Invocation.Builder.class);
+        Invocation.Builder builder = mock(Invocation.Builder.class);
         when(target.request()).thenReturn(builder);
 
-        Invocation invocation = Mockito.mock(Invocation.class);
+        Invocation invocation = mock(Invocation.class);
         when(builder.buildGet()).thenReturn(invocation);
 
         when(invocation.invoke()).thenThrow(new ProblemWrapper(new BadRequestProblem()));

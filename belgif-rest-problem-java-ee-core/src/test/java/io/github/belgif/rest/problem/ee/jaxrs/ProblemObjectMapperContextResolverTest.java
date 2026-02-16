@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,7 +35,7 @@ class ProblemObjectMapperContextResolverTest {
 
     @Test
     void mapper() {
-        try (MockedStatic<CDI> mock = Mockito.mockStatic(CDI.class)) {
+        try (MockedStatic<CDI> mock = mockStatic(CDI.class)) {
             mock.when(CDI::current).thenReturn(cdi);
             when(cdi.select(ProblemTypeRegistry.class)).thenReturn(instance);
             when(instance.get()).thenReturn(registry);
