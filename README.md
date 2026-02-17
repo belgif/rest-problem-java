@@ -26,7 +26,7 @@ The build process is documented [here](https://github.com/belgif/rest-problem-ja
 ## Maven Central
 
 * Release artifacts are available on Maven Central (https://central.sonatype.com/namespace/io.github.belgif.rest.problem)
-* Snapshot artifacts are also available (latest-SNAPSHOT for the main branch, pr<number>-SNAPSHOT for PR branches):
+* Snapshot artifacts are also available (`latest-SNAPSHOT` for the main branch, `pr<number>-SNAPSHOT` for PR branches):
 
 ```xml
 <repositories>
