@@ -22,3 +22,24 @@ Documentation on how to use this library is available on https://belgif.github.i
 ## Build Process
 
 The build process is documented [here](https://github.com/belgif/rest-problem-java/blob/master/BUILDING.md).
+
+## Maven Central
+
+* Release artifacts are available on Maven Central (https://central.sonatype.com/namespace/io.github.belgif.rest.problem)
+* Snapshot artifacts are also available (latest-SNAPSHOT for the main branch, pr<number>-SNAPSHOT for PR branches):
+
+```xml
+<repositories>
+  <repository>
+    <name>Central Portal Snapshots</name>
+    <id>central-portal-snapshots</id>
+    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+    <releases>
+      <enabled>false</enabled>
+    </releases>
+    <snapshots>
+      <enabled>true</enabled>
+    </snapshots>
+  </repository>
+</repositories>
+```
