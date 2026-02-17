@@ -42,9 +42,8 @@
     </dependency>
     <dependency>
       <groupId>io.github.belgif.rest.problem</groupId>
-      <artifactId>belgif-rest-problem-it-common</artifactId>
+      <artifactId>belgif-rest-problem-it-common-jakarta</artifactId>
       <version>${project.version}</version>
-      <classifier>jakarta</classifier>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
