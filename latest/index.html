@@ -774,10 +774,16 @@ window.onload = function() {
 <p><strong>belgif-rest-problem</strong>: library for RFC 9457 standardized Belgif problems</p>
 </li>
 <li>
-<p><strong>belgif-rest-problem-java-ee</strong>: Java EE / Jakarta EE integration for belgif-rest-problem</p>
+<p><strong>belgif-rest-problem-java-ee</strong>: Java EE integration for belgif-rest-problem</p>
+</li>
+<li>
+<p><strong>belgif-rest-problem-jakarta-ee</strong>: Jakarta EE integration for belgif-rest-problem</p>
 </li>
 <li>
 <p><strong>belgif-rest-problem-spring-boot-3</strong>: Spring Boot 3.x integration for belgif-rest-problem</p>
+</li>
+<li>
+<p><strong>belgif-rest-problem-spring-boot-4</strong>: Spring Boot 4.x integration for belgif-rest-problem</p>
 </li>
 <li>
 <p><strong>belgif-rest-problem-quarkus</strong>: Quarkus integration for belgif-rest-problem</p>
@@ -803,6 +809,116 @@ window.onload = function() {
 <p>Fix concurrency issue in InputValidationIssues.BELGIF_ISSUE_TYPE_HREFS cache</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-spring-boot-3:</strong></p>
+</div>
+<div class="paragraph">
+<p>Provide separate modules in case you specifically only want to use problems either client-side or server-side.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>belgif-rest-problem-spring-boot-3-client</p>
+</li>
+<li>
+<p>belgif-rest-problem-spring-boot-3-server</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Note that you can keep using <code>belgif-rest-problem-spring-boot-3</code> as before if you want both client-side and server-side integration.</p>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-spring-boot-4:</strong></p>
+</div>
+<div class="paragraph">
+<p>Provide separate modules in case you specifically only want to use problems either client-side or server-side.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>belgif-rest-problem-spring-boot-4-client</p>
+</li>
+<li>
+<p>belgif-rest-problem-spring-boot-4-server</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Note that you can keep using <code>belgif-rest-problem-spring-boot-4</code> as before when you want both client-side and server-side integration.</p>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-java-ee:</strong></p>
+</div>
+<div class="paragraph">
+<p>Provide separate modules in case you specifically only want to use problems either client-side or server-side.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Java EE:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>belgif-rest-problem-java-ee-client</p>
+</li>
+<li>
+<p>belgif-rest-problem-java-ee-server</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Jakarta EE:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>belgif-rest-problem-jakarta-ee-client</p>
+</li>
+<li>
+<p>belgif-rest-problem-jakarta-ee-server</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Note that you can keep using <code>belgif-rest-problem-java-ee</code> as before when you want both client-side and server-side integration.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Breaking change:</strong> The <code>&lt;classifier&gt;jakarta&lt;/classifier&gt;</code> variant of <code>belgif-rest-problem-java-ee</code> no longer exists and should be replaced by <code>belgif-rest-problem-jakarta-ee</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-quarkus:</strong></p>
+</div>
+<div class="paragraph">
+<p>Provide separate modules in case you specifically only want to use problems either client-side or server-side.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>belgif-rest-problem-quarkus-client</p>
+</li>
+<li>
+<p>belgif-rest-problem-quarkus-server</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Note that you can keep using <code>belgif-rest-problem-quarkus</code> as before when you want both client-side and server-side integration.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1298,6 +1414,39 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 <pre class="CodeRay highlight"><code>compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-4:latest'</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Alternatively, if you specifically only want to use problems either client-side or server-side, you can depend on these modules instead:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Spring Boot 3:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>belgif-rest-problem-spring-boot-3-client</p>
+</li>
+<li>
+<p>belgif-rest-problem-spring-boot-3-server</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Spring Boot 4:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>belgif-rest-problem-spring-boot-4-client</p>
+</li>
+<li>
+<p>belgif-rest-problem-spring-boot-4-server</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
 </div>
 <div class="sect3">
 <h4 id="dependencies-jakarta-ee"><a class="anchor" href="#dependencies-jakarta-ee"></a>3.1.2. Jakarta EE</h4>
@@ -1306,16 +1455,15 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
   <span class="tag">&lt;groupId&gt;</span>io.github.belgif.rest.problem<span class="tag">&lt;/groupId&gt;</span>
-  <span class="tag">&lt;artifactId&gt;</span>belgif-rest-problem-java-ee<span class="tag">&lt;/artifactId&gt;</span>
+  <span class="tag">&lt;artifactId&gt;</span>belgif-rest-problem-jakarta-ee<span class="tag">&lt;/artifactId&gt;</span>
   <span class="tag">&lt;version&gt;</span>latest<span class="tag">&lt;/version&gt;</span>
-  <span class="tag">&lt;classifier&gt;</span>jakarta<span class="tag">&lt;/classifier&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Jakarta EE 9+ (Gradle)</div>
 <div class="content">
-<pre class="CodeRay highlight"><code>compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:latest:jakarta'</code></pre>
+<pre class="CodeRay highlight"><code>compile 'io.github.belgif.rest.problem:belgif-rest-problem-jakarta-ee:latest'</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
@@ -1333,6 +1481,39 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 <div class="content">
 <pre class="CodeRay highlight"><code>compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:latest'</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Alternatively, if you specifically only want to use problems either client-side or server-side, you can depend on these modules instead:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Jakarta EE 9+:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>belgif-rest-problem-jakarta-ee-client</p>
+</li>
+<li>
+<p>belgif-rest-problem-jakarta-ee-server</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Jakarta EE 8-:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>belgif-rest-problem-java-ee-client</p>
+</li>
+<li>
+<p>belgif-rest-problem-java-ee-server</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -1364,6 +1545,19 @@ Quarkus support is currently still <strong>experimental</strong>.
 <div class="content">
 <pre class="CodeRay highlight"><code>compile 'io.github.belgif.rest.problem:belgif-rest-problem-quarkus:latest'</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Alternatively, if you specifically only want to use problems either client-side or server-side, you can depend on these modules instead:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>belgif-rest-problem-quarkus-client</p>
+</li>
+<li>
+<p>belgif-rest-problem-quarkus-server</p>
+</li>
+</ul>
 </div>
 </div>
 </div>

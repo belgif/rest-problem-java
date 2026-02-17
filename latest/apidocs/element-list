@@ -6,9 +6,11 @@ io.github.belgif.rest.problem.ee.jaxrs
 io.github.belgif.rest.problem.ee.jaxrs.client
 io.github.belgif.rest.problem.ee.jaxrs.i18n
 io.github.belgif.rest.problem.i18n
-io.github.belgif.rest.problem.quarkus
-io.github.belgif.rest.problem.quarkus.deployment
-io.github.belgif.rest.problem.quarkus.i18n
+io.github.belgif.rest.problem.quarkus.core
+io.github.belgif.rest.problem.quarkus.deployment.client
+io.github.belgif.rest.problem.quarkus.deployment.core
+io.github.belgif.rest.problem.quarkus.deployment.server
+io.github.belgif.rest.problem.quarkus.server.i18n
 io.github.belgif.rest.problem.registry
 io.github.belgif.rest.problem.spring
 io.github.belgif.rest.problem.spring.i18n

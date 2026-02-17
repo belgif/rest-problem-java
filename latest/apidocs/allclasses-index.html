@@ -185,10 +185,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Filter that registers the requested locale, as specified in Accept-Language HTTP header,
  with the <a href="io/github/belgif/rest/problem/ee/jaxrs/i18n/ThreadLocalLocaleResolver.html" title="class in io.github.belgif.rest.problem.ee.jaxrs.i18n"><code>ThreadLocalLocaleResolver</code></a> (and clears it afterward).</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/i18n/I18NAcceptLanguageFilter.html" title="class in io.github.belgif.rest.problem.quarkus.i18n">I18NAcceptLanguageFilter</a></div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/server/i18n/I18NAcceptLanguageFilter.html" title="class in io.github.belgif.rest.problem.quarkus.server.i18n">I18NAcceptLanguageFilter</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Filter that registers the requested locale, as specified in Accept-Language HTTP header,
- with the <a href="io/github/belgif/rest/problem/quarkus/i18n/LocaleHolder.html" title="class in io.github.belgif.rest.problem.quarkus.i18n"><code>LocaleHolder</code></a> @RequestScoped CDI bean.</div>
+ with the <a href="io/github/belgif/rest/problem/quarkus/server/i18n/LocaleHolder.html" title="class in io.github.belgif.rest.problem.quarkus.server.i18n"><code>LocaleHolder</code></a> @RequestScoped CDI bean.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="io/github/belgif/rest/problem/api/InEnum.html" title="enum class in io.github.belgif.rest.problem.api">InEnum</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
@@ -251,7 +251,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Spring LocaleResolver implementation that delegates to <code>LocaleContextHolder.getLocale()</code>.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/i18n/LocaleHolder.html" title="class in io.github.belgif.rest.problem.quarkus.i18n">LocaleHolder</a></div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/server/i18n/LocaleHolder.html" title="class in io.github.belgif.rest.problem.quarkus.server.i18n">LocaleHolder</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Request-scoped CDI bean to hold the request locale.</div>
 </div>
@@ -332,9 +332,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Lists all supported application.properties extension configurations for the belgif-rest-problem-spring library.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/deployment/ProblemExtensionProcessor.html" title="class in io.github.belgif.rest.problem.quarkus.deployment">ProblemExtensionProcessor</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/deployment/client/ProblemExtensionClientProcessor.html" title="class in io.github.belgif.rest.problem.quarkus.deployment.client">ProblemExtensionClientProcessor</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
-<div class="block">BuildSteps for belgif-rest-problem-quarkus extension needed to support native mode.</div>
+<div class="block">BuildSteps for belgif-rest-problem-quarkus-client extension needed to support native mode.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/deployment/core/ProblemExtensionCoreProcessor.html" title="class in io.github.belgif.rest.problem.quarkus.deployment.core">ProblemExtensionCoreProcessor</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">BuildSteps for belgif-rest-problem-quarkus-core extension needed to support native mode.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/deployment/server/ProblemExtensionServerProcessor.html" title="class in io.github.belgif.rest.problem.quarkus.deployment.server">ProblemExtensionServerProcessor</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">BuildSteps for belgif-rest-problem-quarkus-server extension needed to support native mode.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/ee/jaxrs/ProblemMediaType.html" title="class in io.github.belgif.rest.problem.ee.jaxrs">ProblemMediaType</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
@@ -405,24 +413,24 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab5">
 <div class="block">ResponseProcessingException that wraps a Problem.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/i18n/QuarkusLocaleResolver.html" title="class in io.github.belgif.rest.problem.quarkus.i18n">QuarkusLocaleResolver</a></div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/server/i18n/QuarkusLocaleResolver.html" title="class in io.github.belgif.rest.problem.quarkus.server.i18n">QuarkusLocaleResolver</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">LocaleResolver implementation that resolves the Locale from the
  request-scoped LocaleHolder CDI bean.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/QuarkusProblemConfigurator.html" title="class in io.github.belgif.rest.problem.quarkus">QuarkusProblemConfigurator</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/core/QuarkusProblemConfigurator.html" title="class in io.github.belgif.rest.problem.quarkus.core">QuarkusProblemConfigurator</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Configures the problem configuration based on MicroProfile Config properties.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/QuarkusProblemExtension.html" title="class in io.github.belgif.rest.problem.quarkus">QuarkusProblemExtension</a></div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/core/QuarkusProblemExtension.html" title="class in io.github.belgif.rest.problem.quarkus.core">QuarkusProblemExtension</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Build compatible CDI extension for dynamic discovery of <a href="io/github/belgif/rest/problem/api/Problem.html" title="class in io.github.belgif.rest.problem.api"><code>Problem</code></a> classes annotated with @<a href="io/github/belgif/rest/problem/api/ProblemType.html" title="annotation interface in io.github.belgif.rest.problem.api"><code>ProblemType</code></a>.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/QuarkusProblemExtension.QuarkusProblemTypeRegistryCreator.html" title="class in io.github.belgif.rest.problem.quarkus">QuarkusProblemExtension.QuarkusProblemTypeRegistryCreator</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/core/QuarkusProblemExtension.QuarkusProblemTypeRegistryCreator.html" title="class in io.github.belgif.rest.problem.quarkus.core">QuarkusProblemExtension.QuarkusProblemTypeRegistryCreator</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">SyntheticBeanCreator for QuarkusProblemTypeRegistry.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/QuarkusProblemTypeRegistry.html" title="class in io.github.belgif.rest.problem.quarkus">QuarkusProblemTypeRegistry</a></div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="io/github/belgif/rest/problem/quarkus/core/QuarkusProblemTypeRegistry.html" title="class in io.github.belgif.rest.problem.quarkus.core">QuarkusProblemTypeRegistry</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">ProblemTypeRegistry implementation for Quarkus.</div>
 </div>
