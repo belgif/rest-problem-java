@@ -23,8 +23,10 @@ With this library, RFC 9457 Problems can be *automagically* treated as standard 
 The library consists of these modules:
 
 * *belgif-rest-problem*: library for RFC 9457 standardized Belgif problems
-* *belgif-rest-problem-java-ee*: Java EE / Jakarta EE integration for belgif-rest-problem
+* *belgif-rest-problem-java-ee*: Java EE integration for belgif-rest-problem
+* *belgif-rest-problem-jakarta-ee*: Jakarta EE integration for belgif-rest-problem
 * *belgif-rest-problem-spring-boot-3*: Spring Boot 3.x integration for belgif-rest-problem
+* *belgif-rest-problem-spring-boot-4*: Spring Boot 4.x integration for belgif-rest-problem
 * *belgif-rest-problem-quarkus*: Quarkus integration for belgif-rest-problem
 * *belgif-rest-problem-validator*: validation library that generates Belgif-compliant BadRequestProblem with InputValidationIssues
 
@@ -77,6 +79,15 @@ compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:{revnum
 compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-4:{revnumber}'
 ----
 
+Alternatively, if you specifically only want to use problems either client-side or server-side, you can depend on these modules instead:
+
+* Spring Boot 3:
+** belgif-rest-problem-spring-boot-3-client
+** belgif-rest-problem-spring-boot-3-server
+* Spring Boot 4:
+** belgif-rest-problem-spring-boot-4-client
+** belgif-rest-problem-spring-boot-4-server
+
 [[dependencies-jakarta-ee]]
 ==== Jakarta EE
 
@@ -85,16 +96,15 @@ compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-4:{revnum
 ----
 <dependency>
   <groupId>io.github.belgif.rest.problem</groupId>
-  <artifactId>belgif-rest-problem-java-ee</artifactId>
+  <artifactId>belgif-rest-problem-jakarta-ee</artifactId>
   <version>{revnumber}</version>
-  <classifier>jakarta</classifier>
 </dependency>
 ----
 
 [source,role="secondary",subs="attributes+"]
 .Jakarta EE 9+ (Gradle)
 ----
-compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:{revnumber}:jakarta'
+compile 'io.github.belgif.rest.problem:belgif-rest-problem-jakarta-ee:{revnumber}'
 ----
 
 [source,xml,role="secondary",subs="attributes+"]
@@ -112,6 +122,15 @@ compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:{revnumber}:j
 ----
 compile 'io.github.belgif.rest.problem:belgif-rest-problem-java-ee:{revnumber}'
 ----
+
+Alternatively, if you specifically only want to use problems either client-side or server-side, you can depend on these modules instead:
+
+* Jakarta EE 9+:
+** belgif-rest-problem-jakarta-ee-client
+** belgif-rest-problem-jakarta-ee-server
+* Jakarta EE 8-:
+** belgif-rest-problem-java-ee-client
+** belgif-rest-problem-java-ee-server
 
 [[dependencies-quarkus]]
 ==== Quarkus
@@ -133,6 +152,11 @@ WARNING: Quarkus support is currently still *experimental*.
 ----
 compile 'io.github.belgif.rest.problem:belgif-rest-problem-quarkus:{revnumber}'
 ----
+
+Alternatively, if you specifically only want to use problems either client-side or server-side, you can depend on these modules instead:
+
+* belgif-rest-problem-quarkus-client
+* belgif-rest-problem-quarkus-server
 
 [[getting-started-usage]]
 === Usage

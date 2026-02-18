@@ -2,13 +2,19 @@ package io.github.belgif.rest.problem.api;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterEach;
@@ -763,6 +769,30 @@ class InputValidationIssuesTest {
         assertThat(issue.getDetail()).isEqualTo("These inputs must be equal: a, b");
         assertThat(issue).extracting("in", "name", "value", "additionalProperties")
                 .allMatch(this::isEmpty);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void getHrefConcurrently() throws Exception {
+        Field field = InputValidationIssues.class.getDeclaredField("BELGIF_ISSUE_TYPE_HREFS");
+        field.setAccessible(true);
+        ((Map<URI, URI>) field.get(null)).clear();
+        int threads = 16;
+        ExecutorService executorService = Executors.newFixedThreadPool(threads);
+        List<Future<Void>> results = new ArrayList<>(threads);
+        for (int i = 0; i < threads; i++) {
+            results.add(executorService.submit(() -> {
+                assertThat(InputValidationIssues.schemaViolation(InEnum.BODY, "name", "value", "detail").getHref())
+                        .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html");
+                assertThat(InputValidationIssues.invalidInput(InEnum.BODY, "name", "value", "detail").getHref())
+                        .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
+                return null;
+            }));
+        }
+        executorService.shutdown();
+        for (Future<Void> future : results) {
+            future.get();
+        }
     }
 
     public boolean isEmpty(Object value) {

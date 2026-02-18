@@ -34,6 +34,7 @@
   <modules>
     <module>belgif-rest-problem-apt</module>
     <module>belgif-rest-problem-it-common</module>
+    <module>belgif-rest-problem-it-common-jakarta</module>
     <module>belgif-rest-problem-spring-boot-3-it</module>
     <module>belgif-rest-problem-spring-boot-4-it</module>
     <module>belgif-rest-problem-java-ee-it</module>
