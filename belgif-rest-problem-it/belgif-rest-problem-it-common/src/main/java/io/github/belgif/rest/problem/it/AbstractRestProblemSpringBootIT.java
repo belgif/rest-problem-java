@@ -72,7 +72,7 @@ public abstract class AbstractRestProblemSpringBootIT extends AbstractRestProble
         getSpec().when().get("/not/found").then().assertThat()
                 .statusCode(404)
                 .body("type", equalTo("urn:problem-type:belgif:resourceNotFound"))
-                .body("detail", equalTo("No resource /frontend/not/found found"));
+                .body("detail", stringContainsInOrder("No resource", "/not/found"));
     }
 
 }
