@@ -9,7 +9,7 @@
     <version>${revision}</version>
   </parent>
 
-  <artifactId>belgif-rest-problem-spring-boot-4-client</artifactId>
+  <artifactId>belgif-rest-problem-spring-boot-4-client-starter</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
   <packaging>jar</packaging>
 
@@ -32,12 +32,7 @@
   <dependencies>
     <dependency>
       <groupId>io.github.belgif.rest.problem</groupId>
-      <artifactId>belgif-rest-problem-spring-boot-4-core</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.github.belgif.rest.problem</groupId>
-      <artifactId>belgif-rest-problem-spring-boot-common-client</artifactId>
+      <artifactId>belgif-rest-problem-spring-common</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
