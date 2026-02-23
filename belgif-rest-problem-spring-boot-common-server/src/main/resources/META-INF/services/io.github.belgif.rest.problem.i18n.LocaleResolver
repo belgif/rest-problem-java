@@ -1,1 +1,1 @@
-io.github.belgif.rest.problem.spring.i18n.LocaleContextHolderLocaleResolver
+io.github.belgif.rest.problem.spring.server.i18n.LocaleContextHolderLocaleResolver
