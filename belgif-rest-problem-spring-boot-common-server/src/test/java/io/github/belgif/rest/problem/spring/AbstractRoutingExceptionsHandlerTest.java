@@ -21,6 +21,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -29,6 +30,7 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.InternalServerErrorProblem;
+import io.github.belgif.rest.problem.ResourceNotFoundProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.internal.Jackson2Util;
@@ -189,6 +191,26 @@ class AbstractRoutingExceptionsHandlerTest {
                 new HttpMediaTypeNotSupportedException(MediaType.APPLICATION_XML,
                         Collections.singletonList(MediaType.APPLICATION_JSON)));
         assertThat(response.getStatusCode().value()).isEqualTo(415);
+    }
+
+    @Test
+    void handleNoResourceFoundException() {
+        ResponseEntity<Problem> entity = handler.handleNoResourceFoundException(
+                new NoResourceFoundException(HttpMethod.GET, "/test"));
+        assertThat(entity.getStatusCode().value()).isEqualTo(404);
+        assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
+        ResourceNotFoundProblem problem = (ResourceNotFoundProblem) entity.getBody();
+        assertThat(problem.getDetail()).isEqualTo("No resource /test found");
+    }
+
+    @Test
+    void handleNoResourceFoundExceptionAddsLeadingSlash() {
+        ResponseEntity<Problem> entity = handler.handleNoResourceFoundException(
+                new NoResourceFoundException(HttpMethod.GET, "test"));
+        assertThat(entity.getStatusCode().value()).isEqualTo(404);
+        assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
+        ResourceNotFoundProblem problem = (ResourceNotFoundProblem) entity.getBody();
+        assertThat(problem.getDetail()).isEqualTo("No resource /test found");
     }
 
 }

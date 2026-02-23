@@ -14,8 +14,10 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
+import io.github.belgif.rest.problem.ResourceNotFoundProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
@@ -111,6 +113,16 @@ public abstract class AbstractRoutingExceptionsHandler<T extends Exception> {
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ResponseEntity<Void> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException exception) {
         return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()).build();
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Problem> handleNoResourceFoundException(
+            NoResourceFoundException exception) {
+        ResourceNotFoundProblem problem = new ResourceNotFoundProblem();
+        problem.setDetail("No resource %s found".formatted(
+                exception.getResourcePath().startsWith("/") ? exception.getResourcePath()
+                        : "/" + exception.getResourcePath()));
+        return ProblemMediaType.INSTANCE.toResponse(problem);
     }
 
 }
