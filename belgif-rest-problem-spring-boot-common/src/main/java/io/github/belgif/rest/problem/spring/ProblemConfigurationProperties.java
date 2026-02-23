@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import io.github.belgif.rest.problem.config.ProblemConfig;
 
 /**
  * Lists all supported application.properties configurations for the belgif-rest-problem-spring library.
  */
-@ConfigurationProperties(prefix = "io.github.belgif.rest.problem")
+@Component // not using @ConfigurationProperties to avoid Spring Boot dependency
 public class ProblemConfigurationProperties implements InitializingBean {
 
     private List<String> scanAdditionalProblemPackages = new ArrayList<>();
@@ -20,6 +21,7 @@ public class ProblemConfigurationProperties implements InitializingBean {
 
     private Boolean stackTraceEnabled = null;
 
+    @Value("${io.github.belgif.rest.problem.scan-additional-problem-packages:#{{}}}")
     public void setScanAdditionalProblemPackages(List<String> scanAdditionalProblemPackages) {
         this.scanAdditionalProblemPackages = scanAdditionalProblemPackages;
     }
@@ -28,10 +30,12 @@ public class ProblemConfigurationProperties implements InitializingBean {
         return scanAdditionalProblemPackages;
     }
 
-    public void setI18nEnabled(boolean i18nEnabled) {
+    @Value("${io.github.belgif.rest.problem.i18n-enabled:#{null}}")
+    public void setI18nEnabled(Boolean i18nEnabled) {
         this.i18nEnabled = i18nEnabled;
     }
 
+    @Value("${io.github.belgif.rest.problem.stack-trace-enabled:#{null}}")
     public void setStackTraceEnabled(Boolean stackTraceEnabled) {
         this.stackTraceEnabled = stackTraceEnabled;
     }

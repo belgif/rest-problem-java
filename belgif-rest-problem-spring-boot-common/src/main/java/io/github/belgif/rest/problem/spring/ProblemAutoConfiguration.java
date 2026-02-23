@@ -1,7 +1,6 @@
 package io.github.belgif.rest.problem.spring;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
@@ -9,7 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @AutoConfiguration
 @ComponentScan("io.github.belgif.rest.problem")
-@EnableConfigurationProperties({ ProblemConfigurationProperties.class, ProblemExtConfigurationProperties.class })
 public class ProblemAutoConfiguration {
 
 }
