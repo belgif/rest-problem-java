@@ -379,13 +379,11 @@
         <module>belgif-rest-problem-jakarta-ee-core</module>
         <module>belgif-rest-problem-jakarta-ee-client</module>
         <module>belgif-rest-problem-jakarta-ee-server</module>
-        <module>belgif-rest-problem-spring-boot-common</module>
+        <module>belgif-rest-problem-spring-common</module>
         <module>belgif-rest-problem-spring-boot-3</module>
-        <module>belgif-rest-problem-spring-boot-3-core</module>
         <module>belgif-rest-problem-spring-boot-3-client</module>
         <module>belgif-rest-problem-spring-boot-3-server</module>
         <module>belgif-rest-problem-spring-boot-4</module>
-        <module>belgif-rest-problem-spring-boot-4-core</module>
         <module>belgif-rest-problem-spring-boot-4-client</module>
         <module>belgif-rest-problem-spring-boot-4-server</module>
         <module>belgif-rest-problem-quarkus</module>

@@ -1,6 +1,5 @@
 package io.github.belgif.rest.problem.spring.server;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,10 +13,10 @@ import tools.jackson.databind.DatabindException;
  * RestController exception handler for routing-related exceptions.
  */
 @RestControllerAdvice
-@ConditionalOnWebApplication
 @Order(1)
 // @Order(1) to take precedence over org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver
 // and io.github.belgif.rest.problem.spring.ProblemExceptionHandler
+//TODO: move to reinstated spring(-7) module?
 public class RoutingExceptionsHandler extends AbstractRoutingExceptionsHandler<JacksonException> {
 
     public RoutingExceptionsHandler() {

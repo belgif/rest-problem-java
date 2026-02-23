@@ -9,7 +9,7 @@
     <version>${revision}</version>
   </parent>
 
-  <artifactId>belgif-rest-problem-spring-boot-4-client-starter</artifactId>
+  <artifactId>belgif-rest-problem-spring-boot-4-client</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
   <packaging>jar</packaging>
 

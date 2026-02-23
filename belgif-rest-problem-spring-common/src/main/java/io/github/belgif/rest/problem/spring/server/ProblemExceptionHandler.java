@@ -2,7 +2,6 @@ package io.github.belgif.rest.problem.spring.server;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -20,7 +19,6 @@ import io.github.belgif.rest.problem.spring.ProblemMediaType;
  * </p>
  */
 @RestControllerAdvice
-@ConditionalOnWebApplication
 public class ProblemExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProblemExceptionHandler.class);

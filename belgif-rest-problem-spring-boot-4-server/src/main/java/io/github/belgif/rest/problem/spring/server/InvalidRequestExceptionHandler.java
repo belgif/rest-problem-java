@@ -8,12 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import com.atlassian.oai.validator.springmvc.InvalidRequestException;
 
 import tools.jackson.core.JsonPointer;
 import tools.jackson.databind.JsonNode;
@@ -23,8 +19,6 @@ import tools.jackson.databind.ObjectMapper;
  * RestController exception handler for InvalidRequestException thrown by Atlassian swagger-request-validator library.
  */
 @RestControllerAdvice
-@ConditionalOnWebApplication
-@ConditionalOnClass(InvalidRequestException.class)
 @Order(1)
 // @Order(1) to take precedence over io.github.belgif.rest.problem.spring.ProblemExceptionHandler
 public class InvalidRequestExceptionHandler extends AbstractInvalidRequestExceptionHandler<JsonNode> {

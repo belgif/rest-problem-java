@@ -7,9 +7,11 @@ import java.net.URI;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.ClientProblem;
@@ -17,11 +19,16 @@ import io.github.belgif.rest.problem.api.ProblemType;
 import io.github.belgif.rest.problem.registry.ProblemTypeRegistry;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = { ProblemAutoConfiguration.class, JacksonAutoConfiguration.class })
+@ContextConfiguration(classes = { ProblemJackson2Configuration.class })
 class SpringProblemTypeRegistryTest {
 
     @Autowired
     private ProblemTypeRegistry problemTypeRegistry;
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
 
     @Test
     void getProblemTypes() {
