@@ -63,7 +63,7 @@
       </dependency>
       <dependency>
         <groupId>io.github.belgif.rest.problem</groupId>
-        <artifactId>belgif-rest-problem-spring-common</artifactId>
+        <artifactId>belgif-rest-problem-spring</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -88,17 +88,17 @@
       </dependency>
       <dependency>
         <groupId>io.github.belgif.rest.problem</groupId>
-        <artifactId>belgif-rest-problem-spring-boot-3-client</artifactId>
+        <artifactId>belgif-rest-problem-spring-boot-3-client-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>io.github.belgif.rest.problem</groupId>
-        <artifactId>belgif-rest-problem-spring-boot-3-server</artifactId>
+        <artifactId>belgif-rest-problem-spring-boot-3-server-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>io.github.belgif.rest.problem</groupId>
-        <artifactId>belgif-rest-problem-spring-boot-4</artifactId>
+        <artifactId>belgif-rest-problem-spring-boot-4-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

@@ -235,9 +235,8 @@
                 jacoco-aggregator,
                 <!-- javadoc classpath conflict with *-spring-boot-4 -->
                 belgif-rest-problem-spring-boot-3,
-                belgif-rest-problem-spring-boot-3-core,
-                belgif-rest-problem-spring-boot-3-client,
-                belgif-rest-problem-spring-boot-3-server
+                belgif-rest-problem-spring-boot-3-client-starter,
+                belgif-rest-problem-spring-boot-3-server-starter
               </skippedModules>
               <doclint>all,-missing</doclint>
               <notimestamp>true</notimestamp>
@@ -379,13 +378,13 @@
         <module>belgif-rest-problem-jakarta-ee-core</module>
         <module>belgif-rest-problem-jakarta-ee-client</module>
         <module>belgif-rest-problem-jakarta-ee-server</module>
-        <module>belgif-rest-problem-spring-common</module>
+        <module>belgif-rest-problem-spring</module>
         <module>belgif-rest-problem-spring-boot-3</module>
-        <module>belgif-rest-problem-spring-boot-3-client</module>
-        <module>belgif-rest-problem-spring-boot-3-server</module>
-        <module>belgif-rest-problem-spring-boot-4</module>
-        <module>belgif-rest-problem-spring-boot-4-client</module>
-        <module>belgif-rest-problem-spring-boot-4-server</module>
+        <module>belgif-rest-problem-spring-boot-3-client-starter</module>
+        <module>belgif-rest-problem-spring-boot-3-server-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-client-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-server-starter</module>
         <module>belgif-rest-problem-quarkus</module>
         <module>belgif-rest-problem-quarkus-core</module>
         <module>belgif-rest-problem-quarkus-core-deployment</module>
@@ -499,13 +498,13 @@
         <module>belgif-rest-problem-jakarta-ee-core</module>
         <module>belgif-rest-problem-jakarta-ee-client</module>
         <module>belgif-rest-problem-jakarta-ee-server</module>
-        <module>belgif-rest-problem-spring-common</module>
+        <module>belgif-rest-problem-spring</module>
         <module>belgif-rest-problem-spring-boot-3</module>
-        <module>belgif-rest-problem-spring-boot-3-client</module>
-        <module>belgif-rest-problem-spring-boot-3-server</module>
-        <module>belgif-rest-problem-spring-boot-4</module>
-        <module>belgif-rest-problem-spring-boot-4-client</module>
-        <module>belgif-rest-problem-spring-boot-4-server</module>
+        <module>belgif-rest-problem-spring-boot-3-client-starter</module>
+        <module>belgif-rest-problem-spring-boot-3-server-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-client-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-server-starter</module>
         <module>belgif-rest-problem-quarkus</module>
         <module>belgif-rest-problem-quarkus-core</module>
         <module>belgif-rest-problem-quarkus-core-deployment</module>
@@ -554,13 +553,13 @@
       <id>spring-only</id>
       <modules>
         <module>belgif-rest-problem</module>
-        <module>belgif-rest-problem-spring-common</module>
+        <module>belgif-rest-problem-spring</module>
         <module>belgif-rest-problem-spring-boot-3</module>
-        <module>belgif-rest-problem-spring-boot-3-client</module>
-        <module>belgif-rest-problem-spring-boot-3-server</module>
-        <module>belgif-rest-problem-spring-boot-4</module>
-        <module>belgif-rest-problem-spring-boot-4-client</module>
-        <module>belgif-rest-problem-spring-boot-4-server</module>
+        <module>belgif-rest-problem-spring-boot-3-client-starter</module>
+        <module>belgif-rest-problem-spring-boot-3-server-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-client-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-server-starter</module>
         <!-- All relevant ITs -->
         <module>belgif-rest-problem-it/belgif-rest-problem-apt</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-codegen-it</module>
