@@ -16,7 +16,6 @@ import tools.jackson.databind.DatabindException;
 @Order(1)
 // @Order(1) to take precedence over org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver
 // and io.github.belgif.rest.problem.spring.ProblemExceptionHandler
-//TODO: move to reinstated spring(-7) module?
 public class RoutingExceptionsJackson3Handler extends AbstractRoutingExceptionsHandler<JacksonException> {
 
     public RoutingExceptionsJackson3Handler() {
