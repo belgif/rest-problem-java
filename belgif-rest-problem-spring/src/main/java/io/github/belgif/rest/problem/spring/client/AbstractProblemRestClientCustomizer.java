@@ -3,15 +3,15 @@ package io.github.belgif.rest.problem.spring.client;
 import org.springframework.web.client.RestClient;
 
 /**
- * RestClientCustomizer that registers the {@link AbstractProblemResponseErrorHandler}.
+ * RestClientCustomizer that registers the {@link ProblemResponseErrorHandler}.
  *
- * @see AbstractProblemResponseErrorHandler
+ * @see ProblemResponseErrorHandler
  */
 public abstract class AbstractProblemRestClientCustomizer {
 
-    private final AbstractProblemResponseErrorHandler errorHandler;
+    private final ProblemResponseErrorHandler errorHandler;
 
-    protected AbstractProblemRestClientCustomizer(AbstractProblemResponseErrorHandler errorHandler) {
+    protected AbstractProblemRestClientCustomizer(ProblemResponseErrorHandler errorHandler) {
         this.errorHandler = errorHandler;
     }
 

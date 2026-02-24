@@ -12,8 +12,6 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.github.belgif.rest.problem.spring.ProblemJackson2Configuration;
 
 /**
@@ -24,25 +22,17 @@ import io.github.belgif.rest.problem.spring.ProblemJackson2Configuration;
         ProblemResponseJackson2ErrorHandler.class })
 public class ClientProblemAutoConfiguration {
 
-    private ObjectMapper objectMapper;
-
-    private ProblemResponseJackson2ErrorHandler problemResponseErrorHandler;
-
-    public ClientProblemAutoConfiguration(ObjectMapper objectMapper,
-            ProblemResponseJackson2ErrorHandler problemResponseErrorHandler) {
-        this.objectMapper = objectMapper;
-        this.problemResponseErrorHandler = problemResponseErrorHandler;
-    }
-
     @ConditionalOnClass({ RestClient.class, RestClientCustomizer.class })
     @Bean
-    public ProblemRestClientCustomizer problemRestClientCustomizer() {
+    public ProblemRestClientCustomizer
+            problemRestClientCustomizer(ProblemResponseErrorHandler problemResponseErrorHandler) {
         return new ProblemRestClientCustomizer(problemResponseErrorHandler);
     }
 
     @ConditionalOnClass({ RestTemplate.class, RestTemplateCustomizer.class })
     @Bean
-    public ProblemRestTemplateCustomizer problemRestTemplateCustomizer() {
+    public ProblemRestTemplateCustomizer
+            problemRestTemplateCustomizer(ProblemResponseErrorHandler problemResponseErrorHandler) {
         return new ProblemRestTemplateCustomizer(problemResponseErrorHandler);
     }
 

@@ -3,13 +3,13 @@ package io.github.belgif.rest.problem.spring.client;
 import org.springframework.boot.web.client.RestClientCustomizer;
 
 /**
- * RestClientCustomizer that registers the {@link ProblemResponseJackson2ErrorHandler}.
+ * RestClientCustomizer that registers the {@link ProblemResponseErrorHandler}.
  *
- * @see ProblemResponseJackson2ErrorHandler
+ * @see ProblemResponseErrorHandler
  */
 public class ProblemRestClientCustomizer extends AbstractProblemRestClientCustomizer implements RestClientCustomizer {
 
-    public ProblemRestClientCustomizer(AbstractProblemResponseErrorHandler errorHandler) {
+    public ProblemRestClientCustomizer(ProblemResponseErrorHandler errorHandler) {
         super(errorHandler);
     }
 }

@@ -9,9 +9,9 @@ import org.springframework.web.client.RestTemplate;
  */
 public abstract class AbstractProblemRestTemplateCustomizer {
 
-    private final AbstractProblemResponseErrorHandler problemResponseErrorHandler;
+    private final ProblemResponseErrorHandler problemResponseErrorHandler;
 
-    protected AbstractProblemRestTemplateCustomizer(AbstractProblemResponseErrorHandler problemResponseErrorHandler) {
+    protected AbstractProblemRestTemplateCustomizer(ProblemResponseErrorHandler problemResponseErrorHandler) {
         this.problemResponseErrorHandler = problemResponseErrorHandler;
     }
 

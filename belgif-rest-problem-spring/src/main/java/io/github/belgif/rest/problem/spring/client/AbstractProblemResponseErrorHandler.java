@@ -15,10 +15,8 @@ import io.github.belgif.rest.problem.DefaultProblem;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.spring.ProblemMediaType;
 
-/**
- * RestTemplate/RestClient error handler that converts problem responses to Problem exceptions.
- */
-public abstract class AbstractProblemResponseErrorHandler extends DefaultResponseErrorHandler {
+public abstract class AbstractProblemResponseErrorHandler extends DefaultResponseErrorHandler
+        implements ProblemResponseErrorHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractProblemResponseErrorHandler.class);
 

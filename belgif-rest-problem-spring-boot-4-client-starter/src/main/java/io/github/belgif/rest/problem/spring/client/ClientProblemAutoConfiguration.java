@@ -12,8 +12,6 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import tools.jackson.databind.ObjectMapper;
-
 /**
  * Spring Boot AutoConfiguration for rest-problem-spring.
  */
@@ -22,25 +20,17 @@ import tools.jackson.databind.ObjectMapper;
         ProblemResponseJackson3ErrorHandler.class })
 public class ClientProblemAutoConfiguration {
 
-    private ObjectMapper objectMapper;
-
-    private ProblemResponseJackson3ErrorHandler problemResponseErrorHandler;
-
-    public ClientProblemAutoConfiguration(ObjectMapper objectMapper,
-            ProblemResponseJackson3ErrorHandler problemResponseErrorHandler) {
-        this.objectMapper = objectMapper;
-        this.problemResponseErrorHandler = problemResponseErrorHandler;
-    }
-
     @ConditionalOnClass({ RestClient.class, RestClientCustomizer.class })
     @Bean
-    public ProblemRestClientCustomizer problemRestClientCustomizer() {
+    public ProblemRestClientCustomizer
+            problemRestClientCustomizer(ProblemResponseErrorHandler problemResponseErrorHandler) {
         return new ProblemRestClientCustomizer(problemResponseErrorHandler);
     }
 
     @ConditionalOnClass({ RestTemplate.class, RestTemplateCustomizer.class })
     @Bean
-    public ProblemRestTemplateCustomizer problemRestTemplateCustomizer() {
+    public ProblemRestTemplateCustomizer
+            problemRestTemplateCustomizer(ProblemResponseErrorHandler problemResponseErrorHandler) {
         return new ProblemRestTemplateCustomizer(problemResponseErrorHandler);
     }
 
