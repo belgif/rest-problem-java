@@ -12,15 +12,21 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.github.belgif.rest.problem.spring.ProblemJackson2Configuration;
 
 /**
  * Spring Boot AutoConfiguration for rest-problem-spring.
  */
 @AutoConfiguration
-@Import({ ProblemJackson2Configuration.class, JacksonAutoConfiguration.class,
-        ProblemResponseJackson2ErrorHandler.class })
+@Import({ ProblemJackson2Configuration.class, JacksonAutoConfiguration.class })
 public class ClientProblemAutoConfiguration {
+
+    @Bean
+    public ProblemResponseErrorHandler problemResponseErrorHandler(ObjectMapper objectMapper) {
+        return new ProblemResponseJackson2ErrorHandler(objectMapper);
+    }
 
     @ConditionalOnClass({ RestClient.class, RestClientCustomizer.class })
     @Bean
