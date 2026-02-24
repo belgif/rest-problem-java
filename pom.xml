@@ -23,7 +23,7 @@
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
     <version.jackson3.minimal>3.0.4</version.jackson3.minimal>
     <version.spring.boot.3>3.5.11</version.spring.boot.3>
-    <version.spring.boot.4>3.5.11</version.spring.boot.4>
+    <version.spring.boot.4>4.0.3</version.spring.boot.4>
     <version.quarkus>3.31.4</version.quarkus>
   </properties>
 
