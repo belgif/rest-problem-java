@@ -6,6 +6,7 @@ import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
 import org.springframework.boot.restclient.RestClientCustomizer;
 import org.springframework.boot.restclient.RestTemplateCustomizer;
 import org.springframework.boot.webclient.WebClientCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
@@ -18,30 +19,33 @@ import tools.jackson.databind.ObjectMapper;
  */
 @AutoConfiguration
 @Import({ io.github.belgif.rest.problem.spring.ProblemJackson3Configuration.class, JacksonAutoConfiguration.class,
-        ProblemResponseErrorHandler.class })
+        ProblemResponseJackson3ErrorHandler.class })
 public class ClientProblemAutoConfiguration {
 
     private ObjectMapper objectMapper;
 
-    private ProblemResponseErrorHandler problemResponseErrorHandler;
+    private ProblemResponseJackson3ErrorHandler problemResponseErrorHandler;
 
     public ClientProblemAutoConfiguration(ObjectMapper objectMapper,
-            ProblemResponseErrorHandler problemResponseErrorHandler) {
+            ProblemResponseJackson3ErrorHandler problemResponseErrorHandler) {
         this.objectMapper = objectMapper;
         this.problemResponseErrorHandler = problemResponseErrorHandler;
     }
 
     @ConditionalOnClass({ RestClient.class, RestClientCustomizer.class })
+    @Bean
     public ProblemRestClientCustomizer problemRestClientCustomizer() {
         return new ProblemRestClientCustomizer(problemResponseErrorHandler);
     }
 
     @ConditionalOnClass({ RestTemplate.class, RestTemplateCustomizer.class })
+    @Bean
     public ProblemRestTemplateCustomizer problemRestTemplateCustomizer() {
         return new ProblemRestTemplateCustomizer(problemResponseErrorHandler);
     }
 
     @ConditionalOnClass({ WebClient.class, WebClientCustomizer.class })
+    @Bean
     public ProblemWebClientCustomizer problemWebClientCustomizer() {
         return new ProblemWebClientCustomizer();
     }

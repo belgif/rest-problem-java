@@ -15,11 +15,11 @@ import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.Problem;
 import tools.jackson.databind.ObjectMapper;
 
-class InvalidRequestExceptionHandlerTest {
+class InvalidRequestExceptionJackson3HandlerTest {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    InvalidRequestExceptionHandler handler = new InvalidRequestExceptionHandler(OBJECT_MAPPER);
+    InvalidRequestExceptionJackson3Handler handler = new InvalidRequestExceptionJackson3Handler(OBJECT_MAPPER);
 
     @Test
     void inBodyTest() {

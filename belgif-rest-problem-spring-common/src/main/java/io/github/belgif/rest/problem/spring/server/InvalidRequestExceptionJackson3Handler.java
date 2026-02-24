@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * RestController exception handler for InvalidRequestException thrown by Atlassian swagger-request-validator library.
@@ -21,13 +21,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RestControllerAdvice
 @Order(1)
 // @Order(1) to take precedence over io.github.belgif.rest.problem.spring.ProblemExceptionHandler
-public class InvalidRequestExceptionHandler extends AbstractInvalidRequestExceptionHandler<JsonNode> {
+public class InvalidRequestExceptionJackson3Handler extends AbstractInvalidRequestExceptionHandler<JsonNode> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(InvalidRequestExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InvalidRequestExceptionJackson3Handler.class);
 
     private final ObjectMapper mapper;
 
-    public InvalidRequestExceptionHandler(ObjectMapper mapper) {
+    public InvalidRequestExceptionJackson3Handler(ObjectMapper mapper) {
         this.mapper = mapper;
     }
 
@@ -38,8 +38,7 @@ public class InvalidRequestExceptionHandler extends AbstractInvalidRequestExcept
         if (requestBody == null) {
             return null;
         }
-        JsonNode valueNode = requestBody.at(JsonPointer.compile(name));
-        return valueNode.asText().isEmpty() ? null : valueNode.asText();
+        return extractString(requestBody.at(JsonPointer.compile(name)));
     }
 
     private JsonNode getRequestBody(AtomicReference<JsonNode> requestBodyReference, HttpServletRequest request) {
@@ -56,6 +55,19 @@ public class InvalidRequestExceptionHandler extends AbstractInvalidRequestExcept
             }
         }
         return requestBodyReference.get();
+    }
+
+    private String extractString(JsonNode valueNode) {
+        if (valueNode.isMissingNode()) {
+            return null;
+        }
+        String value;
+        if (valueNode.isString()) {
+            value = valueNode.asString();
+            return value.isEmpty() ? null : value;
+        }
+        value = mapper.writeValueAsString(valueNode);
+        return value.isEmpty() ? null : value;
     }
 
 }

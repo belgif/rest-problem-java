@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.web.client.RestClientCustomizer;
 import org.springframework.boot.web.client.RestTemplateCustomizer;
 import org.springframework.boot.web.reactive.function.client.WebClientCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
@@ -19,30 +20,34 @@ import io.github.belgif.rest.problem.spring.ProblemJackson2Configuration;
  * Spring Boot AutoConfiguration for rest-problem-spring.
  */
 @AutoConfiguration
-@Import({ ProblemJackson2Configuration.class, JacksonAutoConfiguration.class, ProblemResponseErrorHandler.class })
+@Import({ ProblemJackson2Configuration.class, JacksonAutoConfiguration.class,
+        ProblemResponseJackson2ErrorHandler.class })
 public class ClientProblemAutoConfiguration {
 
     private ObjectMapper objectMapper;
 
-    private ProblemResponseErrorHandler problemResponseErrorHandler;
+    private ProblemResponseJackson2ErrorHandler problemResponseErrorHandler;
 
     public ClientProblemAutoConfiguration(ObjectMapper objectMapper,
-            ProblemResponseErrorHandler problemResponseErrorHandler) {
+            ProblemResponseJackson2ErrorHandler problemResponseErrorHandler) {
         this.objectMapper = objectMapper;
         this.problemResponseErrorHandler = problemResponseErrorHandler;
     }
 
     @ConditionalOnClass({ RestClient.class, RestClientCustomizer.class })
+    @Bean
     public ProblemRestClientCustomizer problemRestClientCustomizer() {
         return new ProblemRestClientCustomizer(problemResponseErrorHandler);
     }
 
     @ConditionalOnClass({ RestTemplate.class, RestTemplateCustomizer.class })
+    @Bean
     public ProblemRestTemplateCustomizer problemRestTemplateCustomizer() {
         return new ProblemRestTemplateCustomizer(problemResponseErrorHandler);
     }
 
     @ConditionalOnClass({ WebClient.class, WebClientCustomizer.class })
+    @Bean
     public ProblemWebClientCustomizer problemWebClientCustomizer() {
         return new ProblemWebClientCustomizer();
     }

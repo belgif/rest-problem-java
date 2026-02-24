@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
 import org.springframework.boot.validation.autoconfigure.ValidationConfigurationCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 import com.atlassian.oai.validator.springmvc.InvalidRequestException;
@@ -29,28 +30,33 @@ public class ServerProblemAutoConfiguration {
 
     @ConditionalOnClass(ConstraintViolationException.class)
     @ConditionalOnWebApplication
+    @Bean
     public BeanValidationExceptionsHandler beanValidationExceptionsHandler() {
         return new BeanValidationExceptionsHandler();
     }
 
     @ConditionalOnWebApplication
+    @Bean
     public ProblemExceptionHandler problemExceptionHandler() {
         return new ProblemExceptionHandler();
     }
 
     @ConditionalOnWebApplication
-    public RoutingExceptionsHandler routingExceptionsHandler() {
-        return new RoutingExceptionsHandler();
+    @Bean
+    public RoutingExceptionsJackson3Handler routingExceptionsHandler() {
+        return new RoutingExceptionsJackson3Handler();
     }
 
     @ConditionalOnClass({ Configuration.class, ValidationConfigurationCustomizer.class })
+    @Bean
     public ProblemValidationConfigurationCustomizer problemValidationConfigurationCustomizer() {
         return new ProblemValidationConfigurationCustomizer();
     }
 
     @ConditionalOnWebApplication
     @ConditionalOnClass(InvalidRequestException.class)
-    public InvalidRequestExceptionHandler invalidRequestExceptionHandler() {
-        return new InvalidRequestExceptionHandler(objectMapper);
+    @Bean
+    public InvalidRequestExceptionJackson3Handler invalidRequestExceptionHandler() {
+        return new InvalidRequestExceptionJackson3Handler(objectMapper);
     }
 }
