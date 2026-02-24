@@ -3,9 +3,9 @@ package io.github.belgif.rest.problem.spring.client;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * RestTemplateCustomizer that registers the {@link AbstractProblemResponseErrorHandler}.
+ * RestTemplateCustomizer that registers the {@link ProblemResponseErrorHandler}.
  *
- * @see AbstractProblemResponseErrorHandler
+ * @see ProblemResponseErrorHandler
  */
 public abstract class AbstractProblemRestTemplateCustomizer {
 

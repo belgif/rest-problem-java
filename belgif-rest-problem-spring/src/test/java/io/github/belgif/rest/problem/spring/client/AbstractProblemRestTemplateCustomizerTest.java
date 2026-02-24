@@ -10,7 +10,7 @@ class AbstractProblemRestTemplateCustomizerTest {
 
     @Test
     void customize() {
-        AbstractProblemResponseErrorHandler handler = mock(AbstractProblemResponseErrorHandler.class);
+        ProblemResponseErrorHandler handler = mock(ProblemResponseErrorHandler.class);
         AbstractProblemRestTemplateCustomizer customizer = new AbstractProblemRestTemplateCustomizer(handler) {
         };
         RestTemplate restTemplate = new RestTemplate();

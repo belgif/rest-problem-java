@@ -25,7 +25,7 @@ import io.github.belgif.rest.problem.spring.server.*;
  *
  * Attributes select which optional integrations are activated.
  * An application using this module, should provide an ObjectMapper bean on which the {@link SpringProblemModule}
- * or @{@link SpringProblemModuleJackson3} support bean is registered.
+ * or {@link SpringProblemModuleJackson3} support bean is registered.
  */
 public @interface EnableProblemModule {
 
@@ -38,8 +38,8 @@ public @interface EnableProblemModule {
      * Creates support beans for REST clients.
      * Requires:
      * - setting ProblemResponseErrorHandler as defaultStatusHandler on the client
-     * - or for @{@link org.springframework.web.reactive.function.client.WebClient}, setting the
-     * {@link io.github.belgif.rest.problem.spring.client.WebClientFilter.PROBLEM_FILTER}
+     * - or for {@link org.springframework.web.reactive.function.client.WebClient}, setting PROBLEM_FILTER from
+     * {@link io.github.belgif.rest.problem.spring.client.WebClientFilter}
      */
     boolean client() default true;
 

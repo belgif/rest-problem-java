@@ -13,7 +13,7 @@ class AbstractProblemRestClientCustomizerTest {
 
     @Test
     void customize() {
-        AbstractProblemResponseErrorHandler handler = mock(AbstractProblemResponseErrorHandler.class);
+        ProblemResponseErrorHandler handler = mock(ProblemResponseErrorHandler.class);
         AbstractProblemRestClientCustomizer customizer = new AbstractProblemRestClientCustomizer(handler) {
         };
         RestClient.Builder builder = RestClient.builder();
