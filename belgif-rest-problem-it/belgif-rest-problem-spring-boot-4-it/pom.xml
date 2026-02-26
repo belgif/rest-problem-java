@@ -32,7 +32,7 @@
   <dependencies>
     <dependency>
       <groupId>io.github.belgif.rest.problem</groupId>
-      <artifactId>belgif-rest-problem-spring-boot-4</artifactId>
+      <artifactId>belgif-rest-problem-spring-boot-4-starter</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -104,8 +104,8 @@
             <configuration>
               <inputSpec>${project.basedir}/../belgif-rest-problem-it-common/src/main/resources/openapi.yaml</inputSpec>
               <generatorName>spring</generatorName>
-              <apiPackage>io.github.belgif.rest.problem.openapi.validation.sb4.api</apiPackage>
-              <modelPackage>io.github.belgif.rest.problem.openapi.validation.sb4.model</modelPackage>
+              <apiPackage>io.github.belgif.rest.problem.it.openapi.validation.sb4.api</apiPackage>
+              <modelPackage>io.github.belgif.rest.problem.it.openapi.validation.sb4.model</modelPackage>
               <openapiNormalizer>REF_AS_PARENT_IN_ALLOF=true</openapiNormalizer>
               <generateSupportingFiles>false</generateSupportingFiles>
               <configOptions>

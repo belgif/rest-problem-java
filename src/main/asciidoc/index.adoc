@@ -898,12 +898,11 @@ io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
 * *ProblemExceptionHandler:* an exception handler for RestControllers that handles the response serialization for Problem exceptions, and converts all other uncaught exceptions to an InternalServerErrorProblem.
 * *BeanValidationExceptionsHandler:* an exception handler for RestControllers that converts bean validation related exceptions to HTTP 400 BadRequestProblem.
 * *InvalidRequestExceptionHandler:* an exception handler for the link:https://bitbucket.org/atlassian/swagger-request-validator/src/master/[Atlassian swagger-request-validator] that converts InvalidRequestException to the correct Problem type.
-* *RoutingExceptionsHandler:* an exception handler for RestControllers that converts routing related validation exceptions to HTTP 400 BadRequestProblem.
+* *RoutingExceptionsHandler:* an exception handler for RestControllers that converts request handling exceptions to HTTP 4XX problems.
 * *ProblemWebClientCustomizer:* a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
 This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
 * *ProblemResponseErrorHandler:* a RestTemplate and RestClient error handler that converts problem responses to Problem exceptions.
 * *ProblemRestTemplateCustomizer:* a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.
-* *NoResourceFoundExceptionHandler:* an exception handler for RestControllers that converts NoResourceFoundException to HTTP 404 ResourceNotFoundProblem.
 * *ProblemRestClientCustomizer:* a RestClientCustomizer that registers the ProblemResponseErrorHandler.
 * *AnnotationParameterNameProvider:* a bean validation ParameterNameProvider that retrieves parameter names from Spring MVC annotations
 * *ProblemValidationConfigurationCustomizer:* a ValidationConfigurationCustomizer that registers the AnnotationParameterNameProvider
