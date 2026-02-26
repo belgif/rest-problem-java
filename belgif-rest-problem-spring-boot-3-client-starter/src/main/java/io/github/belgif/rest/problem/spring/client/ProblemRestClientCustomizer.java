@@ -1,15 +1,22 @@
 package io.github.belgif.rest.problem.spring.client;
 
 import org.springframework.boot.web.client.RestClientCustomizer;
+import org.springframework.web.client.RestClient;
 
 /**
  * RestClientCustomizer that registers the {@link ProblemResponseErrorHandler}.
  *
  * @see ProblemResponseErrorHandler
  */
-public class ProblemRestClientCustomizer extends AbstractProblemRestClientCustomizer implements RestClientCustomizer {
+public class ProblemRestClientCustomizer implements RestClientCustomizer {
 
-    public ProblemRestClientCustomizer(ProblemResponseErrorHandler errorHandler) {
-        super(errorHandler);
+    private final ProblemResponseErrorHandler errorHandler;
+
+    protected ProblemRestClientCustomizer(ProblemResponseErrorHandler errorHandler) {
+        this.errorHandler = errorHandler;
+    }
+
+    public void customize(RestClient.Builder restClientBuilder) {
+        restClientBuilder.defaultStatusHandler(errorHandler);
     }
 }

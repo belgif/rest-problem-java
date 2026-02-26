@@ -14,11 +14,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class AbstractProblemValidationConfigurationCustomizerTest {
+class ProblemValidationConfigurationCustomizerTest {
 
-    private final AbstractProblemValidationConfigurationCustomizer customizer =
-            new AbstractProblemValidationConfigurationCustomizer() {
-            };
+    private final ProblemValidationConfigurationCustomizer customizer =
+            new ProblemValidationConfigurationCustomizer();
 
     @Mock
     private Configuration configuration;

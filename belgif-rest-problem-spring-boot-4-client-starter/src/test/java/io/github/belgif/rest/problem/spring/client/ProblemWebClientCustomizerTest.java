@@ -20,9 +20,9 @@ import io.github.belgif.rest.problem.api.Problem;
 import reactor.core.publisher.Mono;
 
 @ExtendWith(MockitoExtension.class)
-class AbstractProblemWebClientCustomizerTest {
+class ProblemWebClientCustomizerTest {
 
-    private final AbstractProblemWebClientCustomizer customizer = new AbstractProblemWebClientCustomizer() {
+    private final ProblemWebClientCustomizer customizer = new ProblemWebClientCustomizer() {
     };
 
     @Mock

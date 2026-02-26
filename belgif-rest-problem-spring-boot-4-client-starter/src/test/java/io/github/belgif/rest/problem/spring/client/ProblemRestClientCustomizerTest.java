@@ -9,12 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestClient;
 
-class AbstractProblemRestClientCustomizerTest {
+class ProblemRestClientCustomizerTest {
 
     @Test
     void customize() {
         ProblemResponseErrorHandler handler = mock(ProblemResponseErrorHandler.class);
-        AbstractProblemRestClientCustomizer customizer = new AbstractProblemRestClientCustomizer(handler) {
+        ProblemRestClientCustomizer customizer = new ProblemRestClientCustomizer(handler) {
         };
         RestClient.Builder builder = RestClient.builder();
         customizer.customize(builder);

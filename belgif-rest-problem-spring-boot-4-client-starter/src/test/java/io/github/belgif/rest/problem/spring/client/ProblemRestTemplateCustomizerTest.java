@@ -6,12 +6,12 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 
-class AbstractProblemRestTemplateCustomizerTest {
+class ProblemRestTemplateCustomizerTest {
 
     @Test
     void customize() {
         ProblemResponseErrorHandler handler = mock(ProblemResponseErrorHandler.class);
-        AbstractProblemRestTemplateCustomizer customizer = new AbstractProblemRestTemplateCustomizer(handler) {
+        ProblemRestTemplateCustomizer customizer = new ProblemRestTemplateCustomizer(handler) {
         };
         RestTemplate restTemplate = new RestTemplate();
         customizer.customize(restTemplate);
