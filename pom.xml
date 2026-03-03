@@ -21,7 +21,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Aligns with version used on JBoss EAP 7.4 -->
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
-    <version.jackson3.minimal>3.1.0</version.jackson3.minimal>
+    <!-- Aligns with Spring Boot 4.0 version -->
+    <version.jackson3.minimal>3.0.4</version.jackson3.minimal>
     <version.spring.boot.3>3.5.11</version.spring.boot.3>
     <version.spring.boot.4>4.0.3</version.spring.boot.4>
     <version.quarkus>3.32.1</version.quarkus>
@@ -233,7 +234,7 @@
               <skippedModules>
                 belgif-rest-problem-it,
                 jacoco-aggregator,
-                <!-- javadoc classpath conflict with *-spring-boot-4 -->
+               <!-- javadoc classpath conflict with *-spring-boot-4 -->
                 belgif-rest-problem-spring-boot-3,
                 belgif-rest-problem-spring-boot-3-client-starter,
                 belgif-rest-problem-spring-boot-3-server-starter
