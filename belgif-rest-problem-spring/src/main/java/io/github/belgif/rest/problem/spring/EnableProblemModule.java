@@ -10,11 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import io.github.belgif.rest.problem.spring.client.ProblemResponseJackson2ErrorHandler;
 import io.github.belgif.rest.problem.spring.client.ProblemResponseJackson3ErrorHandler;
 import io.github.belgif.rest.problem.spring.server.*;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -47,9 +47,13 @@ public @interface EnableProblemModule {
     boolean client() default true;
 
     /**
-     * Whether to create support beans for Jackson 3, or when false, Jackson 2.
+     * Jackson version being used
      */
-    boolean jackson3() default true; // TODO: change to enum
+    JacksonVersion jacksonVersion() default JacksonVersion.JACKSON_3;
+
+    enum JacksonVersion {
+        JACKSON_2, JACKSON_3
+    }
 
     /**
      * Convert Jakarta Bean Validation exceptions to badRequestProblem
@@ -75,7 +79,7 @@ public @interface EnableProblemModule {
                     .getAnnotationAttributes(EnableProblemModule.class.getName());
             boolean includeServer = (boolean) attributes.get("server");
             boolean includeClient = (boolean) attributes.get("client");
-            boolean useJackson3 = (boolean) attributes.get("jackson3");
+            boolean useJackson3 = (attributes.get("jacksonVersion") == JacksonVersion.JACKSON_3);
             boolean includeBeanValidation = (boolean) attributes.get("beanValidation");
             boolean includeSwaggerRequestValidator = (boolean) attributes.get("swaggerRequestValidator");
 

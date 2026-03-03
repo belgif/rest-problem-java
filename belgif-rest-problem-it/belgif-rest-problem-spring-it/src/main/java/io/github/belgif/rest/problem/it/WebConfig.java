@@ -15,8 +15,6 @@ import io.github.belgif.rest.problem.spring.EnableProblemModule;
 import io.github.belgif.rest.problem.spring.SpringProblemModuleJackson3;
 import io.github.belgif.rest.problem.spring.client.ProblemResponseErrorHandler;
 import io.github.belgif.rest.problem.spring.client.WebClientFilter;
-import tools.jackson.databind.DeserializationFeature;
-import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.json.JsonMapper;
 
 @Configuration
@@ -26,9 +24,7 @@ public class WebConfig {
     @Bean
     public JsonMapper objectMapper(SpringProblemModuleJackson3 springProblemModule) {
         return JsonMapper.builder()
-                .disable(DeserializationFeature.WRAP_EXCEPTIONS)
-                .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
-                .findAndAddModules()
+                // application-specific JsonMapper customizations can be added here
                 .changeDefaultPropertyInclusion((incl) -> incl.withContentInclusion(JsonInclude.Include.NON_NULL)
                         .withValueInclusion(JsonInclude.Include.NON_NULL))
                 .addModule(springProblemModule) // add springProblem module to the mapper.
