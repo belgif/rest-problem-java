@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
@@ -12,6 +14,7 @@ import org.springframework.core.type.AnnotationMetadata;
 import io.github.belgif.rest.problem.spring.client.ProblemResponseJackson2ErrorHandler;
 import io.github.belgif.rest.problem.spring.client.ProblemResponseJackson3ErrorHandler;
 import io.github.belgif.rest.problem.spring.server.*;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -46,7 +49,7 @@ public @interface EnableProblemModule {
     /**
      * Whether to create support beans for Jackson 3, or when false, Jackson 2.
      */
-    boolean jackson3() default true;
+    boolean jackson3() default true; // TODO: change to enum
 
     /**
      * Convert Jakarta Bean Validation exceptions to badRequestProblem
@@ -88,7 +91,7 @@ public @interface EnableProblemModule {
                 imports.add(routingExceptionsHandler.getName());
 
                 if (includeBeanValidation) {
-                    imports.add(BeanValidationExceptionsHandler.class.getName());
+                    imports.add(BeanValidationConfiguration.class.getName());
                 }
                 if (includeSwaggerRequestValidator) {
                     Class invalidRequestExceptionHandler = useJackson3 ? InvalidRequestExceptionJackson3Handler.class
@@ -103,6 +106,18 @@ public @interface EnableProblemModule {
                 imports.add(clientConfig.getName());
             }
             return imports.toArray(new String[imports.size()]);
+        }
+    }
+
+    @Configuration
+    @Import(BeanValidationExceptionsHandler.class)
+    class BeanValidationConfiguration {
+        @Bean
+        public LocalValidatorFactoryBean validator() {
+            LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
+            validator.setConfigurationInitializer(
+                    configuration -> configuration.parameterNameProvider(new AnnotationParameterNameProvider()));
+            return validator;
         }
     }
 }
