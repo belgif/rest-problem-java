@@ -3,9 +3,12 @@ on:
   push:
     branches: [ main ]
   pull_request:
+    types: [opened, synchronize, reopened, labeled]
   workflow_dispatch:
 jobs:
   build:
+    # skip if triggered by a "labeled" event with a label other than "publish-snapshot"
+    if: github.event_name != 'pull_request' || github.event.action != 'labeled' || github.event.label.name == 'publish-snapshot'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
@@ -27,7 +30,13 @@ jobs:
     - name: Build with Maven
       run: |
         VERSION=${{ github.event_name == 'pull_request' && format('pr{0}-SNAPSHOT', github.event.pull_request.number) || 'latest-SNAPSHOT' }}
-        mvn ${{ runner.debug && '-X -e' || '' }} -B deploy -Drevision=$VERSION -Psonar,release
+        GOAL="deploy"
+        PROFILES="sonar,release"
+        if [[ "${{ github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'publish-snapshot') }}" == "true" ]]; then
+          GOAL="install"
+          PROFILES="sonar"
+        fi
+        mvn ${{ runner.debug && '-X -e' || '' }} -B $GOAL -Drevision=$VERSION -P$PROFILES
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
