@@ -466,6 +466,7 @@
                 <excludeArtifact>belgif-rest-problem-jakarta-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-java-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-quarkus-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-spring-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-spring-boot-3-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-spring-boot-4-it</excludeArtifact>
               </excludeArtifacts>
@@ -568,6 +569,7 @@
         <module>belgif-rest-problem-it/belgif-rest-problem-jackson2-latest-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-jackson2-minimal-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-jackson3-it</module>
+        <module>belgif-rest-problem-it/belgif-rest-problem-spring-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-spring-boot-3-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-spring-boot-4-it</module>
         <module>belgif-rest-problem-bom</module>
