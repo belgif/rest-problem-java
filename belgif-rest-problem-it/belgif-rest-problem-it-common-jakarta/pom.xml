@@ -152,7 +152,8 @@
                   <directory> ${project.build.directory}/generated-sources/jakarta</directory>
                   <excludes>
                     <exclude>**/*.java</exclude>
-                    <exclude>META-INF/**</exclude>
+                    <exclude>META-INF/MANIFEST.MF</exclude>
+                    <exclude>META-INF/io.github.belgif.rest.problem/**</exclude>
                   </excludes>
                 </resource>
               </resources>
