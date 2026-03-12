@@ -12,26 +12,151 @@
   <artifactId>belgif-rest-problem-it-common-jakarta</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
 
+  <dependencies>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-apt</artifactId>
+      <version>${project.version}</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.platform</groupId>
+      <artifactId>jakarta.jakartaee-api</artifactId>
+      <version>9.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${version.jackson.minimal}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>tools.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${version.jackson3.minimal}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
-        <groupId>org.eclipse.transformer</groupId>
-        <artifactId>transformer-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <phase>package</phase>
+            <id>unpack-core-sources</id>
+            <phase>generate-sources</phase>
             <goals>
-              <goal>jar</goal>
+              <goal>unpack</goal>
             </goals>
             <configuration>
-              <artifact>
-                <groupId>io.github.belgif.rest.problem</groupId>
-                <artifactId>belgif-rest-problem-it-common</artifactId>
-                <version>${project.version}</version>
-              </artifact>
-              <rules>
-                <jakartaDefaults>true</jakartaDefaults>
-              </rules>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>io.github.belgif.rest.problem</groupId>
+                  <artifactId>belgif-rest-problem-it-common</artifactId>
+                  <version>${project.version}</version>
+                  <classifier>sources</classifier>
+                  <outputDirectory>
+                    ${project.build.directory}/sources-to-transform
+                  </outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>transform-to-jakarta</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <includePluginDependencies>true</includePluginDependencies>
+              <includeProjectDependencies>false</includeProjectDependencies>
+              <blockSystemExit>true</blockSystemExit>
+              <mainClass>
+                org.eclipse.transformer.cli.JakartaTransformerCLI
+              </mainClass>
+              <arguments>
+                <argument>
+                  ${project.build.directory}/sources-to-transform
+                </argument>
+                <argument>
+                  ${project.build.directory}/generated-sources/jakarta
+                </argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.eclipse.transformer</groupId>
+            <artifactId>org.eclipse.transformer.cli</artifactId>
+            <version>1.0.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-transformed-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>
+                  ${project.build.directory}/generated-sources/jakarta
+                </source>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-resource</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>add-resource</goal>
+            </goals>
+            <configuration>
+              <resources>
+                <resource>
+                  <directory> ${project.build.directory}/generated-sources/jakarta</directory>
+                  <excludes>
+                    <exclude>**/*.java</exclude>
+                    <exclude>META-INF/MANIFEST.MF</exclude>
+                    <exclude>META-INF/io.github.belgif.rest.problem/**</exclude>
+                  </excludes>
+                </resource>
+              </resources>
             </configuration>
           </execution>
         </executions>

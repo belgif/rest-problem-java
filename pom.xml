@@ -21,7 +21,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Aligns with version used on JBoss EAP 7.4 -->
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
-    <version.jackson3.minimal>3.1.0</version.jackson3.minimal>
+    <!-- Aligns with Spring Boot 4.0 version -->
+    <version.jackson3.minimal>3.0.4</version.jackson3.minimal>
     <version.spring.boot.3>3.5.11</version.spring.boot.3>
     <version.spring.boot.4>4.0.3</version.spring.boot.4>
     <version.quarkus>3.32.2</version.quarkus>
@@ -233,11 +234,10 @@
               <skippedModules>
                 belgif-rest-problem-it,
                 jacoco-aggregator,
-                <!-- javadoc classpath conflict with *-spring-boot-4 -->
+               <!-- javadoc classpath conflict with *-spring-boot-4 -->
                 belgif-rest-problem-spring-boot-3,
-                belgif-rest-problem-spring-boot-3-core,
-                belgif-rest-problem-spring-boot-3-client,
-                belgif-rest-problem-spring-boot-3-server
+                belgif-rest-problem-spring-boot-3-client-starter,
+                belgif-rest-problem-spring-boot-3-server-starter
               </skippedModules>
               <doclint>all,-missing</doclint>
               <notimestamp>true</notimestamp>
@@ -379,17 +379,13 @@
         <module>belgif-rest-problem-jakarta-ee-core</module>
         <module>belgif-rest-problem-jakarta-ee-client</module>
         <module>belgif-rest-problem-jakarta-ee-server</module>
-        <module>belgif-rest-problem-spring-boot-common</module>
-        <module>belgif-rest-problem-spring-boot-common-client</module>
-        <module>belgif-rest-problem-spring-boot-common-server</module>
+        <module>belgif-rest-problem-spring</module>
         <module>belgif-rest-problem-spring-boot-3</module>
-        <module>belgif-rest-problem-spring-boot-3-core</module>
-        <module>belgif-rest-problem-spring-boot-3-client</module>
-        <module>belgif-rest-problem-spring-boot-3-server</module>
-        <module>belgif-rest-problem-spring-boot-4</module>
-        <module>belgif-rest-problem-spring-boot-4-core</module>
-        <module>belgif-rest-problem-spring-boot-4-client</module>
-        <module>belgif-rest-problem-spring-boot-4-server</module>
+        <module>belgif-rest-problem-spring-boot-3-client-starter</module>
+        <module>belgif-rest-problem-spring-boot-3-server-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-client-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-server-starter</module>
         <module>belgif-rest-problem-quarkus</module>
         <module>belgif-rest-problem-quarkus-core</module>
         <module>belgif-rest-problem-quarkus-core-deployment</module>
@@ -471,6 +467,7 @@
                 <excludeArtifact>belgif-rest-problem-jakarta-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-java-ee-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-quarkus-it</excludeArtifact>
+                <excludeArtifact>belgif-rest-problem-spring-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-spring-boot-3-it</excludeArtifact>
                 <excludeArtifact>belgif-rest-problem-spring-boot-4-it</excludeArtifact>
               </excludeArtifacts>
@@ -503,17 +500,13 @@
         <module>belgif-rest-problem-jakarta-ee-core</module>
         <module>belgif-rest-problem-jakarta-ee-client</module>
         <module>belgif-rest-problem-jakarta-ee-server</module>
-        <module>belgif-rest-problem-spring-boot-common</module>
-        <module>belgif-rest-problem-spring-boot-common-client</module>
-        <module>belgif-rest-problem-spring-boot-common-server</module>
+        <module>belgif-rest-problem-spring</module>
         <module>belgif-rest-problem-spring-boot-3</module>
-        <module>belgif-rest-problem-spring-boot-3-core</module>
-        <module>belgif-rest-problem-spring-boot-3-client</module>
-        <module>belgif-rest-problem-spring-boot-3-server</module>
-        <module>belgif-rest-problem-spring-boot-4</module>
-        <module>belgif-rest-problem-spring-boot-4-core</module>
-        <module>belgif-rest-problem-spring-boot-4-client</module>
-        <module>belgif-rest-problem-spring-boot-4-server</module>
+        <module>belgif-rest-problem-spring-boot-3-client-starter</module>
+        <module>belgif-rest-problem-spring-boot-3-server-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-client-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-server-starter</module>
         <module>belgif-rest-problem-quarkus</module>
         <module>belgif-rest-problem-quarkus-core</module>
         <module>belgif-rest-problem-quarkus-core-deployment</module>
@@ -562,17 +555,13 @@
       <id>spring-only</id>
       <modules>
         <module>belgif-rest-problem</module>
-        <module>belgif-rest-problem-spring-boot-common</module>
-        <module>belgif-rest-problem-spring-boot-common-client</module>
-        <module>belgif-rest-problem-spring-boot-common-server</module>
+        <module>belgif-rest-problem-spring</module>
         <module>belgif-rest-problem-spring-boot-3</module>
-        <module>belgif-rest-problem-spring-boot-3-core</module>
-        <module>belgif-rest-problem-spring-boot-3-client</module>
-        <module>belgif-rest-problem-spring-boot-3-server</module>
-        <module>belgif-rest-problem-spring-boot-4</module>
-        <module>belgif-rest-problem-spring-boot-4-core</module>
-        <module>belgif-rest-problem-spring-boot-4-client</module>
-        <module>belgif-rest-problem-spring-boot-4-server</module>
+        <module>belgif-rest-problem-spring-boot-3-client-starter</module>
+        <module>belgif-rest-problem-spring-boot-3-server-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-client-starter</module>
+        <module>belgif-rest-problem-spring-boot-4-server-starter</module>
         <!-- All relevant ITs -->
         <module>belgif-rest-problem-it/belgif-rest-problem-apt</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-codegen-it</module>
@@ -581,6 +570,7 @@
         <module>belgif-rest-problem-it/belgif-rest-problem-jackson2-latest-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-jackson2-minimal-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-jackson3-it</module>
+        <module>belgif-rest-problem-it/belgif-rest-problem-spring-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-spring-boot-3-it</module>
         <module>belgif-rest-problem-it/belgif-rest-problem-spring-boot-4-it</module>
         <module>belgif-rest-problem-bom</module>
