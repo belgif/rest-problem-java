@@ -168,12 +168,6 @@
           <version>0.8.14</version>
         </plugin>
         <plugin>
-          <groupId>org.eclipse.transformer</groupId>
-          <artifactId>transformer-maven-plugin</artifactId>
-          <version>1.0.0</version>
-          <extensions>true</extensions>
-        </plugin>
-        <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>
           <version>3.6.3</version>
@@ -217,6 +211,18 @@
             <version>0.6.3</version>
           </dependency>
         </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -422,18 +428,6 @@
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <goals>
-                  <goal>jar-no-fork</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <executions>
               <execution>
@@ -552,6 +546,101 @@
                 <goals>
                   <goal>sonar</goal>
                 </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>jakarta-transform</id>
+      <activation>
+        <file>
+          <exists>.jakarta-transform</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack-source-dependencies</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>unpack-dependencies</goal>
+                </goals>
+                <configuration>
+                  <includeClassifiers>sources</includeClassifiers>
+                  <outputDirectory>${project.build.directory}/sources-to-transform</outputDirectory>
+                  <excludes>META-INF/maven/**,META-INF/MANIFEST.MF</excludes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>transform-to-jakarta</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <includePluginDependencies>true</includePluginDependencies>
+                  <includeProjectDependencies>false</includeProjectDependencies>
+                  <blockSystemExit>true</blockSystemExit>
+                  <mainClass>org.eclipse.transformer.cli.JakartaTransformerCLI</mainClass>
+                  <arguments>
+                    <argument>${project.build.directory}/sources-to-transform</argument>
+                    <argument>${project.build.directory}/generated-sources/jakarta</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>org.eclipse.transformer</groupId>
+                <artifactId>org.eclipse.transformer.cli</artifactId>
+                <version>1.0.0</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>add-transformed-sources</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>add-source</goal>
+                </goals>
+                <configuration>
+                  <sources>
+                    <source>${project.build.directory}/generated-sources/jakarta</source>
+                  </sources>
+                </configuration>
+              </execution>
+              <execution>
+                <id>add-resource</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>add-resource</goal>
+                </goals>
+                <configuration>
+                  <resources>
+                    <resource>
+                      <directory>${project.build.directory}/generated-sources/jakarta</directory>
+                      <excludes>
+                        <exclude>**/*.java</exclude>
+                      </excludes>
+                    </resource>
+                  </resources>
+                </configuration>
               </execution>
             </executions>
           </plugin>
