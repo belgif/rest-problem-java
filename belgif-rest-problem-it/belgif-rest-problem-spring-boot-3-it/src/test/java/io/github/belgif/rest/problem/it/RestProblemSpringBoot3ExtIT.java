@@ -1,18 +1,17 @@
-package io.github.belgif.rest.problem;
+package io.github.belgif.rest.problem.it;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import io.github.belgif.rest.problem.it.AbstractRestProblemExtIT;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("ext")
 @DirtiesContext
-class RestProblemSpringBoot4ExtIT extends AbstractRestProblemExtIT {
+class RestProblemSpringBoot3ExtIT extends AbstractRestProblemExtIT {
 
     @LocalServerPort
     private int port;

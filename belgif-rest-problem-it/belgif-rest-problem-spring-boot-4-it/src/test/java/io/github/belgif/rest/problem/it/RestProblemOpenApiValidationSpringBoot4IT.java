@@ -1,16 +1,15 @@
-package io.github.belgif.rest.problem;
+package io.github.belgif.rest.problem.it;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 
-import io.github.belgif.rest.problem.it.AbstractOpenApiValidationSpringBootIT;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
-class RestProblemOpenApiValidationSpringBoot3IT extends AbstractOpenApiValidationSpringBootIT {
+class RestProblemOpenApiValidationSpringBoot4IT extends AbstractOpenApiValidationSpringBootIT {
 
     @LocalServerPort
     private int port;

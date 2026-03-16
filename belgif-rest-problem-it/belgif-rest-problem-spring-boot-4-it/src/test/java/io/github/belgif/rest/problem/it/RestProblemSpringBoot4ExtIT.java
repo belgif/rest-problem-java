@@ -1,19 +1,17 @@
-package io.github.belgif.rest.problem;
-
-import java.util.Arrays;
-import java.util.stream.Stream;
+package io.github.belgif.rest.problem.it;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
-import io.github.belgif.rest.problem.it.AbstractRestProblemSpringBootIT;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("ext")
 @DirtiesContext
-class RestProblemSpringBoot3IT extends AbstractRestProblemSpringBootIT {
+class RestProblemSpringBoot4ExtIT extends AbstractRestProblemExtIT {
 
     @LocalServerPort
     private int port;
@@ -21,11 +19,6 @@ class RestProblemSpringBoot3IT extends AbstractRestProblemSpringBootIT {
     @Override
     protected RequestSpecification getSpec() {
         return RestAssured.with().baseUri("http://localhost").port(port).basePath("/spring/frontend");
-    }
-
-    @Override
-    protected Stream<String> getClients() {
-        return Arrays.stream(Client.values()).map(Client::name);
     }
 
 }

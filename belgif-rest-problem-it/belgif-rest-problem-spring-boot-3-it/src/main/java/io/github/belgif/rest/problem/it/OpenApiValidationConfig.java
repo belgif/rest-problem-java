@@ -1,4 +1,4 @@
-package io.github.belgif.rest.problem;
+package io.github.belgif.rest.problem.it;
 
 import java.util.Collections;
 

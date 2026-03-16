@@ -1,4 +1,4 @@
-package io.github.belgif.rest.problem;
+package io.github.belgif.rest.problem.it;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
