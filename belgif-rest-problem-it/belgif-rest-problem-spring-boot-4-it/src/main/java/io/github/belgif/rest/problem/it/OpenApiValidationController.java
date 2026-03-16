@@ -1,13 +1,15 @@
-package io.github.belgif.rest.problem;
+package io.github.belgif.rest.problem.it;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.belgif.rest.problem.openapi.validation.sb3.api.*;
-import io.github.belgif.rest.problem.openapi.validation.sb3.model.MyRequestBodySchema;
-import io.github.belgif.rest.problem.openapi.validation.sb3.model.PostOperationWithAllOfSchemaRequest;
-import io.github.belgif.rest.problem.openapi.validation.sb3.model.PostOperationWithOneOfSchemaRequest;
+import io.github.belgif.rest.problem.it.openapi.validation.sb4.api.MyFirstPathApi;
+import io.github.belgif.rest.problem.it.openapi.validation.sb4.api.MyHeaderPathApi;
+import io.github.belgif.rest.problem.it.openapi.validation.sb4.api.MyQueryPathApi;
+import io.github.belgif.rest.problem.it.openapi.validation.sb4.model.MyRequestBodySchema;
+import io.github.belgif.rest.problem.it.openapi.validation.sb4.model.PostOperationWithAllOfSchemaRequest;
+import io.github.belgif.rest.problem.it.openapi.validation.sb4.model.PostOperationWithOneOfSchemaRequest;
 
 @RestController
 @RequestMapping("/openapi-validation")

@@ -1,4 +1,4 @@
-package io.github.belgif.rest.problem;
+package io.github.belgif.rest.problem.it;
 
 import java.net.URI;
 
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.acme.custom.CustomProblem;
 
+import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.it.model.JacksonModel;
 

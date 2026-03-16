@@ -1,4 +1,4 @@
-package io.github.belgif.rest.problem;
+package io.github.belgif.rest.problem.it;
 
 import java.net.URI;
 
@@ -7,8 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
+import org.springframework.boot.restclient.RestTemplateBuilder;
+import org.springframework.boot.web.server.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -26,6 +26,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.acme.custom.CustomProblem;
 
+import io.github.belgif.rest.problem.BadRequestProblem;
+import io.github.belgif.rest.problem.DefaultProblem;
+import io.github.belgif.rest.problem.ServiceUnavailableProblem;
 import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.i18n.I18N;

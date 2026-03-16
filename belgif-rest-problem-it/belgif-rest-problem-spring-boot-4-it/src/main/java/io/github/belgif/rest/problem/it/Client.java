@@ -1,4 +1,4 @@
-package io.github.belgif.rest.problem;
+package io.github.belgif.rest.problem.it;
 
 public enum Client {
 

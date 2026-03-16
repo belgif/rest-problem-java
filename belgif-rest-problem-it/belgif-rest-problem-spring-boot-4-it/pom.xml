@@ -104,8 +104,8 @@
             <configuration>
               <inputSpec>${project.basedir}/../belgif-rest-problem-it-common/src/main/resources/openapi.yaml</inputSpec>
               <generatorName>spring</generatorName>
-              <apiPackage>io.github.belgif.rest.problem.openapi.validation.sb4.api</apiPackage>
-              <modelPackage>io.github.belgif.rest.problem.openapi.validation.sb4.model</modelPackage>
+              <apiPackage>io.github.belgif.rest.problem.it.openapi.validation.sb4.api</apiPackage>
+              <modelPackage>io.github.belgif.rest.problem.it.openapi.validation.sb4.model</modelPackage>
               <openapiNormalizer>REF_AS_PARENT_IN_ALLOF=true</openapiNormalizer>
               <generateSupportingFiles>false</generateSupportingFiles>
               <configOptions>
