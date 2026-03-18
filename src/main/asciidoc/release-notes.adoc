@@ -18,19 +18,21 @@
 
 * Fix concurrency issue in InputValidationIssues.BELGIF_ISSUE_TYPE_HREFS cache
 
-*belgif-rest-problem-spring-boot-3:*
+*belgif-rest-problem-spring-boot-3-starter:*
 
 [WARNING]
 ====
 *Breaking change:* Some classes were moved to `client`- and `server`-specific packages
 ====
 
+The `belgif-rest-problem-spring-boot-3` module has been renamed to `belgif-rest-problem-spring-boot-3-starter`. `belgif-rest-problem-spring-boot-3` is still released with a relocation pom for backwards compatibility.
+
 Provide separate modules in case you specifically only want to use problems either client-side or server-side.
 
 * belgif-rest-problem-spring-boot-3-client-starter
 * belgif-rest-problem-spring-boot-3-server-starter
 
-Note that you can keep using `belgif-rest-problem-spring-boot-3` as before if you want both client-side and server-side integration.
+Note that you can keep using `belgif-rest-problem-spring-boot-3-starter` if you want both client-side and server-side integration.
 
 *belgif-rest-problem-spring-boot-4-starter:*
 

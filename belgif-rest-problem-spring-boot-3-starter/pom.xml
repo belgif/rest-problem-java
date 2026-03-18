@@ -9,14 +9,21 @@
     <version>${revision}</version>
   </parent>
 
-  <artifactId>belgif-rest-problem-spring-boot-3</artifactId>
+  <artifactId>belgif-rest-problem-spring-boot-3-starter</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
   <packaging>jar</packaging>
 
-  <distributionManagement>
-    <relocation>
-      <artifactId>belgif-rest-problem-spring-boot-3-starter</artifactId>
-    </relocation>
-  </distributionManagement>
+  <dependencies>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-spring-boot-3-client-starter</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.belgif.rest.problem</groupId>
+      <artifactId>belgif-rest-problem-spring-boot-3-server-starter</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 
 </project>

@@ -25,8 +25,9 @@ The library consists of these modules:
 * *belgif-rest-problem*: library for RFC 9457 standardized Belgif problems
 * *belgif-rest-problem-java-ee*: Java EE integration for belgif-rest-problem
 * *belgif-rest-problem-jakarta-ee*: Jakarta EE integration for belgif-rest-problem
-* *belgif-rest-problem-spring-boot-3*: Spring Boot 3.x integration for belgif-rest-problem
-* *belgif-rest-problem-spring-boot-4*: Spring Boot 4.x integration for belgif-rest-problem
+* *belgif-rest-problem-spring*: Spring integration for belgif-rest-problem
+* *belgif-rest-problem-spring-boot-3-starter*: Spring Boot 3.x integration for belgif-rest-problem
+* *belgif-rest-problem-spring-boot-4-starter*: Spring Boot 4.x integration for belgif-rest-problem
 * *belgif-rest-problem-quarkus*: Quarkus integration for belgif-rest-problem
 * *belgif-rest-problem-validator*: validation library that generates Belgif-compliant BadRequestProblem with InputValidationIssues
 
@@ -52,7 +53,7 @@ See xref:release-notes.adoc[Release Notes].
 ----
 <dependency>
   <groupId>io.github.belgif.rest.problem</groupId>
-  <artifactId>belgif-rest-problem-spring-boot-3</artifactId>
+  <artifactId>belgif-rest-problem-spring-boot-3-starter</artifactId>
   <version>{revnumber}</version>
 </dependency>
 ----
@@ -60,7 +61,7 @@ See xref:release-notes.adoc[Release Notes].
 [source,role="secondary",subs="attributes+"]
 .Spring Boot 3 (Gradle)
 ----
-compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:{revnumber}'
+compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3-starter:{revnumber}'
 ----
 
 [source,xml,role="secondary",subs="attributes+"]
@@ -68,7 +69,7 @@ compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:{revnum
 ----
 <dependency>
   <groupId>io.github.belgif.rest.problem</groupId>
-  <artifactId>belgif-rest-problem-spring-boot-4</artifactId>
+  <artifactId>belgif-rest-problem-spring-boot-4-starter</artifactId>
   <version>{revnumber}</version>
 </dependency>
 ----
@@ -76,7 +77,7 @@ compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:{revnum
 [source,role="secondary",subs="attributes+"]
 .Spring Boot 4 (Gradle)
 ----
-compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-4:{revnumber}'
+compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-4-starter:{revnumber}'
 ----
 
 Alternatively, if you specifically only want to use problems either client-side or server-side, you can depend on these modules instead:
@@ -911,8 +912,8 @@ io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
 
 In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.
 
-[[belgif-rest-problem-spring-boot-3]]
-=== belgif-rest-problem-spring-boot-3
+[[belgif-rest-problem-spring-boot-3-starter]]
+=== belgif-rest-problem-spring-boot-3-starter
 
 This module provides auto-configuration for the `belgif-rest-problem-spring` components that handle Spring Boot 3 integration with the belgif-rest-problem library:
 
