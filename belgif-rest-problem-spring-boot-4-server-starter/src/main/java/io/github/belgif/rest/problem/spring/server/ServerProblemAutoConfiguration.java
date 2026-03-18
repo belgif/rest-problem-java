@@ -19,6 +19,7 @@ import tools.jackson.databind.ObjectMapper;
  * Spring Boot AutoConfiguration for rest-problem-spring.
  */
 @AutoConfiguration
+@ConditionalOnWebApplication
 @Import({ io.github.belgif.rest.problem.spring.ProblemJackson3Configuration.class, JacksonAutoConfiguration.class })
 public class ServerProblemAutoConfiguration {
 
@@ -29,19 +30,16 @@ public class ServerProblemAutoConfiguration {
     }
 
     @ConditionalOnClass(ConstraintViolationException.class)
-    @ConditionalOnWebApplication
     @Bean
     public BeanValidationExceptionsHandler beanValidationExceptionsHandler() {
         return new BeanValidationExceptionsHandler();
     }
 
-    @ConditionalOnWebApplication
     @Bean
     public ProblemExceptionHandler problemExceptionHandler() {
         return new ProblemExceptionHandler();
     }
 
-    @ConditionalOnWebApplication
     @Bean
     public RoutingExceptionsJackson3Handler routingExceptionsHandler() {
         return new RoutingExceptionsJackson3Handler();
@@ -53,7 +51,6 @@ public class ServerProblemAutoConfiguration {
         return new ProblemValidationConfigurationCustomizer();
     }
 
-    @ConditionalOnWebApplication
     @ConditionalOnClass(InvalidRequestException.class)
     @Bean
     public InvalidRequestExceptionJackson3Handler invalidRequestExceptionHandler() {

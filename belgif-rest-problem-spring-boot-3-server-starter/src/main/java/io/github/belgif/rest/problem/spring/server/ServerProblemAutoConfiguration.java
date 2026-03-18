@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Spring Boot AutoConfiguration for rest-problem-spring.
  */
 @AutoConfiguration
+@ConditionalOnWebApplication
 @Import({ io.github.belgif.rest.problem.spring.ProblemJackson2Configuration.class, JacksonAutoConfiguration.class })
 public class ServerProblemAutoConfiguration {
 
@@ -28,19 +29,16 @@ public class ServerProblemAutoConfiguration {
     }
 
     @ConditionalOnClass(ConstraintViolationException.class)
-    @ConditionalOnWebApplication
     @Bean
     public BeanValidationExceptionsHandler beanValidationExceptionsHandler() {
         return new BeanValidationExceptionsHandler();
     }
 
-    @ConditionalOnWebApplication
     @Bean
     public ProblemExceptionHandler problemExceptionHandler() {
         return new ProblemExceptionHandler();
     }
 
-    @ConditionalOnWebApplication
     @Bean
     public RoutingExceptionsJackson2Handler routingExceptionsHandler() {
         return new RoutingExceptionsJackson2Handler();
@@ -52,7 +50,6 @@ public class ServerProblemAutoConfiguration {
         return new ProblemValidationConfigurationCustomizer();
     }
 
-    @ConditionalOnWebApplication
     @ConditionalOnClass(InvalidRequestException.class)
     @Bean
     public InvalidRequestExceptionJackson2Handler invalidRequestExceptionHandler() {
