@@ -259,8 +259,10 @@ When manually constructing a RestClient instance, you'll need to apply the link:
 
 ==== Without Spring Boot
 
-If your application uses Spring without Spring Boot, use the link:apidocs/io/github/belgif/rest/problem/spring/ProblemRestClientCustomizer.html[`@EnableProblemModule`] annotation to activate problem support. Your application needs to provide a configured `ObjectMapper` (Jackson 2) or `JsonMapper` (Jackson3) bean.
-REST clients have to be configured during their creation using beans provided by the problem module. See the `WebConfig` class in the integration test `belgif-rest-problem-spring-it` for an example.
+If your application uses Spring without Spring Boot, use the link:apidocs/io/github/belgif/rest/problem/spring/EnableProblemModule.html[`@EnableProblemModule`] annotation to activate problem support.
+Your application needs to provide a configured `ObjectMapper` (Jackson 2) or `JsonMapper` (Jackson3) bean.
+REST clients have to be configured during their creation using beans provided by the problem module.
+See the https://github.com/belgif/rest-problem-java/blob/main/belgif-rest-problem-it/belgif-rest-problem-spring-it/src/main/java/io/github/belgif/rest/problem/it/WebConfig.java[`WebConfig`] class in the integration test `belgif-rest-problem-spring-it` for an example.
 
 [[getting-started-jakarta-ee]]
 === Jakarta EE
