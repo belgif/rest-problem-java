@@ -40,7 +40,7 @@ Note that you can keep using `belgif-rest-problem-spring-boot-3-starter` if you 
 ====
 *Breaking changes:*
 
-* Users of `belgif-rest-problem-spring-boot-4` from version should now depend on the `belgif-rest-problem-spring-boot-4-starter` module.
+* Users of `belgif-rest-problem-spring-boot-4` should now depend on the `belgif-rest-problem-spring-boot-4-starter` module.
 * Some classes were moved to `client`- and `server`-specific packages
 ====
 
