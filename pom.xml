@@ -22,9 +22,9 @@
     <!-- Aligns with version used on JBoss EAP 7.4 -->
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
     <version.jackson3.minimal>3.1.0</version.jackson3.minimal>
-    <version.spring.boot.3>3.5.11</version.spring.boot.3>
-    <version.spring.boot.4>4.0.3</version.spring.boot.4>
-    <version.quarkus>3.32.3</version.quarkus>
+    <version.spring.boot.3>3.5.12</version.spring.boot.3>
+    <version.spring.boot.4>3.5.12</version.spring.boot.4>
+    <version.quarkus>3.32.4</version.quarkus>
   </properties>
 
   <dependencyManagement>
@@ -145,7 +145,7 @@
         <plugin>
           <groupId>com.diffplug.spotless</groupId>
           <artifactId>spotless-maven-plugin</artifactId>
-          <version>3.3.0</version>
+          <version>3.4.0</version>
         </plugin>
         <plugin>
           <groupId>org.openapitools</groupId>
