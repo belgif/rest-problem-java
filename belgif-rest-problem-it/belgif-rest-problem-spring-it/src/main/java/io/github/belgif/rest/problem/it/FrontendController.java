@@ -9,10 +9,18 @@ import jakarta.validation.constraints.Size;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import com.acme.custom.CustomProblem;
 
@@ -26,6 +34,7 @@ import io.github.belgif.rest.problem.it.model.ChildModel;
 import io.github.belgif.rest.problem.it.model.JacksonModel;
 import io.github.belgif.rest.problem.it.model.Model;
 import io.github.belgif.rest.problem.it.model.NestedModel;
+import io.github.belgif.rest.problem.spring.client.ProblemResponseJackson3ErrorHandler;
 import io.github.belgif.rest.problem.validation.RequestValidator;
 
 @RestController
@@ -40,15 +49,19 @@ public class FrontendController implements ControllerInterface {
 
     private RestClient.Builder restClientBuilder;
 
+    private final ProblemResponseJackson3ErrorHandler errorHandler;
+
     private RestTemplate restTemplate;
 
     private WebClient webClient;
 
     private RestClient restClient;
 
-    public FrontendController(WebClient.Builder webClientBuilder, RestClient.Builder restClientBuilder) {
+    public FrontendController(WebClient.Builder webClientBuilder, RestClient.Builder restClientBuilder,
+            ProblemResponseJackson3ErrorHandler errorHandler) {
         this.webClientBuilder = webClientBuilder;
         this.restClientBuilder = restClientBuilder;
+        this.errorHandler = errorHandler;
     }
 
     public void initClients(int port) {
@@ -59,8 +72,9 @@ public class FrontendController implements ControllerInterface {
         this.restClient = this.restClientBuilder
                 .baseUrl(apiBaseUrl)
                 .build();
-        // we're not testing RestTemplate for now
-        // there's no builder or baseUrl support for RestTemplate without Spring Boot, so would require more refactoring
+        this.restTemplate = new RestTemplate();
+        this.restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(apiBaseUrl));
+        this.restTemplate.setErrorHandler(this.errorHandler);
     }
 
     @GetMapping("/ping")

@@ -1,6 +1,6 @@
 package io.github.belgif.rest.problem.it;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +35,6 @@ class RestProblemSpringIT extends AbstractRestProblemSpringBootIT {
 
     @Override
     protected Stream<String> getClients() {
-        return List.of(Client.REST_CLIENT.name(), Client.WEB_CLIENT.name()).stream();
+        return Arrays.stream(Client.values()).map(Client::name);
     }
 }
