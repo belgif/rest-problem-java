@@ -25,8 +25,9 @@ The library consists of these modules:
 * *belgif-rest-problem*: library for RFC 9457 standardized Belgif problems
 * *belgif-rest-problem-java-ee*: Java EE integration for belgif-rest-problem
 * *belgif-rest-problem-jakarta-ee*: Jakarta EE integration for belgif-rest-problem
-* *belgif-rest-problem-spring-boot-3*: Spring Boot 3.x integration for belgif-rest-problem
-* *belgif-rest-problem-spring-boot-4*: Spring Boot 4.x integration for belgif-rest-problem
+* *belgif-rest-problem-spring*: Spring integration for belgif-rest-problem
+* *belgif-rest-problem-spring-boot-3-starter*: Spring Boot 3.x integration for belgif-rest-problem
+* *belgif-rest-problem-spring-boot-4-starter*: Spring Boot 4.x integration for belgif-rest-problem
 * *belgif-rest-problem-quarkus*: Quarkus integration for belgif-rest-problem
 * *belgif-rest-problem-validator*: validation library that generates Belgif-compliant BadRequestProblem with InputValidationIssues
 
@@ -52,7 +53,7 @@ See xref:release-notes.adoc[Release Notes].
 ----
 <dependency>
   <groupId>io.github.belgif.rest.problem</groupId>
-  <artifactId>belgif-rest-problem-spring-boot-3</artifactId>
+  <artifactId>belgif-rest-problem-spring-boot-3-starter</artifactId>
   <version>{revnumber}</version>
 </dependency>
 ----
@@ -60,7 +61,7 @@ See xref:release-notes.adoc[Release Notes].
 [source,role="secondary",subs="attributes+"]
 .Spring Boot 3 (Gradle)
 ----
-compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:{revnumber}'
+compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3-starter:{revnumber}'
 ----
 
 [source,xml,role="secondary",subs="attributes+"]
@@ -68,7 +69,7 @@ compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:{revnum
 ----
 <dependency>
   <groupId>io.github.belgif.rest.problem</groupId>
-  <artifactId>belgif-rest-problem-spring-boot-4</artifactId>
+  <artifactId>belgif-rest-problem-spring-boot-4-starter</artifactId>
   <version>{revnumber}</version>
 </dependency>
 ----
@@ -76,7 +77,7 @@ compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:{revnum
 [source,role="secondary",subs="attributes+"]
 .Spring Boot 4 (Gradle)
 ----
-compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-4:{revnumber}'
+compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-4-starter:{revnumber}'
 ----
 
 Alternatively, if you specifically only want to use problems either client-side or server-side, you can depend on these modules instead:
@@ -237,7 +238,7 @@ Otherwise, you will see parameter names like `arg0`.
 
 InvalidRequestExceptions thrown by the https://bitbucket.org/atlassian/swagger-request-validator[Atlassian swagger-request-validator] are automatically converted to a proper RFC 9457 `application/problem+json` response.
 
-For Spring Boot 3, use https://bitbucket.org/atlassian/swagger-request-validator/src/master/swagger-request-validator-spring-webmvc[swagger-request-validator-spring-webmvc].
+When using Spring, use https://bitbucket.org/atlassian/swagger-request-validator/src/master/swagger-request-validator-spring-webmvc[swagger-request-validator-spring-webmvc].
 
 ==== RestTemplate
 
@@ -256,6 +257,13 @@ When manually constructing a WebClient instance, you'll need to apply the link:a
 Problem support is automatically enabled when constructing your RestClient through an autowired https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestClient.Builder.html[RestClient.Builder].
 
 When manually constructing a RestClient instance, you'll need to apply the link:apidocs/io/github/belgif/rest/problem/spring/ProblemRestClientCustomizer.html[ProblemRestClientCustomizer] yourself.
+
+==== Without Spring Boot
+
+If your application uses Spring without Spring Boot, use the link:apidocs/io/github/belgif/rest/problem/spring/EnableProblemModule.html[`@EnableProblemModule`] annotation to activate problem support.
+Your application needs to provide a configured `ObjectMapper` (Jackson 2) or `JsonMapper` (Jackson3) bean.
+REST clients have to be configured during their creation using beans provided by the problem module.
+See the https://github.com/belgif/rest-problem-java/blob/main/belgif-rest-problem-it/belgif-rest-problem-spring-it/src/main/java/io/github/belgif/rest/problem/it/WebConfig.java[`WebConfig`] class in the integration test `belgif-rest-problem-spring-it` for an example.
 
 [[getting-started-jakarta-ee]]
 === Jakarta EE
@@ -880,10 +888,10 @@ public void setClient(Client client) {
 * *Jakarta EE 9+*: the main belgif-rest-problem-java-ee artifact targets Java EE (javax package namespace).
 A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is available with `<classifier>jakarta</classifier>`.
 
-[[belgif-rest-problem-spring-boot-3]]
-=== belgif-rest-problem-spring-boot-3
+[[belgif-rest-problem-spring]]
+=== belgif-rest-problem-spring
 
-This module provides auto-configuration for components that handle Spring Boot 3 integration with the belgif-rest-problem library:
+This module provides base components for Spring integration with the belgif-rest-problem library, without Spring Boot dependencies:
 
 * *SpringProblemTypeRegistry:* ProblemTypeRegistry implementation that uses classpath scanning to detect @ProblemType annotations.
 By default, only package `io.github.belgif.rest.problem` is scanned for @ProblemType annotations.
@@ -898,20 +906,27 @@ io.github.belgif.rest.problem.scan-additional-problem-packages=com.acme.custom
 * *ProblemExceptionHandler:* an exception handler for RestControllers that handles the response serialization for Problem exceptions, and converts all other uncaught exceptions to an InternalServerErrorProblem.
 * *BeanValidationExceptionsHandler:* an exception handler for RestControllers that converts bean validation related exceptions to HTTP 400 BadRequestProblem.
 * *InvalidRequestExceptionHandler:* an exception handler for the link:https://bitbucket.org/atlassian/swagger-request-validator/src/master/[Atlassian swagger-request-validator] that converts InvalidRequestException to the correct Problem type.
-* *RoutingExceptionsHandler:* an exception handler for RestControllers that converts routing related validation exceptions to HTTP 400 BadRequestProblem.
+* *RoutingExceptionsHandler:* an exception handler for RestControllers that converts request handling exceptions to HTTP 4XX problems.
+* *ProblemResponseErrorHandler:* a RestTemplate and RestClient error handler that converts problem responses to Problem exceptions.
+* *AnnotationParameterNameProvider:* a bean validation ParameterNameProvider that retrieves parameter names from Spring MVC annotations
+
+In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.
+
+[[belgif-rest-problem-spring-boot-3-starter]]
+=== belgif-rest-problem-spring-boot-3-starter
+
+This module provides auto-configuration for the `belgif-rest-problem-spring` components that handle Spring Boot 3 integration with the belgif-rest-problem library:
+
 * *ProblemWebClientCustomizer:* a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
 This handles integration with the https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html[Reactive WebClient].
-* *ProblemResponseErrorHandler:* a RestTemplate and RestClient error handler that converts problem responses to Problem exceptions.
 * *ProblemRestTemplateCustomizer:* a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.
-* *NoResourceFoundExceptionHandler:* an exception handler for RestControllers that converts NoResourceFoundException to HTTP 404 ResourceNotFoundProblem.
 * *ProblemRestClientCustomizer:* a RestClientCustomizer that registers the ProblemResponseErrorHandler.
-* *AnnotationParameterNameProvider:* a bean validation ParameterNameProvider that retrieves parameter names from Spring MVC annotations
 * *ProblemValidationConfigurationCustomizer:* a ValidationConfigurationCustomizer that registers the AnnotationParameterNameProvider
 
 In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.
 
-[[belgif-rest-problem-spring-boot-4]]
-=== belgif-rest-problem-spring-boot-4
+[[belgif-rest-problem-spring-boot-4-starter]]
+=== belgif-rest-problem-spring-boot-4-starter
 
 This module provides auto-configuration for components that handle Spring Boot 4 integration with the belgif-rest-problem library.
 In general, this is very similar to the Spring Boot 3 module.

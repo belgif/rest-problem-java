@@ -32,7 +32,7 @@
   <dependencies>
     <dependency>
       <groupId>io.github.belgif.rest.problem</groupId>
-      <artifactId>belgif-rest-problem-spring-boot-4</artifactId>
+      <artifactId>belgif-rest-problem-spring-boot-4-starter</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -109,7 +109,8 @@
               <openapiNormalizer>REF_AS_PARENT_IN_ALLOF=true</openapiNormalizer>
               <generateSupportingFiles>false</generateSupportingFiles>
               <configOptions>
-                <useSpringBoot3>true</useSpringBoot3>
+                <useSpringBoot4>true</useSpringBoot4>
+                <useJackson3>true</useJackson3>
                 <interfaceOnly>true</interfaceOnly>
                 <skipDefaultInterface>true</skipDefaultInterface>
                 <openApiNullable>false</openApiNullable>

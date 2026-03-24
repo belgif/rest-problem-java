@@ -13,17 +13,10 @@
   <name>${project.groupId}:${project.artifactId}</name>
   <packaging>jar</packaging>
 
-  <dependencies>
-    <dependency>
-      <groupId>io.github.belgif.rest.problem</groupId>
-      <artifactId>belgif-rest-problem-spring-boot-3-client</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.github.belgif.rest.problem</groupId>
-      <artifactId>belgif-rest-problem-spring-boot-3-server</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-  </dependencies>
+  <distributionManagement>
+    <relocation>
+      <artifactId>belgif-rest-problem-spring-boot-3-starter</artifactId>
+    </relocation>
+  </distributionManagement>
 
 </project>
