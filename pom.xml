@@ -388,6 +388,7 @@
         <module>belgif-rest-problem-jakarta-ee-server</module>
         <module>belgif-rest-problem-spring</module>
         <module>belgif-rest-problem-spring-boot-3</module>
+        <module>belgif-rest-problem-spring-boot-3-starter</module>
         <module>belgif-rest-problem-spring-boot-3-client-starter</module>
         <module>belgif-rest-problem-spring-boot-3-server-starter</module>
         <module>belgif-rest-problem-spring-boot-4-starter</module>
