@@ -1,20 +1,30 @@
 package io.github.belgif.rest.problem.spring;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportSelector;
+import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import io.github.belgif.rest.problem.spring.client.ProblemResponseJackson2ErrorHandler;
 import io.github.belgif.rest.problem.spring.client.ProblemResponseJackson3ErrorHandler;
-import io.github.belgif.rest.problem.spring.server.*;
+import io.github.belgif.rest.problem.spring.server.AnnotationParameterNameProvider;
+import io.github.belgif.rest.problem.spring.server.BeanValidationExceptionsHandler;
+import io.github.belgif.rest.problem.spring.server.InvalidRequestExceptionJackson2Handler;
+import io.github.belgif.rest.problem.spring.server.InvalidRequestExceptionJackson3Handler;
+import io.github.belgif.rest.problem.spring.server.ProblemExceptionHandler;
+import io.github.belgif.rest.problem.spring.server.RoutingExceptionsJackson2Handler;
+import io.github.belgif.rest.problem.spring.server.RoutingExceptionsJackson3Handler;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -75,13 +85,14 @@ public @interface EnableProblemModule {
 
         @Override
         public String[] selectImports(AnnotationMetadata importingClassMetadata) {
-            Map<String, Object> attributes = importingClassMetadata
-                    .getAnnotationAttributes(EnableProblemModule.class.getName());
-            boolean includeServer = (boolean) attributes.get("server");
-            boolean includeClient = (boolean) attributes.get("client");
-            boolean useJackson3 = (attributes.get("jacksonVersion") == JacksonVersion.JACKSON_3);
-            boolean includeBeanValidation = (boolean) attributes.get("beanValidation");
-            boolean includeSwaggerRequestValidator = (boolean) attributes.get("swaggerRequestValidator");
+            MergedAnnotation<EnableProblemModule> annotation =
+                    importingClassMetadata.getAnnotations().get(EnableProblemModule.class);
+            boolean includeServer = annotation.getBoolean("server");
+            boolean includeClient = annotation.getBoolean("client");
+            boolean useJackson3 =
+                    annotation.getEnum("jacksonVersion", JacksonVersion.class) == JacksonVersion.JACKSON_3;
+            boolean includeBeanValidation = annotation.getBoolean("beanValidation");
+            boolean includeSwaggerRequestValidator = annotation.getBoolean("swaggerRequestValidator");
 
             List<String> imports = new ArrayList<>();
 
