@@ -95,7 +95,7 @@ loadScripts(document, 'script');</script>
 <dd><code>org.springframework.beans.factory.InitializingBean</code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="annotations">@ConfigurationProperties(prefix="io.github.belgif.rest.problem")
+<div class="type-signature"><span class="annotations">@Component
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">ProblemConfigurationProperties</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements org.springframework.beans.factory.InitializingBean</span></div>
@@ -134,7 +134,7 @@ implements org.springframework.beans.factory.InitializingBean</span></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getScanAdditionalProblemPackages()" class="member-name-link">getScanAdditionalProblemPackages</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setI18nEnabled(boolean)" class="member-name-link">setI18nEnabled</a><wbr>(boolean&nbsp;i18nEnabled)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setI18nEnabled(java.lang.Boolean)" class="member-name-link">setI18nEnabled</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&nbsp;i18nEnabled)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setScanAdditionalProblemPackages(java.util.List)" class="member-name-link">setScanAdditionalProblemPackages</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;scanAdditionalProblemPackages)</code></div>
@@ -176,7 +176,8 @@ implements org.springframework.beans.factory.InitializingBean</span></div>
 <li>
 <section class="detail" id="setScanAdditionalProblemPackages(java.util.List)">
 <h3>setScanAdditionalProblemPackages</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setScanAdditionalProblemPackages</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;scanAdditionalProblemPackages)</span></div>
+<div class="member-signature"><span class="annotations">@Value("${io.github.belgif.rest.problem.scan-additional-problem-packages:#{{}}}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setScanAdditionalProblemPackages</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;scanAdditionalProblemPackages)</span></div>
 </section>
 </li>
 <li>
@@ -186,15 +187,17 @@ implements org.springframework.beans.factory.InitializingBean</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="setI18nEnabled(boolean)">
+<section class="detail" id="setI18nEnabled(java.lang.Boolean)">
 <h3>setI18nEnabled</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setI18nEnabled</span><wbr><span class="parameters">(boolean&nbsp;i18nEnabled)</span></div>
+<div class="member-signature"><span class="annotations">@Value("${io.github.belgif.rest.problem.i18n-enabled:#{null}}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setI18nEnabled</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&nbsp;i18nEnabled)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="setStackTraceEnabled(java.lang.Boolean)">
 <h3>setStackTraceEnabled</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setStackTraceEnabled</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&nbsp;stackTraceEnabled)</span></div>
+<div class="member-signature"><span class="annotations">@Value("${io.github.belgif.rest.problem.stack-trace-enabled:#{null}}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setStackTraceEnabled</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&nbsp;stackTraceEnabled)</span></div>
 </section>
 </li>
 <li>

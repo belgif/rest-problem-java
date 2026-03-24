@@ -738,8 +738,9 @@ window.onload = function() {
 <ul class="sectlevel2">
 <li><a href="#problem-type-registry">9.1. @ProblemType and ProblemTypeRegistry</a></li>
 <li><a href="#belgif-rest-problem-java-ee">9.2. belgif-rest-problem-java-ee</a></li>
-<li><a href="#belgif-rest-problem-spring-boot-3">9.3. belgif-rest-problem-spring-boot-3</a></li>
-<li><a href="#belgif-rest-problem-spring-boot-4">9.4. belgif-rest-problem-spring-boot-4</a></li>
+<li><a href="#belgif-rest-problem-spring">9.3. belgif-rest-problem-spring</a></li>
+<li><a href="#belgif-rest-problem-spring-boot-3-starter">9.4. belgif-rest-problem-spring-boot-3-starter</a></li>
+<li><a href="#belgif-rest-problem-spring-boot-4-starter">9.5. belgif-rest-problem-spring-boot-4-starter</a></li>
 </ul>
 </li>
 </ul>
@@ -780,10 +781,13 @@ window.onload = function() {
 <p><strong>belgif-rest-problem-jakarta-ee</strong>: Jakarta EE integration for belgif-rest-problem</p>
 </li>
 <li>
-<p><strong>belgif-rest-problem-spring-boot-3</strong>: Spring Boot 3.x integration for belgif-rest-problem</p>
+<p><strong>belgif-rest-problem-spring</strong>: Spring integration for belgif-rest-problem</p>
 </li>
 <li>
-<p><strong>belgif-rest-problem-spring-boot-4</strong>: Spring Boot 4.x integration for belgif-rest-problem</p>
+<p><strong>belgif-rest-problem-spring-boot-3-starter</strong>: Spring Boot 3.x integration for belgif-rest-problem</p>
+</li>
+<li>
+<p><strong>belgif-rest-problem-spring-boot-4-starter</strong>: Spring Boot 4.x integration for belgif-rest-problem</p>
 </li>
 <li>
 <p><strong>belgif-rest-problem-quarkus</strong>: Quarkus integration for belgif-rest-problem</p>
@@ -811,7 +815,24 @@ window.onload = function() {
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>belgif-rest-problem-spring-boot-3:</strong></p>
+<p><strong>belgif-rest-problem-spring-boot-3-starter:</strong></p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Breaking change:</strong> Some classes were moved to <code>client</code>- and <code>server</code>-specific packages</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The <code>belgif-rest-problem-spring-boot-3</code> module has been renamed to <code>belgif-rest-problem-spring-boot-3-starter</code>. <code>belgif-rest-problem-spring-boot-3</code> is still released with a relocation pom for backwards compatibility.</p>
 </div>
 <div class="paragraph">
 <p>Provide separate modules in case you specifically only want to use problems either client-side or server-side.</p>
@@ -819,18 +840,42 @@ window.onload = function() {
 <div class="ulist">
 <ul>
 <li>
-<p>belgif-rest-problem-spring-boot-3-client</p>
+<p>belgif-rest-problem-spring-boot-3-client-starter</p>
 </li>
 <li>
-<p>belgif-rest-problem-spring-boot-3-server</p>
+<p>belgif-rest-problem-spring-boot-3-server-starter</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Note that you can keep using <code>belgif-rest-problem-spring-boot-3</code> as before if you want both client-side and server-side integration.</p>
+<p>Note that you can keep using <code>belgif-rest-problem-spring-boot-3-starter</code> if you want both client-side and server-side integration.</p>
 </div>
 <div class="paragraph">
-<p><strong>belgif-rest-problem-spring-boot-4:</strong></p>
+<p><strong>belgif-rest-problem-spring-boot-4-starter:</strong></p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Breaking changes:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Users of <code>belgif-rest-problem-spring-boot-4</code> should now depend on the <code>belgif-rest-problem-spring-boot-4-starter</code> module.</p>
+</li>
+<li>
+<p>Some classes were moved to <code>client</code>- and <code>server</code>-specific packages</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Provide separate modules in case you specifically only want to use problems either client-side or server-side.</p>
@@ -838,15 +883,25 @@ window.onload = function() {
 <div class="ulist">
 <ul>
 <li>
-<p>belgif-rest-problem-spring-boot-4-client</p>
+<p>belgif-rest-problem-spring-boot-4-client-starter</p>
 </li>
 <li>
-<p>belgif-rest-problem-spring-boot-4-server</p>
+<p>belgif-rest-problem-spring-boot-4-server-starter</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Note that you can keep using <code>belgif-rest-problem-spring-boot-4</code> as before when you want both client-side and server-side integration.</p>
+<p>Note that you can use <code>belgif-rest-problem-spring-boot-4-starter</code> when you want both client-side and server-side integration.</p>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-spring:</strong></p>
+</div>
+<div class="paragraph">
+<p>Depend on this module to integrate with Spring without depending on Spring Boot.
+When using one of the spring boot modules, it is added as transitive dependency.</p>
+</div>
+<div class="paragraph">
+<p>It provides support for both Jackson 2 and 3.</p>
 </div>
 <div class="paragraph">
 <p><strong>belgif-rest-problem-java-ee:</strong></p>
@@ -1387,7 +1442,7 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
   <span class="tag">&lt;groupId&gt;</span>io.github.belgif.rest.problem<span class="tag">&lt;/groupId&gt;</span>
-  <span class="tag">&lt;artifactId&gt;</span>belgif-rest-problem-spring-boot-3<span class="tag">&lt;/artifactId&gt;</span>
+  <span class="tag">&lt;artifactId&gt;</span>belgif-rest-problem-spring-boot-3-starter<span class="tag">&lt;/artifactId&gt;</span>
   <span class="tag">&lt;version&gt;</span>latest-SNAPSHOT<span class="tag">&lt;/version&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -1395,7 +1450,7 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 <div class="listingblock secondary">
 <div class="title">Spring Boot 3 (Gradle)</div>
 <div class="content">
-<pre class="CodeRay highlight"><code>compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3:latest-SNAPSHOT'</code></pre>
+<pre class="CodeRay highlight"><code>compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-3-starter:latest-SNAPSHOT'</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
@@ -1403,7 +1458,7 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
   <span class="tag">&lt;groupId&gt;</span>io.github.belgif.rest.problem<span class="tag">&lt;/groupId&gt;</span>
-  <span class="tag">&lt;artifactId&gt;</span>belgif-rest-problem-spring-boot-4<span class="tag">&lt;/artifactId&gt;</span>
+  <span class="tag">&lt;artifactId&gt;</span>belgif-rest-problem-spring-boot-4-starter<span class="tag">&lt;/artifactId&gt;</span>
   <span class="tag">&lt;version&gt;</span>latest-SNAPSHOT<span class="tag">&lt;/version&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -1411,7 +1466,7 @@ by standardized <code>urn:problem-type:belgif:input-validation:referencedResourc
 <div class="listingblock secondary">
 <div class="title">Spring Boot 4 (Gradle)</div>
 <div class="content">
-<pre class="CodeRay highlight"><code>compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-4:latest-SNAPSHOT'</code></pre>
+<pre class="CodeRay highlight"><code>compile 'io.github.belgif.rest.problem:belgif-rest-problem-spring-boot-4-starter:latest-SNAPSHOT'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1701,7 +1756,7 @@ Otherwise, you will see parameter names like <code>arg0</code>.
 <p>InvalidRequestExceptions thrown by the <a href="https://bitbucket.org/atlassian/swagger-request-validator">Atlassian swagger-request-validator</a> are automatically converted to a proper RFC 9457 <code>application/problem+json</code> response.</p>
 </div>
 <div class="paragraph">
-<p>For Spring Boot 3, use <a href="https://bitbucket.org/atlassian/swagger-request-validator/src/master/swagger-request-validator-spring-webmvc">swagger-request-validator-spring-webmvc</a>.</p>
+<p>When using Spring, use <a href="https://bitbucket.org/atlassian/swagger-request-validator/src/master/swagger-request-validator-spring-webmvc">swagger-request-validator-spring-webmvc</a>.</p>
 </div>
 </div>
 </div>
@@ -1730,6 +1785,15 @@ Otherwise, you will see parameter names like <code>arg0</code>.
 </div>
 <div class="paragraph">
 <p>When manually constructing a RestClient instance, you&#8217;ll need to apply the <a href="apidocs/io/github/belgif/rest/problem/spring/ProblemRestClientCustomizer.html">ProblemRestClientCustomizer</a> yourself.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_without_spring_boot"><a class="anchor" href="#_without_spring_boot"></a>3.3.5. Without Spring Boot</h4>
+<div class="paragraph">
+<p>If your application uses Spring without Spring Boot, use the <a href="apidocs/io/github/belgif/rest/problem/spring/EnableProblemModule.html"><code>@EnableProblemModule</code></a> annotation to activate problem support.
+Your application needs to provide a configured <code>ObjectMapper</code> (Jackson 2) or <code>JsonMapper</code> (Jackson3) bean.
+REST clients have to be configured during their creation using beans provided by the problem module.
+See the <a href="https://github.com/belgif/rest-problem-java/blob/main/belgif-rest-problem-it/belgif-rest-problem-spring-it/src/main/java/io/github/belgif/rest/problem/it/WebConfig.java"><code>WebConfig</code></a> class in the integration test <code>belgif-rest-problem-spring-it</code> for an example.</p>
 </div>
 </div>
 </div>
@@ -2727,9 +2791,9 @@ A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is a
 </div>
 </div>
 <div class="sect2">
-<h3 id="belgif-rest-problem-spring-boot-3"><a class="anchor" href="#belgif-rest-problem-spring-boot-3"></a>9.3. belgif-rest-problem-spring-boot-3</h3>
+<h3 id="belgif-rest-problem-spring"><a class="anchor" href="#belgif-rest-problem-spring"></a>9.3. belgif-rest-problem-spring</h3>
 <div class="paragraph">
-<p>This module provides auto-configuration for components that handle Spring Boot 3 integration with the belgif-rest-problem library:</p>
+<p>This module provides base components for Spring integration with the belgif-rest-problem library, without Spring Boot dependencies:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2760,26 +2824,36 @@ Additional packages to scan can be <a href="#io.github.belgif.rest.problem.scan-
 <p><strong>InvalidRequestExceptionHandler:</strong> an exception handler for the <a href="https://bitbucket.org/atlassian/swagger-request-validator/src/master/">Atlassian swagger-request-validator</a> that converts InvalidRequestException to the correct Problem type.</p>
 </li>
 <li>
-<p><strong>RoutingExceptionsHandler:</strong> an exception handler for RestControllers that converts routing related validation exceptions to HTTP 400 BadRequestProblem.</p>
-</li>
-<li>
-<p><strong>ProblemWebClientCustomizer:</strong> a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
-This handles integration with the <a href="https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html">Reactive WebClient</a>.</p>
+<p><strong>RoutingExceptionsHandler:</strong> an exception handler for RestControllers that converts request handling exceptions to HTTP 4XX problems.</p>
 </li>
 <li>
 <p><strong>ProblemResponseErrorHandler:</strong> a RestTemplate and RestClient error handler that converts problem responses to Problem exceptions.</p>
 </li>
 <li>
+<p><strong>AnnotationParameterNameProvider:</strong> a bean validation ParameterNameProvider that retrieves parameter names from Spring MVC annotations</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In general, these components make it possible to use standard java exception handling (throw and try-catch) for dealing with problems in Spring Boot REST APIs.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="belgif-rest-problem-spring-boot-3-starter"><a class="anchor" href="#belgif-rest-problem-spring-boot-3-starter"></a>9.4. belgif-rest-problem-spring-boot-3-starter</h3>
+<div class="paragraph">
+<p>This module provides auto-configuration for the <code>belgif-rest-problem-spring</code> components that handle Spring Boot 3 integration with the belgif-rest-problem library:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>ProblemWebClientCustomizer:</strong> a WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
+This handles integration with the <a href="https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html">Reactive WebClient</a>.</p>
+</li>
+<li>
 <p><strong>ProblemRestTemplateCustomizer:</strong> a RestTemplateCustomizer that registers the ProblemResponseErrorHandler.</p>
 </li>
 <li>
-<p><strong>NoResourceFoundExceptionHandler:</strong> an exception handler for RestControllers that converts NoResourceFoundException to HTTP 404 ResourceNotFoundProblem.</p>
-</li>
-<li>
 <p><strong>ProblemRestClientCustomizer:</strong> a RestClientCustomizer that registers the ProblemResponseErrorHandler.</p>
-</li>
-<li>
-<p><strong>AnnotationParameterNameProvider:</strong> a bean validation ParameterNameProvider that retrieves parameter names from Spring MVC annotations</p>
 </li>
 <li>
 <p><strong>ProblemValidationConfigurationCustomizer:</strong> a ValidationConfigurationCustomizer that registers the AnnotationParameterNameProvider</p>
@@ -2791,7 +2865,7 @@ This handles integration with the <a href="https://docs.spring.io/spring-framewo
 </div>
 </div>
 <div class="sect2">
-<h3 id="belgif-rest-problem-spring-boot-4"><a class="anchor" href="#belgif-rest-problem-spring-boot-4"></a>9.4. belgif-rest-problem-spring-boot-4</h3>
+<h3 id="belgif-rest-problem-spring-boot-4-starter"><a class="anchor" href="#belgif-rest-problem-spring-boot-4-starter"></a>9.5. belgif-rest-problem-spring-boot-4-starter</h3>
 <div class="paragraph">
 <p>This module provides auto-configuration for components that handle Spring Boot 4 integration with the belgif-rest-problem library.
 In general, this is very similar to the Spring Boot 3 module.

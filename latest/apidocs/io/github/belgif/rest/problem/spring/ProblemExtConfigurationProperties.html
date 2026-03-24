@@ -95,7 +95,7 @@ loadScripts(document, 'script');</script>
 <dd><code>org.springframework.beans.factory.InitializingBean</code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="annotations">@ConfigurationProperties(prefix="io.github.belgif.rest.problem.ext")
+<div class="type-signature"><span class="annotations">@Component
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">ProblemExtConfigurationProperties</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements org.springframework.beans.factory.InitializingBean</span></div>
@@ -131,10 +131,10 @@ implements org.springframework.beans.factory.InitializingBean</span></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#afterPropertiesSet()" class="member-name-link">afterPropertiesSet</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setInputsArrayEnabled(boolean)" class="member-name-link">setInputsArrayEnabled</a><wbr>(boolean&nbsp;inputsArrayEnabled)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setInputsArrayEnabled(java.lang.Boolean)" class="member-name-link">setInputsArrayEnabled</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&nbsp;inputsArrayEnabled)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIssueTypesEnabled(boolean)" class="member-name-link">setIssueTypesEnabled</a><wbr>(boolean&nbsp;issueTypesEnabled)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIssueTypesEnabled(java.lang.Boolean)" class="member-name-link">setIssueTypesEnabled</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&nbsp;issueTypesEnabled)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -168,15 +168,17 @@ implements org.springframework.beans.factory.InitializingBean</span></div>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="setIssueTypesEnabled(boolean)">
+<section class="detail" id="setIssueTypesEnabled(java.lang.Boolean)">
 <h3>setIssueTypesEnabled</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setIssueTypesEnabled</span><wbr><span class="parameters">(boolean&nbsp;issueTypesEnabled)</span></div>
+<div class="member-signature"><span class="annotations">@Value("${io.github.belgif.rest.problem.ext.issue-types-enabled:#{null}}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setIssueTypesEnabled</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&nbsp;issueTypesEnabled)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="setInputsArrayEnabled(boolean)">
+<section class="detail" id="setInputsArrayEnabled(java.lang.Boolean)">
 <h3>setInputsArrayEnabled</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setInputsArrayEnabled</span><wbr><span class="parameters">(boolean&nbsp;inputsArrayEnabled)</span></div>
+<div class="member-signature"><span class="annotations">@Value("${io.github.belgif.rest.problem.ext.inputs-array-enabled:#{null}}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setInputsArrayEnabled</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&nbsp;inputsArrayEnabled)</span></div>
 </section>
 </li>
 <li>

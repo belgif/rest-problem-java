@@ -632,7 +632,24 @@ window.onload = function() {
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>belgif-rest-problem-spring-boot-3:</strong></p>
+<p><strong>belgif-rest-problem-spring-boot-3-starter:</strong></p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Breaking change:</strong> Some classes were moved to <code>client</code>- and <code>server</code>-specific packages</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The <code>belgif-rest-problem-spring-boot-3</code> module has been renamed to <code>belgif-rest-problem-spring-boot-3-starter</code>. <code>belgif-rest-problem-spring-boot-3</code> is still released with a relocation pom for backwards compatibility.</p>
 </div>
 <div class="paragraph">
 <p>Provide separate modules in case you specifically only want to use problems either client-side or server-side.</p>
@@ -640,18 +657,42 @@ window.onload = function() {
 <div class="ulist">
 <ul>
 <li>
-<p>belgif-rest-problem-spring-boot-3-client</p>
+<p>belgif-rest-problem-spring-boot-3-client-starter</p>
 </li>
 <li>
-<p>belgif-rest-problem-spring-boot-3-server</p>
+<p>belgif-rest-problem-spring-boot-3-server-starter</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Note that you can keep using <code>belgif-rest-problem-spring-boot-3</code> as before if you want both client-side and server-side integration.</p>
+<p>Note that you can keep using <code>belgif-rest-problem-spring-boot-3-starter</code> if you want both client-side and server-side integration.</p>
 </div>
 <div class="paragraph">
-<p><strong>belgif-rest-problem-spring-boot-4:</strong></p>
+<p><strong>belgif-rest-problem-spring-boot-4-starter:</strong></p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Breaking changes:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Users of <code>belgif-rest-problem-spring-boot-4</code> should now depend on the <code>belgif-rest-problem-spring-boot-4-starter</code> module.</p>
+</li>
+<li>
+<p>Some classes were moved to <code>client</code>- and <code>server</code>-specific packages</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Provide separate modules in case you specifically only want to use problems either client-side or server-side.</p>
@@ -659,15 +700,25 @@ window.onload = function() {
 <div class="ulist">
 <ul>
 <li>
-<p>belgif-rest-problem-spring-boot-4-client</p>
+<p>belgif-rest-problem-spring-boot-4-client-starter</p>
 </li>
 <li>
-<p>belgif-rest-problem-spring-boot-4-server</p>
+<p>belgif-rest-problem-spring-boot-4-server-starter</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Note that you can keep using <code>belgif-rest-problem-spring-boot-4</code> as before when you want both client-side and server-side integration.</p>
+<p>Note that you can use <code>belgif-rest-problem-spring-boot-4-starter</code> when you want both client-side and server-side integration.</p>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-spring:</strong></p>
+</div>
+<div class="paragraph">
+<p>Depend on this module to integrate with Spring without depending on Spring Boot.
+When using one of the spring boot modules, it is added as transitive dependency.</p>
+</div>
+<div class="paragraph">
+<p>It provides support for both Jackson 2 and 3.</p>
 </div>
 <div class="paragraph">
 <p><strong>belgif-rest-problem-java-ee:</strong></p>
