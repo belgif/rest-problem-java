@@ -23,9 +23,9 @@
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
     <!-- Aligns with Spring Boot 4.0 version -->
     <version.jackson3.minimal>3.0.4</version.jackson3.minimal>
-    <version.spring.boot.3>3.5.11</version.spring.boot.3>
-    <version.spring.boot.4>4.0.3</version.spring.boot.4>
-    <version.quarkus>3.32.3</version.quarkus>
+    <version.spring.boot.3>3.5.12</version.spring.boot.3>
+    <version.spring.boot.4>3.5.12</version.spring.boot.4>
+    <version.quarkus>3.32.4</version.quarkus>
   </properties>
 
   <dependencyManagement>
@@ -151,7 +151,7 @@
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.20.0</version>
+          <version>7.21.0</version>
         </plugin>
         <plugin>
           <groupId>io.swagger.codegen.v3</groupId>
