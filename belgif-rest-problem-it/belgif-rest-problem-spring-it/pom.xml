@@ -128,7 +128,7 @@
               <openapiNormalizer>REF_AS_PARENT_IN_ALLOF=true</openapiNormalizer>
               <generateSupportingFiles>false</generateSupportingFiles>
               <configOptions>
-                <useSpringBoot3>true</useSpringBoot3>
+                <useSpringBoot4>true</useSpringBoot4>
                 <interfaceOnly>true</interfaceOnly>
                 <skipDefaultInterface>true</skipDefaultInterface>
                 <openApiNullable>false</openApiNullable>
