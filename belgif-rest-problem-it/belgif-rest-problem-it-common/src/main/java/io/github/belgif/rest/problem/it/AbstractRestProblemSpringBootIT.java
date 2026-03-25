@@ -65,6 +65,108 @@ public abstract class AbstractRestProblemSpringBootIT extends AbstractRestProble
                 .body("issues[1].detail", equalTo("must not be blank"));
     }
 
+    @Test
+    public void handlerMethodValidationCookieValue() {
+        getSpec().when()
+                .cookie("param", -1)
+                .get("/handler/cookieValue").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[0].in", equalTo("header"))
+                .body("issues[0].name", equalTo("param"))
+                .body("issues[0].value", equalTo(-1))
+                .body("issues[0].detail", equalTo("must be greater than 0"));
+    }
+
+    @Test
+    public void handlerMethodValidationMatrixVariable() {
+        getSpec().when()
+                .urlEncodingEnabled(false)
+                .get("/handler/matrixVariable/matrix;param=-1")
+                .then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[0].in", equalTo("path"))
+                .body("issues[0].name", equalTo("param"))
+                .body("issues[0].value", equalTo(-1))
+                .body("issues[0].detail", equalTo("must be greater than 0"));
+    }
+
+    @Test
+    public void handlerMethodValidationPathVariable() {
+        getSpec().when()
+                .get("/handler/pathVariable/-1").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[0].in", equalTo("path"))
+                .body("issues[0].name", equalTo("param"))
+                .body("issues[0].value", equalTo(-1))
+                .body("issues[0].detail", equalTo("must be greater than 0"));
+    }
+
+    @Test
+    public void handlerMethodValidationRequestBody() {
+        getSpec().when()
+                .body("-1")
+                .contentType("application/json")
+                .post("/handler/requestBody").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[0].in", equalTo("body"))
+                .body("issues[0].value", equalTo(-1))
+                .body("issues[0].detail", equalTo("must be greater than 0"));
+    }
+
+    @Test
+    public void handlerMethodValidationRequestHeader() {
+        getSpec().when()
+                .header("param", -1)
+                .get("/handler/requestHeader").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[0].in", equalTo("header"))
+                .body("issues[0].name", equalTo("param"))
+                .body("issues[0].value", equalTo(-1))
+                .body("issues[0].detail", equalTo("must be greater than 0"));
+    }
+
+    @Test
+    public void handlerMethodValidationRequestParam() {
+        getSpec().when()
+                .queryParam("param", -1)
+                .get("/handler/requestParam").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("issues[0].type", equalTo("urn:problem-type:belgif:input-validation:schemaViolation"))
+                .body("issues[0].href",
+                        equalTo("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html"))
+                .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
+                .body("issues[0].in", equalTo("query"))
+                .body("issues[0].name", equalTo("param"))
+                .body("issues[0].value", equalTo(-1))
+                .body("issues[0].detail", equalTo("must be greater than 0"));
+    }
+
     // On Spring Boot, a proper resourceNotFound problem is returned
     @Override
     @Test
