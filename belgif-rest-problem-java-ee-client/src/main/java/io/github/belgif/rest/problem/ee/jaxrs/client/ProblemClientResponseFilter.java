@@ -7,7 +7,6 @@ import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientResponseContext;
 import javax.ws.rs.client.ClientResponseFilter;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.ext.Provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,6 @@ import io.github.belgif.rest.problem.ee.jaxrs.ProblemObjectMapper;
  * @see ClientResponseFilter
  * @see ProblemWrapper
  */
-@Provider
 public class ProblemClientResponseFilter implements ClientResponseFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProblemClientResponseFilter.class);
