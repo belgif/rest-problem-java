@@ -960,6 +960,19 @@ When using one of the spring boot modules, it is added as transitive dependency.
 </table>
 </div>
 <div class="paragraph">
+<p>Changes impacting RESTEasy clients:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove <code>@Provider</code> annotation on <code>ProblemClientResponseFilter</code> so it no longer gets auto-registered for RESTEasy clients</p>
+</li>
+<li>
+<p>Introduce <code>ResteasyProblemSupport</code> class for creating a problem-enabled RESTEasy proxy client</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
 <p><strong>belgif-rest-problem-quarkus:</strong></p>
 </div>
 <div class="paragraph">
@@ -1874,7 +1887,13 @@ JAX-RS async and reactive client API are <a href="https://github.com/belgif/rest
 <div class="sect3">
 <h4 id="_resteasy_proxy_framework"><a class="anchor" href="#_resteasy_proxy_framework"></a>3.4.4. RESTEasy Proxy Framework</h4>
 <div class="paragraph">
-<p>Problem support must be manually enabled for <a href="https://docs.jboss.org/resteasy/docs/6.2.10.Final/userguide/#_client_proxies">RESTEasy Proxy Framework</a> by wrapping the proxy with <code>client = ProblemSupport.enable(client)</code>.</p>
+<p>Problem support must be manually enabled for <a href="https://docs.resteasy.dev/7.0/userguide/#_client_proxies">RESTEasy Proxy Framework</a> by constructing the proxy with <code>ResteasyProblemSupport.proxy()</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">ResteasyWebTarget webTarget = (ResteasyWebTarget) client.target(endpoint);
+MyService myService = ResteasyProblemSupport.proxy(webTarget, MyService.class);</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -2752,7 +2771,7 @@ For that reason, the ProblemClientResponseFilter wraps the Problem exception in 
 </div>
 </li>
 <li>
-<p><strong>ProblemSupport:</strong> for programmatically enabling unwrapping of ProblemWrapper to Problem exceptions on a JAX-RS Client (also works for RESTEasy Proxy Framework clients).</p>
+<p><strong>ProblemSupport:</strong> for programmatically enabling unwrapping of ProblemWrapper to Problem exceptions on a JAX-RS Client</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="java"><span class="directive">private</span> Client client = ProblemSupport.enable(ClientBuilder.newClient());</code></pre>
@@ -2782,6 +2801,22 @@ For that reason, the ProblemClientResponseFilter wraps the Problem exception in 
 </li>
 <li>
 <p><strong>ProblemRestClientListener:</strong> a RestClientListener that registers the ProblemObjectMapperContextResolver and ProblemResponseExceptionMapper.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>RESTEasy Proxy Framework integration:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>ResteasyProblemSupport:</strong> for creating a problem-enabled RESTEasy client proxy</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">ResteasyWebTarget webTarget = (ResteasyWebTarget) client.target(endpoint);
+MyService myService = ResteasyProblemSupport.proxy(webTarget, MyService.class);</code></pre>
+</div>
+</div>
 </li>
 </ul>
 </div>

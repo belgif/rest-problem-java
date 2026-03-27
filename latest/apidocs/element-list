@@ -5,6 +5,7 @@ io.github.belgif.rest.problem.ee
 io.github.belgif.rest.problem.ee.jaxrs
 io.github.belgif.rest.problem.ee.jaxrs.client
 io.github.belgif.rest.problem.ee.jaxrs.i18n
+io.github.belgif.rest.problem.ee.resteasy.client
 io.github.belgif.rest.problem.i18n
 io.github.belgif.rest.problem.quarkus.core
 io.github.belgif.rest.problem.quarkus.deployment.client
