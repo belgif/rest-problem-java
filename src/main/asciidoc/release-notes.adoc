@@ -78,6 +78,11 @@ Note that you can keep using `belgif-rest-problem-java-ee` as before when you wa
 *Breaking change:* The `<classifier>jakarta</classifier>` variant of `belgif-rest-problem-java-ee` no longer exists and should be replaced by `belgif-rest-problem-jakarta-ee`.
 ====
 
+Changes impacting RESTEasy clients:
+
+* Remove `@Provider` annotation on `ProblemClientResponseFilter` so it no longer gets auto-registered for RESTEasy clients
+* Introduce `ResteasyProblemSupport` class for creating a problem-enabled RESTEasy proxy client
+
 *belgif-rest-problem-quarkus:*
 
 Provide separate modules in case you specifically only want to use problems either client-side or server-side.

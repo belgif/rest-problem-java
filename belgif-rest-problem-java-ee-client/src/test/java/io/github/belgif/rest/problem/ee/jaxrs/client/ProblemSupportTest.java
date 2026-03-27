@@ -20,10 +20,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import io.github.belgif.rest.problem.BadGatewayProblem;
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemSupport.ClientInvocationHandler;
-import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemSupport.ProxyInvocationHandler;
 
 @ExtendWith(MockitoExtension.class)
 class ProblemSupportTest {
@@ -34,12 +32,8 @@ class ProblemSupportTest {
     @Mock(strictness = Mock.Strictness.LENIENT)
     private Configuration configuration;
 
-    interface Service {
-        String test();
-    }
-
     @BeforeEach
-    public void mockConfiguration() {
+    void mockConfiguration() {
         when(client.getConfiguration()).thenReturn(configuration);
         when(configuration.isRegistered(ProblemClientResponseFilter.class)).thenReturn(true);
     }
@@ -215,42 +209,6 @@ class ProblemSupportTest {
         assertThatRuntimeException()
                 .isThrownBy(() -> result.target("https://www.belgif.be"))
                 .withMessage("oops");
-    }
-
-    @Test
-    void unwrapProblemWrapperInProxyClient() {
-        Service service = mock(Service.class);
-        Service result = ProblemSupport.enable(service);
-        assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
-        assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ProxyInvocationHandler.class);
-
-        doThrow(new ProblemWrapper(new BadGatewayProblem())).when(service).test();
-
-        assertThatExceptionOfType(BadGatewayProblem.class).isThrownBy(result::test);
-    }
-
-    @Test
-    void normalResponseFromProxyClient() {
-        Service service = mock(Service.class);
-        Service result = ProblemSupport.enable(service);
-        assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
-        assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ProxyInvocationHandler.class);
-
-        when(service.test()).thenReturn("OK");
-
-        assertThat(result.test()).isEqualTo("OK");
-    }
-
-    @Test
-    void otherExceptionInProxyClient() {
-        Service service = mock(Service.class);
-        Service result = ProblemSupport.enable(service);
-        assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
-        assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ProxyInvocationHandler.class);
-
-        doThrow(new RuntimeException("other")).when(service).test();
-
-        assertThatRuntimeException().isThrownBy(result::test).withMessage("other");
     }
 
     @Test

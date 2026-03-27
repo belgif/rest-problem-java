@@ -14,6 +14,7 @@ import jakarta.ws.rs.client.WebTarget;
 import org.junit.jupiter.api.Test;
 
 import io.github.belgif.rest.problem.ee.jaxrs.ProblemObjectMapperContextResolver;
+import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemClientResponseFilter;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemResponseExceptionMapper;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemRestClientListener;
 import io.quarkus.deployment.builditem.nativeimage.NativeImageProxyDefinitionBuildItem;
@@ -56,7 +57,8 @@ class ProblemExtensionClientProcessorTest {
                 ProblemRestClientListener.class.getName(),
                 ProblemRestClientListener.ClientProblemObjectMapperContextResolver.class.getName(),
                 ProblemObjectMapperContextResolver.class.getName(),
-                ProblemResponseExceptionMapper.class.getName());
+                ProblemResponseExceptionMapper.class.getName(),
+                ProblemClientResponseFilter.class.getName());
         assertThat(result.isConstructors()).isTrue();
         assertThat(result.isMethods()).isTrue();
         assertThat(result.isFields()).isTrue();

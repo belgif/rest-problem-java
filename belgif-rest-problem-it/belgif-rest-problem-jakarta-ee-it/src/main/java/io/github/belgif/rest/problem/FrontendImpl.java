@@ -24,6 +24,7 @@ import com.acme.custom.CustomProblem;
 import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemSupport;
+import io.github.belgif.rest.problem.ee.resteasy.client.ResteasyProblemSupport;
 import io.github.belgif.rest.problem.i18n.I18N;
 import io.github.belgif.rest.problem.it.model.Bean;
 import io.github.belgif.rest.problem.it.model.ChildModel;
@@ -48,8 +49,8 @@ public class FrontendImpl implements Frontend {
     private final jakarta.ws.rs.client.Client resteasyClient =
             ProblemSupport.enable(new ResteasyClientBuilderImpl().build());
 
-    private final Backend resteasyProxyClient = ProblemSupport.enable(
-            new ResteasyClientBuilderImpl().build().target(BASE_URI).proxy(Backend.class));
+    private final Backend resteasyProxyClient = ResteasyProblemSupport.proxy(
+            new ResteasyClientBuilderImpl().build().target(BASE_URI), Backend.class);
 
     @EJB
     private EJBService ejb;

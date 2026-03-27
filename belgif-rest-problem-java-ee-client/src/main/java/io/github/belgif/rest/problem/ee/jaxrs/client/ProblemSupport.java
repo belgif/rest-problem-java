@@ -42,23 +42,6 @@ public class ProblemSupport {
     }
 
     /**
-     * Enable problem support on the given client (e.g. RESTEasy proxy client).
-     *
-     * <p>
-     * This causes the client to throw Problem exceptions instead of ProblemWrapper exceptions.
-     * </p>
-     *
-     * @param client the client
-     * @param <T> the client type
-     * @return the problem-enabled client
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> T enable(T client) {
-        return (T) Proxy.newProxyInstance(ProblemSupport.class.getClassLoader(),
-                client.getClass().getInterfaces(), new ProxyInvocationHandler(client));
-    }
-
-    /**
      * JDK Dynamic Proxy InvocationHandler for JAX-RS Client.
      */
     static final class ClientInvocationHandler implements InvocationHandler {
@@ -107,31 +90,6 @@ public class ProblemSupport {
             }
             return result;
         }
-    }
-
-    /**
-     * JDK Dynamic Proxy InvocationHandler for proxy clients.
-     */
-    static final class ProxyInvocationHandler implements InvocationHandler {
-
-        private final Object target;
-
-        ProxyInvocationHandler(Object target) {
-            this.target = target;
-        }
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            try {
-                return method.invoke(target, args);
-            } catch (InvocationTargetException e) {
-                if (e.getTargetException() instanceof ProblemWrapper) {
-                    throw ((ProblemWrapper) e.getTargetException()).getProblem();
-                }
-                throw e.getTargetException();
-            }
-        }
-
     }
 
     @SuppressWarnings("unchecked")

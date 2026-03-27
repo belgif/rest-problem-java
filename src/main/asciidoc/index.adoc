@@ -303,7 +303,13 @@ Problem support is automatically enabled for MicroProfile REST Client.
 
 ==== RESTEasy Proxy Framework
 
-Problem support must be manually enabled for https://docs.jboss.org/resteasy/docs/6.2.10.Final/userguide/#_client_proxies[RESTEasy Proxy Framework] by wrapping the proxy with `client = ProblemSupport.enable(client)`.
+Problem support must be manually enabled for https://docs.resteasy.dev/7.0/userguide/#_client_proxies[RESTEasy Proxy Framework] by constructing the proxy with `ResteasyProblemSupport.proxy()`.
+
+[source,java]
+----
+ResteasyWebTarget webTarget = (ResteasyWebTarget) client.target(endpoint);
+MyService myService = ResteasyProblemSupport.proxy(webTarget, MyService.class);
+----
 
 [[getting-started-quarkus]]
 === Quarkus
@@ -865,7 +871,7 @@ Otherwise, routes to DefaultExceptionMapper.
 WARNING: In accordance with the spec, any exception thrown by a JAX-RS ClientResponseFilter gets wrapped in a ResponseProcessingException, unless the exception itself is a ResponseProcessingException.
 For that reason, the ProblemClientResponseFilter wraps the Problem exception in a "ProblemWrapper" class that extends ResponseProcessingException.
 
-** *ProblemSupport:* for programmatically enabling unwrapping of ProblemWrapper to Problem exceptions on a JAX-RS Client (also works for RESTEasy Proxy Framework clients).
+** *ProblemSupport:* for programmatically enabling unwrapping of ProblemWrapper to Problem exceptions on a JAX-RS Client
 +
 [source,java]
 ----
@@ -885,6 +891,17 @@ public void setClient(Client client) {
 * *MicroProfile REST Client integration:*
 ** *ProblemResponseExceptionMapper:* a ResponseExceptionMapper that converts problem responses to Problem exceptions.
 ** *ProblemRestClientListener:* a RestClientListener that registers the ProblemObjectMapperContextResolver and ProblemResponseExceptionMapper.
+
+* *RESTEasy Proxy Framework integration:*
+
+** *ResteasyProblemSupport:* for creating a problem-enabled RESTEasy client proxy
++
+[source,java]
+----
+ResteasyWebTarget webTarget = (ResteasyWebTarget) client.target(endpoint);
+MyService myService = ResteasyProblemSupport.proxy(webTarget, MyService.class);
+----
+
 * *Jakarta EE 9+*: the main belgif-rest-problem-java-ee artifact targets Java EE (javax package namespace).
 A secondary artifact that targets Jakarta EE 9+ (jakarta package namespace) is available with `<classifier>jakarta</classifier>`.
 
