@@ -164,7 +164,7 @@ class BeanValidationExceptionsHandlerTest {
         MethodParameter parameter = MethodParameter.forParameter(method.getParameters()[0]);
         HandlerMethodValidationException exception =
                 new HandlerMethodValidationException(
-                        MethodValidationResult.create("test", Service.class.getMethod("requestParam", Integer.class),
+                        MethodValidationResult.create("test", method,
                                 List.of(new ParameterValidationResult(parameter, "value",
                                         List.of(new DefaultMessageSourceResolvable(null,
                                                 "requestParam of incorrect type")),
