@@ -58,6 +58,8 @@ When using one of the spring boot modules, it is added as transitive dependency.
 
 It provides support for both Jackson 2 and 3.
 
+This release also extends the `BeanValidationExceptionsHandler` with support for `HandlerMethodValidationException`, an exception thrown for bean validation exceptions when a RestController is not annotated with `@Validated`.
+
 *belgif-rest-problem-java-ee:*
 
 Provide separate modules in case you specifically only want to use problems either client-side or server-side.
