@@ -24,8 +24,8 @@
     <!-- Aligns with Spring Boot 4.0 version -->
     <version.jackson3.minimal>3.0.4</version.jackson3.minimal>
     <version.spring.boot.3>3.5.13</version.spring.boot.3>
-    <version.spring.boot.4>3.5.13</version.spring.boot.4>
-    <version.quarkus>3.34.1</version.quarkus>
+    <version.spring.boot.4>4.0.5</version.spring.boot.4>
+    <version.quarkus>3.34.2</version.quarkus>
   </properties>
 
   <dependencyManagement>
