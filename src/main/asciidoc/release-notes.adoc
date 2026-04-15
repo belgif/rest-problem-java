@@ -18,6 +18,10 @@
 
 * Fix `@ConditionalOnClass`  loading of optional components
 
+*belgif-rest-problem-quarkus-core:*
+
+* Replace Jakarta EE ContextResolver<ObjectMapper> by Quarkus ProblemObjectMapperCustomizer
+
 == Version 0.21
 
 *belgif-rest-problem:*

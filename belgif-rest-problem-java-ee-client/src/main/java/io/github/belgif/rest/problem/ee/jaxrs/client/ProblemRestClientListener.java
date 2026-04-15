@@ -2,11 +2,15 @@ package io.github.belgif.rest.problem.ee.jaxrs.client;
 
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
+import javax.ws.rs.ext.ContextResolver;
 
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.spi.RestClientListener;
 
-import io.github.belgif.rest.problem.ee.jaxrs.ProblemObjectMapperContextResolver;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.github.belgif.rest.problem.ee.jaxrs.ProblemObjectMapper;
+import io.github.belgif.rest.problem.ee.util.Platform;
 
 /**
  * Listener that enables problem support for MicroProfile REST Clients.
@@ -21,8 +25,10 @@ public class ProblemRestClientListener implements RestClientListener {
 
     @Override
     public void onNewClient(Class<?> serviceInterface, RestClientBuilder builder) {
-        builder.register(ClientProblemObjectMapperContextResolver.class);
         builder.register(ProblemResponseExceptionMapper.class);
+        if (!Platform.isQuarkus()) {
+            builder.register(ClientProblemObjectMapperContextResolver.class);
+        }
     }
 
     // Workaround for a weird bug in JBoss EAP XP MicroProfile REST client:
@@ -30,7 +36,11 @@ public class ProblemRestClientListener implements RestClientListener {
     // at org.jboss.resteasy.spi.ResteasyProviderFactory.addContextResolver(ResteasyProviderFactory.java:1518)
     // If the ContextResolver class is not annotated with @Provider it works as expected.
     @Priority(Priorities.USER + 200)
-    public static class ClientProblemObjectMapperContextResolver extends ProblemObjectMapperContextResolver {
+    public static class ClientProblemObjectMapperContextResolver implements ContextResolver<ObjectMapper> {
+        @Override
+        public ObjectMapper getContext(Class<?> type) {
+            return ProblemObjectMapper.INSTANCE;
+        }
     }
 
 }
