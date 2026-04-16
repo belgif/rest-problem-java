@@ -1,12 +1,16 @@
 package io.github.belgif.rest.problem.ee.jaxrs.client;
 
 import java.io.IOException;
-import java.util.Objects;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientResponseContext;
 import javax.ws.rs.client.ClientResponseFilter;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.ext.Providers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.belgif.rest.problem.DefaultProblem;
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.ee.jaxrs.JaxRsUtil;
 import io.github.belgif.rest.problem.ee.jaxrs.ProblemMediaType;
 import io.github.belgif.rest.problem.ee.jaxrs.ProblemObjectMapper;
 
@@ -28,18 +33,26 @@ public class ProblemClientResponseFilter implements ClientResponseFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProblemClientResponseFilter.class);
 
-    private final ObjectMapper objectMapper;
+    @Inject
+    private Instance<ObjectMapper> cdiObjectMapper;
 
-    public ProblemClientResponseFilter() {
-        this(ProblemObjectMapper.INSTANCE);
-    }
+    @Context
+    private Providers providers;
 
-    public ProblemClientResponseFilter(ObjectMapper objectMapper) {
-        this.objectMapper = Objects.requireNonNull(objectMapper, "ObjectMapper should not be null");
+    private volatile ObjectMapper objectMapper;
+
+    @PostConstruct
+    public void init() {
+        if (this.objectMapper == null) {
+            this.objectMapper = JaxRsUtil.locateObjectMapper(
+                    providers, cdiObjectMapper, Problem.class,
+                    MediaType.APPLICATION_JSON_TYPE, () -> ProblemObjectMapper.INSTANCE);
+        }
     }
 
     @Override
     public void filter(ClientRequestContext request, ClientResponseContext response) throws IOException {
+        init(); // because not all JAX-RS implementations honor the @PostConstruct
         if (request.getProperty("org.eclipse.microprofile.rest.client.invokedMethod") != null) {
             // Use io.github.belgif.rest.problem.jaxrs.client.ProblemResponseExceptionMapper on MicroProfile REST Client
             return;

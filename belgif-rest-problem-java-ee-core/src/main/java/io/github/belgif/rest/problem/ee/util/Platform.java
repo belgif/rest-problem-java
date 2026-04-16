@@ -15,7 +15,7 @@ public class Platform {
         return IS_QUARKUS;
     }
 
-    private static boolean detectClass(String clazz) {
+    static boolean detectClass(String clazz) {
         try {
             Class.forName(clazz);
             return true;

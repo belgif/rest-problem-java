@@ -18,9 +18,15 @@
 
 * Fix `@ConditionalOnClass`  loading of optional components
 
-*belgif-rest-problem-quarkus-core:*
+*belgif-rest-problem-quarkus:*
 
 * Replace Jakarta EE ContextResolver<ObjectMapper> by Quarkus ProblemObjectMapperCustomizer
+
+*belgif-rest-problem-java-ee:*
+
+* Modify ProblemClientResponseFilter to obtain the ObjectMapper from the underlying JAX-RS or CDI runtime, instead of hardcoded ProblemObjectMapper instance
+* Don't register ClientProblemObjectMapperContextResolver on Quarkus
+* Prevent duplicate registrations of same JAX-RS component
 
 == Version 0.21
 

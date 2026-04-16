@@ -7,6 +7,9 @@ import javax.ws.rs.ext.Provider;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * ContextResolver for ProblemObjectMapper.
+ */
 @Provider
 @Priority(Priorities.USER + 200)
 public class ProblemObjectMapperContextResolver implements ContextResolver<ObjectMapper> {

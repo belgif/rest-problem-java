@@ -12,11 +12,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import io.github.belgif.rest.problem.BadGatewayProblem;
+import io.github.belgif.rest.problem.ee.jaxrs.client.ClientProblemObjectMapperContextResolver;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemClientResponseFilter;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemWrapper;
+import io.github.belgif.rest.problem.ee.util.Platform;
 
 @ExtendWith(MockitoExtension.class)
 class ResteasyProblemSupportTest {
@@ -24,7 +27,7 @@ class ResteasyProblemSupportTest {
     @Mock
     private ResteasyWebTarget target;
 
-    @Mock
+    @Mock(strictness = Mock.Strictness.LENIENT)
     private Configuration configuration;
 
     @Mock
@@ -38,11 +41,13 @@ class ResteasyProblemSupportTest {
     void mockConfiguration() {
         when(target.getConfiguration()).thenReturn(configuration);
         when(configuration.isRegistered(ProblemClientResponseFilter.class)).thenReturn(true);
+        when(configuration.isRegistered(ClientProblemObjectMapperContextResolver.class)).thenReturn(true);
     }
 
     @Test
     void proxy() {
         when(configuration.isRegistered(ProblemClientResponseFilter.class)).thenReturn(false);
+        when(configuration.isRegistered(ClientProblemObjectMapperContextResolver.class)).thenReturn(false);
         when(target.proxy(Service.class)).thenReturn(serviceMock);
         Service service = ResteasyProblemSupport.proxy(target, Service.class);
 
@@ -51,6 +56,25 @@ class ResteasyProblemSupportTest {
                 .isInstanceOf(ResteasyProblemSupport.ProxyInvocationHandler.class);
 
         verify(target).register(ProblemClientResponseFilter.class);
+        verify(target).register(ClientProblemObjectMapperContextResolver.class);
+    }
+
+    @Test
+    void quarkus() {
+        when(configuration.isRegistered(ProblemClientResponseFilter.class)).thenReturn(false);
+        when(configuration.isRegistered(ClientProblemObjectMapperContextResolver.class)).thenReturn(false);
+        when(target.proxy(Service.class)).thenReturn(serviceMock);
+        try (MockedStatic<Platform> mock = mockStatic(Platform.class)) {
+            mock.when(Platform::isQuarkus).thenReturn(true);
+            Service service = ResteasyProblemSupport.proxy(target, Service.class);
+
+            assertThat(Proxy.isProxyClass(service.getClass())).isTrue();
+            assertThat(Proxy.getInvocationHandler(service))
+                    .isInstanceOf(ResteasyProblemSupport.ProxyInvocationHandler.class);
+
+            verify(target).register(ProblemClientResponseFilter.class);
+            verifyNoMoreInteractions(target);
+        }
     }
 
     @Test
