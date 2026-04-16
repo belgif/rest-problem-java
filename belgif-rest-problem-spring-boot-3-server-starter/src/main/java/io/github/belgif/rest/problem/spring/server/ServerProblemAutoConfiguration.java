@@ -22,18 +22,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Import({ io.github.belgif.rest.problem.spring.ProblemJackson2Configuration.class, JacksonAutoConfiguration.class })
 public class ServerProblemAutoConfiguration {
 
-    private ObjectMapper objectMapper;
-
-    public ServerProblemAutoConfiguration(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
-
-    @ConditionalOnClass(ConstraintViolationException.class)
-    @Bean
-    public BeanValidationExceptionsHandler beanValidationExceptionsHandler() {
-        return new BeanValidationExceptionsHandler();
-    }
-
     @Bean
     public ProblemExceptionHandler problemExceptionHandler() {
         return new ProblemExceptionHandler();
@@ -44,15 +32,34 @@ public class ServerProblemAutoConfiguration {
         return new RoutingExceptionsJackson2Handler();
     }
 
+    @ConditionalOnClass(ConstraintViolationException.class)
+    public static class BeanValidationProblemConfiguration {
+        @Bean
+        public BeanValidationExceptionsHandler beanValidationExceptionsHandler() {
+            return new BeanValidationExceptionsHandler();
+        }
+    }
+
     @ConditionalOnClass({ Configuration.class, ValidationConfigurationCustomizer.class })
-    @Bean
-    public ProblemValidationConfigurationCustomizer problemValidationConfigurationCustomizer() {
-        return new ProblemValidationConfigurationCustomizer();
+    public static class BeanValidationConfigurationProblemConfiguration {
+        @Bean
+        public ProblemValidationConfigurationCustomizer problemValidationConfigurationCustomizer() {
+            return new ProblemValidationConfigurationCustomizer();
+        }
     }
 
     @ConditionalOnClass(InvalidRequestException.class)
-    @Bean
-    public InvalidRequestExceptionJackson2Handler invalidRequestExceptionHandler() {
-        return new InvalidRequestExceptionJackson2Handler(objectMapper);
+    public static class SwaggerValidatorProblemConfiguration {
+        private final ObjectMapper objectMapper;
+
+        public SwaggerValidatorProblemConfiguration(ObjectMapper objectMapper) {
+            this.objectMapper = objectMapper;
+        }
+
+        @Bean
+        public InvalidRequestExceptionJackson2Handler invalidRequestExceptionHandler() {
+            return new InvalidRequestExceptionJackson2Handler(objectMapper);
+        }
     }
+
 }
