@@ -27,22 +27,29 @@ public class ClientProblemAutoConfiguration {
     }
 
     @ConditionalOnClass({ RestClient.class, RestClientCustomizer.class })
-    @Bean
-    public ProblemRestClientCustomizer
-            problemRestClientCustomizer(ProblemResponseErrorHandler problemResponseErrorHandler) {
-        return new ProblemRestClientCustomizer(problemResponseErrorHandler);
+    public static class RestClientProblemConfiguration {
+        @Bean
+        public ProblemRestClientCustomizer
+                problemRestClientCustomizer(ProblemResponseErrorHandler problemResponseErrorHandler) {
+            return new ProblemRestClientCustomizer(problemResponseErrorHandler);
+        }
     }
 
     @ConditionalOnClass({ RestTemplate.class, RestTemplateCustomizer.class })
-    @Bean
-    public ProblemRestTemplateCustomizer
-            problemRestTemplateCustomizer(ProblemResponseErrorHandler problemResponseErrorHandler) {
-        return new ProblemRestTemplateCustomizer(problemResponseErrorHandler);
+    public static class RestTemplateProblemConfiguration {
+        @Bean
+        public ProblemRestTemplateCustomizer
+                problemRestTemplateCustomizer(ProblemResponseErrorHandler problemResponseErrorHandler) {
+            return new ProblemRestTemplateCustomizer(problemResponseErrorHandler);
+        }
     }
 
     @ConditionalOnClass({ WebClient.class, WebClientCustomizer.class })
-    @Bean
-    public ProblemWebClientCustomizer problemWebClientCustomizer() {
-        return new ProblemWebClientCustomizer();
+    public static class WebClientProblemConfiguration {
+        @Bean
+        public ProblemWebClientCustomizer problemWebClientCustomizer() {
+            return new ProblemWebClientCustomizer();
+        }
     }
+
 }

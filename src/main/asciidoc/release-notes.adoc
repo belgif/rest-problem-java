@@ -12,6 +12,12 @@
 
 // tag::recent-versions[]
 
+== Version 0.22
+
+*belgif-rest-problem-spring-boot-**:
+
+* Fix `@ConditionalOnClass`  loading of optional components
+
 == Version 0.21
 
 *belgif-rest-problem:*
