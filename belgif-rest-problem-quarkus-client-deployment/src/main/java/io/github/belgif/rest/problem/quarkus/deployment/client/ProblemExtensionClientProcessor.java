@@ -11,7 +11,6 @@ import jakarta.ws.rs.client.WebTarget;
 
 import org.eclipse.microprofile.rest.client.spi.RestClientListener;
 
-import io.github.belgif.rest.problem.ee.jaxrs.ProblemObjectMapperContextResolver;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemClientResponseFilter;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemResponseExceptionMapper;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemRestClientListener;
@@ -54,8 +53,6 @@ public class ProblemExtensionClientProcessor {
     ReflectiveClassBuildItem registerRestClientListenerForReflection() {
         return ReflectiveClassBuildItem.builder(
                 ProblemRestClientListener.class.getName(),
-                ProblemRestClientListener.ClientProblemObjectMapperContextResolver.class.getName(),
-                ProblemObjectMapperContextResolver.class.getName(),
                 ProblemResponseExceptionMapper.class.getName(),
                 ProblemClientResponseFilter.class.getName())
                 .constructors().methods().fields()

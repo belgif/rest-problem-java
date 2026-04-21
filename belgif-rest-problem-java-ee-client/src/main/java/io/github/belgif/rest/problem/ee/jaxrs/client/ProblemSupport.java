@@ -15,6 +15,9 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 
+import io.github.belgif.rest.problem.ee.jaxrs.JaxRsUtil;
+import io.github.belgif.rest.problem.ee.util.Platform;
+
 /**
  * Utility class for enabling problem support on JAX-RS Clients.
  */
@@ -35,8 +38,9 @@ public class ProblemSupport {
      * @return the problem-enabled JAX-RS Client
      */
     public static Client enable(Client client) {
-        if (!client.getConfiguration().isRegistered(ProblemClientResponseFilter.class)) {
-            client.register(ProblemClientResponseFilter.class);
+        JaxRsUtil.register(client, ProblemClientResponseFilter.class);
+        if (!Platform.isQuarkus()) {
+            JaxRsUtil.register(client, ClientProblemObjectMapperContextResolver.class);
         }
         return createProxy(Client.class, new ClientInvocationHandler(client));
     }

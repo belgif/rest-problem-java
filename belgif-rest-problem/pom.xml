@@ -88,7 +88,18 @@
               <goal>jandex</goal>
             </goals>
             <configuration>
-              <indexVersion>10</indexVersion>
+              <indexVersion>11</indexVersion>
+              <fileSets>
+                <fileSet>
+                  <directory>${project.build.outputDirectory}</directory>
+                  <!-- Exclude Jackson3 components from Jandex index, as they result in warnings on Quarkus -->
+                  <excludes>
+                    <exclude>io/github/belgif/rest/problem/ProblemModuleJackson3.class</exclude>
+                    <exclude>io/github/belgif/rest/problem/ProblemModuleJackson3$*.class</exclude>
+                    <exclude>io/github/belgif/rest/problem/internal/Jackson3Util.class</exclude>
+                  </excludes>
+                </fileSet>
+              </fileSets>
             </configuration>
           </execution>
         </executions>

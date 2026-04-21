@@ -14,9 +14,24 @@
 
 == Version 0.22
 
-*belgif-rest-problem-spring-boot-**:
+*belgif-rest-problem*:
+
+* Bump bundled jandex indexVersion from 10 to 11. This prevents warnings on Quarkus, but may result in warnings on JBoss EAP 7.4 (https://access.redhat.com/articles/2332721[end-of-support]).
+
+*belgif-rest-problem-spring-boot*:
 
 * Fix `@ConditionalOnClass`  loading of optional components
+
+*belgif-rest-problem-quarkus:*
+
+* Replace Jakarta EE ContextResolver<ObjectMapper> by Quarkus ProblemObjectMapperCustomizer
+* Replace quarkus-rest-jackson-common dependency by quarkus-jackson
+
+*belgif-rest-problem-java-ee:*
+
+* Modify ProblemClientResponseFilter to obtain the ObjectMapper from the underlying JAX-RS or CDI runtime, instead of hardcoded ProblemObjectMapper instance
+* Don't register ClientProblemObjectMapperContextResolver on Quarkus
+* Prevent duplicate registrations of same JAX-RS component
 
 == Version 0.21
 

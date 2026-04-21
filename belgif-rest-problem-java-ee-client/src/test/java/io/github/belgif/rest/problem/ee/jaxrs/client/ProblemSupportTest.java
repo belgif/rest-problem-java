@@ -18,10 +18,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemSupport.ClientInvocationHandler;
+import io.github.belgif.rest.problem.ee.util.Platform;
 
 @ExtendWith(MockitoExtension.class)
 class ProblemSupportTest {
@@ -36,12 +38,14 @@ class ProblemSupportTest {
     void mockConfiguration() {
         when(client.getConfiguration()).thenReturn(configuration);
         when(configuration.isRegistered(ProblemClientResponseFilter.class)).thenReturn(true);
+        when(configuration.isRegistered(ClientProblemObjectMapperContextResolver.class)).thenReturn(true);
     }
 
     @Test
     void registerProblemClientResponseFilter() {
         reset(configuration);
         when(configuration.isRegistered(ProblemClientResponseFilter.class)).thenReturn(false);
+        when(configuration.isRegistered(ClientProblemObjectMapperContextResolver.class)).thenReturn(false);
         Client result = ProblemSupport.enable(client);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
@@ -61,6 +65,7 @@ class ProblemSupportTest {
                 .isThrownBy(() -> result.target("https://www.belgif.be").request().buildGet().invoke());
 
         verify(client).register(ProblemClientResponseFilter.class);
+        verify(client).register(ClientProblemObjectMapperContextResolver.class);
     }
 
     @Test
@@ -238,6 +243,19 @@ class ProblemSupportTest {
                         .target("https://www.belgif.be")
                         .register("test")
                         .request().buildGet().invoke());
+    }
+
+    @Test
+    void quarkus() {
+        try (MockedStatic<Platform> mock = mockStatic(Platform.class)) {
+            mock.when(Platform::isQuarkus).thenReturn(true);
+            reset(configuration);
+            when(configuration.isRegistered(ProblemClientResponseFilter.class)).thenReturn(false);
+            ProblemSupport.enable(client);
+            verify(client).getConfiguration();
+            verify(client).register(ProblemClientResponseFilter.class);
+            verifyNoMoreInteractions(client);
+        }
     }
 
 }

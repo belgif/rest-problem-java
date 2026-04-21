@@ -7,9 +7,12 @@ import java.lang.reflect.Proxy;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import io.github.belgif.rest.problem.ee.jaxrs.JaxRsUtil;
+import io.github.belgif.rest.problem.ee.jaxrs.client.ClientProblemObjectMapperContextResolver;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemClientResponseFilter;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemSupport;
 import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemWrapper;
+import io.github.belgif.rest.problem.ee.util.Platform;
 
 /**
  * Utility class for enabling problem support on RESTEasy Clients.
@@ -30,8 +33,9 @@ public class ResteasyProblemSupport {
      */
     @SuppressWarnings("unchecked")
     public static <T> T proxy(ResteasyWebTarget target, Class<T> proxyInterface) {
-        if (!target.getConfiguration().isRegistered(ProblemClientResponseFilter.class)) {
-            target.register(ProblemClientResponseFilter.class);
+        JaxRsUtil.register(target, ProblemClientResponseFilter.class);
+        if (!Platform.isQuarkus()) {
+            JaxRsUtil.register(target, ClientProblemObjectMapperContextResolver.class);
         }
         T client = target.proxy(proxyInterface);
         return (T) Proxy.newProxyInstance(ProblemSupport.class.getClassLoader(),

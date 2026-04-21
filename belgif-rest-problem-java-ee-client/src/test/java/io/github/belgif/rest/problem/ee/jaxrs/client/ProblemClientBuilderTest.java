@@ -41,11 +41,13 @@ class ProblemClientBuilderTest {
         Configuration configuration = mock(Configuration.class);
         when(client.getConfiguration()).thenReturn(configuration);
         when(configuration.isRegistered(ProblemClientResponseFilter.class)).thenReturn(false);
+        when(configuration.isRegistered(ClientProblemObjectMapperContextResolver.class)).thenReturn(false);
         Client result = builder.build();
         assertThat(result).isInstanceOf(Client.class);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();
         assertThat(Proxy.getInvocationHandler(result)).isInstanceOf(ClientInvocationHandler.class);
         verify(client).register(ProblemClientResponseFilter.class);
+        verify(client).register(ClientProblemObjectMapperContextResolver.class);
     }
 
     @Test
@@ -55,6 +57,7 @@ class ProblemClientBuilderTest {
         Configuration configuration = mock(Configuration.class);
         when(client.getConfiguration()).thenReturn(configuration);
         when(configuration.isRegistered(ProblemClientResponseFilter.class)).thenReturn(true);
+        when(configuration.isRegistered(ClientProblemObjectMapperContextResolver.class)).thenReturn(true);
         Client result = builder.build();
         assertThat(result).isInstanceOf(Client.class);
         assertThat(Proxy.isProxyClass(result.getClass())).isTrue();

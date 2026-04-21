@@ -5,18 +5,23 @@ import static org.mockito.Mockito.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.function.Supplier;
 
+import javax.enterprise.inject.Instance;
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientResponseContext;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.ext.Providers;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.DefaultProblem;
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.ee.jaxrs.JaxRsUtil;
 import io.github.belgif.rest.problem.ee.jaxrs.ProblemMediaType;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,6 +43,12 @@ class ProblemClientResponseFilterTest {
 
     @Mock
     private ClientResponseContext responseContext;
+
+    @Mock
+    private Providers providers;
+
+    @Mock
+    private Instance<ObjectMapper> cdiObjectMapper;
 
     @Mock
     private ObjectMapper objectMapper;
@@ -105,6 +117,22 @@ class ProblemClientResponseFilterTest {
         assertThatNoException().isThrownBy(
                 () -> filter.filter(requestContext, responseContext));
         verifyNoMoreInteractions(requestContext, responseContext);
+    }
+
+    @Test
+    void init() throws Exception {
+        Field objectMapperField = ProblemClientResponseFilter.class.getDeclaredField("objectMapper");
+        objectMapperField.setAccessible(true);
+        objectMapperField.set(filter, null);
+        ObjectMapper newMapper = new ObjectMapper();
+        try (MockedStatic<JaxRsUtil> mock = mockStatic(JaxRsUtil.class)) {
+            mock.when(() -> JaxRsUtil.locateObjectMapper(eq(providers), eq(cdiObjectMapper), eq(Problem.class),
+                    eq(MediaType.APPLICATION_JSON_TYPE), any(Supplier.class))).thenReturn(newMapper);
+            filter.init();
+        }
+        assertThat(filter).hasFieldOrPropertyWithValue("objectMapper", newMapper);
+        filter.init();
+        assertThat(filter).hasFieldOrPropertyWithValue("objectMapper", newMapper);
     }
 
 }
