@@ -285,7 +285,7 @@ Problem exceptions and framework exceptions (including bean validation) thrown b
 
 ===== JAX-RS ParamConverter
 
-To implement an input-aware JAX-RS ParamConverter, extend from `io.github.belgif.rest.problem.ee.jaxrs.AbstractInputParamConverterProvider`.
+To implement an input-aware JAX-RS ParamConverter, extend from `io.github.belgif.rest.problem.ee.server.jaxrs.AbstractInputParamConverterProvider`.
 It provides access to the input parameter name and location.
 Any BadRequestProblem thrown by the JAX-RS ParamConverter will be properly passed on to the client.
 

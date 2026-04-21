@@ -4,7 +4,7 @@ import jakarta.inject.Singleton;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.github.belgif.rest.problem.ee.CdiProblemModule;
+import io.github.belgif.rest.problem.ee.core.CdiProblemModule;
 import io.quarkus.jackson.ObjectMapperCustomizer;
 
 /**

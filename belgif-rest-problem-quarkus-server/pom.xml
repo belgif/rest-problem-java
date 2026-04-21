@@ -105,8 +105,8 @@
                   <excludes>
                     META-INF/MANIFEST.MF,
                     META-INF/services/io.github.belgif.rest.problem.i18n.LocaleResolver,
-                    io/github/belgif/rest/problem/ee/jaxrs/EJBExceptionMapper.class,
-                    io/github/belgif/rest/problem/ee/jaxrs/i18n/*
+                    io/github/belgif/rest/problem/ee/server/jaxrs/EJBExceptionMapper.class,
+                    io/github/belgif/rest/problem/ee/server/jaxrs/i18n/*
                   </excludes>
                 </artifactItem>
               </artifactItems>
