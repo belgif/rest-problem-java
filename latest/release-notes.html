@@ -623,12 +623,51 @@ window.onload = function() {
 <h2 id="_version_0_22"><a class="anchor" href="#_version_0_22"></a>Version 0.22</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>belgif-rest-problem-spring-boot-</strong>*:</p>
+<p><strong>belgif-rest-problem</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Bump bundled jandex indexVersion from 10 to 11. This prevents warnings on Quarkus, but may result in warnings on JBoss EAP 7.4 (<a href="https://access.redhat.com/articles/2332721">end-of-support</a>).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-spring-boot</strong>:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
 <p>Fix <code>@ConditionalOnClass</code>  loading of optional components</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-quarkus:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace Jakarta EE ContextResolver&lt;ObjectMapper&gt; by Quarkus ProblemObjectMapperCustomizer</p>
+</li>
+<li>
+<p>Replace quarkus-rest-jackson-common dependency by quarkus-jackson</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>belgif-rest-problem-java-ee:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Modify ProblemClientResponseFilter to obtain the ObjectMapper from the underlying JAX-RS or CDI runtime, instead of hardcoded ProblemObjectMapper instance</p>
+</li>
+<li>
+<p>Don&#8217;t register ClientProblemObjectMapperContextResolver on Quarkus</p>
+</li>
+<li>
+<p>Prevent duplicate registrations of same JAX-RS component</p>
 </li>
 </ul>
 </div>
