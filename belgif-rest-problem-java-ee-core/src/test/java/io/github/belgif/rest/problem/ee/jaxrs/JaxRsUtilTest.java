@@ -57,6 +57,32 @@ class JaxRsUtilTest {
     }
 
     @Test
+    void locateObjectMapperFromProvidersNullContextResolver() {
+        Providers providers = mock(Providers.class);
+        when(providers.getContextResolver(ObjectMapper.class, MediaType.APPLICATION_JSON_TYPE))
+                .thenReturn(null);
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper result = JaxRsUtil.locateObjectMapper(providers, null, Problem.class,
+                MediaType.APPLICATION_JSON_TYPE, () -> mapper);
+        assertThat(result).isSameAs(mapper);
+    }
+
+    @Test
+    void locateObjectMapperFromProvidersNullObjectMapper() {
+        Providers providers = mock(Providers.class);
+        ContextResolver<ObjectMapper> contextResolver = mock(ContextResolver.class);
+        when(providers.getContextResolver(ObjectMapper.class, MediaType.APPLICATION_JSON_TYPE))
+                .thenReturn(contextResolver);
+        when(contextResolver.getContext(Problem.class)).thenReturn(null);
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper result = JaxRsUtil.locateObjectMapper(providers, null, Problem.class,
+                MediaType.APPLICATION_JSON_TYPE, () -> mapper);
+        assertThat(result).isSameAs(mapper);
+    }
+
+    @Test
     void locateObjectMapperFromCdiInstance() {
         Instance<ObjectMapper> cdiObjectMapper = mock(Instance.class);
         ObjectMapper mapper = new ObjectMapper();
@@ -65,6 +91,29 @@ class JaxRsUtilTest {
 
         ObjectMapper result = JaxRsUtil.locateObjectMapper(null, cdiObjectMapper, Problem.class,
                 MediaType.APPLICATION_JSON_TYPE, null);
+        assertThat(result).isSameAs(mapper);
+    }
+
+    @Test
+    void locateObjectMapperFromCdiInstanceNotResolvable() {
+        Instance<ObjectMapper> cdiObjectMapper = mock(Instance.class);
+        when(cdiObjectMapper.isResolvable()).thenReturn(false);
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper result = JaxRsUtil.locateObjectMapper(null, cdiObjectMapper, Problem.class,
+                MediaType.APPLICATION_JSON_TYPE, () -> mapper);
+        assertThat(result).isSameAs(mapper);
+    }
+
+    @Test
+    void locateObjectMapperFromCdiInstanceNullObjectMapper() {
+        Instance<ObjectMapper> cdiObjectMapper = mock(Instance.class);
+        when(cdiObjectMapper.isResolvable()).thenReturn(true);
+        when(cdiObjectMapper.get()).thenReturn(null);
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper result = JaxRsUtil.locateObjectMapper(null, cdiObjectMapper, Problem.class,
+                MediaType.APPLICATION_JSON_TYPE, () -> mapper);
         assertThat(result).isSameAs(mapper);
     }
 
@@ -80,6 +129,61 @@ class JaxRsUtilTest {
             when(cdiObjectMapper.get()).thenReturn(mapper);
             ObjectMapper result = JaxRsUtil.locateObjectMapper(null, null, Problem.class,
                     MediaType.APPLICATION_JSON_TYPE, null);
+            assertThat(result).isSameAs(mapper);
+        }
+    }
+
+    @Test
+    void locateObjectMapperFromCdiStaticIllegalStateException() {
+        try (MockedStatic<CDI> mock = mockStatic(CDI.class)) {
+            mock.when(CDI::current).thenThrow(new IllegalStateException("CDI not available"));
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectMapper result = JaxRsUtil.locateObjectMapper(null, null, Problem.class,
+                    MediaType.APPLICATION_JSON_TYPE, () -> mapper);
+            assertThat(result).isSameAs(mapper);
+        }
+    }
+
+    @Test
+    void locateObjectMapperFromCdiStaticNullInstance() {
+        CDI cdi = mock(CDI.class);
+        try (MockedStatic<CDI> mock = mockStatic(CDI.class)) {
+            mock.when(CDI::current).thenReturn(cdi);
+            when(cdi.select(ObjectMapper.class)).thenReturn(null);
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectMapper result = JaxRsUtil.locateObjectMapper(null, null, Problem.class,
+                    MediaType.APPLICATION_JSON_TYPE, () -> mapper);
+            assertThat(result).isSameAs(mapper);
+        }
+    }
+
+    @Test
+    void locateObjectMapperFromCdiStaticNotResolvable() {
+        CDI cdi = mock(CDI.class);
+        Instance<ObjectMapper> cdiObjectMapper = mock(Instance.class);
+        try (MockedStatic<CDI> mock = mockStatic(CDI.class)) {
+            mock.when(CDI::current).thenReturn(cdi);
+            when(cdi.select(ObjectMapper.class)).thenReturn(cdiObjectMapper);
+            when(cdiObjectMapper.isResolvable()).thenReturn(false);
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectMapper result = JaxRsUtil.locateObjectMapper(null, null, Problem.class,
+                    MediaType.APPLICATION_JSON_TYPE, () -> mapper);
+            assertThat(result).isSameAs(mapper);
+        }
+    }
+
+    @Test
+    void locateObjectMapperFromCdiStaticNullObjectMapper() {
+        CDI cdi = mock(CDI.class);
+        Instance<ObjectMapper> cdiObjectMapper = mock(Instance.class);
+        try (MockedStatic<CDI> mock = mockStatic(CDI.class)) {
+            mock.when(CDI::current).thenReturn(cdi);
+            when(cdi.select(ObjectMapper.class)).thenReturn(cdiObjectMapper);
+            when(cdiObjectMapper.isResolvable()).thenReturn(true);
+            when(cdiObjectMapper.get()).thenReturn(null);
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectMapper result = JaxRsUtil.locateObjectMapper(null, null, Problem.class,
+                    MediaType.APPLICATION_JSON_TYPE, () -> mapper);
             assertThat(result).isSameAs(mapper);
         }
     }

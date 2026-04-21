@@ -25,6 +25,7 @@
 *belgif-rest-problem-quarkus:*
 
 * Replace Jakarta EE ContextResolver<ObjectMapper> by Quarkus ProblemObjectMapperCustomizer
+* Replace quarkus-rest-jackson-common dependency by quarkus-jackson
 
 *belgif-rest-problem-java-ee:*
 
