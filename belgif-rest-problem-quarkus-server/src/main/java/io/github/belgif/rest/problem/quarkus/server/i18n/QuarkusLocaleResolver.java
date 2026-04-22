@@ -17,8 +17,7 @@ public class QuarkusLocaleResolver implements LocaleResolver {
     @Override
     public Locale getLocale() {
         // Workaround for https://github.com/belgif/rest-problem-java/issues/221
-        // RequestScope is not active in
-        // io.github.belgif.rest.problem.ee.core.jaxrs.client.ProblemResponseExceptionMapper,
+        // RequestScope is not active in io.github.belgif.rest.problem.ee.client.jaxrs.ProblemResponseExceptionMapper,
         // but in fact I18N is not really needed on the client side anyway.
         if (Arc.container() != null && Arc.container().requestContext().isActive()) {
             return CDI.current().select(LocaleHolder.class).get().getLocale();

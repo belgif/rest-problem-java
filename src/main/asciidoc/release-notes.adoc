@@ -31,7 +31,7 @@
 
 [WARNING]
 ====
-*Breaking change:* Some classes were moved to `client`-, `core`- and `server`-specific packages
+*Breaking change:* Classes were moved to `client`-, `core`- and `server`-specific packages
 ====
 
 * Modify ProblemClientResponseFilter to obtain the ObjectMapper from the underlying JAX-RS or CDI runtime, instead of hardcoded ProblemObjectMapper instance
