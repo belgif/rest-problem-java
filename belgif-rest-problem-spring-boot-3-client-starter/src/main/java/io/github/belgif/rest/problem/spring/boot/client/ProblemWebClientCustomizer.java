@@ -1,0 +1,16 @@
+package io.github.belgif.rest.problem.spring.boot.client;
+
+import org.springframework.boot.web.reactive.function.client.WebClientCustomizer;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import io.github.belgif.rest.problem.spring.client.WebClientFilter;
+
+/**
+ * WebClientCustomizer that registers a filter that converts problem responses to Problem exceptions.
+ */
+public class ProblemWebClientCustomizer implements WebClientCustomizer {
+
+    public void customize(WebClient.Builder webClientBuilder) {
+        webClientBuilder.filter(WebClientFilter.PROBLEM_FILTER);
+    }
+}

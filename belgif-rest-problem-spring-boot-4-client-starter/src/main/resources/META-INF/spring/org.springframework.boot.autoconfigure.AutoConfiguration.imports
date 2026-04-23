@@ -1,1 +1,1 @@
-io.github.belgif.rest.problem.spring.client.ClientProblemAutoConfiguration
+io.github.belgif.rest.problem.spring.boot.client.ClientProblemAutoConfiguration
