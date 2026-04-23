@@ -59,18 +59,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><a href="#io.github.belgif.rest.problem.api">io.github.belgif.rest.problem.api</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="#io.github.belgif.rest.problem.ee.jaxrs">io.github.belgif.rest.problem.ee.jaxrs</a></div>
+<div class="col-first even-row-color"><a href="#io.github.belgif.rest.problem.ee.client.jaxrs">io.github.belgif.rest.problem.ee.client.jaxrs</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="#io.github.belgif.rest.problem.ee.jaxrs.client">io.github.belgif.rest.problem.ee.jaxrs.client</a></div>
+<div class="col-first odd-row-color"><a href="#io.github.belgif.rest.problem.ee.core.jaxrs">io.github.belgif.rest.problem.ee.core.jaxrs</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="#io.github.belgif.rest.problem.i18n">io.github.belgif.rest.problem.i18n</a></div>
+<div class="col-first even-row-color"><a href="#io.github.belgif.rest.problem.ee.server.jaxrs">io.github.belgif.rest.problem.ee.server.jaxrs</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="#io.github.belgif.rest.problem.spring">io.github.belgif.rest.problem.spring</a></div>
+<div class="col-first odd-row-color"><a href="#io.github.belgif.rest.problem.i18n">io.github.belgif.rest.problem.i18n</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="#io.github.belgif.rest.problem.spring.client">io.github.belgif.rest.problem.spring.client</a></div>
+<div class="col-first even-row-color"><a href="#io.github.belgif.rest.problem.spring">io.github.belgif.rest.problem.spring</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="#io.github.belgif.rest.problem.spring.server">io.github.belgif.rest.problem.spring.server</a></div>
+<div class="col-first odd-row-color"><a href="#io.github.belgif.rest.problem.spring.client">io.github.belgif.rest.problem.spring.client</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><a href="#io.github.belgif.rest.problem.spring.server">io.github.belgif.rest.problem.spring.server</a></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 <section class="class-uses">
 <ul class="block-list">
@@ -210,44 +212,55 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="io.github.belgif.rest.problem.ee.jaxrs">
-<h2>Uses of <a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a> in <a href="../../ee/jaxrs/package-summary.html">io.github.belgif.rest.problem.ee.jaxrs</a></h2>
-<div class="caption"><span>Methods in <a href="../../ee/jaxrs/package-summary.html">io.github.belgif.rest.problem.ee.jaxrs</a> with parameters of type <a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a></span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Method</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>javax.ws.rs.core.Response</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">ProblemExceptionMapper.</span><code><a href="../../ee/jaxrs/ProblemExceptionMapper.html#toResponse(io.github.belgif.rest.problem.api.Problem)" class="member-name-link">toResponse</a><wbr>(<a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a>&nbsp;problem)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>javax.ws.rs.core.Response</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">ProblemMediaType.</span><code><a href="../../ee/jaxrs/ProblemMediaType.html#toResponse(io.github.belgif.rest.problem.api.Problem)" class="member-name-link">toResponse</a><wbr>(<a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a>&nbsp;problem)</code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="io.github.belgif.rest.problem.ee.jaxrs.client">
-<h2>Uses of <a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a> in <a href="../../ee/jaxrs/client/package-summary.html">io.github.belgif.rest.problem.ee.jaxrs.client</a></h2>
-<div class="caption"><span>Methods in <a href="../../ee/jaxrs/client/package-summary.html">io.github.belgif.rest.problem.ee.jaxrs.client</a> that return <a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a></span></div>
+<section class="detail" id="io.github.belgif.rest.problem.ee.client.jaxrs">
+<h2>Uses of <a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a> in <a href="../../ee/client/jaxrs/package-summary.html">io.github.belgif.rest.problem.ee.client.jaxrs</a></h2>
+<div class="caption"><span>Methods in <a href="../../ee/client/jaxrs/package-summary.html">io.github.belgif.rest.problem.ee.client.jaxrs</a> that return <a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a></span></div>
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">ProblemWrapper.</span><code><a href="../../ee/jaxrs/client/ProblemWrapper.html#getProblem()" class="member-name-link">getProblem</a>()</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ProblemWrapper.</span><code><a href="../../ee/client/jaxrs/ProblemWrapper.html#getProblem()" class="member-name-link">getProblem</a>()</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">ProblemResponseExceptionMapper.</span><code><a href="../../ee/jaxrs/client/ProblemResponseExceptionMapper.html#toThrowable(javax.ws.rs.core.Response)" class="member-name-link">toThrowable</a><wbr>(javax.ws.rs.core.Response&nbsp;response)</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">ProblemResponseExceptionMapper.</span><code><a href="../../ee/client/jaxrs/ProblemResponseExceptionMapper.html#toThrowable(javax.ws.rs.core.Response)" class="member-name-link">toThrowable</a><wbr>(javax.ws.rs.core.Response&nbsp;response)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
-<div class="caption"><span>Constructors in <a href="../../ee/jaxrs/client/package-summary.html">io.github.belgif.rest.problem.ee.jaxrs.client</a> with parameters of type <a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a></span></div>
+<div class="caption"><span>Constructors in <a href="../../ee/client/jaxrs/package-summary.html">io.github.belgif.rest.problem.ee.client.jaxrs</a> with parameters of type <a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a></span></div>
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier</div>
 <div class="table-header col-second">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="../../ee/jaxrs/client/ProblemWrapper.html#%3Cinit%3E(io.github.belgif.rest.problem.api.Problem)" class="member-name-link">ProblemWrapper</a><wbr>(<a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a>&nbsp;problem)</code></div>
+<div class="col-second even-row-color"><code><a href="../../ee/client/jaxrs/ProblemWrapper.html#%3Cinit%3E(io.github.belgif.rest.problem.api.Problem)" class="member-name-link">ProblemWrapper</a><wbr>(<a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a>&nbsp;problem)</code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="io.github.belgif.rest.problem.ee.core.jaxrs">
+<h2>Uses of <a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a> in <a href="../../ee/core/jaxrs/package-summary.html">io.github.belgif.rest.problem.ee.core.jaxrs</a></h2>
+<div class="caption"><span>Methods in <a href="../../ee/core/jaxrs/package-summary.html">io.github.belgif.rest.problem.ee.core.jaxrs</a> with parameters of type <a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>javax.ws.rs.core.Response</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ProblemMediaType.</span><code><a href="../../ee/core/jaxrs/ProblemMediaType.html#toResponse(io.github.belgif.rest.problem.api.Problem)" class="member-name-link">toResponse</a><wbr>(<a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a>&nbsp;problem)</code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="io.github.belgif.rest.problem.ee.server.jaxrs">
+<h2>Uses of <a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a> in <a href="../../ee/server/jaxrs/package-summary.html">io.github.belgif.rest.problem.ee.server.jaxrs</a></h2>
+<div class="caption"><span>Methods in <a href="../../ee/server/jaxrs/package-summary.html">io.github.belgif.rest.problem.ee.server.jaxrs</a> with parameters of type <a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>javax.ws.rs.core.Response</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ProblemExceptionMapper.</span><code><a href="../../ee/server/jaxrs/ProblemExceptionMapper.html#toResponse(io.github.belgif.rest.problem.api.Problem)" class="member-name-link">toResponse</a><wbr>(<a href="../Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a>&nbsp;problem)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>

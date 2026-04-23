@@ -841,6 +841,20 @@ window.onload = function() {
 <div class="paragraph">
 <p><strong>belgif-rest-problem-java-ee:</strong></p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Breaking change:</strong> Classes were moved to <code>client</code>-, <code>core</code>- and <code>server</code>-specific packages</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="ulist">
 <ul>
 <li>
@@ -1904,7 +1918,7 @@ If not, you&#8217;ll need to add these dependencies to your application:</p>
 <div class="sect4">
 <h5 id="_jax_rs_paramconverter"><a class="anchor" href="#_jax_rs_paramconverter"></a>JAX-RS ParamConverter</h5>
 <div class="paragraph">
-<p>To implement an input-aware JAX-RS ParamConverter, extend from <code>io.github.belgif.rest.problem.ee.jaxrs.AbstractInputParamConverterProvider</code>.
+<p>To implement an input-aware JAX-RS ParamConverter, extend from <code>io.github.belgif.rest.problem.ee.server.jaxrs.AbstractInputParamConverterProvider</code>.
 It provides access to the input parameter name and location.
 Any BadRequestProblem thrown by the JAX-RS ParamConverter will be properly passed on to the client.</p>
 </div>
