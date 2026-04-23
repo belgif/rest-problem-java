@@ -13,9 +13,9 @@ import jakarta.ws.rs.client.WebTarget;
 
 import org.junit.jupiter.api.Test;
 
-import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemClientResponseFilter;
-import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemResponseExceptionMapper;
-import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemRestClientListener;
+import io.github.belgif.rest.problem.ee.client.jaxrs.ProblemClientResponseFilter;
+import io.github.belgif.rest.problem.ee.client.jaxrs.ProblemResponseExceptionMapper;
+import io.github.belgif.rest.problem.ee.client.jaxrs.ProblemRestClientListener;
 import io.quarkus.deployment.builditem.nativeimage.NativeImageProxyDefinitionBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ServiceProviderBuildItem;

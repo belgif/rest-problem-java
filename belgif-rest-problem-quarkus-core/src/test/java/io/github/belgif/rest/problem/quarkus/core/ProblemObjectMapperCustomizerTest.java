@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.github.belgif.rest.problem.ee.CdiProblemTypeRegistry;
+import io.github.belgif.rest.problem.ee.core.CdiProblemTypeRegistry;
 import io.github.belgif.rest.problem.registry.ProblemTypeRegistry;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,7 +44,7 @@ class ProblemObjectMapperCustomizerTest {
             when(registry.getProblemTypes()).thenReturn(new HashMap<>());
             customizer.customize(objectMapper);
             assertThat(objectMapper.getRegisteredModuleIds())
-                    .containsExactly("io.github.belgif.rest.problem.ee.CdiProblemModule");
+                    .containsExactly("io.github.belgif.rest.problem.ee.core.CdiProblemModule");
         }
     }
 

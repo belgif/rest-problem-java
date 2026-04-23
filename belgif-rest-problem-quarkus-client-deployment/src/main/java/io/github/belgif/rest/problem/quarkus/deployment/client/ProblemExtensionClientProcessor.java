@@ -11,9 +11,9 @@ import jakarta.ws.rs.client.WebTarget;
 
 import org.eclipse.microprofile.rest.client.spi.RestClientListener;
 
-import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemClientResponseFilter;
-import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemResponseExceptionMapper;
-import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemRestClientListener;
+import io.github.belgif.rest.problem.ee.client.jaxrs.ProblemClientResponseFilter;
+import io.github.belgif.rest.problem.ee.client.jaxrs.ProblemResponseExceptionMapper;
+import io.github.belgif.rest.problem.ee.client.jaxrs.ProblemRestClientListener;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.NativeImageProxyDefinitionBuildItem;

@@ -1,1 +1,1 @@
-io.github.belgif.rest.problem.ee.jaxrs.i18n.ThreadLocalLocaleResolver
+io.github.belgif.rest.problem.ee.server.jaxrs.i18n.ThreadLocalLocaleResolver

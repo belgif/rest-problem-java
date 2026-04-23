@@ -23,8 +23,8 @@ import com.acme.custom.CustomProblem;
 
 import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.Problem;
-import io.github.belgif.rest.problem.ee.jaxrs.client.ProblemSupport;
-import io.github.belgif.rest.problem.ee.resteasy.client.ResteasyProblemSupport;
+import io.github.belgif.rest.problem.ee.client.jaxrs.ProblemSupport;
+import io.github.belgif.rest.problem.ee.client.resteasy.ResteasyProblemSupport;
 import io.github.belgif.rest.problem.i18n.I18N;
 import io.github.belgif.rest.problem.it.model.Bean;
 import io.github.belgif.rest.problem.it.model.ChildModel;
