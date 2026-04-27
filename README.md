@@ -21,7 +21,7 @@ Documentation on how to use this library is available on https://belgif.github.i
 
 ## Build Process
 
-The build process is documented [here](https://github.com/belgif/rest-problem-java/blob/master/BUILDING.md).
+The build process is documented [here](https://github.com/belgif/rest-problem-java/blob/main/BUILDING.md).
 
 ## Maven Central
 
