@@ -16,6 +16,8 @@ io.github.belgif.rest.problem.quarkus.deployment.server
 io.github.belgif.rest.problem.quarkus.server.i18n
 io.github.belgif.rest.problem.registry
 io.github.belgif.rest.problem.spring
+io.github.belgif.rest.problem.spring.boot.client
+io.github.belgif.rest.problem.spring.boot.server
 io.github.belgif.rest.problem.spring.client
 io.github.belgif.rest.problem.spring.server
 io.github.belgif.rest.problem.spring.server.i18n
