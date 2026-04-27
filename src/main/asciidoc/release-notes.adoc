@@ -20,6 +20,11 @@
 
 *belgif-rest-problem-spring-boot*:
 
+[WARNING]
+====
+*Breaking change:* Classes were moved to `boot`-specific package
+====
+
 * Fix `@ConditionalOnClass`  loading of optional components
 
 *belgif-rest-problem-quarkus:*

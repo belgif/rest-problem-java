@@ -1,1 +1,1 @@
-io.github.belgif.rest.problem.spring.server.ServerProblemAutoConfiguration
+io.github.belgif.rest.problem.spring.boot.server.ServerProblemAutoConfiguration
