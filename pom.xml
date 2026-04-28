@@ -23,9 +23,9 @@
     <version.jackson.minimal>2.12.7</version.jackson.minimal>
     <!-- Aligns with Spring Boot 4.0 version -->
     <version.jackson3.minimal>3.0.4</version.jackson3.minimal>
-    <version.spring.boot.3>3.5.13</version.spring.boot.3>
-    <version.spring.boot.4>4.0.5</version.spring.boot.4>
-    <version.quarkus>3.34.5</version.quarkus>
+    <version.spring.boot.3>3.5.14</version.spring.boot.3>
+    <version.spring.boot.4>4.0.6</version.spring.boot.4>
+    <version.quarkus>3.34.6</version.quarkus>
   </properties>
 
   <dependencyManagement>
@@ -156,7 +156,7 @@
         <plugin>
           <groupId>io.swagger.codegen.v3</groupId>
           <artifactId>swagger-codegen-maven-plugin</artifactId>
-          <version>3.0.78</version>
+          <version>3.0.79</version>
         </plugin>
         <plugin>
           <groupId>org.sonarsource.scanner.maven</groupId>
