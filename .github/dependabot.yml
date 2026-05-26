@@ -21,6 +21,8 @@ updates:
       - dependency-name: "org.hibernate.validator:hibernate-validator"
       - dependency-name: "com.fasterxml.jackson.core:jackson-databind"
       - dependency-name: "tools.jackson.core:jackson-databind"
+      - dependency-name: "com.atlassian.oai:swagger-request-validator-spring-webmvc"
+        update-types: ["version-update:semver-major"]
     groups:
       maven:
         patterns:
