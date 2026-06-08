@@ -25,7 +25,7 @@
     <version.jackson3.minimal>3.0.4</version.jackson3.minimal>
     <version.spring.boot.3>3.5.14</version.spring.boot.3>
     <version.spring.boot.4>4.0.6</version.spring.boot.4>
-    <version.quarkus>3.36.0</version.quarkus>
+    <version.quarkus>3.36.1</version.quarkus>
   </properties>
 
   <dependencyManagement>
@@ -64,7 +64,7 @@
       <dependency>
         <groupId>org.jacoco</groupId>
         <artifactId>org.jacoco.agent</artifactId>
-        <version>0.8.14</version>
+        <version>0.8.15</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
@@ -151,7 +151,7 @@
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.22.0</version>
+          <version>7.23.0</version>
         </plugin>
         <plugin>
           <groupId>io.swagger.codegen.v3</groupId>
@@ -166,7 +166,7 @@
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.14</version>
+          <version>0.8.15</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -181,7 +181,7 @@
         <plugin>
           <groupId>io.smallrye</groupId>
           <artifactId>jandex-maven-plugin</artifactId>
-          <version>3.5.3</version>
+          <version>3.6.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
