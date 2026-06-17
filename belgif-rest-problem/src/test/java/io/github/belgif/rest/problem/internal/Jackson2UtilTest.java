@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -18,11 +19,33 @@ import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
+import io.github.belgif.rest.problem.config.ProblemConfig;
 
 class Jackson2UtilTest {
 
+    @BeforeEach
+    void resetProblemConfif() {
+        ProblemConfig.reset();
+    }
+
     @Test
     void mismatchedInput() {
+        assertThatExceptionOfType(MismatchedInputException.class).isThrownBy(() -> {
+            new ObjectMapper().readValue("{}", Model.class);
+        }).satisfies(e -> {
+            BadRequestProblem problem = Jackson2Util.toBadRequestProblem(e);
+            InputValidationIssue issue = problem.getIssues().get(0);
+            assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
+            assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+            assertThat(issue.getName()).isEqualTo("/id");
+            assertThat(issue.getValue()).isNull();
+            assertThat(issue.getDetail()).isEqualTo("must not be null");
+        });
+    }
+
+    @Test
+    void mismatchedInputWithJsonPointerDisabled() {
+        ProblemConfig.setJsonPointerEnabled(false);
         assertThatExceptionOfType(MismatchedInputException.class).isThrownBy(() -> {
             new ObjectMapper().readValue("{}", Model.class);
         }).satisfies(e -> {
@@ -45,7 +68,7 @@ class Jackson2UtilTest {
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-            assertThat(issue.getName()).isEqualTo("nbr");
+            assertThat(issue.getName()).isEqualTo("/nbr");
             assertThat(issue.getValue()).isEqualTo("twenty-two");
             assertThat(issue.getDetail()).isEqualTo("not a valid `int` value");
         });
@@ -60,7 +83,7 @@ class Jackson2UtilTest {
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-            assertThat(issue.getName()).isEqualTo("size");
+            assertThat(issue.getName()).isEqualTo("/size");
             assertThat(issue.getValue()).isNull();
             assertThat(issue.getDetail()).isEqualTo("Unexpected value 'XXL'");
         });
@@ -75,7 +98,7 @@ class Jackson2UtilTest {
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-            assertThat(issue.getName()).isEqualTo("size2");
+            assertThat(issue.getName()).isEqualTo("/size2");
             assertThat(issue.getValue()).isEqualTo("XXL");
             assertThat(issue.getDetail()).isEqualTo("not one of the values accepted for enumeration: [S, L, M]");
         });
@@ -90,7 +113,7 @@ class Jackson2UtilTest {
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-            assertThat(issue.getName()).isEqualTo("model");
+            assertThat(issue.getName()).isEqualTo("/model");
             assertThat(issue.getValue()).isNull();
             assertThat(issue.getDetail()).isEqualTo("JSON syntax error");
         });
@@ -135,7 +158,7 @@ class Jackson2UtilTest {
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-            assertThat(issue.getName()).isEqualTo("model.id");
+            assertThat(issue.getName()).isEqualTo("/model/id");
             assertThat(issue.getValue()).isNull();
             assertThat(issue.getDetail()).isEqualTo("must not be null");
         });
@@ -143,6 +166,22 @@ class Jackson2UtilTest {
 
     @Test
     void mismatchedInputNestedWithArray() {
+        assertThatExceptionOfType(MismatchedInputException.class).isThrownBy(() -> {
+            new ObjectMapper().readValue("{\"models\": [{}]}", NestedWithArray.class);
+        }).satisfies(e -> {
+            BadRequestProblem problem = Jackson2Util.toBadRequestProblem(e);
+            InputValidationIssue issue = problem.getIssues().get(0);
+            assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
+            assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+            assertThat(issue.getName()).isEqualTo("/models/0/id");
+            assertThat(issue.getValue()).isNull();
+            assertThat(issue.getDetail()).isEqualTo("must not be null");
+        });
+    }
+
+    @Test
+    void mismatchedInputNestedWithArrayWithJsonPointerDisabled() {
+        ProblemConfig.setJsonPointerEnabled(false);
         assertThatExceptionOfType(MismatchedInputException.class).isThrownBy(() -> {
             new ObjectMapper().readValue("{\"models\": [{}]}", NestedWithArray.class);
         }).satisfies(e -> {
@@ -165,7 +204,7 @@ class Jackson2UtilTest {
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-            assertThat(issue.getName()).isEqualTo("id");
+            assertThat(issue.getName()).isEqualTo("/id");
             assertThat(issue.getValue()).isEqualTo("one two three");
             assertThat(issue.getDetail()).isEqualTo(
                     "not a valid `int` value");

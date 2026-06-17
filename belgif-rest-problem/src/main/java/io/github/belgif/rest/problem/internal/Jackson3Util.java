@@ -7,6 +7,7 @@ import java.util.List;
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
+import io.github.belgif.rest.problem.config.ProblemConfig;
 import tools.jackson.core.JacksonException.Reference;
 import tools.jackson.core.exc.StreamReadException;
 import tools.jackson.databind.DatabindException;
@@ -43,17 +44,20 @@ public class Jackson3Util {
     }
 
     private static String getName(List<Reference> path) {
+        String rootPrefix = ProblemConfig.isJsonPointerEnabled() ? "/" : "";
+        String indexPrefix = ProblemConfig.isJsonPointerEnabled() ? "/" : "[";
+        String indexSuffix = ProblemConfig.isJsonPointerEnabled() ? "" : "]";
+        String fieldNamePrefix = ProblemConfig.isJsonPointerEnabled() ? "/" : ".";
+
         if (path.isEmpty()) {
             return null;
         }
         StringBuilder name = new StringBuilder();
         for (Reference reference : path) {
             if (reference.from() instanceof List) {
-                name.append("[").append(reference.getIndex()).append("]");
+                name.append(indexPrefix).append(reference.getIndex()).append(indexSuffix);
             } else {
-                if (name.length() > 0) {
-                    name.append(".");
-                }
+                name.append(name.length() > 0 ? fieldNamePrefix : rootPrefix);
                 name.append(reference.getPropertyName());
             }
         }

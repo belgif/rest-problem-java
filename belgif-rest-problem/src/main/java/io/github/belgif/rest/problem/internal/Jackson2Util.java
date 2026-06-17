@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
+import io.github.belgif.rest.problem.config.ProblemConfig;
 
 /**
  * Internal jackson 2 utility class.
@@ -59,17 +60,20 @@ public class Jackson2Util {
     }
 
     private static String getName(List<Reference> path) {
+        String rootPrefix = ProblemConfig.isJsonPointerEnabled() ? "/" : "";
+        String indexPrefix = ProblemConfig.isJsonPointerEnabled() ? "/" : "[";
+        String indexSuffix = ProblemConfig.isJsonPointerEnabled() ? "" : "]";
+        String fieldNamePrefix = ProblemConfig.isJsonPointerEnabled() ? "/" : ".";
+
         if (path.isEmpty()) {
             return null;
         }
         StringBuilder builder = new StringBuilder();
         for (Reference reference : path) {
             if (reference.getFrom() instanceof List) {
-                builder.append("[").append(reference.getIndex()).append("]");
+                builder.append(indexPrefix).append(reference.getIndex()).append(indexSuffix);
             } else {
-                if (builder.length() > 0) {
-                    builder.append(".");
-                }
+                builder.append(builder.length() > 0 ? fieldNamePrefix : rootPrefix);
                 builder.append(reference.getFieldName());
             }
         }

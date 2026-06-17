@@ -62,7 +62,7 @@ class AbstractRoutingExceptionsHandlerTest {
             assertThat(problem.getIssues()).hasSize(1);
             assertThat(problem.getIssues().get(0).getType()).isEqualTo(ISSUE_TYPE_SCHEMA_VIOLATION);
             assertThat(problem.getIssues().get(0).getIn()).isEqualTo(InEnum.QUERY);
-            assertThat(problem.getIssues().get(0).getName()).isEqualTo("name");
+            assertThat(problem.getIssues().get(0).getName()).isEqualTo("/name");
             assertThat(problem.getIssues().get(0).getDetail()).isEqualTo(
                     "Required request parameter 'name' for method parameter type String is not present");
         });
@@ -79,7 +79,7 @@ class AbstractRoutingExceptionsHandlerTest {
             assertThat(problem.getIssues()).hasSize(1);
             assertThat(problem.getIssues().get(0).getType()).isEqualTo(ISSUE_TYPE_SCHEMA_VIOLATION);
             assertThat(problem.getIssues().get(0).getIn()).isEqualTo(InEnum.HEADER);
-            assertThat(problem.getIssues().get(0).getName()).isEqualTo("name");
+            assertThat(problem.getIssues().get(0).getName()).isEqualTo("/name");
             assertThat(problem.getIssues().get(0).getDetail()).isEqualTo(
                     "Required request header 'name' for method parameter type Object is not present");
         });
@@ -98,7 +98,7 @@ class AbstractRoutingExceptionsHandlerTest {
             assertThat(problem.getIssues().get(0).getType())
                     .hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(problem.getIssues().get(0).getIn()).isEqualTo(InEnum.BODY);
-            assertThat(problem.getIssues().get(0).getName()).isEqualTo("id");
+            assertThat(problem.getIssues().get(0).getName()).isEqualTo("/id");
             assertThat(problem.getIssues().get(0).getValue()).isNull();
             assertThat(problem.getIssues().get(0).getDetail()).isEqualTo("detail");
         });

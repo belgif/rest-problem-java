@@ -12,6 +12,12 @@
 
 // tag::recent-versions[]
 
+== Version 0.23
+
+*belgif-rest-problem*:
+
+* Use <<io.github.belgif.rest.problem.json-pointer-enabled, JsonPointer syntax>> by default for schema violation issues in request body.
+
 == Version 0.22
 
 *belgif-rest-problem*:
