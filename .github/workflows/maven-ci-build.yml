@@ -3,12 +3,9 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    types: [opened, synchronize, reopened, labeled]
   workflow_dispatch:
 jobs:
   build:
-    # skip if triggered by a "labeled" event with a label other than "publish-snapshot"
-    if: github.event_name != 'pull_request' || github.event.action != 'labeled' || github.event.label.name == 'publish-snapshot'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
