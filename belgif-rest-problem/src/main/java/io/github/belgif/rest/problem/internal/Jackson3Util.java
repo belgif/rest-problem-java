@@ -2,12 +2,13 @@ package io.github.belgif.rest.problem.internal;
 
 import static io.github.belgif.rest.problem.api.InputValidationIssues.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
+import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
-import io.github.belgif.rest.problem.config.ProblemConfig;
 import tools.jackson.core.JacksonException.Reference;
 import tools.jackson.core.exc.StreamReadException;
 import tools.jackson.databind.DatabindException;
@@ -44,24 +45,22 @@ public class Jackson3Util {
     }
 
     private static String getName(List<Reference> path) {
-        String rootPrefix = ProblemConfig.isJsonPointerEnabled() ? "/" : "";
-        String indexPrefix = ProblemConfig.isJsonPointerEnabled() ? "/" : "[";
-        String indexSuffix = ProblemConfig.isJsonPointerEnabled() ? "" : "]";
-        String fieldNamePrefix = ProblemConfig.isJsonPointerEnabled() ? "/" : ".";
 
         if (path.isEmpty()) {
             return null;
         }
-        StringBuilder name = new StringBuilder();
+
+        List<String> properties = new ArrayList<>();
+
         for (Reference reference : path) {
             if (reference.from() instanceof List) {
-                name.append(indexPrefix).append(reference.getIndex()).append(indexSuffix);
+                // append the index to the property name
+                properties.set(properties.size() - 1,
+                        properties.get(properties.size() - 1) + "[" + reference.getIndex() + "]");
             } else {
-                name.append(name.length() > 0 ? fieldNamePrefix : rootPrefix);
-                name.append(reference.getPropertyName());
+                properties.add(reference.getPropertyName());
             }
         }
-        return name.toString();
+        return InputValidationIssue.getNameFromProperties(InEnum.BODY, properties);
     }
-
 }

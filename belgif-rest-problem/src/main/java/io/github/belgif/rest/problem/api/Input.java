@@ -32,6 +32,7 @@ public class Input<V> {
     }
 
     public Input(InEnum in, String name, V value) {
+        InputValidationIssue.verifyNameFormat(in, name);
         this.in = in;
         this.name = name;
         this.value = value;
@@ -42,6 +43,7 @@ public class Input<V> {
     }
 
     public void setIn(InEnum in) {
+        InputValidationIssue.verifyNameFormat(in, name);
         this.in = in;
     }
 
@@ -50,6 +52,7 @@ public class Input<V> {
     }
 
     public void setName(String name) {
+        InputValidationIssue.verifyNameFormat(in, name);
         this.name = name;
     }
 

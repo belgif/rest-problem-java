@@ -838,7 +838,7 @@ Default `true`.
     {
       "type": "urn:problem-type:belgif:input-validation:schemaViolation",
       "in": "body",
-      "name": "person/0/ssin",
+      "name": "/person/0/ssin",
       "detail": "An SSIN should be 11 digits long",
       "value": "1234"
     }

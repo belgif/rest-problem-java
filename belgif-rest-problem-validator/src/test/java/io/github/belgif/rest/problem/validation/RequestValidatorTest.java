@@ -9,183 +9,194 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
+import io.github.belgif.rest.problem.config.ProblemConfig;
 
 class RequestValidatorTest {
 
+    @BeforeEach
+    void resetProblemConfig() {
+        ProblemConfig.reset();
+    }
+
     @Test
     void ssinValid() {
-        assertValid(new RequestValidator().ssin(Input.body("ssin", "00000000196")));
+        assertValid(new RequestValidator().ssin(Input.body("/ssin", "00000000196")));
     }
 
     @Test
     void ssinNull() {
         assertValid(new RequestValidator().ssin(null));
-        assertValid(new RequestValidator().ssin(Input.body("ssin", null)));
+        assertValid(new RequestValidator().ssin(Input.body("/ssin", null)));
     }
 
     @Test
     void ssinInvalid() {
         assertInvalid(
-                new RequestValidator().ssin(Input.body("ssin", "22222222222")),
-                InputValidationIssues.invalidSsin(BODY, "ssin", "22222222222"));
+                new RequestValidator().ssin(Input.body("/ssin", "22222222222")),
+                InputValidationIssues.invalidSsin(BODY, "/ssin", "22222222222"));
     }
 
-    @Test
-    void ssinsInvalid() {
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    void ssinsInvalid(boolean jsonPointerEnabled) {
+        ProblemConfig.setJsonPointerEnabled(jsonPointerEnabled);
         assertInvalid(
-                new RequestValidator().ssins(Input.body("ssins",
+                new RequestValidator().ssins(Input.body(jsonPointerEnabled ? "/ssins" : "ssins",
                         Arrays.asList("00000000196", "11111111111", "00000000295", "22222222222"))),
-                InputValidationIssues.invalidSsin(BODY, "ssins[1]", "11111111111"),
-                InputValidationIssues.invalidSsin(BODY, "ssins[3]", "22222222222"));
+                InputValidationIssues.invalidSsin(BODY, jsonPointerEnabled ? "/ssins/1" : "ssins[1]", "11111111111"),
+                InputValidationIssues.invalidSsin(BODY, jsonPointerEnabled ? "/ssins/3" : "ssins[3]", "22222222222"));
     }
 
     @Test
     void enterpriseNumberValid() {
-        assertValid(new RequestValidator().enterpriseNumber(Input.body("enterpriseNumber", "0884303369")));
+        assertValid(new RequestValidator().enterpriseNumber(Input.body("/enterpriseNumber", "0884303369")));
     }
 
     @Test
     void enterpriseNumberNull() {
         assertValid(new RequestValidator().enterpriseNumber(null));
-        assertValid(new RequestValidator().enterpriseNumber(Input.body("enterpriseNumber", null)));
+        assertValid(new RequestValidator().enterpriseNumber(Input.body("/enterpriseNumber", null)));
     }
 
     @Test
     void enterpriseNumberInvalid() {
         assertInvalid(
-                new RequestValidator().enterpriseNumber(Input.body("enterpriseNumber", "2111111112")),
-                InputValidationIssues.invalidEnterpriseNumber(BODY, "enterpriseNumber", "2111111112"));
+                new RequestValidator().enterpriseNumber(Input.body("/enterpriseNumber", "2111111112")),
+                InputValidationIssues.invalidEnterpriseNumber(BODY, "/enterpriseNumber", "2111111112"));
     }
 
     @Test
     void establishmentUnitNumberValid() {
         assertValid(
-                new RequestValidator().establishmentUnitNumber(Input.body("establishmentUnitNumber", "2297964444")));
+                new RequestValidator().establishmentUnitNumber(Input.body("/establishmentUnitNumber", "2297964444")));
     }
 
     @Test
     void establishmentUnitNumberNull() {
         assertValid(new RequestValidator().establishmentUnitNumber(null));
-        assertValid(new RequestValidator().establishmentUnitNumber(Input.body("establishmentUnitNumber", null)));
+        assertValid(new RequestValidator().establishmentUnitNumber(Input.body("/establishmentUnitNumber", null)));
     }
 
     @Test
     void establishmentUnitNumberInvalid() {
         assertInvalid(
-                new RequestValidator().establishmentUnitNumber(Input.body("establishmentUnitNumber", "2111111111")),
-                InputValidationIssues.invalidEstablishmentUnitNumber(BODY, "establishmentUnitNumber", "2111111111"));
+                new RequestValidator().establishmentUnitNumber(Input.body("/establishmentUnitNumber", "2111111111")),
+                InputValidationIssues.invalidEstablishmentUnitNumber(BODY, "/establishmentUnitNumber", "2111111111"));
     }
 
     @Test
     void employerIdValid() {
-        assertValid(new RequestValidator().employerId(Input.body("employerId", 312345625L)));
+        assertValid(new RequestValidator().employerId(Input.body("/employerId", 312345625L)));
     }
 
     @Test
     void employerIdNull() {
         assertValid(new RequestValidator().employerId(null));
-        assertValid(new RequestValidator().employerId(Input.body("employerId", null)));
+        assertValid(new RequestValidator().employerId(Input.body("/employerId", null)));
     }
 
     @Test
     void employerIdInvalid() {
         assertInvalid(
-                new RequestValidator().employerId(Input.body("employerId", 5678901279L)),
-                InputValidationIssues.invalidEmployerId(BODY, "employerId", 5678901279L));
+                new RequestValidator().employerId(Input.body("/employerId", 5678901279L)),
+                InputValidationIssues.invalidEmployerId(BODY, "/employerId", 5678901279L));
     }
 
     @Test
     void periodValid() {
         InputPeriod period = new InputPeriod(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 12, 31));
-        assertValid(new RequestValidator().period(Input.body("period", period)));
+        assertValid(new RequestValidator().period(Input.body("/period", period)));
     }
 
     @Test
     void periodNull() {
         assertValid(new RequestValidator().period(null));
-        assertValid(new RequestValidator().period(Input.body("period", null)));
+        assertValid(new RequestValidator().period(Input.body("/period", null)));
     }
 
     @Test
     void periodInvalid() {
         InputPeriod badPeriod = new InputPeriod(LocalDate.of(2023, 10, 14), LocalDate.of(2023, 10, 12));
-        assertInvalid(new RequestValidator().period(Input.body("period", badPeriod)),
-                InputValidationIssues.invalidPeriod(BODY, "period", badPeriod));
+        assertInvalid(new RequestValidator().period(Input.body("/period", badPeriod)),
+                InputValidationIssues.invalidPeriod(BODY, "/period", badPeriod));
     }
 
     @Test
     void temporalPeriodValid() {
-        assertValid(new RequestValidator().period(Input.body("startDate", LocalDate.of(2023, 1, 1)),
-                Input.body("endDate", LocalDate.of(2023, 12, 31))));
+        assertValid(new RequestValidator().period(Input.body("/startDate", LocalDate.of(2023, 1, 1)),
+                Input.body("/endDate", LocalDate.of(2023, 12, 31))));
     }
 
     @Test
     void temporalPeriodInvalid() {
         assertInvalid(
-                new RequestValidator().period(Input.body("startDate", LocalDate.of(2023, 10, 14)),
-                        Input.body("endDate", LocalDate.of(2023, 10, 12))),
-                InputValidationIssues.invalidPeriod(Input.body("startDate", LocalDate.of(2023, 10, 14)),
-                        Input.body("endDate", LocalDate.of(2023, 10, 12))));
+                new RequestValidator().period(Input.body("/startDate", LocalDate.of(2023, 10, 14)),
+                        Input.body("/endDate", LocalDate.of(2023, 10, 12))),
+                InputValidationIssues.invalidPeriod(Input.body("/startDate", LocalDate.of(2023, 10, 14)),
+                        Input.body("/endDate", LocalDate.of(2023, 10, 12))));
     }
 
     @Test
     void incompleteDateValid() {
-        assertValid(new RequestValidator().incompleteDate(Input.body("date", "2024-00-00")));
+        assertValid(new RequestValidator().incompleteDate(Input.body("/date", "2024-00-00")));
     }
 
     @Test
     void incompleteDateNull() {
         assertValid(new RequestValidator().incompleteDate(null));
-        assertValid(new RequestValidator().incompleteDate(Input.body("date", null)));
+        assertValid(new RequestValidator().incompleteDate(Input.body("/date", null)));
     }
 
     @Test
     void incompleteDateInvalid() {
         assertInvalid(
-                new RequestValidator().incompleteDate(Input.body("date", "2024-00-01")),
-                InputValidationIssues.invalidIncompleteDate(BODY, "date", "2024-00-01"));
+                new RequestValidator().incompleteDate(Input.body("/date", "2024-00-01")),
+                InputValidationIssues.invalidIncompleteDate(BODY, "/date", "2024-00-01"));
 
     }
 
     @Test
     void yearMonthValid() {
-        assertValid(new RequestValidator().yearMonth(Input.body("yearMonth", "2024-01")));
+        assertValid(new RequestValidator().yearMonth(Input.body("/yearMonth", "2024-01")));
     }
 
     @Test
     void yearMonthNull() {
         assertValid(new RequestValidator().yearMonth(null));
-        assertValid(new RequestValidator().yearMonth(Input.body("yearMonth", null)));
+        assertValid(new RequestValidator().yearMonth(Input.body("/yearMonth", null)));
     }
 
     @Test
     void yearMonthInvalid() {
-        assertInvalid(new RequestValidator().yearMonth(Input.body("yearMonth", "2024-99")),
-                InputValidationIssues.invalidYearMonth(BODY, "yearMonth", "2024-99"));
+        assertInvalid(new RequestValidator().yearMonth(Input.body("/yearMonth", "2024-99")),
+                InputValidationIssues.invalidYearMonth(BODY, "/yearMonth", "2024-99"));
     }
 
     @Test
     void exactlyOneOfValid() {
-        Input<?>[] inputs = { Input.body("cbeNumber", null), Input.body("sector", "25") };
+        Input<?>[] inputs = { Input.body("/cbeNumber", null), Input.body("/sector", "25") };
         assertValid(new RequestValidator().exactlyOneOf(inputs));
     }
 
     @Test
     void exactlyOneOfInvalidMoreThatOne() {
-        Input<?>[] inputs = { Input.body("cbeNumber", "0694965804"), Input.body("sector", "25") };
+        Input<?>[] inputs = { Input.body("/cbeNumber", "0694965804"), Input.body("/sector", "25") };
         assertInvalid(new RequestValidator().exactlyOneOf(inputs),
                 InputValidationIssues.exactlyOneOfExpected(Arrays.asList(inputs)));
     }
 
     @Test
     void exactlyOneOfInvalidNone() {
-        Input<?>[] inputs = { Input.body("cbeNumber", null), Input.body("sector", null) };
+        Input<?>[] inputs = { Input.body("/cbeNumber", null), Input.body("/sector", null) };
         assertInvalid(new RequestValidator().exactlyOneOf(inputs),
                 InputValidationIssues.exactlyOneOfExpected(Arrays.asList(inputs)));
     }
@@ -314,22 +325,30 @@ class RequestValidatorTest {
                 InputValidationIssues.referencedResourceNotFound(QUERY, "refData", "x"));
     }
 
-    @Test
-    void refDatasCollectionValid() {
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    void refDatasCollectionValid(boolean jsonPointerEnabled) {
+        ProblemConfig.setJsonPointerEnabled(jsonPointerEnabled);
         assertValid(new RequestValidator().refDatas(Input.query("refDatas",
                 Arrays.asList("a", "b")), Arrays.asList("a", "b", "c")));
     }
 
-    @Test
-    void refDatasCollectionInvalid() {
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    void refDatasCollectionInvalid(boolean isJsonPointerEnabled) {
+        ProblemConfig.setJsonPointerEnabled(isJsonPointerEnabled);
         assertInvalid(new RequestValidator().refDatas(Input.query("refDatas",
                 Arrays.asList("a", "x", "b", "y")), Arrays.asList("a", "b", "c")),
-                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[1]", "x"),
-                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[3]", "y"));
+                InputValidationIssues.referencedResourceNotFound(QUERY,
+                        isJsonPointerEnabled ? "refDatas/1" : "refDatas[1]", "x"),
+                InputValidationIssues.referencedResourceNotFound(QUERY,
+                        isJsonPointerEnabled ? "refDatas/3" : "refDatas[3]", "y"));
     }
 
-    @Test
-    void refDatasSupplierValid() {
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    void refDatasSupplierValid(boolean isJsonPointerEnabled) {
+        ProblemConfig.setJsonPointerEnabled(isJsonPointerEnabled);
         AtomicInteger calls = new AtomicInteger(0);
         assertValid(new RequestValidator().refDatas(Input.query("refDatas",
                 Arrays.asList("a", "b")), () -> {
@@ -339,16 +358,20 @@ class RequestValidatorTest {
         assertThat(calls).hasValue(1);
     }
 
-    @Test
-    void refDatasSupplierInvalid() {
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    void refDatasSupplierInvalid(boolean isJsonPointerEnabled) {
+        ProblemConfig.setJsonPointerEnabled(isJsonPointerEnabled);
         AtomicInteger calls = new AtomicInteger(0);
         assertInvalid(new RequestValidator().refDatas(Input.query("refDatas",
                 Arrays.asList("a", "x", "b", "y")), () -> {
                     calls.incrementAndGet();
                     return Arrays.asList("a", "b", "c");
                 }),
-                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[1]", "x"),
-                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[3]", "y"));
+                InputValidationIssues.referencedResourceNotFound(QUERY,
+                        isJsonPointerEnabled ? "refDatas/1" : "refDatas[1]", "x"),
+                InputValidationIssues.referencedResourceNotFound(QUERY,
+                        isJsonPointerEnabled ? "refDatas/3" : "refDatas[3]", "y"));
         assertThat(calls).hasValue(1);
     }
 
@@ -362,18 +385,24 @@ class RequestValidatorTest {
         assertThat(calls).hasValue(0);
     }
 
-    @Test
-    void refDatasPredicateValid() {
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    void refDatasPredicateValid(boolean isJsonPointerEnabled) {
+        ProblemConfig.setJsonPointerEnabled(isJsonPointerEnabled);
         assertValid(new RequestValidator().refDatas(Input.query("refDatas", Arrays.asList("a", "b")),
                 Arrays.asList("a", "b", "c")::contains));
     }
 
-    @Test
-    void refDatasPredicateInvalid() {
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    void refDatasPredicateInvalid(boolean isJsonPointerEnabled) {
+        ProblemConfig.setJsonPointerEnabled(isJsonPointerEnabled);
         assertInvalid(new RequestValidator().refDatas(Input.query("refDatas", Arrays.asList("a", "x", "b", "y")),
                 Arrays.asList("a", "b", "c")::contains),
-                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[1]", "x"),
-                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[3]", "y"));
+                InputValidationIssues.referencedResourceNotFound(QUERY,
+                        isJsonPointerEnabled ? "refDatas/1" : "refDatas[1]", "x"),
+                InputValidationIssues.referencedResourceNotFound(QUERY,
+                        isJsonPointerEnabled ? "refDatas/3" : "refDatas[3]", "y"));
     }
 
     @Test
@@ -474,29 +503,29 @@ class RequestValidatorTest {
 
     @Test
     void chainingValid() {
-        assertValid(new RequestValidator().ssin(Input.body("ssin", "00000000196"))
-                .enterpriseNumber(Input.body("enterpriseNumber", "0884303369")));
+        assertValid(new RequestValidator().ssin(Input.body("/ssin", "00000000196"))
+                .enterpriseNumber(Input.body("/enterpriseNumber", "0884303369")));
     }
 
     @Test
     void chainingInvalid() {
-        assertInvalid(new RequestValidator().ssin(Input.body("ssin", "22222222222"))
-                .enterpriseNumber(Input.body("enterpriseNumber", "2111111112")),
-                InputValidationIssues.invalidSsin(BODY, "ssin", "22222222222"),
-                InputValidationIssues.invalidEnterpriseNumber(BODY, "enterpriseNumber", "2111111112"));
+        assertInvalid(new RequestValidator().ssin(Input.body("/ssin", "22222222222"))
+                .enterpriseNumber(Input.body("/enterpriseNumber", "2111111112")),
+                InputValidationIssues.invalidSsin(BODY, "/ssin", "22222222222"),
+                InputValidationIssues.invalidEnterpriseNumber(BODY, "/enterpriseNumber", "2111111112"));
     }
 
     @Test
     void extension() {
         new RequestValidatorExtensionB()
-                .require(Input.body("test", "value"))
+                .require(Input.body("/test", "value"))
                 .b()
                 .a()
                 .validate();
         new RequestValidatorExtensionB()
                 .a()
                 .b()
-                .require(Input.body("test", "value"))
+                .require(Input.body("/test", "value"))
                 .validate();
     }
 

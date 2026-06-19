@@ -12,13 +12,13 @@ class RequiredInputValidatorTest {
 
     @Test
     void ok() {
-        assertThat(new RequiredInputValidator<>(Input.body("required", "ok")).validate()).isEmpty();
+        assertThat(new RequiredInputValidator<>(Input.body("/required", "ok")).validate()).isEmpty();
     }
 
     @Test
     void nok() {
-        assertThat(new RequiredInputValidator<String>(Input.body("required", null)).validate())
-                .contains(InputValidationIssues.requiredInput(BODY, "required"));
+        assertThat(new RequiredInputValidator<String>(Input.body("/required", null)).validate())
+                .contains(InputValidationIssues.requiredInput(BODY, "/required"));
     }
 
 }

@@ -120,7 +120,8 @@ public class BeanValidationExceptionsHandler {
             if (modelAttribute != null) {
                 errors.getResolvableErrors().forEach(error -> issues.add(
                         InputValidationIssues.schemaViolation(
-                                InEnum.BODY, modelAttribute.value(), errors.getArgument(),
+                                InEnum.BODY, InputValidationIssue.convertName(InEnum.BODY, modelAttribute.value()),
+                                errors.getArgument(),
                                 error.getDefaultMessage())));
             }
         }
@@ -169,7 +170,8 @@ public class BeanValidationExceptionsHandler {
         public void requestPart(RequestPart requestPart, ParameterErrors errors) {
             errors.getResolvableErrors().forEach(error -> issues.add(
                     InputValidationIssues.schemaViolation(
-                            InEnum.BODY, requestPart.value(), errors.getArgument(),
+                            InEnum.BODY, InputValidationIssue.convertName(InEnum.BODY, requestPart.value()),
+                            errors.getArgument(),
                             error.getDefaultMessage())));
         }
 

@@ -47,6 +47,14 @@ public class InputValidationIssue {
     private static final String INPUTS_SETTER_ONE_ITEM =
             "inputs[] can not be set with a single item, use in(in, name, value) instead";
 
+    private static final String IN_NAME_VALUE_INVALID_FORMAT = "input name has an invalid format";
+
+    // e.g: /, field, /field, /field/0, /field/0/nested
+    private static final String JSON_POINTER_BASIC_REGEX = "\\/*[a-zA-Z0-9]*(\\/[a-zA-Z0-9]+)*";
+
+    // e.g: field, field[0], field[0].nested
+    private static final String JSON_PATH_REGEX = "[a-zA-Z0-9]+(\\[\\d+\\])*(\\.[a-zA-Z0-9]+(\\[\\d+\\])*)*";
+
     private URI type;
     private URI href;
     private String title;
@@ -72,12 +80,14 @@ public class InputValidationIssue {
     }
 
     public InputValidationIssue(InEnum in, String name, Object value) {
+        verifyNameFormat(in, name);
         this.in = in;
         this.name = name;
         this.value = value;
     }
 
     public InputValidationIssue(InEnum in, String name) {
+        verifyNameFormat(in, name);
         this.in = in;
         this.name = name;
     }
@@ -120,6 +130,7 @@ public class InputValidationIssue {
 
     public void setIn(InEnum in) {
         verifyNoInputs(in);
+        verifyNameFormat(in, name);
         this.in = in;
     }
 
@@ -129,6 +140,7 @@ public class InputValidationIssue {
 
     public void setName(String name) {
         verifyNoInputs(name);
+        verifyNameFormat(in, name);
         this.name = name;
     }
 
@@ -179,6 +191,21 @@ public class InputValidationIssue {
 
         if (!inputs.isEmpty()) {
             throw new IllegalArgumentException(INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE);
+        }
+    }
+
+    public static void verifyNameFormat(InEnum in, String name) {
+
+        if (name == null) {
+            return;
+        }
+
+        if ((!ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPathFormat(name))
+                || (ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPointerFormat(in, name))) {
+
+            throw new IllegalArgumentException(
+                    IN_NAME_VALUE_INVALID_FORMAT + "(In: " + in + ", Name: " + name + ") It should follow "
+                            + (ProblemConfig.isJsonPointerEnabled() ? "JsonPointer" : "JsonPath") + " syntax");
         }
     }
 
@@ -448,6 +475,47 @@ public class InputValidationIssue {
                 ", inputs=" + inputs +
                 ", additionalProperties=" + additionalProperties +
                 '}';
+    }
+
+    private static boolean nameMatchesJsonPointerFormat(InEnum in, String name) {
+        return name.matches(JSON_POINTER_BASIC_REGEX)
+                && (in != InEnum.BODY || name.startsWith("/")) // if for body, the name must start with "/"
+                && !name.matches(".*\\/\\d+\\/\\d+\\/*") // not two indexes following each other (e.g: person/1/2)
+                && !name.matches("\\/*\\d+(\\/[a-zA-Z0-9]+)*"); // not starting with an index (e.g: /1/person, 1/person)
+    }
+
+    private static boolean nameMatchesJsonPathFormat(String name) {
+        return name.matches(JSON_PATH_REGEX);
+    }
+
+    public static String convertName(InEnum in, String nameJsonPath) {
+
+        if (nameJsonPath == null || nameJsonPath.trim().isEmpty()) {
+            return null;
+        } else if (!ProblemConfig.isJsonPointerEnabled()) {
+            return nameJsonPath;
+        } else {
+            // replace all indexes "[X]" by "/X" and replace all "." by "/"
+            String convertedName = replaceSquareBrackets(nameJsonPath).replace(".", "/");
+            return in == InEnum.BODY ? "/" + convertedName : convertedName;
+        }
+    }
+
+    public static String getNameFromProperties(InEnum in, List<String> propertiesName) {
+
+        if (propertiesName == null || propertiesName.isEmpty()) {
+            return null;
+        }
+
+        String name = ProblemConfig.isJsonPointerEnabled() ? propertiesName.stream()
+                .map(InputValidationIssue::replaceSquareBrackets).collect(Collectors.joining("/"))
+                : String.join(".", propertiesName);
+        return ProblemConfig.isJsonPointerEnabled() && in == InEnum.BODY ? "/" + name : name;
+    }
+
+    private static String replaceSquareBrackets(String propertyName) {
+        // replace all indexes "[X]" by "/X"
+        return propertyName.replaceAll("\\[(\\d+)\\]", "/$1");
     }
 
 }

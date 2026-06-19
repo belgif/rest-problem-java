@@ -15,10 +15,13 @@ import javax.validation.Path.Node;
 import javax.validation.Path.ParameterNode;
 import javax.ws.rs.BeanParam;
 
+import com.fasterxml.jackson.core.JsonPointer;
+
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
+import io.github.belgif.rest.problem.config.ProblemConfig;
 import io.github.belgif.rest.problem.internal.AnnotationUtil;
 
 /**
@@ -59,7 +62,10 @@ public class ConstraintViolationUtil {
 
     private static Input<Object> determineInput(ConstraintViolation<?> violation,
             MethodNode methodNode, List<Node> propertyPath, List<String> propertyName) {
-        Input<Object> input = Input.body(String.join(".", propertyName), violation.getInvalidValue());
+
+        Input<Object> input =
+                Input.body(InputValidationIssue.getNameFromProperties(InEnum.BODY, propertyName),
+                        violation.getInvalidValue());
         Node last = propertyPath.get(propertyPath.size() - 1);
         Node parent = propertyPath.size() > 1 ? propertyPath.get(propertyPath.size() - 2) : null;
         if (last.getKind() == ElementKind.PARAMETER) {
@@ -91,7 +97,8 @@ public class ConstraintViolationUtil {
                         InEnum in = ParameterSourceMapper.map(annotation.annotationType());
                         if (in != null) {
                             input.setIn(in);
-                            input.setName((String) annotation.annotationType().getMethod("value").invoke(annotation));
+                            input.setName(InputValidationIssue.convertName(in,
+                                    (String) annotation.annotationType().getMethod("value").invoke(annotation)));
                         }
                     }
                 } catch (NoSuchFieldException e) {
@@ -101,6 +108,14 @@ public class ConstraintViolationUtil {
                 }
             }
         }
+
+        if (ProblemConfig.isJsonPointerEnabled() && input.getName() != null && input.getIn() != InEnum.BODY
+                && input.getName().charAt(0) == JsonPointer.SEPARATOR) {
+            // remove the '/' created with InputValidationIssue.getNameFromProperties used at the beginning of this
+            // method
+            input.setName(input.getName().substring(1));
+        }
+
         return input;
     }
 

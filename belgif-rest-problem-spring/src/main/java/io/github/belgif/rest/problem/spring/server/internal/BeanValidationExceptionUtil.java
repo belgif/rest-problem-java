@@ -3,7 +3,6 @@ package io.github.belgif.rest.problem.spring.server.internal;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ElementKind;
@@ -45,13 +44,18 @@ public class BeanValidationExceptionUtil {
             }
         }
         InEnum in = DetermineSourceUtil.determineSource(violation, propertyPath, methodNode);
-        String name = propertyPath.stream().map(Node::toString).collect(Collectors.joining("."));
+
+        String name =
+                InputValidationIssue.getNameFromProperties(in, propertyPath.stream().map(Node::toString).toList());
+
         return InputValidationIssues.schemaViolation(in, name, violation.getInvalidValue(), violation.getMessage());
     }
 
     public static InputValidationIssue convertToInputValidationIssue(@NotNull FieldError fieldError, InEnum in) {
         String invalidValue = Objects.toString(fieldError.getRejectedValue(), null);
-        return InputValidationIssues.schemaViolation(in, fieldError.getField(), invalidValue,
+        String name = fieldError.getField();
+
+        return InputValidationIssues.schemaViolation(in, InputValidationIssue.convertName(in, name), invalidValue,
                 fieldError.getDefaultMessage());
     }
 

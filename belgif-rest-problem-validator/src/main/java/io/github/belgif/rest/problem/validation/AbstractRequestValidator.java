@@ -116,7 +116,8 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
         if (ssins != null && ssins.getValue() != null) {
             int index = 0;
             for (String ssin : ssins.getValue()) {
-                ssin(new Input<>(ssins.getIn(), ssins.getName() + "[" + index + "]", ssin));
+                String indexFormat = getIndexFormat(index);
+                ssin(new Input<>(ssins.getIn(), ssins.getName() + indexFormat, ssin));
                 index++;
             }
         }
@@ -359,7 +360,8 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
             Collection<T> allowedRefData = allowedRefDataSupplier.get();
             int index = 0;
             for (T value : input.getValue()) {
-                refData(new Input<T>(input.getIn(), input.getName() + "[" + index + "]", value), allowedRefData);
+                String indexFormat = getIndexFormat(index);
+                refData(new Input<T>(input.getIn(), input.getName() + indexFormat, value), allowedRefData);
                 index++;
             }
         }
@@ -378,7 +380,8 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
         if (input != null && input.getValue() != null && !input.getValue().isEmpty()) {
             int index = 0;
             for (T value : input.getValue()) {
-                refData(new Input<T>(input.getIn(), input.getName() + "[" + index + "]", value),
+                String indexFormat = getIndexFormat(index);
+                refData(new Input<T>(input.getIn(), input.getName() + indexFormat, value),
                         allowedRefDataPredicate);
                 index++;
             }
@@ -512,6 +515,10 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
     @SuppressWarnings("unchecked")
     protected SELF getThis() {
         return (SELF) this;
+    }
+
+    private String getIndexFormat(int index) {
+        return ProblemConfig.isJsonPointerEnabled() ? ("/" + index) : ("[" + index + "]");
     }
 
 }

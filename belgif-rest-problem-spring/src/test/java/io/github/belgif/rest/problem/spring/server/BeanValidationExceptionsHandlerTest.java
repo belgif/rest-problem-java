@@ -65,8 +65,8 @@ class BeanValidationExceptionsHandlerTest {
         assertThat(entity.getHeaders().getContentType()).isEqualTo(ProblemMediaType.INSTANCE);
         assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
             assertThat(problem.getIssues()).hasSize(2);
-            assertThat(problem.getIssues().get(0).getName()).isEqualTo("first");
-            assertThat(problem.getIssues().get(1).getName()).isEqualTo("second");
+            assertThat(problem.getIssues().get(0).getName()).isEqualTo("/first");
+            assertThat(problem.getIssues().get(1).getName()).isEqualTo("/second");
         });
     }
 
@@ -87,11 +87,11 @@ class BeanValidationExceptionsHandlerTest {
         assertThat(entity.getBody()).isInstanceOfSatisfying(BadRequestProblem.class, problem -> {
             assertThat(problem.getIssues()).hasSize(2);
             assertThat(problem.getIssues().get(0).getIn()).isEqualTo(InEnum.BODY);
-            assertThat(problem.getIssues().get(0).getName()).isEqualTo("first");
+            assertThat(problem.getIssues().get(0).getName()).isEqualTo("/first");
             assertThat(problem.getIssues().get(0).getValue()).isEqualTo("firstValue");
             assertThat(problem.getIssues().get(0).getDetail()).isEqualTo("firstDetail");
             assertThat(problem.getIssues().get(1).getIn()).isEqualTo(InEnum.BODY);
-            assertThat(problem.getIssues().get(1).getName()).isEqualTo("second");
+            assertThat(problem.getIssues().get(1).getName()).isEqualTo("/second");
             assertThat(problem.getIssues().get(1).getValue()).isEqualTo("secondValue");
             assertThat(problem.getIssues().get(1).getDetail()).isEqualTo("secondDetail");
         });
@@ -244,7 +244,7 @@ class BeanValidationExceptionsHandlerTest {
         assertThat(issues).hasSize(1);
         assertThat(issues.get(0).getType()).isEqualTo(InputValidationIssues.ISSUE_TYPE_SCHEMA_VIOLATION);
         assertThat(issues.get(0).getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issues.get(0).getName()).isEqualTo("name");
+        assertThat(issues.get(0).getName()).isEqualTo("/name");
         assertThat(issues.get(0).getValue()).isEqualTo("value");
         assertThat(issues.get(0).getDetail()).isEqualTo("message");
     }
@@ -374,7 +374,7 @@ class BeanValidationExceptionsHandlerTest {
         assertThat(issues).hasSize(1);
         assertThat(issues.get(0).getType()).isEqualTo(InputValidationIssues.ISSUE_TYPE_SCHEMA_VIOLATION);
         assertThat(issues.get(0).getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issues.get(0).getName()).isEqualTo("name");
+        assertThat(issues.get(0).getName()).isEqualTo("/name");
         assertThat(issues.get(0).getValue()).isEqualTo("value");
         assertThat(issues.get(0).getDetail()).isEqualTo("message");
     }

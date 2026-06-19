@@ -52,8 +52,8 @@ class ConstraintViolationExceptionMapperTest {
         assertThat(response.getStatus()).isEqualTo(400);
         assertThat(response.getEntity()).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem problem = (BadRequestProblem) response.getEntity();
-        assertThat(problem.getIssues().get(0).getName()).isEqualTo("first");
-        assertThat(problem.getIssues().get(1).getName()).isEqualTo("second");
+        assertThat(problem.getIssues().get(0).getName()).isEqualTo("/first");
+        assertThat(problem.getIssues().get(1).getName()).isEqualTo("/second");
     }
 
 }

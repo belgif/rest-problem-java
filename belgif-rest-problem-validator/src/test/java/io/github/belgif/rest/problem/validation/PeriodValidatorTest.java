@@ -15,35 +15,35 @@ class PeriodValidatorTest {
     @Test
     void ok() {
         // only endDate
-        assertThat(new PeriodValidator(Input.body("period", new InputPeriod(null, LocalDate.of(2023, 10, 12))))
+        assertThat(new PeriodValidator(Input.body("/period", new InputPeriod(null, LocalDate.of(2023, 10, 12))))
                 .validate()).isEmpty();
         // only startDate
-        assertThat(new PeriodValidator(Input.body("period", new InputPeriod(LocalDate.of(2023, 10, 12), null)))
+        assertThat(new PeriodValidator(Input.body("/period", new InputPeriod(LocalDate.of(2023, 10, 12), null)))
                 .validate()).isEmpty();
         // startDate == endDate
         assertThat(new PeriodValidator(
-                Input.body("period", new InputPeriod(LocalDate.of(2023, 10, 12), LocalDate.of(2023, 10, 12))))
+                Input.body("/period", new InputPeriod(LocalDate.of(2023, 10, 12), LocalDate.of(2023, 10, 12))))
                         .validate()).isEmpty();
         // startDate < endDate
         assertThat(new PeriodValidator(
-                Input.body("period", new InputPeriod(LocalDate.of(2023, 10, 11), LocalDate.of(2023, 10, 12))))
+                Input.body("/period", new InputPeriod(LocalDate.of(2023, 10, 11), LocalDate.of(2023, 10, 12))))
                         .validate()).isEmpty();
         // no startDate and endDate
-        assertThat(new PeriodValidator(Input.body("criteria.periods.period", new InputPeriod(null, null)))
+        assertThat(new PeriodValidator(Input.body("/criteria/periods/period", new InputPeriod(null, null)))
                 .validate()).isEmpty();
     }
 
     @Test
     void nokStartDateAfterEndDate() {
         InputPeriod badPeriod = new InputPeriod(LocalDate.of(2023, 10, 14), LocalDate.of(2023, 10, 12));
-        assertThat(new PeriodValidator(Input.body("period", badPeriod)).validate()).contains(
-                InputValidationIssues.invalidPeriod(BODY, "period", badPeriod));
+        assertThat(new PeriodValidator(Input.body("/period", badPeriod)).validate()).contains(
+                InputValidationIssues.invalidPeriod(BODY, "/period", badPeriod));
     }
 
     @Test
     void nokInvalidObject() {
         assertThatIllegalArgumentException().isThrownBy(() -> new PeriodValidator(
-                Input.body("period", "oops")).validate())
+                Input.body("/period", "oops")).validate())
                 .withMessage("No startDate field with type class java.time.LocalDate was found"
                         + " on class java.lang.String");
     }

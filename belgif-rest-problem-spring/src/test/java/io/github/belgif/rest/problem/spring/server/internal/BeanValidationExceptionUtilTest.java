@@ -14,6 +14,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
+import io.github.belgif.rest.problem.config.ProblemConfig;
 
 class BeanValidationExceptionUtilTest {
 
@@ -33,8 +35,31 @@ class BeanValidationExceptionUtilTest {
             .buildValidatorFactory()
             .getValidator();
 
+    @BeforeEach
+    void resetProblemConfig() {
+        ProblemConfig.reset();
+    }
+
     @Test
     void constraintViolationBodyProperty() {
+        Body target = new Body();
+        target.value = 10;
+
+        Set<ConstraintViolation<Body>> violations = validator.validate(target);
+        assertThat(violations).hasSize(1);
+
+        InputValidationIssue issue =
+                BeanValidationExceptionUtil.convertToInputValidationIssue(violations.iterator().next());
+        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+        assertThat(issue.getName()).isEqualTo("/value");
+        assertThat(issue.getValue()).isEqualTo(10);
+        assertThat(issue.getDetail()).isEqualTo("must be less than or equal to 5");
+    }
+
+    @Test
+    void constraintViolationBodyPropertyWithJsonPointerDisabled() {
+        ProblemConfig.setJsonPointerEnabled(false);
+
         Body target = new Body();
         target.value = 10;
 
@@ -51,6 +76,25 @@ class BeanValidationExceptionUtilTest {
 
     @Test
     void constraintViolationNestedBodyProperty() {
+        Body target = new Body();
+        target.nested.add(new Nested("OK"));
+        target.nested.add(new Nested(null));
+
+        Set<ConstraintViolation<Body>> violations = validator.validate(target);
+        assertThat(violations).hasSize(1);
+
+        InputValidationIssue issue =
+                BeanValidationExceptionUtil.convertToInputValidationIssue(violations.iterator().next());
+        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+        assertThat(issue.getName()).isEqualTo("/nested/1/prop");
+        assertThat(issue.getValue()).isNull();
+        assertThat(issue.getDetail()).isEqualTo("must not be null");
+    }
+
+    @Test
+    void constraintViolationNestedBodyPropertyWithJsonPointerDisabled() {
+        ProblemConfig.setJsonPointerEnabled(false);
+
         Body target = new Body();
         target.nested.add(new Nested("OK"));
         target.nested.add(new Nested(null));

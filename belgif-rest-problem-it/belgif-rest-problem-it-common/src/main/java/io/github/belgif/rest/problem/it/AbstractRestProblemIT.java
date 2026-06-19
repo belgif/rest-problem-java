@@ -332,11 +332,11 @@ public abstract class AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("body"))
-                .body("issues[0].name", equalTo("email"))
+                .body("issues[0].name", equalTo("/email"))
                 .body("issues[0].value", equalTo("mymail.com"))
                 .body("issues[0].detail", equalTo("must be a well-formed email address"))
                 .body("issues[1].in", equalTo("body"))
-                .body("issues[1].name", equalTo("name"))
+                .body("issues[1].name", equalTo("/name"))
                 .body("issues[1].value", nullValue())
                 .body("issues[1].detail", equalTo("must not be blank"));
     }
@@ -352,11 +352,11 @@ public abstract class AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("body"))
-                .body("issues[0].name", equalTo("nested.email"))
+                .body("issues[0].name", equalTo("/nested/email"))
                 .body("issues[0].value", equalTo("mymail.com"))
                 .body("issues[0].detail", equalTo("must be a well-formed email address"))
                 .body("issues[1].in", equalTo("body"))
-                .body("issues[1].name", equalTo("nested.name"))
+                .body("issues[1].name", equalTo("/nested/name"))
                 .body("issues[1].value", nullValue())
                 .body("issues[1].detail", equalTo("must not be blank"));
     }
@@ -372,11 +372,11 @@ public abstract class AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("body"))
-                .body("issues[0].name", equalTo("email"))
+                .body("issues[0].name", equalTo("/email"))
                 .body("issues[0].value", equalTo("mymail.com"))
                 .body("issues[0].detail", equalTo("must be a well-formed email address"))
                 .body("issues[1].in", equalTo("body"))
-                .body("issues[1].name", equalTo("name"))
+                .body("issues[1].name", equalTo("/name"))
                 .body("issues[1].value", nullValue())
                 .body("issues[1].detail", equalTo("must not be blank"));
     }
@@ -389,7 +389,7 @@ public abstract class AbstractRestProblemIT {
                 .statusCode(400)
                 .body("type", equalTo("urn:problem-type:belgif:badRequest"))
                 .body("issues[0].in", equalTo("body"))
-                .body("issues[0].name", equalTo("id"))
+                .body("issues[0].name", equalTo("/id"))
                 .body("issues[0].detail", equalTo("must not be null"));
     }
 
@@ -542,7 +542,7 @@ public abstract class AbstractRestProblemIT {
                 .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[0].detail", equalTo("JSON syntax error"))
                 .body("issues[0].in", equalTo("body"))
-                .body("issues[0].name", equalTo("nested"));
+                .body("issues[0].name", equalTo("/nested"));
     }
 
     @Test
@@ -558,7 +558,7 @@ public abstract class AbstractRestProblemIT {
                 .body("issues[0].title", equalTo("Input value is invalid with respect to the schema"))
                 .body("issues[0].detail", equalTo("not a valid `int` value"))
                 .body("issues[0].in", equalTo("body"))
-                .body("issues[0].name", equalTo("age"))
+                .body("issues[0].name", equalTo("/age"))
                 .body("issues[0].value", equalTo("twenty-two"));
     }
 
