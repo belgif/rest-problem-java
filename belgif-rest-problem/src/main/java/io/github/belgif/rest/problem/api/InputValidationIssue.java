@@ -50,10 +50,10 @@ public class InputValidationIssue {
     private static final String IN_NAME_VALUE_INVALID_FORMAT = "input name has an invalid format";
 
     // e.g: /, field, /field, /field/0, /field/0/nested
-    private static final String JSON_POINTER_BASIC_REGEX = "\\/*[a-zA-Z0-9]*(\\/[a-zA-Z0-9]+)*";
+    private static final String JSON_POINTER_BASIC_REGEX = "\\/*+[a-zA-Z0-9]*+(\\/[a-zA-Z0-9]+)*+";
 
     // e.g: field, field[0], field[0].nested
-    private static final String JSON_PATH_REGEX = "[a-zA-Z0-9]+(\\[\\d+\\])*(\\.[a-zA-Z0-9]+(\\[\\d+\\])*)*";
+    private static final String JSON_PATH_REGEX = "[a-zA-Z0-9]++(\\[\\d++\\])*+(\\.[a-zA-Z0-9]++(\\[\\d++\\])*+)*+";
 
     private URI type;
     private URI href;
@@ -481,7 +481,8 @@ public class InputValidationIssue {
         return name.matches(JSON_POINTER_BASIC_REGEX)
                 && (in != InEnum.BODY || name.startsWith("/")) // if for body, the name must start with "/"
                 && !name.matches(".*\\/\\d+\\/\\d+\\/*") // not two indexes following each other (e.g: person/1/2)
-                && !name.matches("\\/*\\d+(\\/[a-zA-Z0-9]+)*"); // not starting with an index (e.g: /1/person, 1/person)
+                && !name.matches("\\/*+\\d++(\\/[a-zA-Z0-9]++)*+"); // not starting with an index (e.g: /1/person,
+                                                                    // 1/person)
     }
 
     private static boolean nameMatchesJsonPathFormat(String name) {
