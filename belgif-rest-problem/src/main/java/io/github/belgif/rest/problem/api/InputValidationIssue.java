@@ -50,10 +50,10 @@ public class InputValidationIssue {
     private static final String IN_NAME_VALUE_INVALID_FORMAT = "input name has an invalid format";
 
     // e.g: /, field, /field, /field/0, /field/0/nested
-    private static final String JSON_POINTER_BASIC_REGEX = "\\/*+[a-zA-Z0-9]*+(\\/[a-zA-Z0-9]+)*+";
+    private static final String JSON_POINTER_BASIC_REGEX = "\\/*+[a-zA-Z0-9-]*+(\\/[a-zA-Z0-9-]+)*+";
 
     // e.g: field, field[0], field[0].nested
-    private static final String JSON_PATH_REGEX = "[a-zA-Z0-9]++(\\[\\d++\\])*+(\\.[a-zA-Z0-9]++(\\[\\d++\\])*+)*+";
+    private static final String JSON_PATH_REGEX = "[a-zA-Z0-9-]++(\\[\\d++\\])*+(\\.[a-zA-Z0-9-]++(\\[\\d++\\])*+)*+";
 
     private URI type;
     private URI href;
@@ -200,7 +200,7 @@ public class InputValidationIssue {
             return;
         }
 
-        if ((!ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPathFormat(name))
+        if ((!ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPathFormat(in, name))
                 || (ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPointerFormat(in, name))) {
 
             throw new IllegalArgumentException(
