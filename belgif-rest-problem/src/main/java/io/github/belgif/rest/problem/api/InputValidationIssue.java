@@ -200,7 +200,7 @@ public class InputValidationIssue {
             return;
         }
 
-        if ((!ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPathFormat(in, name))
+        if ((!ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPathFormat(name))
                 || (ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPointerFormat(in, name))) {
 
             throw new IllegalArgumentException(
