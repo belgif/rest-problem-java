@@ -333,6 +333,15 @@ class InputValidationIssueTest {
                 .isEqualTo(in == InEnum.BODY ? "/field/0" : "field/0");
         assertThat(InputValidationIssue.convertName(in, "field[0].nested"))
                 .isEqualTo(in == InEnum.BODY ? "/field/0/nested" : "field/0/nested");
+        assertThat(InputValidationIssue.convertName(in, "field/0"))
+                .isEqualTo(in == InEnum.BODY ? "/field/0" : "field/0");
+        assertThat(InputValidationIssue.convertName(in, "field/0/nested"))
+                .isEqualTo(in == InEnum.BODY ? "/field/0/nested" : "field/0/nested");
+    }
+
+    @Test
+    void convertNameSlashAlreadyForBodyParam() {
+        assertThat(InputValidationIssue.convertName(InEnum.BODY, "/field")).isEqualTo("/field");
     }
 
     @ParameterizedTest
@@ -369,6 +378,10 @@ class InputValidationIssueTest {
         properties.add("nested");
         assertThat(InputValidationIssue.getNameFromProperties(in, properties))
                 .isEqualTo(in == InEnum.BODY ? "/field/0/nested" : "field/0/nested");
+
+        properties.add("nestedAgain[1]");
+        assertThat(InputValidationIssue.getNameFromProperties(in, properties))
+                .isEqualTo(in == InEnum.BODY ? "/field/0/nested/nestedAgain/1" : "field/0/nested/nestedAgain/1");
     }
 
     @ParameterizedTest
@@ -406,6 +419,12 @@ class InputValidationIssueTest {
         assertDoesNotThrow(() -> new InputValidationIssue(in, prefix + "field/0/nested/2/nestedAgain", "value"));
 
         assertThatIllegalArgumentException().isThrownBy(() -> new InputValidationIssue(in, prefix + "field/0/1"))
+                .withMessageContaining("format").withMessageContaining("JsonPointer");
+
+        assertThatIllegalArgumentException().isThrownBy(() -> new InputValidationIssue(in, prefix + "/0/nested"))
+                .withMessageContaining("format").withMessageContaining("JsonPointer");
+
+        assertThatIllegalArgumentException().isThrownBy(() -> new InputValidationIssue(in, prefix + "0/nested"))
                 .withMessageContaining("format").withMessageContaining("JsonPointer");
 
         assertThatIllegalArgumentException().isThrownBy(() -> new InputValidationIssue(in, prefix + "field[0]"))

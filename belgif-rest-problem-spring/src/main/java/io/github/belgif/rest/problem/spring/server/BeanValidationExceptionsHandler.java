@@ -84,8 +84,8 @@ public class BeanValidationExceptionsHandler {
                 : name + " of incorrect type";
         String invalidValue = (String) exception.getValue();
         return ProblemMediaType.INSTANCE
-                .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(in, name, invalidValue,
-                        detail)));
+                .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(in,
+                        InputValidationIssue.convertName(in, name), invalidValue, detail)));
     }
 
     @ExceptionHandler(HandlerMethodValidationException.class)

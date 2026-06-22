@@ -142,7 +142,7 @@ public class InputValidationIssues {
         String indexFormat = ProblemConfig.isJsonPointerEnabled() ? ("/" + source.indexOf(value))
                 : ("[" + source.indexOf(value) + "]");
         String nameWithIndex = name + indexFormat;
-        return referencedResourceNotFound(in, nameWithIndex, value);
+        return referencedResourceNotFound(in, InputValidationIssue.convertName(in, nameWithIndex), value);
     }
 
     public static InputValidationIssue rejectedInput(InEnum in, String name, Object value) {

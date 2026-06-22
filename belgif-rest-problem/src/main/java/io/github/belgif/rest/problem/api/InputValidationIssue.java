@@ -50,7 +50,7 @@ public class InputValidationIssue {
     private static final String IN_NAME_VALUE_INVALID_FORMAT = "input name has an invalid format";
 
     // e.g: /, field, /field, /field/0, /field/0/nested
-    private static final String JSON_POINTER_BASIC_REGEX = "\\/*+[a-zA-Z0-9-]*+(\\/[a-zA-Z0-9-]+)*+";
+    private static final String JSON_POINTER_BASIC_REGEX = "\\/*+[a-zA-Z0-9-]*+(\\/[a-zA-Z0-9-]++)*+";
 
     // e.g: field, field[0], field[0].nested
     private static final String JSON_PATH_REGEX = "[a-zA-Z0-9-]++(\\[\\d++\\])*+(\\.[a-zA-Z0-9-]++(\\[\\d++\\])*+)*+";
@@ -480,7 +480,7 @@ public class InputValidationIssue {
     private static boolean nameMatchesJsonPointerFormat(InEnum in, String name) {
         return name.matches(JSON_POINTER_BASIC_REGEX)
                 && (in != InEnum.BODY || name.startsWith("/")) // if for body, the name must start with "/"
-                && !name.matches(".*\\/\\d+\\/\\d+\\/*") // not two indexes following each other (e.g: person/1/2)
+                && !name.matches(".*\\/\\d+\\/\\d+\\/*+") // not two indexes following each other (e.g: person/1/2)
                 && !name.matches("\\/*+\\d++(\\/[a-zA-Z0-9]++)*+"); // not starting with an index (e.g: /1/person,
                                                                     // 1/person)
     }
@@ -489,6 +489,12 @@ public class InputValidationIssue {
         return name.matches(JSON_PATH_REGEX);
     }
 
+    /**
+     *
+     * @param in the issue place in the query
+     * @param nameJsonPath the name in JsonPath syntax
+     * @return the name converted to JsonPointer syntax
+     */
     public static String convertName(InEnum in, String nameJsonPath) {
 
         if (nameJsonPath == null || nameJsonPath.trim().isEmpty()) {
@@ -498,7 +504,7 @@ public class InputValidationIssue {
         } else {
             // replace all indexes "[X]" by "/X" and replace all "." by "/"
             String convertedName = replaceSquareBrackets(nameJsonPath).replace(".", "/");
-            return in == InEnum.BODY ? "/" + convertedName : convertedName;
+            return in == InEnum.BODY && convertedName.charAt(0) != '/' ? "/" + convertedName : convertedName;
         }
     }
 
@@ -516,7 +522,7 @@ public class InputValidationIssue {
 
     private static String replaceSquareBrackets(String propertyName) {
         // replace all indexes "[X]" by "/X"
-        return propertyName.replaceAll("\\[(\\d+)\\]", "/$1");
+        return propertyName.replaceAll("\\[(\\d++)\\]", "/$1");
     }
 
 }

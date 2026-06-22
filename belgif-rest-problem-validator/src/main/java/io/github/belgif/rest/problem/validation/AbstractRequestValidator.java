@@ -1,5 +1,7 @@
 package io.github.belgif.rest.problem.validation;
 
+import static io.github.belgif.rest.problem.api.InputValidationIssue.*;
+
 import java.time.LocalDate;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
@@ -116,8 +118,8 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
         if (ssins != null && ssins.getValue() != null) {
             int index = 0;
             for (String ssin : ssins.getValue()) {
-                String indexFormat = getIndexFormat(index);
-                ssin(new Input<>(ssins.getIn(), ssins.getName() + indexFormat, ssin));
+                String name = convertName(ssins.getIn(), ssins.getName() + getIndexFormat(index));
+                ssin(new Input<>(ssins.getIn(), name, ssin));
                 index++;
             }
         }
@@ -360,8 +362,8 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
             Collection<T> allowedRefData = allowedRefDataSupplier.get();
             int index = 0;
             for (T value : input.getValue()) {
-                String indexFormat = getIndexFormat(index);
-                refData(new Input<T>(input.getIn(), input.getName() + indexFormat, value), allowedRefData);
+                String name = convertName(input.getIn(), input.getName() + getIndexFormat(index));
+                refData(new Input<T>(input.getIn(), name, value), allowedRefData);
                 index++;
             }
         }
@@ -380,9 +382,8 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
         if (input != null && input.getValue() != null && !input.getValue().isEmpty()) {
             int index = 0;
             for (T value : input.getValue()) {
-                String indexFormat = getIndexFormat(index);
-                refData(new Input<T>(input.getIn(), input.getName() + indexFormat, value),
-                        allowedRefDataPredicate);
+                String name = convertName(input.getIn(), input.getName() + getIndexFormat(index));
+                refData(new Input<T>(input.getIn(), name, value), allowedRefDataPredicate);
                 index++;
             }
         }
