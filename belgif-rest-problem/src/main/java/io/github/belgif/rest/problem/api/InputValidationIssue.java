@@ -50,10 +50,11 @@ public class InputValidationIssue {
     private static final String IN_NAME_VALUE_INVALID_FORMAT = "input name has an invalid format";
 
     // e.g: /, field, /field, /field/0, /field/0/nested
-    private static final String JSON_POINTER_BASIC_REGEX = "\\/*+[a-zA-Z0-9-]*+(\\/[a-zA-Z0-9-]++)*+";
+    private static final String JSON_POINTER_BASIC_REGEX = "\\/*+[a-zA-Z0-9-.]*+(\\/[a-zA-Z0-9-.]++)*+";
 
     // e.g: field, field[0], field[0].nested
-    private static final String JSON_PATH_REGEX = "[a-zA-Z0-9-]++(\\[\\d++\\])*+(\\.[a-zA-Z0-9-]++(\\[\\d++\\])*+)*+";
+    private static final String JSON_PATH_BASIC_REGEX =
+            "[a-zA-Z0-9-]++(\\[\\d++\\])*+(\\.[a-zA-Z0-9-]++(\\[\\d++\\])*+)*+";
 
     private URI type;
     private URI href;
@@ -200,7 +201,7 @@ public class InputValidationIssue {
             return;
         }
 
-        if ((!ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPathFormat(name))
+        if ((!ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPathFormat(in, name))
                 || (ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPointerFormat(in, name))) {
 
             throw new IllegalArgumentException(
@@ -481,12 +482,12 @@ public class InputValidationIssue {
         return name.matches(JSON_POINTER_BASIC_REGEX)
                 && (in != InEnum.BODY || name.startsWith("/")) // if for body, the name must start with "/"
                 && !name.matches(".*\\/\\d+\\/\\d+\\/*+") // not two indexes following each other (e.g: person/1/2)
-                && !name.matches("\\/*+\\d++(\\/[a-zA-Z0-9]++)*+"); // not starting with an index (e.g: /1/person,
-                                                                    // 1/person)
+                && !name.matches("\\/*+\\d++(\\/[a-zA-Z0-9-.]++)*+"); // not starting with an index (e.g: /1/person,
+                                                                      // 1/person)
     }
 
-    private static boolean nameMatchesJsonPathFormat(String name) {
-        return name.matches(JSON_PATH_REGEX);
+    private static boolean nameMatchesJsonPathFormat(InEnum in, String name) {
+        return in == InEnum.BODY ? name.matches(JSON_PATH_BASIC_REGEX) : name.matches("[a-zA-Z0-9-.]++(\\[\\d++\\])*+");
     }
 
     /**
@@ -501,14 +502,22 @@ public class InputValidationIssue {
             return null;
         } else if (!ProblemConfig.isJsonPointerEnabled()) {
             return nameJsonPath;
+        } else if (in != InEnum.BODY) {
+            // replace all indexes "[X]" by "/X"
+            return replaceSquareBrackets(nameJsonPath);
         } else {
             // replace all indexes "[X]" by "/X" and replace all "." by "/"
             String convertedName = replaceSquareBrackets(nameJsonPath).replace(".", "/");
-            return in == InEnum.BODY && convertedName.charAt(0) != '/' ? "/" + convertedName : convertedName;
+            return convertedName.charAt(0) != '/' ? "/" + convertedName : convertedName;
         }
     }
 
     public static String getNameFromProperties(InEnum in, List<String> propertiesName) {
+
+        if (in != InEnum.BODY && propertiesName != null && propertiesName.size() > 1) {
+            throw new IllegalArgumentException(
+                    "This method should only be used with several properties for issues located in the body");
+        }
 
         if (propertiesName == null || propertiesName.isEmpty()) {
             return null;
@@ -517,12 +526,11 @@ public class InputValidationIssue {
         String name = ProblemConfig.isJsonPointerEnabled() ? propertiesName.stream()
                 .map(InputValidationIssue::replaceSquareBrackets).collect(Collectors.joining("/"))
                 : String.join(".", propertiesName);
-        return ProblemConfig.isJsonPointerEnabled() && in == InEnum.BODY ? "/" + name : name;
+        return in == InEnum.BODY && ProblemConfig.isJsonPointerEnabled() ? "/" + name : name;
     }
 
     private static String replaceSquareBrackets(String propertyName) {
         // replace all indexes "[X]" by "/X"
         return propertyName.replaceAll("\\[(\\d++)\\]", "/$1");
     }
-
 }
