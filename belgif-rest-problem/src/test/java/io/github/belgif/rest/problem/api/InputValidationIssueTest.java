@@ -330,9 +330,9 @@ class InputValidationIssueTest {
         assertThat(InputValidationIssue.convertName(in, "    ")).isNull();
         assertThat(InputValidationIssue.convertName(in, "field")).isEqualTo(in == InEnum.BODY ? "/field" : "field");
         assertThat(InputValidationIssue.convertName(in, "field[0]"))
-                .isEqualTo(in == InEnum.BODY ? "/field/0" : "field/0");
+                .isEqualTo(in == InEnum.BODY ? "/field/0" : "field[0]");
         assertThat(InputValidationIssue.convertName(in, "field[0].nested"))
-                .isEqualTo(in == InEnum.BODY ? "/field/0/nested" : "field/0.nested");
+                .isEqualTo(in == InEnum.BODY ? "/field/0/nested" : "field[0].nested");
         assertThat(InputValidationIssue.convertName(in, "field/0"))
                 .isEqualTo(in == InEnum.BODY ? "/field/0" : "field/0");
         assertThat(InputValidationIssue.convertName(in, "field/0/nested"))
@@ -393,7 +393,7 @@ class InputValidationIssueTest {
         assertThat(InputValidationIssue.getNameFromProperties(in, properties)).isEqualTo("field");
 
         properties.set(0, "field[0]");
-        assertThat(InputValidationIssue.getNameFromProperties(in, properties)).isEqualTo("field/0");
+        assertThat(InputValidationIssue.getNameFromProperties(in, properties)).isEqualTo("field[0]");
     }
 
     @Test
@@ -414,7 +414,8 @@ class InputValidationIssueTest {
         assertThat(InputValidationIssue.getNameFromProperties(InEnum.BODY, properties)).isEqualTo("field[0]");
 
         properties.add("nested");
-        assertThat(InputValidationIssue.getNameFromProperties(InEnum.BODY, properties)).isEqualTo("field[0].nested");
+        assertThat(InputValidationIssue.getNameFromProperties(InEnum.BODY, properties))
+                .isEqualTo("field[0].nested");
     }
 
     @ParameterizedTest

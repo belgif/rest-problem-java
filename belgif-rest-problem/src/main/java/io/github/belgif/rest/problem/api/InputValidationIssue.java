@@ -50,7 +50,7 @@ public class InputValidationIssue {
     private static final String IN_NAME_VALUE_INVALID_FORMAT = "input name has an invalid format";
 
     // e.g: /, field, /field, /field/0, /field/0/nested
-    private static final String JSON_POINTER_BASIC_REGEX = "\\/*+[a-zA-Z0-9-.]*+(\\/[a-zA-Z0-9-.]++)*+";
+    private static final String JSON_POINTER_BASIC_REGEX = "\\/+[a-zA-Z0-9-]*+(\\/[a-zA-Z0-9-]++)*+";
 
     // e.g: field, field[0], field[0].nested
     private static final String JSON_PATH_BASIC_REGEX =
@@ -201,8 +201,8 @@ public class InputValidationIssue {
             return;
         }
 
-        if ((!ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPathFormat(in, name))
-                || (ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPointerFormat(in, name))) {
+        if ((in == InEnum.BODY && ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPointerFormat(name))
+                || (!ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPathFormat(in, name))) {
 
             throw new IllegalArgumentException(
                     IN_NAME_VALUE_INVALID_FORMAT + "(In: " + in + ", Name: " + name + ") It should follow "
@@ -478,12 +478,10 @@ public class InputValidationIssue {
                 '}';
     }
 
-    private static boolean nameMatchesJsonPointerFormat(InEnum in, String name) {
+    private static boolean nameMatchesJsonPointerFormat(String name) {
         return name.matches(JSON_POINTER_BASIC_REGEX)
-                && (in != InEnum.BODY || name.startsWith("/")) // if for body, the name must start with "/"
                 && !name.matches(".*\\/\\d+\\/\\d+\\/*+") // not two indexes following each other (e.g: person/1/2)
-                && !name.matches("\\/*+\\d++(\\/[a-zA-Z0-9-.]++)*+"); // not starting with an index (e.g: /1/person,
-                                                                      // 1/person)
+                && !name.matches("\\/+\\d++(\\/[a-zA-Z0-9-.]++)*+"); // not starting with an index (e.g: /1/person)
     }
 
     private static boolean nameMatchesJsonPathFormat(InEnum in, String name) {
@@ -500,11 +498,8 @@ public class InputValidationIssue {
 
         if (nameJsonPath == null || nameJsonPath.trim().isEmpty()) {
             return null;
-        } else if (!ProblemConfig.isJsonPointerEnabled()) {
+        } else if (!ProblemConfig.isJsonPointerEnabled() || in != InEnum.BODY) {
             return nameJsonPath;
-        } else if (in != InEnum.BODY) {
-            // replace all indexes "[X]" by "/X"
-            return replaceSquareBrackets(nameJsonPath);
         } else {
             // replace all indexes "[X]" by "/X" and replace all "." by "/"
             String convertedName = replaceSquareBrackets(nameJsonPath).replace(".", "/");
@@ -523,7 +518,7 @@ public class InputValidationIssue {
             return null;
         }
 
-        String name = ProblemConfig.isJsonPointerEnabled() ? propertiesName.stream()
+        String name = ProblemConfig.isJsonPointerEnabled() && in == InEnum.BODY ? propertiesName.stream()
                 .map(InputValidationIssue::replaceSquareBrackets).collect(Collectors.joining("/"))
                 : String.join(".", propertiesName);
         return in == InEnum.BODY && ProblemConfig.isJsonPointerEnabled() ? "/" + name : name;

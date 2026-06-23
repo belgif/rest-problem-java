@@ -339,10 +339,8 @@ class RequestValidatorTest {
         ProblemConfig.setJsonPointerEnabled(isJsonPointerEnabled);
         assertInvalid(new RequestValidator().refDatas(Input.query("refDatas",
                 Arrays.asList("a", "x", "b", "y")), Arrays.asList("a", "b", "c")),
-                InputValidationIssues.referencedResourceNotFound(QUERY,
-                        isJsonPointerEnabled ? "refDatas/1" : "refDatas[1]", "x"),
-                InputValidationIssues.referencedResourceNotFound(QUERY,
-                        isJsonPointerEnabled ? "refDatas/3" : "refDatas[3]", "y"));
+                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[1]", "x"),
+                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[3]", "y"));
     }
 
     @ParameterizedTest
@@ -368,10 +366,8 @@ class RequestValidatorTest {
                     calls.incrementAndGet();
                     return Arrays.asList("a", "b", "c");
                 }),
-                InputValidationIssues.referencedResourceNotFound(QUERY,
-                        isJsonPointerEnabled ? "refDatas/1" : "refDatas[1]", "x"),
-                InputValidationIssues.referencedResourceNotFound(QUERY,
-                        isJsonPointerEnabled ? "refDatas/3" : "refDatas[3]", "y"));
+                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[1]", "x"),
+                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[3]", "y"));
         assertThat(calls).hasValue(1);
     }
 
@@ -399,10 +395,8 @@ class RequestValidatorTest {
         ProblemConfig.setJsonPointerEnabled(isJsonPointerEnabled);
         assertInvalid(new RequestValidator().refDatas(Input.query("refDatas", Arrays.asList("a", "x", "b", "y")),
                 Arrays.asList("a", "b", "c")::contains),
-                InputValidationIssues.referencedResourceNotFound(QUERY,
-                        isJsonPointerEnabled ? "refDatas/1" : "refDatas[1]", "x"),
-                InputValidationIssues.referencedResourceNotFound(QUERY,
-                        isJsonPointerEnabled ? "refDatas/3" : "refDatas[3]", "y"));
+                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[1]", "x"),
+                InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[3]", "y"));
     }
 
     @Test

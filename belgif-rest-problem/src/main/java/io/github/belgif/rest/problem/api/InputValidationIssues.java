@@ -139,7 +139,7 @@ public class InputValidationIssues {
      * @param <T> The type of the reference
      */
     public static <T> InputValidationIssue referencedResourceNotFound(InEnum in, String name, T value, List<T> source) {
-        String indexFormat = ProblemConfig.isJsonPointerEnabled() ? ("/" + source.indexOf(value))
+        String indexFormat = ProblemConfig.isJsonPointerEnabled() && in == InEnum.BODY ? ("/" + source.indexOf(value))
                 : ("[" + source.indexOf(value) + "]");
         String nameWithIndex = name + indexFormat;
         return referencedResourceNotFound(in, InputValidationIssue.convertName(in, nameWithIndex), value);
