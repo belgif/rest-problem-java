@@ -12,13 +12,13 @@ class YearMonthValidatorTest {
 
     @Test
     void ok() {
-        assertThat(new YearMonthValidator(Input.body("test", "2024-01")).validate()).isEmpty();
+        assertThat(new YearMonthValidator(Input.body("/test", "2024-01")).validate()).isEmpty();
     }
 
     @Test
     void nok() {
-        assertThat(new YearMonthValidator(Input.body("criteria.month", "2024-99")).validate())
-                .contains(InputValidationIssues.invalidYearMonth(BODY, "criteria.month", "2024-99"));
+        assertThat(new YearMonthValidator(Input.body("/criteria/month", "2024-99")).validate())
+                .contains(InputValidationIssues.invalidYearMonth(BODY, "/criteria/month", "2024-99"));
     }
 
 }

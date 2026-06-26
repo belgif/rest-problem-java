@@ -2,10 +2,12 @@ package io.github.belgif.rest.problem.internal;
 
 import static io.github.belgif.rest.problem.api.InputValidationIssues.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
+import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import tools.jackson.core.JacksonException.Reference;
 import tools.jackson.core.exc.StreamReadException;
@@ -43,21 +45,22 @@ public class Jackson3Util {
     }
 
     private static String getName(List<Reference> path) {
+
         if (path.isEmpty()) {
             return null;
         }
-        StringBuilder name = new StringBuilder();
+
+        List<String> properties = new ArrayList<>();
+
         for (Reference reference : path) {
             if (reference.from() instanceof List) {
-                name.append("[").append(reference.getIndex()).append("]");
+                // append the index to the property name
+                properties.set(properties.size() - 1,
+                        properties.get(properties.size() - 1) + "[" + reference.getIndex() + "]");
             } else {
-                if (name.length() > 0) {
-                    name.append(".");
-                }
-                name.append(reference.getPropertyName());
+                properties.add(reference.getPropertyName());
             }
         }
-        return name.toString();
+        return InputValidationIssue.getNameFromProperties(InEnum.BODY, properties);
     }
-
 }

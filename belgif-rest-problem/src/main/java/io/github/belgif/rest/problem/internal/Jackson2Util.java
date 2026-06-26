@@ -2,6 +2,7 @@ package io.github.belgif.rest.problem.internal;
 
 import static io.github.belgif.rest.problem.api.InputValidationIssues.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
+import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 
 /**
@@ -59,21 +61,22 @@ public class Jackson2Util {
     }
 
     private static String getName(List<Reference> path) {
+
         if (path.isEmpty()) {
             return null;
         }
-        StringBuilder builder = new StringBuilder();
+        List<String> properties = new ArrayList<>();
+
         for (Reference reference : path) {
             if (reference.getFrom() instanceof List) {
-                builder.append("[").append(reference.getIndex()).append("]");
+                // append the index to the property name
+                properties.set(properties.size() - 1,
+                        properties.get(properties.size() - 1) + "[" + reference.getIndex() + "]");
             } else {
-                if (builder.length() > 0) {
-                    builder.append(".");
-                }
-                builder.append(reference.getFieldName());
+                properties.add(reference.getFieldName());
             }
         }
-        return builder.toString();
+        return InputValidationIssue.getNameFromProperties(InEnum.BODY, properties);
     }
 
     @SuppressWarnings("java:S1872")

@@ -80,7 +80,7 @@ abstract class AbstractJacksonSerializationTest {
     @Test
     void badRequestProblemReplacedSsin() throws IOException {
         BadRequestProblem problem = new BadRequestProblem(
-                InputValidationIssues.replacedSsin(InEnum.BODY, "parent[1].ssin", "12345678901", "23456789012"));
+                InputValidationIssues.replacedSsin(InEnum.BODY, "/parent/1/ssin", "12345678901", "23456789012"));
         assertSerializationRoundtrip(problem);
     }
 
@@ -182,7 +182,7 @@ abstract class AbstractJacksonSerializationTest {
                 + "   \"detail\": \"The input message is incorrect\",\n"
                 + "   \"invalidParams\": [   {\n"
                 + "      \"in\": \"body\",\n"
-                + "      \"name\": \"sector\",\n"
+                + "      \"name\": \"/sector\",\n"
                 + "      \"reason\": \"must be less than or equal to 999\",\n"
                 + "      \"value\": 9999,\n"
                 + "      \"issueType\": \"schemaViolation\"\n"
@@ -239,7 +239,7 @@ abstract class AbstractJacksonSerializationTest {
     @Test
     void issueWithNullValue() throws IOException {
         BadRequestProblem problem = new BadRequestProblem(
-                new InputValidationIssue(InEnum.BODY, "id", null));
+                new InputValidationIssue(InEnum.BODY, "/id", null));
         String json = writeProblem(problem);
         assertThat(json).doesNotContain("null");
         assertSerializationRoundtrip(problem);
@@ -249,7 +249,7 @@ abstract class AbstractJacksonSerializationTest {
     void issueWithNullInputValue() throws IOException {
         ProblemConfig.setExtInputsArrayEnabled(true);
         BadRequestProblem problem = new BadRequestProblem(new InputValidationIssue()
-                .inputs(Input.body("a", null), Input.body("b", null)));
+                .inputs(Input.body("/a", null), Input.body("/b", null)));
         String json = writeProblem(problem);
         assertThat(json).doesNotContain("null");
         assertSerializationRoundtrip(problem);

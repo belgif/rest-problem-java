@@ -1,5 +1,7 @@
 package io.github.belgif.rest.problem.validation;
 
+import static io.github.belgif.rest.problem.api.InputValidationIssue.*;
+
 import java.time.LocalDate;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
+import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.config.ProblemConfig;
@@ -116,7 +119,8 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
         if (ssins != null && ssins.getValue() != null) {
             int index = 0;
             for (String ssin : ssins.getValue()) {
-                ssin(new Input<>(ssins.getIn(), ssins.getName() + "[" + index + "]", ssin));
+                String name = transformName(ssins.getIn(), ssins.getName() + getIndexFormat(ssins.getIn(), index));
+                ssin(new Input<>(ssins.getIn(), name, ssin));
                 index++;
             }
         }
@@ -359,7 +363,8 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
             Collection<T> allowedRefData = allowedRefDataSupplier.get();
             int index = 0;
             for (T value : input.getValue()) {
-                refData(new Input<T>(input.getIn(), input.getName() + "[" + index + "]", value), allowedRefData);
+                String name = transformName(input.getIn(), input.getName() + getIndexFormat(input.getIn(), index));
+                refData(new Input<T>(input.getIn(), name, value), allowedRefData);
                 index++;
             }
         }
@@ -378,8 +383,8 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
         if (input != null && input.getValue() != null && !input.getValue().isEmpty()) {
             int index = 0;
             for (T value : input.getValue()) {
-                refData(new Input<T>(input.getIn(), input.getName() + "[" + index + "]", value),
-                        allowedRefDataPredicate);
+                String name = transformName(input.getIn(), input.getName() + getIndexFormat(input.getIn(), index));
+                refData(new Input<T>(input.getIn(), name, value), allowedRefDataPredicate);
                 index++;
             }
         }
@@ -512,6 +517,10 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
     @SuppressWarnings("unchecked")
     protected SELF getThis() {
         return (SELF) this;
+    }
+
+    private String getIndexFormat(InEnum in, int index) {
+        return ProblemConfig.isJsonPointerEnabled() && in == InEnum.BODY ? ("/" + index) : ("[" + index + "]");
     }
 
 }

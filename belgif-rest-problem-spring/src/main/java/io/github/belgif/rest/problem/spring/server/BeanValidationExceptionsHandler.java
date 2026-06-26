@@ -84,8 +84,8 @@ public class BeanValidationExceptionsHandler {
                 : name + " of incorrect type";
         String invalidValue = (String) exception.getValue();
         return ProblemMediaType.INSTANCE
-                .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(in, name, invalidValue,
-                        detail)));
+                .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(in,
+                        InputValidationIssue.transformName(in, name), invalidValue, detail)));
     }
 
     @ExceptionHandler(HandlerMethodValidationException.class)
@@ -120,7 +120,8 @@ public class BeanValidationExceptionsHandler {
             if (modelAttribute != null) {
                 errors.getResolvableErrors().forEach(error -> issues.add(
                         InputValidationIssues.schemaViolation(
-                                InEnum.BODY, modelAttribute.value(), errors.getArgument(),
+                                InEnum.BODY, InputValidationIssue.transformName(InEnum.BODY, modelAttribute.value()),
+                                errors.getArgument(),
                                 error.getDefaultMessage())));
             }
         }
@@ -169,7 +170,8 @@ public class BeanValidationExceptionsHandler {
         public void requestPart(RequestPart requestPart, ParameterErrors errors) {
             errors.getResolvableErrors().forEach(error -> issues.add(
                     InputValidationIssues.schemaViolation(
-                            InEnum.BODY, requestPart.value(), errors.getArgument(),
+                            InEnum.BODY, InputValidationIssue.transformName(InEnum.BODY, requestPart.value()),
+                            errors.getArgument(),
                             error.getDefaultMessage())));
         }
 
