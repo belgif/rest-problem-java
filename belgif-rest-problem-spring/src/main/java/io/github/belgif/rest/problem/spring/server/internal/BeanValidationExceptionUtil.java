@@ -55,7 +55,7 @@ public class BeanValidationExceptionUtil {
         String invalidValue = Objects.toString(fieldError.getRejectedValue(), null);
         String name = fieldError.getField();
 
-        return InputValidationIssues.schemaViolation(in, InputValidationIssue.convertName(in, name), invalidValue,
+        return InputValidationIssues.schemaViolation(in, InputValidationIssue.transformName(in, name), invalidValue,
                 fieldError.getDefaultMessage());
     }
 

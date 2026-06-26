@@ -1,13 +1,14 @@
 package io.github.belgif.rest.problem.api;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.assertj.core.api.ThrowableAssert;
@@ -15,8 +16,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-
-import com.fasterxml.jackson.core.JsonPointer;
 
 import io.github.belgif.rest.problem.config.ProblemConfig;
 import io.github.belgif.rest.problem.i18n.Context;
@@ -324,65 +323,75 @@ class InputValidationIssueTest {
 
     @ParameterizedTest
     @EnumSource(InEnum.class)
-    void convertName(InEnum in) {
-        assertThat(InputValidationIssue.convertName(in, null)).isNull();
-        assertThat(InputValidationIssue.convertName(in, "")).isNull();
-        assertThat(InputValidationIssue.convertName(in, "    ")).isNull();
-        assertThat(InputValidationIssue.convertName(in, "field")).isEqualTo(in == InEnum.BODY ? "/field" : "field");
-        assertThat(InputValidationIssue.convertName(in, "field[0]"))
+    void transformNameInBody(InEnum in) {
+        assertThat(InputValidationIssue.transformName(in, null)).isNull();
+        assertThat(InputValidationIssue.transformName(in, "")).isNull();
+        assertThat(InputValidationIssue.transformName(in, "    ")).isNull();
+        assertThat(InputValidationIssue.transformName(in, "field")).isEqualTo(in == InEnum.BODY ? "/field" : "field");
+        assertThat(InputValidationIssue.transformName(in, "field[0]"))
                 .isEqualTo(in == InEnum.BODY ? "/field/0" : "field[0]");
-        assertThat(InputValidationIssue.convertName(in, "field[0].nested"))
+        assertThat(InputValidationIssue.transformName(in, "field[0].nested"))
                 .isEqualTo(in == InEnum.BODY ? "/field/0/nested" : "field[0].nested");
-        assertThat(InputValidationIssue.convertName(in, "field/0"))
+        assertThat(InputValidationIssue.transformName(in, "field/0"))
                 .isEqualTo(in == InEnum.BODY ? "/field/0" : "field/0");
-        assertThat(InputValidationIssue.convertName(in, "field/0/nested"))
+        assertThat(InputValidationIssue.transformName(in, "field/0/nested"))
                 .isEqualTo(in == InEnum.BODY ? "/field/0/nested" : "field/0/nested");
-    }
-
-    @Test
-    void convertNameSlashAlreadyForBodyParam() {
-        assertThat(InputValidationIssue.convertName(InEnum.BODY, "/field")).isEqualTo("/field");
+        assertThat(InputValidationIssue.transformName(in, "/field/0")).isEqualTo("/field/0");
+        assertThat(InputValidationIssue.transformName(in, "/field/0/nested")).isEqualTo("/field/0/nested");
+        assertThat(InputValidationIssue.transformName(in, "/field")).isEqualTo("/field");
     }
 
     @ParameterizedTest
     @EnumSource(InEnum.class)
-    void convertNameWithJsonPointerDisabled(InEnum in) {
-
+    void transformNameInBodyJsonPointerDisabled(InEnum in) {
         ProblemConfig.setJsonPointerEnabled(false);
 
-        assertThat(InputValidationIssue.convertName(in, null)).isNull();
-        assertThat(InputValidationIssue.convertName(in, "")).isNull();
-        assertThat(InputValidationIssue.convertName(in, "    ")).isNull();
-        assertThat(InputValidationIssue.convertName(in, "field")).isEqualTo("field");
-        assertThat(InputValidationIssue.convertName(in, "field[0]")).isEqualTo("field[0]");
-        assertThat(InputValidationIssue.convertName(in, "field[0].nested")).isEqualTo("field[0].nested");
-    }
-
-    @Test
-    void getNameFromProperties() {
-        List<String> properties = null;
-        assertThat(InputValidationIssue.getNameFromProperties(InEnum.BODY, properties)).isNull();
-
-        properties = new ArrayList<>();
-        assertThat(InputValidationIssue.getNameFromProperties(InEnum.BODY, properties)).isNull();
-
-        properties.add("field");
-        assertThat(InputValidationIssue.getNameFromProperties(InEnum.BODY, properties)).isEqualTo("/field");
-
-        properties.set(0, "field[0]");
-        assertThat(InputValidationIssue.getNameFromProperties(InEnum.BODY, properties)).isEqualTo("/field/0");
-
-        properties.add("nested");
-        assertThat(InputValidationIssue.getNameFromProperties(InEnum.BODY, properties)).isEqualTo("/field/0/nested");
-
-        properties.add("nestedAgain[1]");
-        assertThat(InputValidationIssue.getNameFromProperties(InEnum.BODY, properties))
-                .isEqualTo("/field/0/nested/nestedAgain/1");
+        assertThat(InputValidationIssue.transformName(in, null)).isNull();
+        assertThat(InputValidationIssue.transformName(in, "")).isNull();
+        assertThat(InputValidationIssue.transformName(in, "    ")).isNull();
+        assertThat(InputValidationIssue.transformName(in, "field")).isEqualTo("field");
+        assertThat(InputValidationIssue.transformName(in, "field[0]")).isEqualTo("field[0]");
+        assertThat(InputValidationIssue.transformName(in, "field[0].nested")).isEqualTo("field[0].nested");
+        assertThat(InputValidationIssue.transformName(in, "field/0")).isEqualTo("field/0");
+        assertThat(InputValidationIssue.transformName(in, "field/0/nested")).isEqualTo("field/0/nested");
+        assertThat(InputValidationIssue.transformName(in, "/field/0")).isEqualTo("/field/0");
+        assertThat(InputValidationIssue.transformName(in, "/field/0/nested")).isEqualTo("/field/0/nested");
+        assertThat(InputValidationIssue.transformName(in, "/field")).isEqualTo("/field");
     }
 
     @ParameterizedTest
-    @EnumSource(value = InEnum.class, names = { "BODY" }, mode = EnumSource.Mode.EXCLUDE)
-    void getNameFromPropertiesNotBody(InEnum in) {
+    @EnumSource(InEnum.class)
+    void getNameFromProperties(InEnum in) {
+        List<String> properties = null;
+        assertThat(InputValidationIssue.getNameFromProperties(in, properties)).isNull();
+
+        properties = new ArrayList<>();
+        assertThat(InputValidationIssue.getNameFromProperties(in, properties)).isNull();
+
+        properties.add("field");
+        assertThat(InputValidationIssue.getNameFromProperties(in, properties))
+                .isEqualTo(in == InEnum.BODY ? "/field" : "field");
+
+        properties.set(0, "field[0]");
+        assertThat(InputValidationIssue.getNameFromProperties(in, properties))
+                .isEqualTo(in == InEnum.BODY ? "/field/0" : "field[0]");
+
+        if (in == InEnum.BODY) {
+            properties.add("nested");
+            assertThat(InputValidationIssue.getNameFromProperties(in, properties)).isEqualTo("/field/0/nested");
+
+            properties.add("nestedAgain[1]");
+            assertThat(InputValidationIssue.getNameFromProperties(in, properties))
+                    .isEqualTo("/field/0/nested/nestedAgain/1");
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(InEnum.class)
+    void getNameFromPropertiesWithJsonPointerDisabled(InEnum in) {
+
+        ProblemConfig.setJsonPointerEnabled(false);
+
         List<String> properties = null;
         assertThat(InputValidationIssue.getNameFromProperties(in, properties)).isNull();
 
@@ -394,28 +403,16 @@ class InputValidationIssueTest {
 
         properties.set(0, "field[0]");
         assertThat(InputValidationIssue.getNameFromProperties(in, properties)).isEqualTo("field[0]");
-    }
 
-    @Test
-    void getNameFromPropertiesJsonPointerDisabled() {
+        if (in == InEnum.BODY) {
+            properties.add("nested");
+            assertThat(InputValidationIssue.getNameFromProperties(in, properties)).isEqualTo("field[0].nested");
+            assertThat(InputValidationIssue.getNameFromProperties(in, properties)).isEqualTo("field[0].nested");
 
-        ProblemConfig.setJsonPointerEnabled(false);
-
-        List<String> properties = null;
-        assertThat(InputValidationIssue.getNameFromProperties(InEnum.BODY, properties)).isNull();
-
-        properties = new ArrayList<>();
-        assertThat(InputValidationIssue.getNameFromProperties(InEnum.BODY, properties)).isNull();
-
-        properties.add("field");
-        assertThat(InputValidationIssue.getNameFromProperties(InEnum.BODY, properties)).isEqualTo("field");
-
-        properties.set(0, "field[0]");
-        assertThat(InputValidationIssue.getNameFromProperties(InEnum.BODY, properties)).isEqualTo("field[0]");
-
-        properties.add("nested");
-        assertThat(InputValidationIssue.getNameFromProperties(InEnum.BODY, properties))
-                .isEqualTo("field[0].nested");
+            properties.add("nestedAgain[1]");
+            assertThat(InputValidationIssue.getNameFromProperties(in, properties))
+                    .isEqualTo("field[0].nested.nestedAgain[1]");
+        }
     }
 
     @ParameterizedTest
@@ -438,82 +435,133 @@ class InputValidationIssueTest {
     @ParameterizedTest
     @EnumSource(InEnum.class)
     void nameMatchingJsonPointerFormatInConstructor(InEnum in) {
-        String prefix = in == InEnum.BODY ? "/" : "";
-        assertDoesNotThrow(() -> new InputValidationIssue(in, prefix + "field"));
-        assertDoesNotThrow(() -> new InputValidationIssue(in, prefix + ""));
-        assertDoesNotThrow(() -> new InputValidationIssue(in, prefix + "field", "value"));
-        assertDoesNotThrow(() -> new InputValidationIssue(in, prefix + "field/0"));
-        assertDoesNotThrow(() -> new InputValidationIssue(in, prefix + "field/0", "value"));
-        assertDoesNotThrow(() -> new InputValidationIssue(in, prefix + "field/0/nested/2/nestedAgain"));
-        assertDoesNotThrow(() -> new InputValidationIssue(in, prefix + "field/0/nested/2/nestedAgain", "value"));
-    }
+        List<String> names = Arrays.asList("/field", "/field/0", "/field/0/nested/2/nestedAgain");
 
-    @Test
-    void nameInBodyMatchingJsonPointerFormatInConstructorSyntaxFault() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new InputValidationIssue(InEnum.BODY, "field/0/1"))
-                .withMessageContaining("format").withMessageContaining("JsonPointer");
-
-        assertThatIllegalArgumentException().isThrownBy(() -> new InputValidationIssue(InEnum.BODY, "/0/nested"))
-                .withMessageContaining("format").withMessageContaining("JsonPointer");
-
-        assertThatIllegalArgumentException().isThrownBy(() -> new InputValidationIssue(InEnum.BODY, "0/nested"))
-                .withMessageContaining("format").withMessageContaining("JsonPointer");
-
-        assertThatIllegalArgumentException().isThrownBy(() -> new InputValidationIssue(InEnum.BODY, "field[0]"))
-                .withMessageContaining("format").withMessageContaining("JsonPointer");
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> new InputValidationIssue(InEnum.BODY, "field[0]", "value"))
-                .withMessageContaining("format").withMessageContaining("JsonPointer");
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> new InputValidationIssue(InEnum.BODY, "field[0].nested[2]/nestedAgain"))
-                .withMessageContaining("format").withMessageContaining("JsonPointer");
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> new InputValidationIssue(InEnum.BODY, "field[0].nested[2]/nestedAgain", "value"))
-                .withMessageContaining("format").withMessageContaining("JsonPointer");
-    }
-
-    @Test
-    void nameInBodyMatchingJsonPathFormatInConstructor() {
-        ProblemConfig.setJsonPointerEnabled(false);
-
-        JsonPointer.compile("/field[0]");
-
-        assertDoesNotThrow(() -> new InputValidationIssue(InEnum.BODY, "field"));
-        assertDoesNotThrow(() -> new InputValidationIssue(InEnum.BODY, "field", "value"));
-        assertDoesNotThrow(() -> new InputValidationIssue(InEnum.BODY, "field[0]"));
-        assertDoesNotThrow(() -> new InputValidationIssue(InEnum.BODY, "field[0]", "value"));
-        assertDoesNotThrow(() -> new InputValidationIssue(InEnum.BODY, "field[0].nested[2].nestedAgain"));
-        assertDoesNotThrow(() -> new InputValidationIssue(InEnum.BODY, "field[0].nested[2].nestedAgain", "value"));
-    }
-
-    @ParameterizedTest
-    @EnumSource(value = InEnum.class, names = { "BODY" }, mode = EnumSource.Mode.EXCLUDE)
-    void nameNotInBodyMatchingJsonPathFormatInConstructor(InEnum in) {
-        ProblemConfig.setJsonPointerEnabled(false);
-
-        assertDoesNotThrow(() -> new InputValidationIssue(in, "field"));
-        assertDoesNotThrow(() -> new InputValidationIssue(in, "field", "value"));
-        assertDoesNotThrow(() -> new InputValidationIssue(in, "field[0]"));
-        assertDoesNotThrow(() -> new InputValidationIssue(in, "field[0]", "value"));
-        assertDoesNotThrow(() -> new InputValidationIssue(in, "field.id[0]", "value"));
+        for (String name : names) {
+            InputValidationIssue input = new InputValidationIssue(in, name);
+            assertThat(input.getName()).isEqualTo(name);
+            input = new InputValidationIssue(in, name, "value");
+            assertThat(input.getName()).isEqualTo(name);
+        }
     }
 
     @ParameterizedTest
     @EnumSource(InEnum.class)
-    void nameMatchingJsonPathFormatInConstructorSyntaxFault(InEnum in) {
+    void nameNotMatchingJsonPointerFormatInConstructorAutoConversion(InEnum in) {
+        Map<String, String> names = new HashMap<>();
+        names.put("field", "/field");
+        names.put("", null);
+        names.put("field[0]", "/field/0");
+        names.put("field[0].nested[2].nestedAgain", "/field/0/nested/2/nestedAgain");
+        names.put("field/0", "/field/0");
+        names.put("field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain");
+
+        for (Map.Entry<String, String> name : names.entrySet()) {
+            InputValidationIssue input = new InputValidationIssue(in, name.getKey());
+            assertThat(input.getName()).isEqualTo(in == InEnum.BODY ? name.getValue() : name.getKey());
+            input = new InputValidationIssue(in, name.getKey(), "value");
+            assertThat(input.getName()).isEqualTo(in == InEnum.BODY ? name.getValue() : name.getKey());
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(InEnum.class)
+    void nameNotConvertedInConstructorWithJsonPointerDisabled(InEnum in) {
         ProblemConfig.setJsonPointerEnabled(false);
 
-        assertThatIllegalArgumentException().isThrownBy(() -> new InputValidationIssue(in, "field/0"))
-                .withMessageContaining("format").withMessageContaining("JsonPath");
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> new InputValidationIssue(in, "field/0", "value"))
-                .withMessageContaining("format").withMessageContaining("JsonPath");
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> new InputValidationIssue(in, "field/0/nested/2/nestedAgain"))
-                .withMessageContaining("format").withMessageContaining("JsonPath");
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> new InputValidationIssue(in, "field/0/nested/2/nestedAgain", "value"))
-                .withMessageContaining("format").withMessageContaining("JsonPath");
+        List<String> names = Arrays.asList("field", "/field", "", null, "field[0]", "/field/0", "field/0",
+                "field[0].nested[2].nestedAgain", "field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain");
+
+        for (String name : names) {
+            InputValidationIssue input = new InputValidationIssue(in, name);
+            assertThat(input.getName()).isEqualTo(name);
+            input = new InputValidationIssue(in, name, "value");
+            assertThat(input.getName()).isEqualTo(name);
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(InEnum.class)
+    void setName(InEnum in) {
+        Map<String, String> names = new HashMap<>();
+        names.put("field", "/field");
+        names.put("/field", "/field");
+        names.put("", null);
+        names.put("field[0]", "/field/0");
+        names.put("field[0].nested[2].nestedAgain", "/field/0/nested/2/nestedAgain");
+        names.put("field/0", "/field/0");
+        names.put("/field/0", "/field/0");
+        names.put("field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain");
+        names.put("/field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain");
+
+        for (Map.Entry<String, String> name : names.entrySet()) {
+            InputValidationIssue input = new InputValidationIssue(null, name.getKey(), null);
+            input.setName(name.getKey());
+            assertThat(input.getName()).isEqualTo(name.getKey());
+            input = new InputValidationIssue(in, null, null);
+            input.setName(name.getKey());
+            assertThat(input.getName()).isEqualTo(in == InEnum.BODY ? name.getValue() : name.getKey());
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(InEnum.class)
+    void setNameJsonPointerDisabled(InEnum in) {
+        ProblemConfig.setJsonPointerEnabled(false);
+
+        List<String> names = Arrays.asList("field", "/field", "", "field[0]", "/field/0",
+                "field[0].nested[2].nestedAgain", "/field/0/nested/2/nestedAgain", "field/0",
+                "field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain",
+                "/field/0/nested/2/nestedAgain");
+
+        for (String name : names) {
+            InputValidationIssue input = new InputValidationIssue(null, name, null);
+            input.setName(name);
+            assertThat(input.getName()).isEqualTo(name);
+            input = new InputValidationIssue(in, null, null);
+            input.setName(name);
+            assertThat(input.getName()).isEqualTo(name);
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(InEnum.class)
+    void setInput(InEnum in) {
+        Map<String, String> names = new HashMap<>();
+        names.put("field", "/field");
+        names.put("/field", "/field");
+        names.put("", null);
+        names.put("field[0]", "/field/0");
+        names.put("field[0].nested[2].nestedAgain", "/field/0/nested/2/nestedAgain");
+        names.put("field/0", "/field/0");
+        names.put("/field/0", "/field/0");
+        names.put("field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain");
+        names.put("/field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain");
+
+        for (Map.Entry<String, String> name : names.entrySet()) {
+            InputValidationIssue input = new InputValidationIssue(null, name.getKey(), null);
+            assertThat(input.getName()).isEqualTo(name.getKey());
+            input.setIn(in);
+            assertThat(input.getName()).isEqualTo(in == InEnum.BODY ? name.getValue() : name.getKey());
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(InEnum.class)
+    void setInputJsonPointerDisabled(InEnum in) {
+        ProblemConfig.setJsonPointerEnabled(false);
+
+        List<String> names = Arrays.asList("field", "/field", "", "field[0]", "/field/0",
+                "field[0].nested[2].nestedAgain", "/field/0/nested/2/nestedAgain", "field/0",
+                "field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain",
+                "/field/0/nested/2/nestedAgain");
+
+        for (String name : names) {
+            InputValidationIssue input = new InputValidationIssue(null, name, null);
+            assertThat(input.getName()).isEqualTo(name);
+            input.setIn(in);
+            assertThat(input.getName()).isEqualTo(name);
+        }
     }
 
     private void assertMutuallyExclusiveException(ThrowableAssert.ThrowingCallable throwingCallable) {
@@ -521,5 +569,4 @@ class InputValidationIssueTest {
                 .isThrownBy(throwingCallable)
                 .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
     }
-
 }

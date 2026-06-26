@@ -85,7 +85,7 @@ public class BeanValidationExceptionsHandler {
         String invalidValue = (String) exception.getValue();
         return ProblemMediaType.INSTANCE
                 .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(in,
-                        InputValidationIssue.convertName(in, name), invalidValue, detail)));
+                        InputValidationIssue.transformName(in, name), invalidValue, detail)));
     }
 
     @ExceptionHandler(HandlerMethodValidationException.class)
@@ -120,7 +120,7 @@ public class BeanValidationExceptionsHandler {
             if (modelAttribute != null) {
                 errors.getResolvableErrors().forEach(error -> issues.add(
                         InputValidationIssues.schemaViolation(
-                                InEnum.BODY, InputValidationIssue.convertName(InEnum.BODY, modelAttribute.value()),
+                                InEnum.BODY, InputValidationIssue.transformName(InEnum.BODY, modelAttribute.value()),
                                 errors.getArgument(),
                                 error.getDefaultMessage())));
             }
@@ -170,7 +170,7 @@ public class BeanValidationExceptionsHandler {
         public void requestPart(RequestPart requestPart, ParameterErrors errors) {
             errors.getResolvableErrors().forEach(error -> issues.add(
                     InputValidationIssues.schemaViolation(
-                            InEnum.BODY, InputValidationIssue.convertName(InEnum.BODY, requestPart.value()),
+                            InEnum.BODY, InputValidationIssue.transformName(InEnum.BODY, requestPart.value()),
                             errors.getArgument(),
                             error.getDefaultMessage())));
         }

@@ -119,7 +119,7 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
         if (ssins != null && ssins.getValue() != null) {
             int index = 0;
             for (String ssin : ssins.getValue()) {
-                String name = convertName(ssins.getIn(), ssins.getName() + getIndexFormat(ssins.getIn(), index));
+                String name = transformName(ssins.getIn(), ssins.getName() + getIndexFormat(ssins.getIn(), index));
                 ssin(new Input<>(ssins.getIn(), name, ssin));
                 index++;
             }
@@ -363,7 +363,7 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
             Collection<T> allowedRefData = allowedRefDataSupplier.get();
             int index = 0;
             for (T value : input.getValue()) {
-                String name = convertName(input.getIn(), input.getName() + getIndexFormat(input.getIn(), index));
+                String name = transformName(input.getIn(), input.getName() + getIndexFormat(input.getIn(), index));
                 refData(new Input<T>(input.getIn(), name, value), allowedRefData);
                 index++;
             }
@@ -383,7 +383,7 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
         if (input != null && input.getValue() != null && !input.getValue().isEmpty()) {
             int index = 0;
             for (T value : input.getValue()) {
-                String name = convertName(input.getIn(), input.getName() + getIndexFormat(input.getIn(), index));
+                String name = transformName(input.getIn(), input.getName() + getIndexFormat(input.getIn(), index));
                 refData(new Input<T>(input.getIn(), name, value), allowedRefDataPredicate);
                 index++;
             }

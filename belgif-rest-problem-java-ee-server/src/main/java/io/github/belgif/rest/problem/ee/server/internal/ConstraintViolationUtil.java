@@ -97,7 +97,7 @@ public class ConstraintViolationUtil {
                         InEnum in = ParameterSourceMapper.map(annotation.annotationType());
                         if (in != null) {
                             input.setIn(in);
-                            input.setName(InputValidationIssue.convertName(in,
+                            input.setName(InputValidationIssue.transformName(in,
                                     (String) annotation.annotationType().getMethod("value").invoke(annotation)));
                         }
                     }

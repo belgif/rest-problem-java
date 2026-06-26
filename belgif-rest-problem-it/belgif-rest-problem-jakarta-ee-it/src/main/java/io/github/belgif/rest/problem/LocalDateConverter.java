@@ -33,7 +33,8 @@ public class LocalDateConverter extends AbstractInputParamConverterProvider<Loca
             return LocalDate.parse(value, LOCAL_DATE_FORMATTER);
         } catch (DateTimeParseException e) {
             throw new BadRequestProblem(
-                    schemaViolation(in, InputValidationIssue.convertName(in, name), value, "date has invalid format"));
+                    schemaViolation(in, InputValidationIssue.transformName(in, name), value,
+                            "date has invalid format"));
         }
     }
 

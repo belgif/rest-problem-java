@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -41,20 +44,16 @@ public class InputValidationIssue {
 
     public static final Comparator<InputValidationIssue> BY_NAME = Comparator.comparing(InputValidationIssue::getName);
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(InputValidationIssue.class);
+
     private static final String INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE =
             "inputs[] and in/name/value are mutually exclusive";
 
     private static final String INPUTS_SETTER_ONE_ITEM =
             "inputs[] can not be set with a single item, use in(in, name, value) instead";
 
-    private static final String IN_NAME_VALUE_INVALID_FORMAT = "input name has an invalid format";
-
     // e.g: /, field, /field, /field/0, /field/0/nested
     private static final String JSON_POINTER_BASIC_REGEX = "\\/+[a-zA-Z0-9-]*+(\\/[a-zA-Z0-9-]++)*+";
-
-    // e.g: field, field[0], field[0].nested
-    private static final String JSON_PATH_BASIC_REGEX =
-            "[a-zA-Z0-9-]++(\\[\\d++\\])*+(\\.[a-zA-Z0-9-]++(\\[\\d++\\])*+)*+";
 
     private URI type;
     private URI href;
@@ -81,16 +80,14 @@ public class InputValidationIssue {
     }
 
     public InputValidationIssue(InEnum in, String name, Object value) {
-        verifyNameFormat(in, name);
         this.in = in;
-        this.name = name;
+        this.name = convertName(in, name);
         this.value = value;
     }
 
     public InputValidationIssue(InEnum in, String name) {
-        verifyNameFormat(in, name);
         this.in = in;
-        this.name = name;
+        this.name = convertName(in, name);
     }
 
     public URI getType() {
@@ -131,8 +128,8 @@ public class InputValidationIssue {
 
     public void setIn(InEnum in) {
         verifyNoInputs(in);
-        verifyNameFormat(in, name);
         this.in = in;
+        this.name = convertName(in, name);
     }
 
     public String getName() {
@@ -141,8 +138,7 @@ public class InputValidationIssue {
 
     public void setName(String name) {
         verifyNoInputs(name);
-        verifyNameFormat(in, name);
-        this.name = name;
+        this.name = convertName(in, name);
     }
 
     public Object getValue() {
@@ -192,21 +188,6 @@ public class InputValidationIssue {
 
         if (!inputs.isEmpty()) {
             throw new IllegalArgumentException(INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE);
-        }
-    }
-
-    public static void verifyNameFormat(InEnum in, String name) {
-
-        if (name == null) {
-            return;
-        }
-
-        if ((in == InEnum.BODY && ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPointerFormat(name))
-                || (!ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPathFormat(in, name))) {
-
-            throw new IllegalArgumentException(
-                    IN_NAME_VALUE_INVALID_FORMAT + "(In: " + in + ", Name: " + name + ") It should follow "
-                            + (ProblemConfig.isJsonPointerEnabled() ? "JsonPointer" : "JsonPath") + " syntax");
         }
     }
 
@@ -479,13 +460,9 @@ public class InputValidationIssue {
     }
 
     private static boolean nameMatchesJsonPointerFormat(String name) {
-        return name.matches(JSON_POINTER_BASIC_REGEX)
+        return name == null || (name.matches(JSON_POINTER_BASIC_REGEX)
                 && !name.matches(".*\\/\\d+\\/\\d+\\/*+") // not two indexes following each other (e.g: person/1/2)
-                && !name.matches("\\/+\\d++(\\/[a-zA-Z0-9-.]++)*+"); // not starting with an index (e.g: /1/person)
-    }
-
-    private static boolean nameMatchesJsonPathFormat(InEnum in, String name) {
-        return in == InEnum.BODY ? name.matches(JSON_PATH_BASIC_REGEX) : name.matches("[a-zA-Z0-9-.]++(\\[\\d++\\])*+");
+                && !name.matches("\\/+\\d++(\\/[a-zA-Z0-9-.]++)*+")); // not starting with an index (e.g: /1/person)
     }
 
     /**
@@ -494,7 +471,7 @@ public class InputValidationIssue {
      * @param nameJsonPath the name in JsonPath syntax
      * @return the name converted to JsonPointer syntax
      */
-    public static String convertName(InEnum in, String nameJsonPath) {
+    public static String transformName(InEnum in, String nameJsonPath) {
 
         if (nameJsonPath == null || nameJsonPath.trim().isEmpty()) {
             return null;
@@ -505,6 +482,24 @@ public class InputValidationIssue {
             String convertedName = replaceSquareBrackets(nameJsonPath).replace(".", "/");
             return convertedName.charAt(0) != '/' ? "/" + convertedName : convertedName;
         }
+    }
+
+    /**
+     *
+     * @param in the issue place in the query
+     * @param name the name in JsonPath syntax
+     * @return the name converted (if necessary) to JsonPointer syntax
+     */
+    protected static String convertName(InEnum in, String name) {
+        if (in == InEnum.BODY && ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPointerFormat(name)) {
+            LOGGER.warn(
+                    "Your application does not use the JsonPointer syntax for issue in the body although it is "
+                            + "enabled [in: %s, name: %s]. Auto-conversion will be applied. ",
+                    in, name);
+            return transformName(in, name);
+        }
+
+        return name;
     }
 
     public static String getNameFromProperties(InEnum in, List<String> propertiesName) {
