@@ -33,7 +33,7 @@ public class Input<V> {
 
     public Input(InEnum in, String name, V value) {
         this.in = in;
-        this.name = name;
+        this.name = InputValidationIssue.convertName(in, name);
         this.value = value;
     }
 
@@ -43,6 +43,7 @@ public class Input<V> {
 
     public void setIn(InEnum in) {
         this.in = in;
+        setName(name);
     }
 
     public String getName() {
@@ -50,7 +51,7 @@ public class Input<V> {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = InputValidationIssue.convertName(in, name);
     }
 
     public V getValue() {

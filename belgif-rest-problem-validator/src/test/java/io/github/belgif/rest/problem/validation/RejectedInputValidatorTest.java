@@ -12,13 +12,13 @@ class RejectedInputValidatorTest {
 
     @Test
     void ok() {
-        assertThat(new RejectedInputValidator<String>(Input.body("reject", null)).validate()).isEmpty();
+        assertThat(new RejectedInputValidator<String>(Input.body("/reject", null)).validate()).isEmpty();
     }
 
     @Test
     void nok() {
-        assertThat(new RejectedInputValidator<>(Input.body("reject", "bad")).validate())
-                .contains(InputValidationIssues.rejectedInput(BODY, "reject", "bad"));
+        assertThat(new RejectedInputValidator<>(Input.body("/reject", "bad")).validate())
+                .contains(InputValidationIssues.rejectedInput(BODY, "/reject", "bad"));
     }
 
 }

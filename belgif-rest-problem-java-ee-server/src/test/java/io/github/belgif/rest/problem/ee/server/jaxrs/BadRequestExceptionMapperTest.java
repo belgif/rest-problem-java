@@ -25,14 +25,14 @@ class BadRequestExceptionMapperTest {
     @Test
     void badRequestProblem() {
         BadRequestProblem cause = new BadRequestProblem(
-                InputValidationIssues.schemaViolation(InEnum.HEADER, "startDate_gt", "2006-087-01",
+                InputValidationIssues.schemaViolation(InEnum.HEADER, "startDateGt", "2006-087-01",
                         "date has invalid format"));
         Response response = mapper.toResponse(new BadRequestException("HTTP 400 Bad Request", cause));
         assertThat(response.getEntity()).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem problem = (BadRequestProblem) response.getEntity();
         InputValidationIssue issue = problem.getIssues().get(0);
         assertThat(issue.getIn()).isEqualTo(InEnum.HEADER);
-        assertThat(issue.getName()).isEqualTo("startDate_gt");
+        assertThat(issue.getName()).isEqualTo("startDateGt");
     }
 
     @Test
@@ -41,13 +41,13 @@ class BadRequestExceptionMapperTest {
                 InputValidationIssues.schemaViolation(null, null, "2006-087-01", "date has invalid format"));
         Response response = mapper.toResponse(new BadRequestException(
                 "RESTEASY003870: Unable to extract parameter from http request: "
-                        + "jakarta.ws.rs.HeaderParam(\"startDate_gt\") value is '2006-087-01'",
+                        + "jakarta.ws.rs.HeaderParam(\"startDateGt\") value is '2006-087-01'",
                 cause));
         assertThat(response.getEntity()).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem problem = (BadRequestProblem) response.getEntity();
         InputValidationIssue issue = problem.getIssues().get(0);
         assertThat(issue.getIn()).isEqualTo(InEnum.HEADER);
-        assertThat(issue.getName()).isEqualTo("startDate_gt");
+        assertThat(issue.getName()).isEqualTo("startDateGt");
     }
 
     @Test

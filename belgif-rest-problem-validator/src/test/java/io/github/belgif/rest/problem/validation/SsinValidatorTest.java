@@ -122,12 +122,12 @@ class SsinValidatorTest {
     }
 
     private void assertValidSsin(String ssin) {
-        assertThat(new SsinValidator(Input.body("test", ssin)).validate()).isEmpty();
+        assertThat(new SsinValidator(Input.body("/test", ssin)).validate()).isEmpty();
     }
 
     private void assertInvalidSsin(String ssin) {
-        assertThat(new SsinValidator(Input.body("test", ssin)).validate())
-                .contains(InputValidationIssues.invalidSsin(BODY, "test", ssin));
+        assertThat(new SsinValidator(Input.body("/test", ssin)).validate())
+                .contains(InputValidationIssues.invalidSsin(BODY, "/test", ssin));
     }
 
     private static String createSsinFromDate(LocalDate date) {

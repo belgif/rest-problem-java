@@ -58,13 +58,13 @@ class InputValidationIssuesTest {
     @Test
     void schemaViolation() {
         InputValidationIssue issue =
-                InputValidationIssues.schemaViolation(InEnum.BODY, "test", "value", "detail");
+                InputValidationIssues.schemaViolation(InEnum.BODY, "/test", "value", "detail");
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
         assertThat(issue.getHref())
                 .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html");
         assertThat(issue.getTitle()).isEqualTo("Input value is invalid with respect to the schema");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("test");
+        assertThat(issue.getName()).isEqualTo("/test");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("detail");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
@@ -73,28 +73,28 @@ class InputValidationIssuesTest {
     @Test
     void unknownInput() {
         InputValidationIssue issue =
-                InputValidationIssues.unknownInput(InEnum.BODY, "oops", "value");
+                InputValidationIssues.unknownInput(InEnum.BODY, "/oops", "value");
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:unknownInput");
         assertThat(issue.getHref())
                 .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/unknownInput.html");
         assertThat(issue.getTitle()).isEqualTo("Unknown input");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("oops");
+        assertThat(issue.getName()).isEqualTo("/oops");
         assertThat(issue.getValue()).isEqualTo("value");
-        assertThat(issue.getDetail()).isEqualTo("Input oops is unknown");
+        assertThat(issue.getDetail()).isEqualTo("Input /oops is unknown");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @Test
     void invalidInput() {
         InputValidationIssue issue =
-                InputValidationIssues.invalidInput(InEnum.BODY, "oops", "value", "detail");
+                InputValidationIssues.invalidInput(InEnum.BODY, "/oops", "value", "detail");
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:invalidInput");
         assertThat(issue.getHref())
                 .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
         assertThat(issue.getTitle()).isEqualTo("Invalid input");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("oops");
+        assertThat(issue.getName()).isEqualTo("/oops");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("detail");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
@@ -104,7 +104,7 @@ class InputValidationIssuesTest {
     @MethodSource("toggleExtIssueTypes")
     void invalidStructure(boolean extIssueTypes) {
         InputValidationIssue issue =
-                InputValidationIssues.invalidStructure(InEnum.BODY, "test", "value", "detail");
+                InputValidationIssues.invalidStructure(InEnum.BODY, "/test", "value", "detail");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
             assertThat(issue.getHref())
@@ -117,7 +117,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("test");
+        assertThat(issue.getName()).isEqualTo("/test");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("detail");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
@@ -127,7 +127,7 @@ class InputValidationIssuesTest {
     @MethodSource("toggleExtIssueTypes")
     void outOfRangeMinMax(boolean extIssueTypes) {
         InputValidationIssue issue =
-                InputValidationIssues.outOfRange(InEnum.BODY, "test", 6, 1, 5);
+                InputValidationIssues.outOfRange(InEnum.BODY, "/test", 6, 1, 5);
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:outOfRange");
             assertThat(issue.getHref())
@@ -140,9 +140,9 @@ class InputValidationIssuesTest {
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("test");
+        assertThat(issue.getName()).isEqualTo("/test");
         assertThat(issue.getValue()).isEqualTo(6);
-        assertThat(issue.getDetail()).isEqualTo("Input value test = 6 is out of range [1, 5]");
+        assertThat(issue.getDetail()).isEqualTo("Input value /test = 6 is out of range [1, 5]");
         assertThat(issue.getAdditionalProperties()).containsOnly(entry("minimum", "1"), entry("maximum", "5"));
         assertThat(issue.getInputs()).isEmpty();
     }
@@ -151,7 +151,7 @@ class InputValidationIssuesTest {
     @MethodSource("toggleExtIssueTypes")
     void outOfRangeMin(boolean extIssueTypes) {
         InputValidationIssue issue =
-                InputValidationIssues.outOfRange(InEnum.BODY, "test", 0, 1, null);
+                InputValidationIssues.outOfRange(InEnum.BODY, "/test", 0, 1, null);
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:outOfRange");
             assertThat(issue.getHref())
@@ -164,9 +164,9 @@ class InputValidationIssuesTest {
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("test");
+        assertThat(issue.getName()).isEqualTo("/test");
         assertThat(issue.getValue()).isEqualTo(0);
-        assertThat(issue.getDetail()).isEqualTo("Input value test = 0 should be at least 1");
+        assertThat(issue.getDetail()).isEqualTo("Input value /test = 0 should be at least 1");
         assertThat(issue.getAdditionalProperties()).containsExactly(entry("minimum", "1"));
         assertThat(issue.getInputs()).isEmpty();
     }
@@ -175,7 +175,7 @@ class InputValidationIssuesTest {
     @MethodSource("toggleExtIssueTypes")
     void outOfRangeMax(boolean extIssueTypes) {
         InputValidationIssue issue =
-                InputValidationIssues.outOfRange(InEnum.BODY, "test", 6, null, 5);
+                InputValidationIssues.outOfRange(InEnum.BODY, "/test", 6, null, 5);
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:outOfRange");
             assertThat(issue.getHref())
@@ -188,9 +188,9 @@ class InputValidationIssuesTest {
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("test");
+        assertThat(issue.getName()).isEqualTo("/test");
         assertThat(issue.getValue()).isEqualTo(6);
-        assertThat(issue.getDetail()).isEqualTo("Input value test = 6 should not exceed 5");
+        assertThat(issue.getDetail()).isEqualTo("Input value /test = 6 should not exceed 5");
         assertThat(issue.getAdditionalProperties()).containsExactly(entry("maximum", "5"));
         assertThat(issue.getInputs()).isEmpty();
     }
@@ -205,30 +205,31 @@ class InputValidationIssuesTest {
     @Test
     void referencedResourceNotFound() {
         InputValidationIssue issue =
-                InputValidationIssues.referencedResourceNotFound(InEnum.BODY, "test", "value");
+                InputValidationIssues.referencedResourceNotFound(InEnum.BODY, "/test", "value");
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
         assertThat(issue.getHref())
                 .hasToString(
                         "https://www.belgif.be/specification/rest/api-guide/issues/referencedResourceNotFound.html");
         assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("test");
+        assertThat(issue.getName()).isEqualTo("/test");
         assertThat(issue.getValue()).isEqualTo("value");
-        assertThat(issue.getDetail()).isEqualTo("Referenced resource test = 'value' does not exist");
+        assertThat(issue.getDetail()).isEqualTo("Referenced resource /test = 'value' does not exist");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
     @Test
     void referencedResourceNotFoundDifferentResourceAndParameterName() {
         InputValidationIssue issue =
-                InputValidationIssues.referencedResourceNotFound(InEnum.BODY, "partners", "organization", "0123456789");
+                InputValidationIssues.referencedResourceNotFound(InEnum.BODY, "/partners", "organization",
+                        "0123456789");
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
         assertThat(issue.getHref())
                 .hasToString(
                         "https://www.belgif.be/specification/rest/api-guide/issues/referencedResourceNotFound.html");
         assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("partners");
+        assertThat(issue.getName()).isEqualTo("/partners");
         assertThat(issue.getValue()).isEqualTo("0123456789");
         assertThat(issue.getDetail()).isEqualTo("Referenced resource organization = '0123456789' does not exist");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
@@ -237,7 +238,7 @@ class InputValidationIssuesTest {
     @Test
     void referencedResourceFromCollectionParameterNotFound() {
         InputValidationIssue issue =
-                InputValidationIssues.referencedResourceNotFound(InEnum.BODY, "partners", 123,
+                InputValidationIssues.referencedResourceNotFound(InEnum.BODY, "/partners", 123,
                         Arrays.asList(1, 123, 3));
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
         assertThat(issue.getHref())
@@ -245,17 +246,23 @@ class InputValidationIssuesTest {
                         "https://www.belgif.be/specification/rest/api-guide/issues/referencedResourceNotFound.html");
         assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("partners[1]");
+        assertThat(issue.getName()).isEqualTo("/partners/1");
         assertThat(issue.getValue()).isEqualTo(123);
-        assertThat(issue.getDetail()).isEqualTo("Referenced resource partners[1] = '123' does not exist");
+        assertThat(issue.getDetail()).isEqualTo("Referenced resource /partners/1 = '123' does not exist");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
+
+        ProblemConfig.setJsonPointerEnabled(false);
+        issue = InputValidationIssues.referencedResourceNotFound(InEnum.BODY, "partners", 123,
+                Arrays.asList(1, 123, 3));
+        assertThat(issue.getName()).isEqualTo("partners[1]");
+        assertThat(issue.getDetail()).isEqualTo("Referenced resource partners[1] = '123' does not exist");
     }
 
     @ParameterizedTest
     @MethodSource("toggleExtIssueTypes")
     void rejectedInput(boolean extIssueTypes) {
         InputValidationIssue issue =
-                InputValidationIssues.rejectedInput(InEnum.BODY, "test", "value");
+                InputValidationIssues.rejectedInput(InEnum.BODY, "/test", "value");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:rejectedInput");
             assertThat(issue.getHref())
@@ -268,9 +275,9 @@ class InputValidationIssuesTest {
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("test");
+        assertThat(issue.getName()).isEqualTo("/test");
         assertThat(issue.getValue()).isEqualTo("value");
-        assertThat(issue.getDetail()).isEqualTo("Input test is not allowed in this context");
+        assertThat(issue.getDetail()).isEqualTo("Input /test is not allowed in this context");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
@@ -278,7 +285,7 @@ class InputValidationIssuesTest {
     @MethodSource("toggleExtIssueTypes")
     void requiredInput(boolean extIssueTypes) {
         InputValidationIssue issue =
-                InputValidationIssues.requiredInput(InEnum.BODY, "test");
+                InputValidationIssues.requiredInput(InEnum.BODY, "/test");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:requiredInput");
             assertThat(issue.getHref())
@@ -291,9 +298,9 @@ class InputValidationIssuesTest {
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("test");
+        assertThat(issue.getName()).isEqualTo("/test");
         assertThat(issue.getValue()).isNull();
-        assertThat(issue.getDetail()).isEqualTo("Input test is required in this context");
+        assertThat(issue.getDetail()).isEqualTo("Input /test is required in this context");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
     }
 
@@ -330,11 +337,11 @@ class InputValidationIssuesTest {
     @Test
     void replacedSsin() {
         InputValidationIssue issue =
-                InputValidationIssues.replacedSsin(InEnum.BODY, "ssin", "00000000196", "00000000295");
+                InputValidationIssues.replacedSsin(InEnum.BODY, "/ssin", "00000000196", "00000000295");
         assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:replacedSsin");
         assertThat(issue.getTitle()).isEqualTo("SSIN has been replaced, use new SSIN");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("ssin");
+        assertThat(issue.getName()).isEqualTo("/ssin");
         assertThat(issue.getValue()).isEqualTo("00000000196");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 has been replaced by 00000000295");
         assertThat(issue.getAdditionalProperties()).containsExactly(entry("replacedBy", "00000000295"));
@@ -344,11 +351,11 @@ class InputValidationIssuesTest {
     @Test
     void replacedSsinInput() {
         InputValidationIssue issue =
-                InputValidationIssues.replacedSsin(Input.body("ssin", "00000000196"), "00000000295");
+                InputValidationIssues.replacedSsin(Input.body("/ssin", "00000000196"), "00000000295");
         assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:replacedSsin");
         assertThat(issue.getTitle()).isEqualTo("SSIN has been replaced, use new SSIN");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("ssin");
+        assertThat(issue.getName()).isEqualTo("/ssin");
         assertThat(issue.getValue()).isEqualTo("00000000196");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 has been replaced by 00000000295");
         assertThat(issue.getAdditionalProperties()).containsExactly(entry("replacedBy", "00000000295"));
@@ -358,12 +365,12 @@ class InputValidationIssuesTest {
     @Test
     void replacedSsinWithReplacedByHref() {
         InputValidationIssue issue =
-                InputValidationIssues.replacedSsin(InEnum.BODY, "ssin", "00000000196", "00000000295",
+                InputValidationIssues.replacedSsin(InEnum.BODY, "/ssin", "00000000196", "00000000295",
                         URI.create("https://api.company.com/v1/employees?ssin=00000000295"));
         assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:replacedSsin");
         assertThat(issue.getTitle()).isEqualTo("SSIN has been replaced, use new SSIN");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("ssin");
+        assertThat(issue.getName()).isEqualTo("/ssin");
         assertThat(issue.getValue()).isEqualTo("00000000196");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 has been replaced by 00000000295");
         assertThat(issue.getAdditionalProperties()).containsExactly(
@@ -374,11 +381,11 @@ class InputValidationIssuesTest {
 
     @Test
     void canceledSsin() {
-        InputValidationIssue issue = InputValidationIssues.canceledSsin(InEnum.BODY, "ssin", "00000000196");
+        InputValidationIssue issue = InputValidationIssues.canceledSsin(InEnum.BODY, "/ssin", "00000000196");
         assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:canceledSsin");
         assertThat(issue.getTitle()).isEqualTo("SSIN has been canceled");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("ssin");
+        assertThat(issue.getName()).isEqualTo("/ssin");
         assertThat(issue.getValue()).isEqualTo("00000000196");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 has been canceled");
         assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
@@ -386,11 +393,11 @@ class InputValidationIssuesTest {
 
     @Test
     void canceledSsinInput() {
-        InputValidationIssue issue = InputValidationIssues.canceledSsin(Input.body("ssin", "00000000196"));
+        InputValidationIssue issue = InputValidationIssues.canceledSsin(Input.body("/ssin", "00000000196"));
         assertThat(issue.getType()).hasToString("urn:problem-type:cbss:input-validation:canceledSsin");
         assertThat(issue.getTitle()).isEqualTo("SSIN has been canceled");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("ssin");
+        assertThat(issue.getName()).isEqualTo("/ssin");
         assertThat(issue.getValue()).isEqualTo("00000000196");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 has been canceled");
         assertThat(issue).extracting("href", "inputs", "additionalProperties").allMatch(this::isEmpty);
@@ -399,7 +406,7 @@ class InputValidationIssuesTest {
     @ParameterizedTest
     @MethodSource("toggleExtIssueTypes")
     void invalidSsin(boolean extIssueTypes) {
-        InputValidationIssue issue = InputValidationIssues.invalidSsin(InEnum.BODY, "ssin", "00000000195");
+        InputValidationIssue issue = InputValidationIssues.invalidSsin(InEnum.BODY, "/ssin", "00000000195");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
             assertThat(issue.getHref())
@@ -412,7 +419,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("ssin");
+        assertThat(issue.getName()).isEqualTo("/ssin");
         assertThat(issue.getValue()).isEqualTo("00000000195");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000195 is invalid");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
@@ -421,7 +428,7 @@ class InputValidationIssuesTest {
     @ParameterizedTest
     @MethodSource("toggleExtIssueTypes")
     void invalidSsinInput(boolean extIssueTypes) {
-        InputValidationIssue issue = InputValidationIssues.invalidSsin(Input.body("ssin", "00000000195"));
+        InputValidationIssue issue = InputValidationIssues.invalidSsin(Input.body("/ssin", "00000000195"));
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
             assertThat(issue.getHref())
@@ -434,7 +441,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("ssin");
+        assertThat(issue.getName()).isEqualTo("/ssin");
         assertThat(issue.getValue()).isEqualTo("00000000195");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000195 is invalid");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
@@ -442,13 +449,13 @@ class InputValidationIssuesTest {
 
     @Test
     void unknownSsin() {
-        InputValidationIssue issue = InputValidationIssues.unknownSsin(InEnum.BODY, "ssin", "00000000196");
+        InputValidationIssue issue = InputValidationIssues.unknownSsin(InEnum.BODY, "/ssin", "00000000196");
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
         assertThat(issue.getHref()).hasToString(
                 "https://www.belgif.be/specification/rest/api-guide/issues/referencedResourceNotFound.html");
         assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("ssin");
+        assertThat(issue.getName()).isEqualTo("/ssin");
         assertThat(issue.getValue()).isEqualTo("00000000196");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 does not exist");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
@@ -456,13 +463,13 @@ class InputValidationIssuesTest {
 
     @Test
     void unknownSsinInput() {
-        InputValidationIssue issue = InputValidationIssues.unknownSsin(Input.body("ssin", "00000000196"));
+        InputValidationIssue issue = InputValidationIssues.unknownSsin(Input.body("/ssin", "00000000196"));
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:referencedResourceNotFound");
         assertThat(issue.getHref()).hasToString(
                 "https://www.belgif.be/specification/rest/api-guide/issues/referencedResourceNotFound.html");
         assertThat(issue.getTitle()).isEqualTo("Referenced resource not found");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("ssin");
+        assertThat(issue.getName()).isEqualTo("/ssin");
         assertThat(issue.getValue()).isEqualTo("00000000196");
         assertThat(issue.getDetail()).isEqualTo("SSIN 00000000196 does not exist");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
@@ -472,7 +479,7 @@ class InputValidationIssuesTest {
     @MethodSource("toggleExtIssueTypes")
     void invalidPeriod(boolean extIssueTypes) {
         InputValidationIssue issue =
-                InputValidationIssues.invalidPeriod(InEnum.BODY, "period", "value");
+                InputValidationIssues.invalidPeriod(InEnum.BODY, "/period", "value");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidPeriod");
             assertThat(issue.getHref())
@@ -485,7 +492,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("period");
+        assertThat(issue.getName()).isEqualTo("/period");
         assertThat(issue.getValue()).isEqualTo("value");
         assertThat(issue.getDetail()).isEqualTo("endDate should not precede startDate");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
@@ -551,7 +558,7 @@ class InputValidationIssuesTest {
     @MethodSource("toggleExtIssueTypes")
     void invalidIncompleteDate(boolean extIssueTypes) {
         InputValidationIssue issue =
-                InputValidationIssues.invalidIncompleteDate(InEnum.BODY, "test", "2024-00-01");
+                InputValidationIssues.invalidIncompleteDate(InEnum.BODY, "/test", "2024-00-01");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
             assertThat(issue.getHref())
@@ -564,7 +571,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("test");
+        assertThat(issue.getName()).isEqualTo("/test");
         assertThat(issue.getValue()).isEqualTo("2024-00-01");
         assertThat(issue.getDetail()).isEqualTo("Incomplete date 2024-00-01 is invalid");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
@@ -574,7 +581,7 @@ class InputValidationIssuesTest {
     @MethodSource("toggleExtIssueTypes")
     void invalidYearMonth(boolean extIssueTypes) {
         InputValidationIssue issue =
-                InputValidationIssues.invalidYearMonth(InEnum.BODY, "test", "2024-13");
+                InputValidationIssues.invalidYearMonth(InEnum.BODY, "/test", "2024-13");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
             assertThat(issue.getHref())
@@ -587,7 +594,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("test");
+        assertThat(issue.getName()).isEqualTo("/test");
         assertThat(issue.getValue()).isEqualTo("2024-13");
         assertThat(issue.getDetail()).isEqualTo("Year month 2024-13 is invalid");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
@@ -597,7 +604,7 @@ class InputValidationIssuesTest {
     @MethodSource("toggleExtIssueTypes")
     void invalidEnterpriseNumber(boolean extIssueTypes) {
         InputValidationIssue issue =
-                InputValidationIssues.invalidEnterpriseNumber(InEnum.BODY, "test", "0000000001");
+                InputValidationIssues.invalidEnterpriseNumber(InEnum.BODY, "/test", "0000000001");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
             assertThat(issue.getHref())
@@ -610,7 +617,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("test");
+        assertThat(issue.getName()).isEqualTo("/test");
         assertThat(issue.getValue()).isEqualTo("0000000001");
         assertThat(issue.getDetail()).isEqualTo("Enterprise number 0000000001 is invalid");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
@@ -620,7 +627,7 @@ class InputValidationIssuesTest {
     @MethodSource("toggleExtIssueTypes")
     void invalidEstablishmentUnitNumber(boolean extIssueTypes) {
         InputValidationIssue issue =
-                InputValidationIssues.invalidEstablishmentUnitNumber(InEnum.BODY, "test", "0000000001");
+                InputValidationIssues.invalidEstablishmentUnitNumber(InEnum.BODY, "/test", "0000000001");
         if (extIssueTypes) {
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif-ext:input-validation:invalidStructure");
             assertThat(issue.getHref())
@@ -633,7 +640,7 @@ class InputValidationIssuesTest {
             assertThat(issue.getTitle()).isEqualTo("Invalid input");
         }
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("test");
+        assertThat(issue.getName()).isEqualTo("/test");
         assertThat(issue.getValue()).isEqualTo("0000000001");
         assertThat(issue.getDetail()).isEqualTo("Establishment unit number 0000000001 is invalid");
         assertThat(issue).extracting("inputs", "additionalProperties").allMatch(this::isEmpty);
@@ -782,9 +789,9 @@ class InputValidationIssuesTest {
         List<Future<Void>> results = new ArrayList<>(threads);
         for (int i = 0; i < threads; i++) {
             results.add(executorService.submit(() -> {
-                assertThat(InputValidationIssues.schemaViolation(InEnum.BODY, "name", "value", "detail").getHref())
+                assertThat(InputValidationIssues.schemaViolation(InEnum.BODY, "/name", "value", "detail").getHref())
                         .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/schemaViolation.html");
-                assertThat(InputValidationIssues.invalidInput(InEnum.BODY, "name", "value", "detail").getHref())
+                assertThat(InputValidationIssues.invalidInput(InEnum.BODY, "/name", "value", "detail").getHref())
                         .hasToString("https://www.belgif.be/specification/rest/api-guide/issues/invalidInput.html");
                 return null;
             }));

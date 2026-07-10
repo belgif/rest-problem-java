@@ -10,6 +10,7 @@ import java.util.Locale;
 import jakarta.ws.rs.ext.Provider;
 
 import io.github.belgif.rest.problem.api.InEnum;
+import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.ee.server.jaxrs.AbstractInputParamConverterProvider;
 
 @Provider
@@ -31,7 +32,9 @@ public class LocalDateConverter extends AbstractInputParamConverterProvider<Loca
         try {
             return LocalDate.parse(value, LOCAL_DATE_FORMATTER);
         } catch (DateTimeParseException e) {
-            throw new BadRequestProblem(schemaViolation(in, name, value, "date has invalid format"));
+            throw new BadRequestProblem(
+                    schemaViolation(in, InputValidationIssue.transformName(in, name), value,
+                            "date has invalid format"));
         }
     }
 

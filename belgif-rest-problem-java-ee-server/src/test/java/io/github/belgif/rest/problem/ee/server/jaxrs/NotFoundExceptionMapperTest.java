@@ -26,14 +26,14 @@ class NotFoundExceptionMapperTest {
     @Test
     void badRequestProblem() {
         BadRequestProblem cause = new BadRequestProblem(
-                InputValidationIssues.schemaViolation(InEnum.QUERY, "startDate_gt", "2006-087-01",
+                InputValidationIssues.schemaViolation(InEnum.QUERY, "startDateGt", "2006-087-01",
                         "date has invalid format"));
         Response response = mapper.toResponse(new NotFoundException("HTTP 404 Not Found", cause));
         assertThat(response.getEntity()).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem problem = (BadRequestProblem) response.getEntity();
         InputValidationIssue issue = problem.getIssues().get(0);
         assertThat(issue.getIn()).isEqualTo(InEnum.QUERY);
-        assertThat(issue.getName()).isEqualTo("startDate_gt");
+        assertThat(issue.getName()).isEqualTo("startDateGt");
     }
 
     @Test
@@ -42,13 +42,13 @@ class NotFoundExceptionMapperTest {
                 InputValidationIssues.schemaViolation(null, null, "2006-087-01", "date has invalid format"));
         Response response = mapper.toResponse(new NotFoundException(
                 "RESTEASY003870: Unable to extract parameter from http request: "
-                        + "jakarta.ws.rs.QueryParam(\"startDate_gt\") value is '2006-087-01'",
+                        + "jakarta.ws.rs.QueryParam(\"startDateGt\") value is '2006-087-01'",
                 cause));
         assertThat(response.getEntity()).isInstanceOf(BadRequestProblem.class);
         BadRequestProblem problem = (BadRequestProblem) response.getEntity();
         InputValidationIssue issue = problem.getIssues().get(0);
         assertThat(issue.getIn()).isEqualTo(InEnum.QUERY);
-        assertThat(issue.getName()).isEqualTo("startDate_gt");
+        assertThat(issue.getName()).isEqualTo("startDateGt");
     }
 
     @Test

@@ -822,6 +822,50 @@ Scan additional packages for @ProblemType annotations.
 This configuration property only applies to *Spring Boot*.
 On Jakarta EE and Quarkus, all problem types are automatically picked up by CDI.
 
+[[io.github.belgif.rest.problem.json-pointer-enabled]]
+==== io.github.belgif.rest.problem.json-pointer-enabled
+
+Enable using JsonPointer syntax for the 'name' property for a schema violation issue in the request body.
+Default `true`.
+
+[source,json]
+----
+{
+  "title": "Bad Request",
+  "status": 400,<details>type:
+  "urn:problem-type:belgif:badRequest",href:"https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html",
+  "issues": [
+    {
+      "type": "urn:problem-type:belgif:input-validation:schemaViolation",
+      "in": "body",
+      "name": "/person/0/ssin",
+      "detail": "An SSIN should be 11 digits long",
+      "value": "1234"
+    }
+  ]
+}
+----
+
+If set to false, the JsonPath syntax is used.
+
+[source,json]
+----
+{
+  "title": "Bad Request",
+  "status": 400,<details>type:
+  "urn:problem-type:belgif:badRequest",href:"https://www.belgif.be/specification/rest/api-guide/problems/badRequest.html",
+  "issues": [
+    {
+      "type": "urn:problem-type:belgif:input-validation:schemaViolation",
+      "in": "body",
+      "name": "person[0].ssin",
+      "detail": "An SSIN should be 11 digits long",
+      "value": "1234"
+    }
+  ]
+}
+----
+
 [[implementation-details]]
 == Implementation details
 

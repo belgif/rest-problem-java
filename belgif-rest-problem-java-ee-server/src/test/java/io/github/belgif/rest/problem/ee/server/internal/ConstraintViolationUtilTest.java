@@ -24,14 +24,21 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
+import io.github.belgif.rest.problem.config.ProblemConfig;
 
 class ConstraintViolationUtilTest {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
+    @BeforeEach
+    void resetProblemConfig() {
+        ProblemConfig.reset();
+    }
 
     @Test
     void missingRequiredBody() throws Exception {
@@ -63,6 +70,27 @@ class ConstraintViolationUtilTest {
         InputValidationIssue issue =
                 ConstraintViolationUtil.convertToInputValidationIssue(violations.iterator().next());
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+        assertThat(issue.getName()).isEqualTo("/value");
+        assertThat(issue.getValue()).isEqualTo(10);
+        assertThat(issue.getDetail()).isEqualTo("must be less than or equal to 5");
+    }
+
+    @Test
+    void bodyPropertyWithJsonPointerDisabled() throws Exception {
+        ProblemConfig.setJsonPointerEnabled(false);
+
+        Body target = new Body();
+        target.value = 10;
+
+        Set<ConstraintViolation<Resource>> violations =
+                validator.forExecutables().validateParameters(new Resource(),
+                        Resource.class.getMethod("bodyParam", Body.class), new Object[] { target });
+
+        assertThat(violations).hasSize(1);
+
+        InputValidationIssue issue =
+                ConstraintViolationUtil.convertToInputValidationIssue(violations.iterator().next());
+        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
         assertThat(issue.getName()).isEqualTo("value");
         assertThat(issue.getValue()).isEqualTo(10);
         assertThat(issue.getDetail()).isEqualTo("must be less than or equal to 5");
@@ -70,6 +98,28 @@ class ConstraintViolationUtilTest {
 
     @Test
     void nestedBodyProperty() throws Exception {
+        Body target = new Body();
+        target.nested.add(new Nested("OK"));
+        target.nested.add(new Nested(null));
+
+        Set<ConstraintViolation<Resource>> violations =
+                validator.forExecutables().validateParameters(new Resource(),
+                        Resource.class.getMethod("bodyParam", Body.class), new Object[] { target });
+
+        assertThat(violations).hasSize(1);
+
+        InputValidationIssue issue =
+                ConstraintViolationUtil.convertToInputValidationIssue(violations.iterator().next());
+        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
+        assertThat(issue.getName()).isEqualTo("/nested/1/prop");
+        assertThat(issue.getValue()).isNull();
+        assertThat(issue.getDetail()).isEqualTo("must not be null");
+    }
+
+    @Test
+    void nestedBodyPropertyWithJsonPointerDisabled() throws Exception {
+        ProblemConfig.setJsonPointerEnabled(false);
+
         Body target = new Body();
         target.nested.add(new Nested("OK"));
         target.nested.add(new Nested(null));
@@ -163,7 +213,7 @@ class ConstraintViolationUtilTest {
         InputValidationIssue issue =
                 ConstraintViolationUtil.convertToInputValidationIssue(violations.iterator().next());
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("form");
+        assertThat(issue.getName()).isEqualTo("/form");
         assertThat(issue.getValue()).isEqualTo(10);
         assertThat(issue.getDetail()).isEqualTo("must be less than or equal to 5");
     }
@@ -228,10 +278,10 @@ class ConstraintViolationUtilTest {
                 violations.stream().map(ConstraintViolationUtil::convertToInputValidationIssue)
                         .sorted(Comparator.comparing(InputValidationIssue::getName)).collect(Collectors.toList());
 
-        assertThat(issues.get(0).getIn()).isEqualTo(InEnum.HEADER);
-        assertThat(issues.get(0).getName()).isEqualTo("cookie");
-        assertThat(issues.get(1).getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issues.get(1).getName()).isEqualTo("form");
+        assertThat(issues.get(0).getIn()).isEqualTo(InEnum.BODY);
+        assertThat(issues.get(0).getName()).isEqualTo("/form");
+        assertThat(issues.get(1).getIn()).isEqualTo(InEnum.HEADER);
+        assertThat(issues.get(1).getName()).isEqualTo("cookie");
         assertThat(issues.get(2).getIn()).isEqualTo(InEnum.HEADER);
         assertThat(issues.get(2).getName()).isEqualTo("header");
         assertThat(issues.get(3).getIn()).isEqualTo(InEnum.PATH);
