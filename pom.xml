@@ -25,7 +25,7 @@
     <version.jackson3.minimal>3.0.4</version.jackson3.minimal>
     <version.spring.boot.3>3.5.16</version.spring.boot.3>
     <version.spring.boot.4>4.1.0</version.spring.boot.4>
-    <version.quarkus>3.37.3</version.quarkus>
+    <version.quarkus>3.37.4</version.quarkus>
   </properties>
 
   <dependencyManagement>
@@ -136,7 +136,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>flatten-maven-plugin</artifactId>
-          <version>1.7.3</version>
+          <version>1.8.0</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
