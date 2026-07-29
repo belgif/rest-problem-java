@@ -13,16 +13,19 @@ import io.github.belgif.rest.problem.config.ProblemConfig;
 public class JsonPointerUtil {
 
     // e.g: /, field, /field, /field/0, /field/0/nested
-    private static final Pattern JSON_POINTER_BASIC_REGEX = Pattern.compile("/+[a-zA-Z0-9-]*+(/[a-zA-Z0-9-]++)*+");
+    private static final Pattern JSON_POINTER_PATTERN = Pattern.compile("/+[a-zA-Z0-9-]*+(/[a-zA-Z0-9-]++)*+");
 
     private JsonPointerUtil() {
     }
 
-    public static boolean nameMatchesJsonPointerFormat(String name) {
-        return name == null || (JSON_POINTER_BASIC_REGEX.matcher(name).matches()
-                && !name.matches(".*/\\d+/\\d+/*+")
-                // not two indexes following each other (e.g: person/1/2)
-                && !name.matches("/+\\d++(/[a-zA-Z0-9-.]++)*+")); // not starting with an index (e.g: /1/person)
+    /**
+     * Check whether the given string is a JSON Pointer.
+     *
+     * @param value the string
+     * @return true when it is a JSON Pointer, false otherwise
+     */
+    public static boolean isJsonPointer(String value) {
+        return JSON_POINTER_PATTERN.matcher(value).matches();
     }
 
     /**

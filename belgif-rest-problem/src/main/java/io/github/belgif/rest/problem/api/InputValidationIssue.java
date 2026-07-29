@@ -211,7 +211,7 @@ public class InputValidationIssue {
     }
 
     private String autoConvertToJsonPointerIfNeeded(InEnum in, String propertyPath) {
-        if (!JsonPointerUtil.nameMatchesJsonPointerFormat(propertyPath)) {
+        if (propertyPath != null && !JsonPointerUtil.isJsonPointer(propertyPath)) {
             String jsonPointer = JsonPointerUtil.transformName(in, propertyPath);
             LOGGER.warn("{} is enabled, auto-converting '{}' to JSON Pointer format '{}'",
                     ProblemConfig.PROPERTY_JSON_POINTER_ENABLED, propertyPath, jsonPointer);
