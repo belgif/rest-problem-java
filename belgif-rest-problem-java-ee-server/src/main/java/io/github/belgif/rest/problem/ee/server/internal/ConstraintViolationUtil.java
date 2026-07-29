@@ -23,6 +23,7 @@ import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.config.ProblemConfig;
 import io.github.belgif.rest.problem.internal.AnnotationUtil;
+import io.github.belgif.rest.problem.internal.JsonPointerUtil;
 
 /**
  * Internal utility class for converting ConstraintViolation to InputValidationIssue.
@@ -64,7 +65,7 @@ public class ConstraintViolationUtil {
             MethodNode methodNode, List<Node> propertyPath, List<String> propertyName) {
 
         Input<Object> input =
-                Input.body(InputValidationIssue.getNameFromProperties(InEnum.BODY, propertyName),
+                Input.body(JsonPointerUtil.getNameFromProperties(InEnum.BODY, propertyName),
                         violation.getInvalidValue());
         Node last = propertyPath.get(propertyPath.size() - 1);
         Node parent = propertyPath.size() > 1 ? propertyPath.get(propertyPath.size() - 2) : null;
@@ -97,7 +98,7 @@ public class ConstraintViolationUtil {
                         InEnum in = ParameterSourceMapper.map(annotation.annotationType());
                         if (in != null) {
                             input.setIn(in);
-                            input.setName(InputValidationIssue.transformName(in,
+                            input.setName(JsonPointerUtil.transformName(in,
                                     (String) annotation.annotationType().getMethod("value").invoke(annotation)));
                         }
                     }

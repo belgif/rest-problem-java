@@ -33,6 +33,7 @@ import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.internal.JsonPointerUtil;
 import io.github.belgif.rest.problem.spring.ProblemMediaType;
 import io.github.belgif.rest.problem.spring.server.internal.BeanValidationExceptionUtil;
 import io.github.belgif.rest.problem.spring.server.internal.DetermineSourceUtil;
@@ -85,7 +86,7 @@ public class BeanValidationExceptionsHandler {
         String invalidValue = (String) exception.getValue();
         return ProblemMediaType.INSTANCE
                 .toResponse(new BadRequestProblem(InputValidationIssues.schemaViolation(in,
-                        InputValidationIssue.transformName(in, name), invalidValue, detail)));
+                        JsonPointerUtil.transformName(in, name), invalidValue, detail)));
     }
 
     @ExceptionHandler(HandlerMethodValidationException.class)
@@ -120,7 +121,7 @@ public class BeanValidationExceptionsHandler {
             if (modelAttribute != null) {
                 errors.getResolvableErrors().forEach(error -> issues.add(
                         InputValidationIssues.schemaViolation(
-                                InEnum.BODY, InputValidationIssue.transformName(InEnum.BODY, modelAttribute.value()),
+                                InEnum.BODY, JsonPointerUtil.transformName(InEnum.BODY, modelAttribute.value()),
                                 errors.getArgument(),
                                 error.getDefaultMessage())));
             }
@@ -170,7 +171,7 @@ public class BeanValidationExceptionsHandler {
         public void requestPart(RequestPart requestPart, ParameterErrors errors) {
             errors.getResolvableErrors().forEach(error -> issues.add(
                     InputValidationIssues.schemaViolation(
-                            InEnum.BODY, InputValidationIssue.transformName(InEnum.BODY, requestPart.value()),
+                            InEnum.BODY, JsonPointerUtil.transformName(InEnum.BODY, requestPart.value()),
                             errors.getArgument(),
                             error.getDefaultMessage())));
         }

@@ -5,6 +5,8 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import io.github.belgif.rest.problem.internal.JsonPointerUtil;
+
 /**
  * Input model for {@link InputValidationIssue#getInputs()}.
  *
@@ -33,7 +35,7 @@ public class Input<V> {
 
     public Input(InEnum in, String name, V value) {
         this.in = in;
-        this.name = InputValidationIssue.convertName(in, name);
+        this.name = JsonPointerUtil.convertName(in, name);
         this.value = value;
     }
 
@@ -51,7 +53,7 @@ public class Input<V> {
     }
 
     public void setName(String name) {
-        this.name = InputValidationIssue.convertName(in, name);
+        this.name = JsonPointerUtil.convertName(in, name);
     }
 
     public V getValue() {

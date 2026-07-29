@@ -7,7 +7,6 @@ import java.util.List;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
-import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import tools.jackson.core.JacksonException.Reference;
 import tools.jackson.core.exc.StreamReadException;
@@ -61,6 +60,6 @@ public class Jackson3Util {
                 properties.add(reference.getPropertyName());
             }
         }
-        return InputValidationIssue.getNameFromProperties(InEnum.BODY, properties);
+        return JsonPointerUtil.getNameFromProperties(InEnum.BODY, properties);
     }
 }

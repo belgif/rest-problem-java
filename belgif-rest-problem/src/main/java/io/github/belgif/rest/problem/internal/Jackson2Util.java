@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
-import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 
 /**
@@ -76,7 +75,7 @@ public class Jackson2Util {
                 properties.add(reference.getFieldName());
             }
         }
-        return InputValidationIssue.getNameFromProperties(InEnum.BODY, properties);
+        return JsonPointerUtil.getNameFromProperties(InEnum.BODY, properties);
     }
 
     @SuppressWarnings("java:S1872")
