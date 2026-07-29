@@ -43,7 +43,6 @@ public class Input<V> {
 
     public void setIn(InEnum in) {
         this.in = in;
-        setName(name);
     }
 
     public String getName() {
