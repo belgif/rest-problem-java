@@ -4,9 +4,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.config.ProblemConfig;
 
@@ -15,15 +12,13 @@ import io.github.belgif.rest.problem.config.ProblemConfig;
  */
 public class JsonPointerUtil {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JsonPointerUtil.class);
-
     // e.g: /, field, /field, /field/0, /field/0/nested
     private static final Pattern JSON_POINTER_BASIC_REGEX = Pattern.compile("/+[a-zA-Z0-9-]*+(/[a-zA-Z0-9-]++)*+");
 
     private JsonPointerUtil() {
     }
 
-    private static boolean nameMatchesJsonPointerFormat(String name) {
+    public static boolean nameMatchesJsonPointerFormat(String name) {
         return name == null || (JSON_POINTER_BASIC_REGEX.matcher(name).matches()
                 && !name.matches(".*/\\d+/\\d+/*+")
                 // not two indexes following each other (e.g: person/1/2)
@@ -49,26 +44,6 @@ public class JsonPointerUtil {
             String convertedName = replaceSquareBrackets(nameJsonPath).replace(".", "/");
             return convertedName.charAt(0) != '/' ? "/" + convertedName : convertedName;
         }
-    }
-
-    /**
-     *
-     * @param in
-     *        the issue place in the query
-     * @param name
-     *        the name in JsonPath syntax
-     * @return the name converted (if necessary) to JsonPointer syntax
-     */
-    public static String convertName(InEnum in, String name) {
-        if (in == InEnum.BODY && ProblemConfig.isJsonPointerEnabled() && !nameMatchesJsonPointerFormat(name)) {
-            LOGGER.warn(
-                    "Your application does not use the JsonPointer syntax for issue in the body although it is "
-                            + "enabled [in: %s, name: %s]. Auto-conversion will be applied. ",
-                    in, name);
-            return transformName(in, name);
-        }
-
-        return name;
     }
 
     public static String getNameFromProperties(InEnum in, List<String> propertiesName) {

@@ -79,13 +79,15 @@ public class InputValidationIssue {
 
     public InputValidationIssue(InEnum in, String name, Object value) {
         this.in = in;
-        this.name = JsonPointerUtil.convertName(in, name);
+        this.name = name;
         this.value = value;
+        autoConvertToJsonPointerIfNeeded();
     }
 
     public InputValidationIssue(InEnum in, String name) {
         this.in = in;
-        this.name = JsonPointerUtil.convertName(in, name);
+        this.name = name;
+        autoConvertToJsonPointerIfNeeded();
     }
 
     public URI getType() {
@@ -127,7 +129,7 @@ public class InputValidationIssue {
     public void setIn(InEnum in) {
         verifyNoInputs(in);
         this.in = in;
-        this.name = JsonPointerUtil.convertName(in, name);
+        autoConvertToJsonPointerIfNeeded();
     }
 
     public String getName() {
@@ -136,7 +138,8 @@ public class InputValidationIssue {
 
     public void setName(String name) {
         verifyNoInputs(name);
-        this.name = JsonPointerUtil.convertName(in, name);
+        this.name = name;
+        autoConvertToJsonPointerIfNeeded();
     }
 
     public Object getValue() {
@@ -177,6 +180,7 @@ public class InputValidationIssue {
         } else {
             in(input.getIn(), input.getName(), input.getValue());
         }
+        autoConvertToJsonPointerIfNeeded();
     }
 
     private void verifyNoInputs(Object valueToUpdate) {
@@ -191,6 +195,29 @@ public class InputValidationIssue {
 
     private boolean hasInNameValue() {
         return in != null || name != null || value != null;
+    }
+
+    private void autoConvertToJsonPointerIfNeeded() {
+        if (ProblemConfig.isJsonPointerEnabled()) {
+            if (in == InEnum.BODY) {
+                name = autoConvertToJsonPointerIfNeeded(in, name);
+            }
+            for (Input<?> input : inputs) {
+                if (input.getIn() == InEnum.BODY) {
+                    input.setName(autoConvertToJsonPointerIfNeeded(input.getIn(), input.getName()));
+                }
+            }
+        }
+    }
+
+    private String autoConvertToJsonPointerIfNeeded(InEnum in, String propertyPath) {
+        if (!JsonPointerUtil.nameMatchesJsonPointerFormat(propertyPath)) {
+            String jsonPointer = JsonPointerUtil.transformName(in, propertyPath);
+            LOGGER.warn("{} is enabled, auto-converting '{}' to JSON Pointer format '{}'",
+                    ProblemConfig.PROPERTY_JSON_POINTER_ENABLED, propertyPath, jsonPointer);
+            return jsonPointer;
+        }
+        return propertyPath;
     }
 
     @JsonAnyGetter
@@ -389,6 +416,7 @@ public class InputValidationIssue {
 
         this.inputs.clear();
         this.inputs.addAll(filteredInputs);
+        autoConvertToJsonPointerIfNeeded();
         return this;
     }
 
