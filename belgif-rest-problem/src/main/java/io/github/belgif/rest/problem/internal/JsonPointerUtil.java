@@ -15,6 +15,8 @@ public class JsonPointerUtil {
     // e.g: /, field, /field, /field/0, /field/0/nested
     private static final Pattern JSON_POINTER_PATTERN = Pattern.compile("/+[a-zA-Z0-9-]*+(/[a-zA-Z0-9-]++)*+");
 
+    private static final Pattern ARRAY_INDEX_PATTERN = Pattern.compile("\\[(\\d++)]");
+
     private JsonPointerUtil() {
     }
 
@@ -68,7 +70,7 @@ public class JsonPointerUtil {
 
     private static String replaceSquareBrackets(String propertyName) {
         // replace all indexes "[X]" by "/X"
-        return propertyName.replaceAll("\\[(\\d++)]", "/$1");
+        return ARRAY_INDEX_PATTERN.matcher(propertyName).replaceAll("/$1");
     }
 
 }
