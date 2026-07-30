@@ -29,7 +29,7 @@ class PeriodValidatorTest {
                 Input.body("/period", new InputPeriod(LocalDate.of(2023, 10, 11), LocalDate.of(2023, 10, 12))))
                         .validate()).isEmpty();
         // no startDate and endDate
-        assertThat(new PeriodValidator(Input.body("/criteria/periods/period", new InputPeriod(null, null)))
+        assertThat(new PeriodValidator(Input.body("/criteria/periods/1/period", new InputPeriod(null, null)))
                 .validate()).isEmpty();
     }
 

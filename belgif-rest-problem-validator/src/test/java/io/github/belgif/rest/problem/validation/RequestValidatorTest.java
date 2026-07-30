@@ -325,28 +325,22 @@ class RequestValidatorTest {
                 InputValidationIssues.referencedResourceNotFound(QUERY, "refData", "x"));
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void refDatasCollectionValid(boolean jsonPointerEnabled) {
-        ProblemConfig.setJsonPointerEnabled(jsonPointerEnabled);
+    @Test
+    void refDatasCollectionValid() {
         assertValid(new RequestValidator().refDatas(Input.query("refDatas",
                 Arrays.asList("a", "b")), Arrays.asList("a", "b", "c")));
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void refDatasCollectionInvalid(boolean isJsonPointerEnabled) {
-        ProblemConfig.setJsonPointerEnabled(isJsonPointerEnabled);
+    @Test
+    void refDatasCollectionInvalid() {
         assertInvalid(new RequestValidator().refDatas(Input.query("refDatas",
                 Arrays.asList("a", "x", "b", "y")), Arrays.asList("a", "b", "c")),
                 InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[1]", "x"),
                 InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[3]", "y"));
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void refDatasSupplierValid(boolean isJsonPointerEnabled) {
-        ProblemConfig.setJsonPointerEnabled(isJsonPointerEnabled);
+    @Test
+    void refDatasSupplierValid() {
         AtomicInteger calls = new AtomicInteger(0);
         assertValid(new RequestValidator().refDatas(Input.query("refDatas",
                 Arrays.asList("a", "b")), () -> {
@@ -356,10 +350,8 @@ class RequestValidatorTest {
         assertThat(calls).hasValue(1);
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void refDatasSupplierInvalid(boolean isJsonPointerEnabled) {
-        ProblemConfig.setJsonPointerEnabled(isJsonPointerEnabled);
+    @Test
+    void refDatasSupplierInvalid() {
         AtomicInteger calls = new AtomicInteger(0);
         assertInvalid(new RequestValidator().refDatas(Input.query("refDatas",
                 Arrays.asList("a", "x", "b", "y")), () -> {
@@ -381,18 +373,14 @@ class RequestValidatorTest {
         assertThat(calls).hasValue(0);
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void refDatasPredicateValid(boolean isJsonPointerEnabled) {
-        ProblemConfig.setJsonPointerEnabled(isJsonPointerEnabled);
+    @Test
+    void refDatasPredicateValid() {
         assertValid(new RequestValidator().refDatas(Input.query("refDatas", Arrays.asList("a", "b")),
                 Arrays.asList("a", "b", "c")::contains));
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void refDatasPredicateInvalid(boolean isJsonPointerEnabled) {
-        ProblemConfig.setJsonPointerEnabled(isJsonPointerEnabled);
+    @Test
+    void refDatasPredicateInvalid() {
         assertInvalid(new RequestValidator().refDatas(Input.query("refDatas", Arrays.asList("a", "x", "b", "y")),
                 Arrays.asList("a", "b", "c")::contains),
                 InputValidationIssues.referencedResourceNotFound(QUERY, "refDatas[1]", "x"),

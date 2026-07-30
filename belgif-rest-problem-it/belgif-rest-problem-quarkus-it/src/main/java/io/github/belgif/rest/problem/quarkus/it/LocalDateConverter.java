@@ -12,7 +12,6 @@ import jakarta.ws.rs.ext.Provider;
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.ee.server.jaxrs.AbstractInputParamConverterProvider;
-import io.github.belgif.rest.problem.internal.JsonPointerUtil;
 
 @Provider
 public class LocalDateConverter extends AbstractInputParamConverterProvider<LocalDate> {
@@ -33,9 +32,7 @@ public class LocalDateConverter extends AbstractInputParamConverterProvider<Loca
         try {
             return LocalDate.parse(value, LOCAL_DATE_FORMATTER);
         } catch (DateTimeParseException e) {
-            throw new BadRequestProblem(
-                    schemaViolation(in, JsonPointerUtil.transformName(in, name), value,
-                            "date has invalid format"));
+            throw new BadRequestProblem(schemaViolation(in, name, value, "date has invalid format"));
         }
     }
 
