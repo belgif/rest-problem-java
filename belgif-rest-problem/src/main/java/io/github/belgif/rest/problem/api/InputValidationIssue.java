@@ -199,14 +199,14 @@ public class InputValidationIssue {
 
     private void autoConvertToJsonPointerIfNeeded() {
         if (ProblemConfig.isJsonPointerEnabled()) {
-            name = autoConvertToJsonPointerIfNeeded(in, name);
+            name = convertToJsonPointerIfNeeded(in, name);
             for (Input<?> input : inputs) {
-                input.setName(autoConvertToJsonPointerIfNeeded(input.getIn(), input.getName()));
+                input.setName(convertToJsonPointerIfNeeded(input.getIn(), input.getName()));
             }
         }
     }
 
-    private String autoConvertToJsonPointerIfNeeded(InEnum in, String propertyPath) {
+    private String convertToJsonPointerIfNeeded(InEnum in, String propertyPath) {
         if (in == InEnum.BODY && propertyPath != null && !JsonPointerUtil.isJsonPointer(propertyPath)) {
             String jsonPointer = JsonPointerUtil.transformName(in, propertyPath);
             LOGGER.warn("{} is enabled, auto-converting '{}' to JSON Pointer format '{}'",

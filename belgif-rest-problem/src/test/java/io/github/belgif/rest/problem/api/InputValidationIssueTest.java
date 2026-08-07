@@ -324,7 +324,7 @@ class InputValidationIssueTest {
     @ParameterizedTest
     @EnumSource(InEnum.class)
     void nameMatchingJsonPointerFormatInConstructor(InEnum in) {
-        List<String> names = Arrays.asList("/field", "/field/0", "/field/0/nested/2/nestedAgain");
+        List<String> names = Arrays.asList("", "/field", "/field/0", "/field/0/nested/2/nestedAgain");
 
         for (String name : names) {
             InputValidationIssue input = new InputValidationIssue(in, name);
@@ -339,7 +339,6 @@ class InputValidationIssueTest {
     void nameNotMatchingJsonPointerFormatInConstructorAutoConversion(InEnum in) {
         Map<String, String> names = new HashMap<>();
         names.put("field", "/field");
-        names.put("", null);
         names.put("field[0]", "/field/0");
         names.put("field[0].nested[2].nestedAgain", "/field/0/nested/2/nestedAgain");
         names.put("field/0", "/field/0");
@@ -375,7 +374,7 @@ class InputValidationIssueTest {
         Map<String, String> names = new HashMap<>();
         names.put("field", "/field");
         names.put("/field", "/field");
-        names.put("", null);
+        names.put("", "");
         names.put("field[0]", "/field/0");
         names.put("field[0].nested[2].nestedAgain", "/field/0/nested/2/nestedAgain");
         names.put("field/0", "/field/0");
@@ -419,7 +418,7 @@ class InputValidationIssueTest {
         Map<String, String> names = new HashMap<>();
         names.put("field", "/field");
         names.put("/field", "/field");
-        names.put("", null);
+        names.put("", "");
         names.put("field[0]", "/field/0");
         names.put("field[0].nested[2].nestedAgain", "/field/0/nested/2/nestedAgain");
         names.put("field/0", "/field/0");

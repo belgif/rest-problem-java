@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -20,6 +21,20 @@ class JsonPointerUtilTest {
     @AfterEach
     void resetProblemConfig() {
         ProblemConfig.reset();
+    }
+
+    @Test
+    void isJsonPointer() {
+        assertThat(JsonPointerUtil.isJsonPointer("")).isTrue();
+        assertThat(JsonPointerUtil.isJsonPointer("/test")).isTrue();
+        assertThat(JsonPointerUtil.isJsonPointer("/foo/bar")).isTrue();
+        assertThat(JsonPointerUtil.isJsonPointer("/foo/bar/1")).isTrue();
+        assertThat(JsonPointerUtil.isJsonPointer(null)).isFalse();
+        assertThat(JsonPointerUtil.isJsonPointer("test")).isFalse();
+        assertThat(JsonPointerUtil.isJsonPointer("foo.bar")).isFalse();
+        assertThat(JsonPointerUtil.isJsonPointer("foo.bar[1]")).isFalse();
+        assertThat(JsonPointerUtil.isJsonPointer("/foo/bar[1]")).isFalse();
+        assertThat(JsonPointerUtil.isJsonPointer("    ")).isFalse();
     }
 
     @ParameterizedTest

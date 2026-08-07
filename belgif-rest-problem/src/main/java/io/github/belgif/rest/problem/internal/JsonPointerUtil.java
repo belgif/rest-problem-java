@@ -12,22 +12,37 @@ import io.github.belgif.rest.problem.config.ProblemConfig;
  */
 public class JsonPointerUtil {
 
-    // e.g: /, field, /field, /field/0, /field/0/nested
-    private static final Pattern JSON_POINTER_PATTERN = Pattern.compile("/+[a-zA-Z0-9-]*+(/[a-zA-Z0-9-]++)*+");
-
     private static final Pattern ARRAY_INDEX_PATTERN = Pattern.compile("\\[(\\d++)]");
 
     private JsonPointerUtil() {
     }
 
     /**
-     * Check whether the given string is a JSON Pointer.
+     * Heuristically check whether the given string is likely to be a JSON Pointer
+     * (empty "" or starting with "/" and not containing any square brackets []).
      *
      * @param value the string
-     * @return true when it is a JSON Pointer, false otherwise
+     * @return true when it is likely a JSON Pointer, false otherwise
      */
     public static boolean isJsonPointer(String value) {
-        return JSON_POINTER_PATTERN.matcher(value).matches();
+        return value != null && (value.isEmpty() || value.startsWith("/"))
+                && !value.contains("[") && !value.contains("]");
+    }
+
+    /**
+     * Add the given index to the given name in the correct format (JSON Pointer "/idx" or JsonPath "[idx]").
+     *
+     * @param in the input location
+     * @param name the input name
+     * @param index the index
+     * @return the name with the index added
+     */
+    public static String addIndex(InEnum in, String name, int index) {
+        if (ProblemConfig.isJsonPointerEnabled() && in == InEnum.BODY) {
+            return name + "/" + index;
+        } else {
+            return name + "[" + index + "]";
+        }
     }
 
     /**
