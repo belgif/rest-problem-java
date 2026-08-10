@@ -2,7 +2,6 @@ package io.github.belgif.rest.problem.internal;
 
 import static io.github.belgif.rest.problem.api.InputValidationIssues.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,22 +59,21 @@ public class Jackson2Util {
     }
 
     private static String getName(List<Reference> path) {
-
         if (path.isEmpty()) {
             return null;
         }
-        List<String> properties = new ArrayList<>();
-
+        StringBuilder builder = new StringBuilder();
         for (Reference reference : path) {
             if (reference.getFrom() instanceof List) {
-                // append the index to the property name
-                properties.set(properties.size() - 1,
-                        properties.get(properties.size() - 1) + "[" + reference.getIndex() + "]");
+                builder.append("[").append(reference.getIndex()).append("]");
             } else {
-                properties.add(reference.getFieldName());
+                if (builder.length() > 0) {
+                    builder.append(".");
+                }
+                builder.append(reference.getFieldName());
             }
         }
-        return JsonPointerUtil.getNameFromProperties(InEnum.BODY, properties);
+        return JsonPointerUtil.transformName(InEnum.BODY, builder.toString());
     }
 
     @SuppressWarnings("java:S1872")

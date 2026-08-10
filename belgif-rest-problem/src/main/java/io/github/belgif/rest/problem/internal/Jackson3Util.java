@@ -2,7 +2,6 @@ package io.github.belgif.rest.problem.internal;
 
 import static io.github.belgif.rest.problem.api.InputValidationIssues.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
@@ -44,22 +43,20 @@ public class Jackson3Util {
     }
 
     private static String getName(List<Reference> path) {
-
         if (path.isEmpty()) {
             return null;
         }
-
-        List<String> properties = new ArrayList<>();
-
+        StringBuilder name = new StringBuilder();
         for (Reference reference : path) {
             if (reference.from() instanceof List) {
-                // append the index to the property name
-                properties.set(properties.size() - 1,
-                        properties.get(properties.size() - 1) + "[" + reference.getIndex() + "]");
+                name.append("[").append(reference.getIndex()).append("]");
             } else {
-                properties.add(reference.getPropertyName());
+                if (name.length() > 0) {
+                    name.append(".");
+                }
+                name.append(reference.getPropertyName());
             }
         }
-        return JsonPointerUtil.getNameFromProperties(InEnum.BODY, properties);
+        return JsonPointerUtil.transformName(InEnum.BODY, name.toString());
     }
 }

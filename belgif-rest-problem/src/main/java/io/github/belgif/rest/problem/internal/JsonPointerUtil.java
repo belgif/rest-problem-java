@@ -1,8 +1,6 @@
 package io.github.belgif.rest.problem.internal;
 
-import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.config.ProblemConfig;
@@ -64,23 +62,6 @@ public class JsonPointerUtil {
             String convertedName = replaceSquareBrackets(nameJsonPath).replace(".", "/");
             return convertedName.charAt(0) != '/' ? "/" + convertedName : convertedName;
         }
-    }
-
-    public static String getNameFromProperties(InEnum in, List<String> propertiesName) {
-
-        if (in != InEnum.BODY && propertiesName != null && propertiesName.size() > 1) {
-            throw new IllegalArgumentException(
-                    "This method should only be used with several properties for issues located in the body");
-        }
-
-        if (propertiesName == null || propertiesName.isEmpty()) {
-            return null;
-        }
-
-        String name = ProblemConfig.isJsonPointerEnabled() && in == InEnum.BODY ? propertiesName.stream()
-                .map(JsonPointerUtil::replaceSquareBrackets).collect(Collectors.joining("/"))
-                : String.join(".", propertiesName);
-        return in == InEnum.BODY && ProblemConfig.isJsonPointerEnabled() ? "/" + name : name;
     }
 
     private static String replaceSquareBrackets(String propertyName) {
