@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,8 +30,10 @@ class Jackson2UtilTest {
         ProblemConfig.reset();
     }
 
-    @Test
-    void mismatchedInput() {
+    @ParameterizedTest
+    @CsvSource({ "false, id", "true, /id" })
+    void mismatchedInput(boolean jsonPointerEnabled, String result) {
+        ProblemConfig.setJsonPointerEnabled(jsonPointerEnabled);
         assertThatExceptionOfType(MismatchedInputException.class).isThrownBy(() -> {
             new ObjectMapper().readValue("{}", Model.class);
         }).satisfies(e -> {
@@ -37,23 +41,7 @@ class Jackson2UtilTest {
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-            assertThat(issue.getName()).isEqualTo("/id");
-            assertThat(issue.getValue()).isNull();
-            assertThat(issue.getDetail()).isEqualTo("must not be null");
-        });
-    }
-
-    @Test
-    void mismatchedInputWithJsonPointerDisabled() {
-        ProblemConfig.setJsonPointerEnabled(false);
-        assertThatExceptionOfType(MismatchedInputException.class).isThrownBy(() -> {
-            new ObjectMapper().readValue("{}", Model.class);
-        }).satisfies(e -> {
-            BadRequestProblem problem = Jackson2Util.toBadRequestProblem(e);
-            InputValidationIssue issue = problem.getIssues().get(0);
-            assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
-            assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-            assertThat(issue.getName()).isEqualTo("id");
+            assertThat(issue.getName()).isEqualTo(result);
             assertThat(issue.getValue()).isNull();
             assertThat(issue.getDetail()).isEqualTo("must not be null");
         });
@@ -164,8 +152,10 @@ class Jackson2UtilTest {
         });
     }
 
-    @Test
-    void mismatchedInputNestedWithArray() {
+    @ParameterizedTest
+    @CsvSource({ "false, models[0].id", "true, /models/0/id" })
+    void DatabindExceptionWithArrayJsonPointerDisabled(boolean jsonPointerEnabled, String result) {
+        ProblemConfig.setJsonPointerEnabled(jsonPointerEnabled);
         assertThatExceptionOfType(MismatchedInputException.class).isThrownBy(() -> {
             new ObjectMapper().readValue("{\"models\": [{}]}", NestedWithArray.class);
         }).satisfies(e -> {
@@ -173,23 +163,7 @@ class Jackson2UtilTest {
             InputValidationIssue issue = problem.getIssues().get(0);
             assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
             assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-            assertThat(issue.getName()).isEqualTo("/models/0/id");
-            assertThat(issue.getValue()).isNull();
-            assertThat(issue.getDetail()).isEqualTo("must not be null");
-        });
-    }
-
-    @Test
-    void mismatchedInputNestedWithArrayWithJsonPointerDisabled() {
-        ProblemConfig.setJsonPointerEnabled(false);
-        assertThatExceptionOfType(MismatchedInputException.class).isThrownBy(() -> {
-            new ObjectMapper().readValue("{\"models\": [{}]}", NestedWithArray.class);
-        }).satisfies(e -> {
-            BadRequestProblem problem = Jackson2Util.toBadRequestProblem(e);
-            InputValidationIssue issue = problem.getIssues().get(0);
-            assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
-            assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-            assertThat(issue.getName()).isEqualTo("models[0].id");
+            assertThat(issue.getName()).isEqualTo(result);
             assertThat(issue.getValue()).isNull();
             assertThat(issue.getDetail()).isEqualTo("must not be null");
         });

@@ -26,6 +26,8 @@ import javax.ws.rs.core.Response;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
@@ -56,8 +58,10 @@ class ConstraintViolationUtilTest {
         assertThat(issue.getDetail()).isEqualTo("must not be null");
     }
 
-    @Test
-    void bodyProperty() throws Exception {
+    @ParameterizedTest
+    @CsvSource({ "false, value", "true, /value" })
+    void bodyProperty(boolean jsonPointerEnabled, String result) throws Exception {
+        ProblemConfig.setJsonPointerEnabled(jsonPointerEnabled);
         Body target = new Body();
         target.value = 10;
 
@@ -70,55 +74,15 @@ class ConstraintViolationUtilTest {
         InputValidationIssue issue =
                 ConstraintViolationUtil.convertToInputValidationIssue(violations.iterator().next());
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("/value");
+        assertThat(issue.getName()).isEqualTo(result);
         assertThat(issue.getValue()).isEqualTo(10);
         assertThat(issue.getDetail()).isEqualTo("must be less than or equal to 5");
     }
 
-    @Test
-    void bodyPropertyWithJsonPointerDisabled() throws Exception {
-        ProblemConfig.setJsonPointerEnabled(false);
-
-        Body target = new Body();
-        target.value = 10;
-
-        Set<ConstraintViolation<Resource>> violations =
-                validator.forExecutables().validateParameters(new Resource(),
-                        Resource.class.getMethod("bodyParam", Body.class), new Object[] { target });
-
-        assertThat(violations).hasSize(1);
-
-        InputValidationIssue issue =
-                ConstraintViolationUtil.convertToInputValidationIssue(violations.iterator().next());
-        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("value");
-        assertThat(issue.getValue()).isEqualTo(10);
-        assertThat(issue.getDetail()).isEqualTo("must be less than or equal to 5");
-    }
-
-    @Test
-    void nestedBodyProperty() throws Exception {
-        Body target = new Body();
-        target.nested.add(new Nested("OK"));
-        target.nested.add(new Nested(null));
-
-        Set<ConstraintViolation<Resource>> violations =
-                validator.forExecutables().validateParameters(new Resource(),
-                        Resource.class.getMethod("bodyParam", Body.class), new Object[] { target });
-
-        assertThat(violations).hasSize(1);
-
-        InputValidationIssue issue =
-                ConstraintViolationUtil.convertToInputValidationIssue(violations.iterator().next());
-        assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("/nested/1/prop");
-        assertThat(issue.getValue()).isNull();
-        assertThat(issue.getDetail()).isEqualTo("must not be null");
-    }
-
-    @Test
-    void nestedBodyPropertyWithJsonPointerDisabled() throws Exception {
-        ProblemConfig.setJsonPointerEnabled(false);
+    @ParameterizedTest
+    @CsvSource({ "false, nested[1].prop", "true, /nested/1/prop" })
+    void nestedBodyProperty(boolean jsonPointerEnabled, String result) throws Exception {
+        ProblemConfig.setJsonPointerEnabled(jsonPointerEnabled);
 
         Body target = new Body();
         target.nested.add(new Nested("OK"));
@@ -133,7 +97,7 @@ class ConstraintViolationUtilTest {
         InputValidationIssue issue =
                 ConstraintViolationUtil.convertToInputValidationIssue(violations.iterator().next());
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("nested[1].prop");
+        assertThat(issue.getName()).isEqualTo(result);
         assertThat(issue.getValue()).isNull();
         assertThat(issue.getDetail()).isEqualTo("must not be null");
     }
