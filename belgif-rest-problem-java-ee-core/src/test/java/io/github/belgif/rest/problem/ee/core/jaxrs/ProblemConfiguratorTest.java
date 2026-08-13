@@ -37,15 +37,18 @@ class ProblemConfiguratorTest {
         boolean stackTraceEnabledBefore = ProblemConfig.isStackTraceEnabled();
         boolean extIssueTypesEnabledBefore = ProblemConfig.isExtIssueTypesEnabled();
         boolean extInputsArrayEnabledBefore = ProblemConfig.isExtInputsArrayEnabled();
+        boolean jsonPointerEnabledBefore = ProblemConfig.isJsonPointerEnabled();
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_I18N_ENABLED)).thenReturn(null);
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_STACK_TRACE_ENABLED)).thenReturn(null);
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED)).thenReturn(null);
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED)).thenReturn(null);
+        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_JSON_POINTER_ENABLED)).thenReturn(null);
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(i18nEnabledBefore);
         assertThat(ProblemConfig.isStackTraceEnabled()).isEqualTo(stackTraceEnabledBefore);
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isEqualTo(extIssueTypesEnabledBefore);
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isEqualTo(extInputsArrayEnabledBefore);
+        assertThat(ProblemConfig.isJsonPointerEnabled()).isEqualTo(jsonPointerEnabledBefore);
     }
 
     @Test
@@ -54,11 +57,13 @@ class ProblemConfiguratorTest {
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_STACK_TRACE_ENABLED)).thenReturn("true");
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED)).thenReturn("true");
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED)).thenReturn("true");
+        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_JSON_POINTER_ENABLED)).thenReturn("true");
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isTrue();
         assertThat(ProblemConfig.isStackTraceEnabled()).isTrue();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isTrue();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isTrue();
+        assertThat(ProblemConfig.isJsonPointerEnabled()).isTrue();
     }
 
     @Test
@@ -67,11 +72,13 @@ class ProblemConfiguratorTest {
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_STACK_TRACE_ENABLED)).thenReturn("false");
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED)).thenReturn("false");
         when(servletContext.getInitParameter(ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED)).thenReturn("false");
+        when(servletContext.getInitParameter(ProblemConfig.PROPERTY_JSON_POINTER_ENABLED)).thenReturn("false");
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isFalse();
         assertThat(ProblemConfig.isStackTraceEnabled()).isFalse();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isFalse();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isFalse();
+        assertThat(ProblemConfig.isJsonPointerEnabled()).isFalse();
     }
 
     @Test
@@ -79,12 +86,14 @@ class ProblemConfiguratorTest {
     @SetSystemProperty(key = ProblemConfig.PROPERTY_STACK_TRACE_ENABLED, value = "true")
     @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "true")
     @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "true")
+    @SetSystemProperty(key = ProblemConfig.PROPERTY_JSON_POINTER_ENABLED, value = "true")
     void enabledViaSystemProperties() {
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isTrue();
         assertThat(ProblemConfig.isStackTraceEnabled()).isTrue();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isTrue();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isTrue();
+        assertThat(ProblemConfig.isJsonPointerEnabled()).isTrue();
         verifyNoInteractions(servletContext);
     }
 
@@ -93,12 +102,14 @@ class ProblemConfiguratorTest {
     @SetSystemProperty(key = ProblemConfig.PROPERTY_STACK_TRACE_ENABLED, value = "false")
     @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "false")
     @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "false")
+    @SetSystemProperty(key = ProblemConfig.PROPERTY_JSON_POINTER_ENABLED, value = "false")
     void disabledViaSystemProperty() {
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isFalse();
         assertThat(ProblemConfig.isStackTraceEnabled()).isFalse();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isFalse();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isFalse();
+        assertThat(ProblemConfig.isJsonPointerEnabled()).isFalse();
         verifyNoInteractions(servletContext);
     }
 
@@ -107,12 +118,14 @@ class ProblemConfiguratorTest {
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_STACK_TRACE_ENABLED, value = "true")
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "true")
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "true")
+    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_JSON_POINTER_ENABLED, value = "true")
     void enabledViaEnvironmentVariable() {
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isTrue();
         assertThat(ProblemConfig.isStackTraceEnabled()).isTrue();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isTrue();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isTrue();
+        assertThat(ProblemConfig.isJsonPointerEnabled()).isTrue();
         verifyNoInteractions(servletContext);
     }
 
@@ -121,12 +134,14 @@ class ProblemConfiguratorTest {
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_STACK_TRACE_ENABLED, value = "false")
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "false")
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "false")
+    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_JSON_POINTER_ENABLED, value = "false")
     void disabledViaEnvironmentVariable() {
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isFalse();
         assertThat(ProblemConfig.isStackTraceEnabled()).isFalse();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isFalse();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isFalse();
+        assertThat(ProblemConfig.isJsonPointerEnabled()).isFalse();
         verifyNoInteractions(servletContext);
     }
 
@@ -135,16 +150,19 @@ class ProblemConfiguratorTest {
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_STACK_TRACE_ENABLED, value = "false")
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "false")
     @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "false")
+    @SetEnvironmentVariable(key = ProblemConfig.PROPERTY_JSON_POINTER_ENABLED, value = "false")
     @SetSystemProperty(key = ProblemConfig.PROPERTY_I18N_ENABLED, value = "true")
     @SetSystemProperty(key = ProblemConfig.PROPERTY_STACK_TRACE_ENABLED, value = "true")
     @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, value = "true")
     @SetSystemProperty(key = ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, value = "true")
+    @SetSystemProperty(key = ProblemConfig.PROPERTY_JSON_POINTER_ENABLED, value = "true")
     void systemPropertyHasPrecedenceOverEnvironmentVariable() {
         configurator.contextInitialized(new ServletContextEvent(servletContext));
         assertThat(ProblemConfig.isI18nEnabled()).isTrue();
         assertThat(ProblemConfig.isStackTraceEnabled()).isTrue();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isTrue();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isTrue();
+        assertThat(ProblemConfig.isJsonPointerEnabled()).isTrue();
         verifyNoInteractions(servletContext);
     }
 

@@ -21,6 +21,8 @@ public class ProblemConfigurationProperties implements InitializingBean {
 
     private Boolean stackTraceEnabled = null;
 
+    private Boolean jsonPointerEnabled = null;
+
     @Value("${io.github.belgif.rest.problem.scan-additional-problem-packages:#{{}}}")
     public void setScanAdditionalProblemPackages(List<String> scanAdditionalProblemPackages) {
         this.scanAdditionalProblemPackages = scanAdditionalProblemPackages;
@@ -40,6 +42,11 @@ public class ProblemConfigurationProperties implements InitializingBean {
         this.stackTraceEnabled = stackTraceEnabled;
     }
 
+    @Value("${io.github.belgif.rest.problem.json-pointer-enabled:#{null}}")
+    public void setJsonPointerEnabled(Boolean jsonPointerEnabled) {
+        this.jsonPointerEnabled = jsonPointerEnabled;
+    }
+
     @Override
     public void afterPropertiesSet() {
         if (i18nEnabled != null) {
@@ -47,6 +54,10 @@ public class ProblemConfigurationProperties implements InitializingBean {
         }
         if (stackTraceEnabled != null) {
             ProblemConfig.setStackTraceEnabled(stackTraceEnabled);
+        }
+
+        if (jsonPointerEnabled != null) {
+            ProblemConfig.setJsonPointerEnabled(jsonPointerEnabled);
         }
     }
 

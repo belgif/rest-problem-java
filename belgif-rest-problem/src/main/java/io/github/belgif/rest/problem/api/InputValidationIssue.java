@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -22,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 import io.github.belgif.rest.problem.config.ProblemConfig;
 import io.github.belgif.rest.problem.i18n.I18N;
+import io.github.belgif.rest.problem.internal.JsonPointerUtil;
 
 /**
  * Maps to InputValidationIssue in belgif/problem/v1/problem-v1.yaml.
@@ -40,6 +44,8 @@ import io.github.belgif.rest.problem.i18n.I18N;
 public class InputValidationIssue {
 
     public static final Comparator<InputValidationIssue> BY_NAME = Comparator.comparing(InputValidationIssue::getName);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(InputValidationIssue.class);
 
     private static final String INPUTS_AND_IN_NAME_VALUE_ARE_MUTUALLY_EXCLUSIVE =
             "inputs[] and in/name/value are mutually exclusive";
@@ -75,11 +81,13 @@ public class InputValidationIssue {
         this.in = in;
         this.name = name;
         this.value = value;
+        autoConvertToJsonPointerIfNeeded();
     }
 
     public InputValidationIssue(InEnum in, String name) {
         this.in = in;
         this.name = name;
+        autoConvertToJsonPointerIfNeeded();
     }
 
     public URI getType() {
@@ -121,6 +129,7 @@ public class InputValidationIssue {
     public void setIn(InEnum in) {
         verifyNoInputs(in);
         this.in = in;
+        autoConvertToJsonPointerIfNeeded();
     }
 
     public String getName() {
@@ -130,6 +139,7 @@ public class InputValidationIssue {
     public void setName(String name) {
         verifyNoInputs(name);
         this.name = name;
+        autoConvertToJsonPointerIfNeeded();
     }
 
     public Object getValue() {
@@ -170,6 +180,7 @@ public class InputValidationIssue {
         } else {
             in(input.getIn(), input.getName(), input.getValue());
         }
+        autoConvertToJsonPointerIfNeeded();
     }
 
     private void verifyNoInputs(Object valueToUpdate) {
@@ -184,6 +195,25 @@ public class InputValidationIssue {
 
     private boolean hasInNameValue() {
         return in != null || name != null || value != null;
+    }
+
+    private void autoConvertToJsonPointerIfNeeded() {
+        if (ProblemConfig.isJsonPointerEnabled()) {
+            name = convertToJsonPointerIfNeeded(in, name);
+            for (Input<?> input : inputs) {
+                input.setName(convertToJsonPointerIfNeeded(input.getIn(), input.getName()));
+            }
+        }
+    }
+
+    private String convertToJsonPointerIfNeeded(InEnum in, String propertyPath) {
+        if (in == InEnum.BODY && propertyPath != null && !JsonPointerUtil.isJsonPointer(propertyPath)) {
+            String jsonPointer = JsonPointerUtil.transformName(in, propertyPath);
+            LOGGER.warn("{} is enabled, auto-converting '{}' to JSON Pointer format '{}'",
+                    ProblemConfig.PROPERTY_JSON_POINTER_ENABLED, propertyPath, jsonPointer);
+            return jsonPointer;
+        }
+        return propertyPath;
     }
 
     @JsonAnyGetter
@@ -382,6 +412,7 @@ public class InputValidationIssue {
 
         this.inputs.clear();
         this.inputs.addAll(filteredInputs);
+        autoConvertToJsonPointerIfNeeded();
         return this;
     }
 

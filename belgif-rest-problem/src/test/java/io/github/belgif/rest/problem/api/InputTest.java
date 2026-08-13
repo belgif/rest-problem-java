@@ -2,9 +2,17 @@ package io.github.belgif.rest.problem.api;
 
 import static org.assertj.core.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import io.github.belgif.rest.problem.config.ProblemConfig;
+
 class InputTest {
+
+    @BeforeEach
+    void resetProblemConfig() {
+        ProblemConfig.reset();
+    }
 
     @Test
     void construct() {
@@ -21,10 +29,10 @@ class InputTest {
 
     @Test
     void body() {
-        Input<String> bodyInput = Input.body("bodyName", "bodyValue");
+        Input<String> bodyInput = Input.body("/bodyName", "bodyValue");
 
         assertThat(bodyInput.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(bodyInput.getName()).isEqualTo("bodyName");
+        assertThat(bodyInput.getName()).isEqualTo("/bodyName");
         assertThat(bodyInput.getValue()).isEqualTo("bodyValue");
     }
 
@@ -57,9 +65,9 @@ class InputTest {
 
     @Test
     void equalsHashCodeToString() {
-        Input<String> input = new Input<>(InEnum.BODY, "name", "value");
-        Input<String> equal = new Input<>(InEnum.BODY, "name", "value");
-        Input<String> other = new Input<>(InEnum.BODY, "anotherName", "anotherValue");
+        Input<String> input = new Input<>(InEnum.BODY, "/name", "value");
+        Input<String> equal = new Input<>(InEnum.BODY, "/name", "value");
+        Input<String> other = new Input<>(InEnum.BODY, "/anotherName", "anotherValue");
 
         assertThat(input).isEqualTo(input);
         assertThat(input).hasSameHashCodeAs(input);

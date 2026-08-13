@@ -25,10 +25,12 @@ class ProblemConfigurationPropertiesTest {
     void empty() {
         boolean i18nEnabledBefore = ProblemConfig.isI18nEnabled();
         boolean stackTraceEnabledBefore = ProblemConfig.isStackTraceEnabled();
+        boolean jsonPointerEnabledBefore = ProblemConfig.isJsonPointerEnabled();
         properties.afterPropertiesSet();
         assertThat(properties.getScanAdditionalProblemPackages()).isEmpty();
         assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(i18nEnabledBefore);
         assertThat(ProblemConfig.isStackTraceEnabled()).isEqualTo(stackTraceEnabledBefore);
+        assertThat(ProblemConfig.isJsonPointerEnabled()).isEqualTo(jsonPointerEnabledBefore);
     }
 
     @Test
@@ -66,4 +68,17 @@ class ProblemConfigurationPropertiesTest {
         assertThat(ProblemConfig.isStackTraceEnabled()).isFalse();
     }
 
+    @Test
+    void jsonPointerEnabled() {
+        properties.setJsonPointerEnabled(true);
+        properties.afterPropertiesSet();
+        assertThat(ProblemConfig.isJsonPointerEnabled()).isTrue();
+    }
+
+    @Test
+    void jsonPointerDisabled() {
+        properties.setJsonPointerEnabled(false);
+        properties.afterPropertiesSet();
+        assertThat(ProblemConfig.isJsonPointerEnabled()).isFalse();
+    }
 }

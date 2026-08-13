@@ -16,6 +16,7 @@ import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.config.ProblemConfig;
+import io.github.belgif.rest.problem.internal.JsonPointerUtil;
 
 /**
  * Abstract base class for {@link RequestValidator} (for extensible fluent builder pattern).
@@ -116,7 +117,7 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
         if (ssins != null && ssins.getValue() != null) {
             int index = 0;
             for (String ssin : ssins.getValue()) {
-                ssin(new Input<>(ssins.getIn(), ssins.getName() + "[" + index + "]", ssin));
+                ssin(new Input<>(ssins.getIn(), JsonPointerUtil.addIndex(ssins.getIn(), ssins.getName(), index), ssin));
                 index++;
             }
         }
@@ -359,7 +360,8 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
             Collection<T> allowedRefData = allowedRefDataSupplier.get();
             int index = 0;
             for (T value : input.getValue()) {
-                refData(new Input<T>(input.getIn(), input.getName() + "[" + index + "]", value), allowedRefData);
+                refData(new Input<>(input.getIn(), JsonPointerUtil.addIndex(input.getIn(), input.getName(), index),
+                        value), allowedRefData);
                 index++;
             }
         }
@@ -378,8 +380,8 @@ public abstract class AbstractRequestValidator<SELF extends AbstractRequestValid
         if (input != null && input.getValue() != null && !input.getValue().isEmpty()) {
             int index = 0;
             for (T value : input.getValue()) {
-                refData(new Input<T>(input.getIn(), input.getName() + "[" + index + "]", value),
-                        allowedRefDataPredicate);
+                refData(new Input<T>(input.getIn(), JsonPointerUtil.addIndex(input.getIn(), input.getName(), index),
+                        value), allowedRefDataPredicate);
                 index++;
             }
         }

@@ -16,6 +16,7 @@ import org.springframework.validation.FieldError;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
+import io.github.belgif.rest.problem.internal.JsonPointerUtil;
 
 /**
  * Internal utility class for converting ConstraintViolation to InputValidationIssue.
@@ -45,13 +46,18 @@ public class BeanValidationExceptionUtil {
             }
         }
         InEnum in = DetermineSourceUtil.determineSource(violation, propertyPath, methodNode);
-        String name = propertyPath.stream().map(Node::toString).collect(Collectors.joining("."));
+
+        String name = JsonPointerUtil.transformName(in,
+                propertyPath.stream().map(Node::toString).collect(Collectors.joining(".")));
+
         return InputValidationIssues.schemaViolation(in, name, violation.getInvalidValue(), violation.getMessage());
     }
 
     public static InputValidationIssue convertToInputValidationIssue(@NotNull FieldError fieldError, InEnum in) {
         String invalidValue = Objects.toString(fieldError.getRejectedValue(), null);
-        return InputValidationIssues.schemaViolation(in, fieldError.getField(), invalidValue,
+        String name = fieldError.getField();
+
+        return InputValidationIssues.schemaViolation(in, JsonPointerUtil.transformName(in, name), invalidValue,
                 fieldError.getDefaultMessage());
     }
 

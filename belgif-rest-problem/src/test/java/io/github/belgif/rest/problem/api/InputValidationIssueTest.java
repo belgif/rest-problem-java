@@ -6,12 +6,16 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import io.github.belgif.rest.problem.config.ProblemConfig;
 import io.github.belgif.rest.problem.i18n.Context;
@@ -317,10 +321,140 @@ class InputValidationIssueTest {
         assertThat(issue).isNotEqualTo("other type");
     }
 
+    @ParameterizedTest
+    @EnumSource(InEnum.class)
+    void nameMatchingJsonPointerFormatInConstructor(InEnum in) {
+        List<String> names = Arrays.asList("", "/field", "/field/0", "/field/0/nested/2/nestedAgain");
+
+        for (String name : names) {
+            InputValidationIssue input = new InputValidationIssue(in, name);
+            assertThat(input.getName()).isEqualTo(name);
+            input = new InputValidationIssue(in, name, "value");
+            assertThat(input.getName()).isEqualTo(name);
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(InEnum.class)
+    void nameNotMatchingJsonPointerFormatInConstructorAutoConversion(InEnum in) {
+        Map<String, String> names = new HashMap<>();
+        names.put("field", "/field");
+        names.put("field[0]", "/field/0");
+        names.put("field[0].nested[2].nestedAgain", "/field/0/nested/2/nestedAgain");
+        names.put("field/0", "/field/0");
+        names.put("field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain");
+
+        for (Map.Entry<String, String> name : names.entrySet()) {
+            InputValidationIssue input = new InputValidationIssue(in, name.getKey());
+            assertThat(input.getName()).isEqualTo(in == InEnum.BODY ? name.getValue() : name.getKey());
+            input = new InputValidationIssue(in, name.getKey(), "value");
+            assertThat(input.getName()).isEqualTo(in == InEnum.BODY ? name.getValue() : name.getKey());
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(InEnum.class)
+    void nameNotConvertedInConstructorWithJsonPointerDisabled(InEnum in) {
+        ProblemConfig.setJsonPointerEnabled(false);
+
+        List<String> names = Arrays.asList("field", "/field", "", null, "field[0]", "/field/0", "field/0",
+                "field[0].nested[2].nestedAgain", "field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain");
+
+        for (String name : names) {
+            InputValidationIssue input = new InputValidationIssue(in, name);
+            assertThat(input.getName()).isEqualTo(name);
+            input = new InputValidationIssue(in, name, "value");
+            assertThat(input.getName()).isEqualTo(name);
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(InEnum.class)
+    void setName(InEnum in) {
+        Map<String, String> names = new HashMap<>();
+        names.put("field", "/field");
+        names.put("/field", "/field");
+        names.put("", "");
+        names.put("field[0]", "/field/0");
+        names.put("field[0].nested[2].nestedAgain", "/field/0/nested/2/nestedAgain");
+        names.put("field/0", "/field/0");
+        names.put("/field/0", "/field/0");
+        names.put("field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain");
+        names.put("/field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain");
+
+        for (Map.Entry<String, String> name : names.entrySet()) {
+            InputValidationIssue input = new InputValidationIssue(null, name.getKey(), null);
+            input.setName(name.getKey());
+            assertThat(input.getName()).isEqualTo(name.getKey());
+            input = new InputValidationIssue(in, null, null);
+            input.setName(name.getKey());
+            assertThat(input.getName()).isEqualTo(in == InEnum.BODY ? name.getValue() : name.getKey());
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(InEnum.class)
+    void setNameJsonPointerDisabled(InEnum in) {
+        ProblemConfig.setJsonPointerEnabled(false);
+
+        List<String> names = Arrays.asList("field", "/field", "", "field[0]", "/field/0",
+                "field[0].nested[2].nestedAgain", "/field/0/nested/2/nestedAgain", "field/0",
+                "field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain",
+                "/field/0/nested/2/nestedAgain");
+
+        for (String name : names) {
+            InputValidationIssue input = new InputValidationIssue(null, name, null);
+            input.setName(name);
+            assertThat(input.getName()).isEqualTo(name);
+            input = new InputValidationIssue(in, null, null);
+            input.setName(name);
+            assertThat(input.getName()).isEqualTo(name);
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(InEnum.class)
+    void setInput(InEnum in) {
+        Map<String, String> names = new HashMap<>();
+        names.put("field", "/field");
+        names.put("/field", "/field");
+        names.put("", "");
+        names.put("field[0]", "/field/0");
+        names.put("field[0].nested[2].nestedAgain", "/field/0/nested/2/nestedAgain");
+        names.put("field/0", "/field/0");
+        names.put("/field/0", "/field/0");
+        names.put("field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain");
+        names.put("/field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain");
+
+        for (Map.Entry<String, String> name : names.entrySet()) {
+            InputValidationIssue input = new InputValidationIssue(null, name.getKey(), null);
+            assertThat(input.getName()).isEqualTo(name.getKey());
+            input.setIn(in);
+            assertThat(input.getName()).isEqualTo(in == InEnum.BODY ? name.getValue() : name.getKey());
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(InEnum.class)
+    void setInputJsonPointerDisabled(InEnum in) {
+        ProblemConfig.setJsonPointerEnabled(false);
+
+        List<String> names = Arrays.asList("field", "/field", "", "field[0]", "/field/0",
+                "field[0].nested[2].nestedAgain", "/field/0/nested/2/nestedAgain", "field/0",
+                "field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain", "/field/0/nested/2/nestedAgain",
+                "/field/0/nested/2/nestedAgain");
+
+        for (String name : names) {
+            InputValidationIssue input = new InputValidationIssue(null, name, null);
+            assertThat(input.getName()).isEqualTo(name);
+            input.setIn(in);
+            assertThat(input.getName()).isEqualTo(name);
+        }
+    }
+
     private void assertMutuallyExclusiveException(ThrowableAssert.ThrowingCallable throwingCallable) {
         assertThatIllegalArgumentException()
                 .isThrownBy(throwingCallable)
                 .withMessageContaining(MUTUALLY_EXCLUSIVE_EXC);
     }
-
 }

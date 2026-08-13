@@ -20,20 +20,23 @@ class QuarkusProblemConfiguratorTest {
 
     @Test
     void allEnabled() {
-        new QuarkusProblemConfigurator(Optional.of(true), Optional.of(true), Optional.of(true), Optional.of(true));
+        new QuarkusProblemConfigurator(Optional.of(true), Optional.of(true), Optional.of(true), Optional.of(true),
+                Optional.of(true));
         assertThat(ProblemConfig.isI18nEnabled()).isTrue();
         assertThat(ProblemConfig.isStackTraceEnabled()).isTrue();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isTrue();
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isTrue();
+        assertThat(ProblemConfig.isJsonPointerEnabled()).isTrue();
     }
 
     @Test
     void allDisabled() {
-        new QuarkusProblemConfigurator(Optional.of(false), Optional.of(false), Optional.of(false), Optional.of(false));
+        new QuarkusProblemConfigurator(Optional.of(false), Optional.of(false), Optional.of(false), Optional.of(false),
+                Optional.of(false));
         assertThat(ProblemConfig.isI18nEnabled()).isFalse();
         assertThat(ProblemConfig.isStackTraceEnabled()).isFalse();
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isFalse();
-        assertThat(ProblemConfig.isExtInputsArrayEnabled()).isFalse();
+        assertThat(ProblemConfig.isJsonPointerEnabled()).isFalse();
     }
 
     @Test
@@ -42,11 +45,14 @@ class QuarkusProblemConfiguratorTest {
         boolean stackTraceEnabledBefore = ProblemConfig.isStackTraceEnabled();
         boolean extIssueTypesEnabledBefore = ProblemConfig.isExtIssueTypesEnabled();
         boolean extInputsArrayEnabledBefore = ProblemConfig.isExtInputsArrayEnabled();
-        new QuarkusProblemConfigurator(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        boolean jsonPointerEnabledBefore = ProblemConfig.isJsonPointerEnabled();
+        new QuarkusProblemConfigurator(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty());
         assertThat(ProblemConfig.isI18nEnabled()).isEqualTo(i18nEnabledBefore);
         assertThat(ProblemConfig.isStackTraceEnabled()).isEqualTo(stackTraceEnabledBefore);
         assertThat(ProblemConfig.isExtIssueTypesEnabled()).isEqualTo(extIssueTypesEnabledBefore);
         assertThat(ProblemConfig.isExtInputsArrayEnabled()).isEqualTo(extInputsArrayEnabledBefore);
+        assertThat(ProblemConfig.isJsonPointerEnabled()).isEqualTo(jsonPointerEnabledBefore);
     }
 
 }

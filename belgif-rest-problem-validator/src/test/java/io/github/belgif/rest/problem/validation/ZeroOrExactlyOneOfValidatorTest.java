@@ -15,21 +15,21 @@ class ZeroOrExactlyOneOfValidatorTest {
     @Test
     void okZero() {
         assertThat(new ZeroOrExactlyOneOfValidator(
-                Arrays.asList(Input.body("cbeNumber", null), Input.body("sector", null)))
+                Arrays.asList(Input.body("/cbeNumber", null), Input.body("/sector", null)))
                         .validate()).isEmpty();
     }
 
     @Test
     void okOne() {
         assertThat(new ZeroOrExactlyOneOfValidator(
-                Arrays.asList(Input.body("cbeNumber", null), Input.body("sector", "25")))
+                Arrays.asList(Input.body("/cbeNumber", null), Input.body("/sector", "25")))
                         .validate()).isEmpty();
     }
 
     @Test
     void validateNOk() {
-        List<Input<?>> items = Arrays.asList(Input.body("cbeNumber", "0694965804"),
-                Input.body("sector", "25"));
+        List<Input<?>> items = Arrays.asList(Input.body("/cbeNumber", "0694965804"),
+                Input.body("/sector", "25"));
         assertThat(new ZeroOrExactlyOneOfValidator(items).validate()).contains(
                 InputValidationIssues.zeroOrExactlyOneOfExpected(items));
     }

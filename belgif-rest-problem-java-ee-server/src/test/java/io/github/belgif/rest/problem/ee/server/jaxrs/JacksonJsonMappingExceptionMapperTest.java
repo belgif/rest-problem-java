@@ -30,7 +30,7 @@ class JacksonJsonMappingExceptionMapperTest {
         InputValidationIssue issue = problem.getIssues().get(0);
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("id");
+        assertThat(issue.getName()).isEqualTo("/id");
         assertThat(issue.getValue()).isNull();
         assertThat(issue.getDetail()).isEqualTo("detail");
     }
@@ -52,7 +52,7 @@ class JacksonJsonMappingExceptionMapperTest {
         InputValidationIssue issue = problem.getIssues().get(0);
         assertThat(issue.getType()).hasToString("urn:problem-type:belgif:input-validation:schemaViolation");
         assertThat(issue.getIn()).isEqualTo(InEnum.BODY);
-        assertThat(issue.getName()).isEqualTo("id");
+        assertThat(issue.getName()).isEqualTo("/id");
         assertThat(issue.getValue()).isNull();
         assertThat(issue.getDetail()).isEqualTo("Unexpected value 'XXL'");
     }

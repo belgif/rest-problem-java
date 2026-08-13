@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import io.github.belgif.rest.problem.config.ProblemConfig;
 import io.github.belgif.rest.problem.i18n.I18N;
+import io.github.belgif.rest.problem.internal.JsonPointerUtil;
 
 /**
  * Helper class for creating InputValidationIssues for common request validations.
@@ -139,8 +140,7 @@ public class InputValidationIssues {
      * @param <T> The type of the reference
      */
     public static <T> InputValidationIssue referencedResourceNotFound(InEnum in, String name, T value, List<T> source) {
-        String nameWithIndex = name + "[" + source.indexOf(value) + "]";
-        return referencedResourceNotFound(in, nameWithIndex, value);
+        return referencedResourceNotFound(in, JsonPointerUtil.addIndex(in, name, source.indexOf(value)), value);
     }
 
     public static InputValidationIssue rejectedInput(InEnum in, String name, Object value) {

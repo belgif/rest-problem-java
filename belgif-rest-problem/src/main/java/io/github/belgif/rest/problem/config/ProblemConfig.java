@@ -17,6 +17,9 @@ public class ProblemConfig {
     public static final String PROPERTY_EXT_INPUTS_ARRAY_ENABLED =
             "io.github.belgif.rest.problem.ext.inputs-array-enabled";
 
+    public static final String PROPERTY_JSON_POINTER_ENABLED =
+            "io.github.belgif.rest.problem.json-pointer-enabled";
+
     private static final boolean DEFAULT_I18N_ENABLED = true;
 
     private static final boolean DEFAULT_STACK_TRACE_ENABLED = false;
@@ -24,6 +27,7 @@ public class ProblemConfig {
     private static final boolean DEFAULT_EXT_ISSUE_TYPES_ENABLED = false;
 
     private static final boolean DEFAULT_EXT_INPUTS_ARRAY_ENABLED = false;
+    private static final boolean DEFAULT_JSON_POINTER_ENABLED = true;
 
     private static boolean i18nEnabled = DEFAULT_I18N_ENABLED;
 
@@ -32,6 +36,8 @@ public class ProblemConfig {
     private static boolean extIssueTypesEnabled = DEFAULT_EXT_ISSUE_TYPES_ENABLED;
 
     private static boolean extInputsArrayEnabled = DEFAULT_EXT_INPUTS_ARRAY_ENABLED;
+
+    private static boolean jsonPointerEnabled = DEFAULT_JSON_POINTER_ENABLED;
 
     private static final ThreadLocal<Boolean> LOCAL_EXT_ISSUE_TYPES_ENABLED = new InheritableThreadLocal<Boolean>() {
         @Override
@@ -96,6 +102,14 @@ public class ProblemConfig {
         LOCAL_EXT_INPUTS_ARRAY_ENABLED.set(extInputsArrayEnabled);
     }
 
+    public static boolean isJsonPointerEnabled() {
+        return jsonPointerEnabled;
+    }
+
+    public static void setJsonPointerEnabled(boolean jsonPointerEnabled) {
+        ProblemConfig.jsonPointerEnabled = jsonPointerEnabled;
+    }
+
     public static void clearLocal() {
         LOCAL_EXT_ISSUE_TYPES_ENABLED.remove();
         LOCAL_EXT_INPUTS_ARRAY_ENABLED.remove();
@@ -106,6 +120,7 @@ public class ProblemConfig {
         stackTraceEnabled = DEFAULT_STACK_TRACE_ENABLED;
         extIssueTypesEnabled = DEFAULT_EXT_ISSUE_TYPES_ENABLED;
         extInputsArrayEnabled = DEFAULT_EXT_INPUTS_ARRAY_ENABLED;
+        jsonPointerEnabled = DEFAULT_JSON_POINTER_ENABLED;
     }
 
 }

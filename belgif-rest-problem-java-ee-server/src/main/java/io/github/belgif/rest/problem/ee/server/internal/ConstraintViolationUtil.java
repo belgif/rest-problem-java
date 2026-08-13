@@ -20,6 +20,7 @@ import io.github.belgif.rest.problem.api.Input;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.api.InputValidationIssues;
 import io.github.belgif.rest.problem.internal.AnnotationUtil;
+import io.github.belgif.rest.problem.internal.JsonPointerUtil;
 
 /**
  * Internal utility class for converting ConstraintViolation to InputValidationIssue.
@@ -101,6 +102,9 @@ public class ConstraintViolationUtil {
                 }
             }
         }
+
+        input.setName(JsonPointerUtil.transformName(input.getIn(), input.getName()));
+
         return input;
     }
 

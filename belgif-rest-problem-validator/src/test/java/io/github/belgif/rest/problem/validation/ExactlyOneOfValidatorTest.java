@@ -14,22 +14,22 @@ class ExactlyOneOfValidatorTest {
 
     @Test
     void ok() {
-        assertThat(new ExactlyOneOfValidator(Arrays.asList(Input.body("cbeNumber", null), Input.body("sector", "25")))
+        assertThat(new ExactlyOneOfValidator(Arrays.asList(Input.body("/cbeNumber", null), Input.body("/sector", "25")))
                 .validate()).isEmpty();
     }
 
     @Test
     void nokMoreThanOne() {
-        List<Input<?>> items = Arrays.asList(Input.body("cbeNumber", "0694965804"),
-                Input.body("sector", "25"));
+        List<Input<?>> items = Arrays.asList(Input.body("/cbeNumber", "0694965804"),
+                Input.body("/sector", "25"));
         assertThat(new ExactlyOneOfValidator(items).validate())
                 .contains(InputValidationIssues.exactlyOneOfExpected(items));
     }
 
     @Test
     void nokNone() {
-        List<Input<?>> items = Arrays.asList(Input.body("cbeNumber", null),
-                Input.body("sector", null));
+        List<Input<?>> items = Arrays.asList(Input.body("/cbeNumber", null),
+                Input.body("/sector", null));
         assertThat(new ExactlyOneOfValidator(items).validate())
                 .contains(InputValidationIssues.exactlyOneOfExpected(items));
     }

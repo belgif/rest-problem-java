@@ -25,6 +25,7 @@ public class ProblemConfigurator implements ServletContextListener {
         setBooleanConfig(sce, ProblemConfig.PROPERTY_STACK_TRACE_ENABLED, ProblemConfig::setStackTraceEnabled);
         setBooleanConfig(sce, ProblemConfig.PROPERTY_EXT_ISSUE_TYPES_ENABLED, ProblemConfig::setExtIssueTypesEnabled);
         setBooleanConfig(sce, ProblemConfig.PROPERTY_EXT_INPUTS_ARRAY_ENABLED, ProblemConfig::setExtInputsArrayEnabled);
+        setBooleanConfig(sce, ProblemConfig.PROPERTY_JSON_POINTER_ENABLED, ProblemConfig::setJsonPointerEnabled);
     }
 
     private void setBooleanConfig(ServletContextEvent sce, String key, Consumer<Boolean> configSetter) {

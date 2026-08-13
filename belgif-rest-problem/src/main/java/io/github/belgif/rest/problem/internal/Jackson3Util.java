@@ -57,7 +57,6 @@ public class Jackson3Util {
                 name.append(reference.getPropertyName());
             }
         }
-        return name.toString();
+        return JsonPointerUtil.transformName(InEnum.BODY, name.toString());
     }
-
 }

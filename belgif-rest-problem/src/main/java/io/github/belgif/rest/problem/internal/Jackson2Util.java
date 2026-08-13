@@ -73,7 +73,7 @@ public class Jackson2Util {
                 builder.append(reference.getFieldName());
             }
         }
-        return builder.toString();
+        return JsonPointerUtil.transformName(InEnum.BODY, builder.toString());
     }
 
     @SuppressWarnings("java:S1872")
