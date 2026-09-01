@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
-    - name: Set up Adopt OpenJDK 21
+    - name: Set up Temurin OpenJDK 21
       uses: actions/setup-java@v6
       with:
         distribution: temurin
