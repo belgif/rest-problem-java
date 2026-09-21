@@ -114,4 +114,8 @@ public interface Frontend {
     @Path("/jackson/mismatchedInputException")
     Response jacksonMismatchedInputException(@Valid JacksonModel body);
 
+    @GET
+    @Path("/healthDown")
+    Response healthDown(@QueryParam("client") Client client);
+
 }

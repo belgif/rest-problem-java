@@ -1,6 +1,8 @@
 package io.github.belgif.rest.problem;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.core.MediaType;
@@ -54,6 +56,16 @@ public class BackendImpl implements Backend {
         JacksonModel model = new JacksonModel(null);
         model.setDescription("description");
         return Response.ok(model, MediaType.APPLICATION_JSON_TYPE).build();
+    }
+
+    @Override
+    public Response healthDown() {
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "DOWN");
+        return Response.status(Response.Status.SERVICE_UNAVAILABLE)
+                .type(MediaType.APPLICATION_JSON_TYPE)
+                .entity(response)
+                .build();
     }
 
 }

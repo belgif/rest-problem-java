@@ -562,4 +562,13 @@ public abstract class AbstractRestProblemIT {
                 .body("issues[0].value", equalTo("twenty-two"));
     }
 
+    @ParameterizedTest
+    @MethodSource("getClients")
+    public void healthDown(String client) {
+        getSpec().when().queryParam("client", client)
+                .get("/healthDown").then().assertThat()
+                .statusCode(503)
+                .body("status", equalTo("DOWN"));
+    }
+
 }

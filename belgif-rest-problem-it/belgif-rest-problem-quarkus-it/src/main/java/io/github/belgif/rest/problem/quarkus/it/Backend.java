@@ -34,4 +34,8 @@ public interface Backend {
     @Path("/jacksonMismatchedInput")
     Response jacksonMismatchedInput();
 
+    @GET
+    @Path("/healthDown")
+    Response healthDown();
+
 }

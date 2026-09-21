@@ -1,6 +1,9 @@
 package io.github.belgif.rest.problem.ee.client.jaxrs;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Instance;
@@ -15,6 +18,7 @@ import javax.ws.rs.ext.Providers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.belgif.rest.problem.DefaultProblem;
@@ -22,6 +26,7 @@ import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.ee.core.jaxrs.JaxRsUtil;
 import io.github.belgif.rest.problem.ee.core.jaxrs.ProblemMediaType;
 import io.github.belgif.rest.problem.ee.core.jaxrs.ProblemObjectMapper;
+import io.github.belgif.rest.problem.internal.Jackson2Util;
 
 /**
  * JAX-RS ClientResponseFilter that converts problem response to a ProblemWrapper exception.
@@ -59,11 +64,24 @@ public class ProblemClientResponseFilter implements ClientResponseFilter {
         init(); // because not all JAX-RS implementations honor the @PostConstruct
         if (ProblemMediaType.INSTANCE.isCompatible(response.getMediaType()) || (response.getStatus() >= 400
                 && MediaType.APPLICATION_JSON_TYPE.isCompatible(response.getMediaType()))) {
-            Problem problem = objectMapper.readValue(response.getEntityStream(), Problem.class);
-            if (problem instanceof DefaultProblem) {
-                LOGGER.info("No @ProblemType registered for {}: using DefaultProblem fallback", problem.getType());
+            InputStream entityStream = response.getEntityStream();
+            if (entityStream != null) {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                entityStream.transferTo(outputStream);
+                byte[] bytes = outputStream.toByteArray();
+                // replace the entity stream so it can still be consumed downstream
+                response.setEntityStream(new ByteArrayInputStream(bytes));
+                JsonNode json = objectMapper.readTree(bytes);
+                if (response.getStatus() == 503 && Jackson2Util.isHealthDownResponse(json)) {
+                    return;
+                }
+                Problem problem = objectMapper.treeToValue(json, Problem.class);
+                if (problem instanceof DefaultProblem) {
+                    LOGGER.info("No @ProblemType registered for {}: using DefaultProblem fallback", problem.getType());
+                }
+                Jackson2Util.checkStatusCodeConsistency(response.getStatus(), json, problem);
+                throw new ProblemWrapper(problem);
             }
-            throw new ProblemWrapper(problem);
         }
     }
 

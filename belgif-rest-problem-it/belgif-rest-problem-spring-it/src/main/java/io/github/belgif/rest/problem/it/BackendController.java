@@ -1,7 +1,9 @@
 package io.github.belgif.rest.problem.it;
 
 import java.net.URI;
+import java.util.Map;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,6 +56,14 @@ public class BackendController {
         JacksonModel model = new JacksonModel(null);
         model.setDescription("description");
         return ResponseEntity.ok(model);
+    }
+
+    @GetMapping("/healthDown")
+    public ResponseEntity<Map<String, String>> healthDown() {
+        return ResponseEntity
+                .status(503)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("status", "DOWN"));
     }
 
 }

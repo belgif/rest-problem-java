@@ -15,6 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.belgif.rest.problem.spring.ProblemJackson2Configuration;
+import io.github.belgif.rest.problem.spring.client.ProblemExchangeFilterFunction;
 import io.github.belgif.rest.problem.spring.client.ProblemResponseErrorHandler;
 import io.github.belgif.rest.problem.spring.client.ProblemResponseJackson2ErrorHandler;
 
@@ -50,9 +51,11 @@ public class ClientProblemAutoConfiguration {
 
     @ConditionalOnClass({ WebClient.class, WebClientCustomizer.class })
     public static class WebClientProblemConfiguration {
+
         @Bean
-        public ProblemWebClientCustomizer problemWebClientCustomizer() {
-            return new ProblemWebClientCustomizer();
+        public ProblemWebClientCustomizer problemWebClientCustomizer(
+                ProblemResponseErrorHandler problemResponseErrorHandler) {
+            return new ProblemWebClientCustomizer(new ProblemExchangeFilterFunction(problemResponseErrorHandler));
         }
     }
 

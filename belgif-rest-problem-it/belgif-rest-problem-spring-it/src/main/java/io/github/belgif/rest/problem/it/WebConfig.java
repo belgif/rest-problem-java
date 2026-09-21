@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import io.github.belgif.rest.problem.spring.EnableProblemModule;
 import io.github.belgif.rest.problem.spring.SpringProblemModuleJackson3;
+import io.github.belgif.rest.problem.spring.client.ProblemExchangeFilterFunction;
 import io.github.belgif.rest.problem.spring.client.ProblemResponseErrorHandler;
-import io.github.belgif.rest.problem.spring.client.WebClientFilter;
 import tools.jackson.databind.json.JsonMapper;
 
 @Configuration
@@ -36,6 +36,7 @@ public class WebConfig {
             JsonMapper mapper) {
         return RestClient.builder()
                 .defaultStatusHandler(problemResponseErrorHandler)
+                .bufferContent((uri, httpMethod) -> true)
                 .configureMessageConverters(converter -> converter.registerDefaults()
                         .withJsonConverter(new JacksonJsonHttpMessageConverter(mapper))); // change converter with
                                                                                           // custom json mapper
@@ -48,6 +49,7 @@ public class WebConfig {
             configurer.defaultCodecs().jacksonJsonEncoder(new JacksonJsonEncoder(mapper));
             configurer.defaultCodecs().jacksonJsonDecoder(new JacksonJsonDecoder(mapper));
         }).build();
-        return WebClient.builder().exchangeStrategies(strategies).filter(WebClientFilter.PROBLEM_FILTER);
+        return WebClient.builder().exchangeStrategies(strategies).filter(
+                new ProblemExchangeFilterFunction(problemResponseErrorHandler));
     }
 }

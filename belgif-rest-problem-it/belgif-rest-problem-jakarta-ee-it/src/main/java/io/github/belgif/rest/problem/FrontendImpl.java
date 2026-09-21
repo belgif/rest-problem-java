@@ -14,10 +14,13 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.acme.custom.CustomProblem;
 
@@ -36,6 +39,8 @@ import io.github.belgif.rest.problem.validation.RequestValidator;
 @RequestScoped
 @Path("/frontend")
 public class FrontendImpl implements Frontend {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FrontendImpl.class);
 
     private static final URI BASE_URI =
             URI.create("http://" + System.getProperty("jboss.bind.address") + ":8080/rest-problem");
@@ -262,6 +267,39 @@ public class FrontendImpl implements Frontend {
                     .get(JacksonModel.class);
         } else if (client == Client.RESTEASY_PROXY) {
             resteasyProxyClient.jacksonMismatchedInput().readEntity(JacksonModel.class);
+        }
+        throw new IllegalStateException("Unsupported client " + client);
+    }
+
+    @Override
+    public Response healthDown(@QueryParam("client") Client client) {
+        try {
+            if (client == null || client == Client.MICROPROFILE) {
+                return microprofileClient.healthDown();
+            } else if (client == Client.JAXRS) {
+                return jaxRsClient.target(BASE_URI).path("backend/healthDown").request().get();
+            } else if (client == Client.JAXRS_ASYNC) {
+                try {
+                    return jaxRsClient.target(BASE_URI).path("backend/healthDown").request().async()
+                            .get().get();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if (client == Client.RESTEASY) {
+                return resteasyClient.target(BASE_URI).path("backend/healthDown").request().get();
+            } else if (client == Client.RESTEASY_PROXY) {
+                return resteasyProxyClient.healthDown();
+            }
+        } catch (WebApplicationException e) {
+            if (e.getResponse().getStatus() == Response.Status.SERVICE_UNAVAILABLE.getStatusCode()) {
+                e.printStackTrace();
+                LOGGER.info("Caught WebApplicationException with status 503");
+                return e.getResponse();
+            }
+            throw e;
         }
         throw new IllegalStateException("Unsupported client " + client);
     }
