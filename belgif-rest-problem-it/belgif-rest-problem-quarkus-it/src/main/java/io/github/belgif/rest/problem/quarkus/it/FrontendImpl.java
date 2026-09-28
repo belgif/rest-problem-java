@@ -278,6 +278,35 @@ public class FrontendImpl implements Frontend {
     }
 
     @Override
+    public Response inconsistentProblemStatusFromBackend(Client client) {
+        try {
+            if (client == null || client == Client.MICROPROFILE) {
+                return microprofileClient.inconsistentProblemStatus();
+            } else if (client == Client.REGISTER_REST_CLIENT) {
+                return restClientBuilderClient.inconsistentProblemStatus();
+            } else if (client == Client.QUARKUS_REST_CLIENT_BUILDER) {
+                return quarkusRestClientBuilderClient.inconsistentProblemStatus();
+            } else if (client == Client.JAXRS) {
+                return jaxRsClient.target(baseUri).path("backend/inconsistentProblemStatus").request().get();
+            } else if (client == Client.JAXRS_ASYNC) {
+                try {
+                    return jaxRsClient.target(baseUri).path("backend/inconsistentProblemStatus").request().async()
+                            .get().get();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            throw new IllegalStateException("Unsupported client " + client);
+        } catch (BadRequestProblem e) {
+            e.setDetail(e.getDetail() + " (caught successfully by frontend)");
+            throw e;
+        }
+    }
+
+    @Override
     public Response healthDown(@QueryParam("client") Client client) {
         try {
             if (client == null || client == Client.MICROPROFILE) {

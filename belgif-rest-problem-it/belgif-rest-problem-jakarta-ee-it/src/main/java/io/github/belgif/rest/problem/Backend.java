@@ -32,6 +32,10 @@ public interface Backend {
     Response jacksonMismatchedInput();
 
     @GET
+    @Path("/inconsistentProblemStatus")
+    Response inconsistentProblemStatus();
+
+    @GET
     @Path("/healthDown")
     Response healthDown();
 

@@ -215,6 +215,23 @@ public class FrontendController implements ControllerInterface {
         throw new IllegalStateException(ILLEGAL_STATE_MESSAGE_PREFIX + client);
     }
 
+    @GetMapping("/inconsistentProblemStatusFromBackend")
+    public void inconsistentProblemStatusFromBackend(@RequestParam("client") Client client) {
+        try {
+            if (client == Client.REST_TEMPLATE) {
+                restTemplate.getForObject("/inconsistentProblemStatus", String.class);
+            } else if (client == Client.WEB_CLIENT) {
+                webClient.get().uri("/inconsistentProblemStatus").retrieve().toEntity(String.class).block();
+            } else if (client == Client.REST_CLIENT) {
+                restClient.get().uri("/inconsistentProblemStatus").retrieve().toEntity(String.class);
+            }
+            throw new IllegalStateException(ILLEGAL_STATE_MESSAGE_PREFIX + client);
+        } catch (BadRequestProblem e) {
+            e.setDetail(e.getDetail() + DETAIL_MESSAGE_SUFFIX);
+            throw e;
+        }
+    }
+
     @GetMapping(value = "/healthDown", produces = "application/json")
     public ResponseEntity<Map<String, String>> healthDown(@RequestParam("client") Client client) {
         Map<String, String> result = null;
