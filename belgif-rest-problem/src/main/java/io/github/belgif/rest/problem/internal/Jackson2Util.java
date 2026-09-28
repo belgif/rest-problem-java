@@ -84,14 +84,17 @@ public class Jackson2Util {
      * @param httpStatusCode the HTTP status code
      * @param payload the response payload
      * @param problem the mapped Problem
+     * @return true when the provided status codes are consistent, false when inconsistent
      */
-    public static void checkStatusCodeConsistency(Integer httpStatusCode, JsonNode payload, Problem problem) {
+    public static boolean checkStatusCodeConsistency(Integer httpStatusCode, JsonNode payload, Problem problem) {
         Integer payloadStatusCode = payload.has("status") ? payload.get("status").asInt() : null;
         Integer problemStatusCode = problem.getStatus();
         if (Stream.of(httpStatusCode, payloadStatusCode, problemStatusCode).collect(Collectors.toSet()).size() > 1) {
             LOGGER.warn("Detected inconsistency in problem status code: HTTP={}, JSON={}, Problem={}",
                     httpStatusCode, payloadStatusCode, problemStatusCode);
+            return false;
         }
+        return true;
     }
 
     private static String getName(List<Reference> path) {
