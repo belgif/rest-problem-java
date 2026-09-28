@@ -3,6 +3,7 @@ package io.github.belgif.rest.problem.ee.client.jaxrs;
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -28,7 +29,7 @@ import io.github.belgif.rest.problem.internal.Jackson2Util;
  * @see ResponseExceptionMapper
  * @see Problem
  */
-public class ProblemResponseExceptionMapper implements ResponseExceptionMapper<Problem> {
+public class ProblemResponseExceptionMapper implements ResponseExceptionMapper<Exception> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProblemResponseExceptionMapper.class);
 
@@ -50,7 +51,7 @@ public class ProblemResponseExceptionMapper implements ResponseExceptionMapper<P
     }
 
     @Override
-    public Problem toThrowable(Response response) {
+    public Exception toThrowable(Response response) {
         init(); // because not all JAX-RS implementations honor the @PostConstruct
         if (ProblemMediaType.INSTANCE.isCompatible(response.getMediaType()) || (response.getStatus() >= 400
                 && MediaType.APPLICATION_JSON_TYPE.isCompatible(response.getMediaType()))) {
@@ -58,7 +59,9 @@ public class ProblemResponseExceptionMapper implements ResponseExceptionMapper<P
             response.bufferEntity();
             JsonNode json = response.readEntity(JsonNode.class);
             if (response.getStatus() == 503 && Jackson2Util.isHealthDownResponse(json)) {
-                return null;
+                // We observed issues with some MicroProfile runtimes handling the health DOWN response, so rather
+                // than returning null and letting the runtime handle it, we directly throw WebApplicationException.
+                return new WebApplicationException(response);
             }
             try {
                 Problem problem = objectMapper.treeToValue(json, Problem.class);
