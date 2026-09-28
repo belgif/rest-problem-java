@@ -17,7 +17,6 @@ import javax.ws.rs.client.ClientResponseContext;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.ext.Providers;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,7 +24,9 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
 import io.github.belgif.rest.problem.DefaultProblem;
@@ -34,7 +35,6 @@ import io.github.belgif.rest.problem.ee.core.jaxrs.JaxRsUtil;
 import io.github.belgif.rest.problem.ee.core.jaxrs.ProblemMediaType;
 
 @ExtendWith(MockitoExtension.class)
-@Disabled("FIXME")
 class ProblemClientResponseFilterTest {
 
     @InjectMocks
@@ -60,8 +60,11 @@ class ProblemClientResponseFilterTest {
         when(responseContext.getMediaType()).thenReturn(ProblemMediaType.INSTANCE);
         InputStream entityStream = new ByteArrayInputStream("dummy".getBytes(StandardCharsets.UTF_8));
         when(responseContext.getEntityStream()).thenReturn(entityStream);
+        JsonNode payload = JsonNodeFactory.instance.objectNode();
+        when(objectMapper.readTree("dummy".getBytes(StandardCharsets.UTF_8)))
+                .thenReturn(payload);
         Problem problem = new BadRequestProblem();
-        when(objectMapper.readValue(entityStream, Problem.class)).thenReturn(problem);
+        when(objectMapper.treeToValue(payload, Problem.class)).thenReturn(problem);
         assertThatExceptionOfType(ProblemWrapper.class).isThrownBy(
                 () -> filter.filter(requestContext, responseContext))
                 .extracting(ProblemWrapper::getProblem)
@@ -74,8 +77,11 @@ class ProblemClientResponseFilterTest {
         when(responseContext.getStatus()).thenReturn(400);
         InputStream entityStream = new ByteArrayInputStream("dummy".getBytes(StandardCharsets.UTF_8));
         when(responseContext.getEntityStream()).thenReturn(entityStream);
+        JsonNode payload = JsonNodeFactory.instance.objectNode();
+        when(objectMapper.readTree("dummy".getBytes(StandardCharsets.UTF_8)))
+                .thenReturn(payload);
         Problem problem = new BadRequestProblem();
-        when(objectMapper.readValue(entityStream, Problem.class)).thenReturn(problem);
+        when(objectMapper.treeToValue(payload, Problem.class)).thenReturn(problem);
         assertThatExceptionOfType(ProblemWrapper.class).isThrownBy(
                 () -> filter.filter(requestContext, responseContext))
                 .extracting(ProblemWrapper::getProblem)
@@ -96,8 +102,11 @@ class ProblemClientResponseFilterTest {
         when(responseContext.getMediaType()).thenReturn(ProblemMediaType.INSTANCE);
         InputStream entityStream = new ByteArrayInputStream("dummy".getBytes(StandardCharsets.UTF_8));
         when(responseContext.getEntityStream()).thenReturn(entityStream);
+        JsonNode payload = JsonNodeFactory.instance.objectNode();
+        when(objectMapper.readTree("dummy".getBytes(StandardCharsets.UTF_8)))
+                .thenReturn(payload);
         Problem problem = new DefaultProblem(URI.create("type"), URI.create("href"), "Title", 400);
-        when(objectMapper.readValue(entityStream, Problem.class)).thenReturn(problem);
+        when(objectMapper.treeToValue(payload, Problem.class)).thenReturn(problem);
         assertThatExceptionOfType(ProblemWrapper.class).isThrownBy(
                 () -> filter.filter(requestContext, responseContext))
                 .extracting(ProblemWrapper::getProblem)
@@ -108,6 +117,26 @@ class ProblemClientResponseFilterTest {
     void differentMediaType() {
         when(responseContext.getMediaType()).thenReturn(MediaType.APPLICATION_XML_TYPE);
         when(responseContext.getStatus()).thenReturn(400);
+        assertThatNoException().isThrownBy(
+                () -> filter.filter(requestContext, responseContext));
+    }
+
+    @Test
+    void entityStreamNull() {
+        when(responseContext.getMediaType()).thenReturn(ProblemMediaType.INSTANCE);
+        when(responseContext.getEntityStream()).thenReturn(null);
+        assertThatNoException().isThrownBy(
+                () -> filter.filter(requestContext, responseContext));
+    }
+
+    @Test
+    void healthDownResponse() throws Exception {
+        when(responseContext.getMediaType()).thenReturn(ProblemMediaType.INSTANCE);
+        InputStream entityStream = new ByteArrayInputStream("dummy".getBytes(StandardCharsets.UTF_8));
+        when(responseContext.getEntityStream()).thenReturn(entityStream);
+        when(responseContext.getStatus()).thenReturn(503);
+        JsonNode payload = JsonNodeFactory.instance.objectNode().put("status", "DOWN");
+        when(objectMapper.readTree("dummy".getBytes(StandardCharsets.UTF_8))).thenReturn(payload);
         assertThatNoException().isThrownBy(
                 () -> filter.filter(requestContext, responseContext));
     }

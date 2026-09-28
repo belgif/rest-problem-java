@@ -60,7 +60,7 @@ public class ProblemResponseExceptionMapper implements ResponseExceptionMapper<E
             JsonNode json = response.readEntity(JsonNode.class);
             if (response.getStatus() == 503 && Jackson2Util.isHealthDownResponse(json)) {
                 // We observed issues with some MicroProfile runtimes handling the health DOWN response, so rather
-                // than returning null and letting the runtime handle it, we directly throw WebApplicationException.
+                // than returning null and letting the runtime handle it, we directly return WebApplicationException.
                 return new WebApplicationException(response);
             }
             try {
