@@ -12,4 +12,8 @@ public class ProblemPayloads {
             + "  \"status\": 401,\n" // <- 401 instead of 400
             + "  \"detail\": \"Bad Request with inconsistent problem status code\"\n"
             + "}";
+
+    private ProblemPayloads() {
+    }
+
 }
