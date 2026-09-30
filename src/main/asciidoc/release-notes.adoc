@@ -12,6 +12,25 @@
 
 // tag::recent-versions[]
 
+== Version 0.24
+
+[WARNING]
+====
+*Breaking change:* Core, Java EE, Jakarta EE and Quarkus modules now require *JDK11+* (previously JDK8+).
+====
+
+*belgif-rest-problem*:
+
+* Don't treat https://www.belgif.be/specification/rest/api-guide/health.html[Belgif health] HTTP 503 `{ "status": "DOWN" }` as a problem response:
+** For JAX-RS, the health response is returned AS-IS
+** For MicroProfile REST Client, a HTTP 503 WebApplicationException is thrown, which can be caught to access the health response
+** For Spring RestTemplate / RestClient, the health response is returned AS-IS
+** For Spring WebClient, a WebClientResponseException.ServiceUnavailable is thrown, which can be caught to access the health response
+* Log a warning when a status code inconsistency is detected in a problem response.
+This evaluates the HTTP status code against the JSON body status code and against the static status code associated with the corresponding problem type:
+
+  WARNING Detected inconsistency in problem status code: HTTP=404, JSON=400, Problem=404
+
 == Version 0.23
 
 *belgif-rest-problem*:

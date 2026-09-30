@@ -20,6 +20,7 @@ public class ProblemRestClientCustomizer implements RestClientCustomizer {
 
     public void customize(RestClient.Builder restClientBuilder) {
         restClientBuilder.defaultStatusHandler(errorHandler);
+        restClientBuilder.bufferContent(((uri, httpMethod) -> true));
     }
 
 }

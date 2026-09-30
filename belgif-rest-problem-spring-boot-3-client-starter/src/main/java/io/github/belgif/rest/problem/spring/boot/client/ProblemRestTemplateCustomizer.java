@@ -1,6 +1,7 @@
 package io.github.belgif.rest.problem.spring.boot.client;
 
 import org.springframework.boot.web.client.RestTemplateCustomizer;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import io.github.belgif.rest.problem.spring.client.ProblemResponseErrorHandler;
@@ -21,6 +22,7 @@ public class ProblemRestTemplateCustomizer implements RestTemplateCustomizer {
 
     public void customize(RestTemplate restTemplate) {
         restTemplate.setErrorHandler(problemResponseErrorHandler);
+        restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(restTemplate.getRequestFactory()));
     }
 
 }

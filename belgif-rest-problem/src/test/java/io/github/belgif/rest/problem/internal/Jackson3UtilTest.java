@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.github.belgif.rest.problem.BadRequestProblem;
+import io.github.belgif.rest.problem.TooManyRequestsProblem;
 import io.github.belgif.rest.problem.api.InEnum;
 import io.github.belgif.rest.problem.api.InputValidationIssue;
 import io.github.belgif.rest.problem.config.ProblemConfig;
@@ -23,6 +24,7 @@ import tools.jackson.databind.exc.InvalidFormatException;
 import tools.jackson.databind.exc.MismatchedInputException;
 import tools.jackson.databind.exc.ValueInstantiationException;
 import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.node.JsonNodeFactory;
 
 class Jackson3UtilTest {
 
@@ -183,6 +185,35 @@ class Jackson3UtilTest {
             assertThat(issue.getValue()).isEqualTo("one two three");
             assertThat(issue.getDetail()).isEqualTo("not a valid `int` value");
         });
+    }
+
+    @Test
+    void isHealthDownResponse() {
+        assertThat(Jackson3Util.isHealthDownResponse(JsonNodeFactory.instance.objectNode())).isFalse();
+        assertThat(Jackson3Util.isHealthDownResponse(
+                JsonNodeFactory.instance.objectNode().put("status", 400))).isFalse();
+        assertThat(Jackson3Util.isHealthDownResponse(
+                JsonNodeFactory.instance.objectNode().put("status", "UP"))).isFalse();
+        assertThat(Jackson3Util.isHealthDownResponse(
+                JsonNodeFactory.instance.objectNode().put("status", "DOWN"))).isTrue();
+    }
+
+    @Test
+    void checkStatusCodeConsistency() {
+        assertThat(Jackson3Util.checkStatusCodeConsistency(400,
+                JsonNodeFactory.instance.objectNode().put("status", 400), new BadRequestProblem())).isTrue();
+        assertThat(Jackson3Util.checkStatusCodeConsistency(999,
+                JsonNodeFactory.instance.objectNode().put("status", 400), new BadRequestProblem())).isFalse();
+        assertThat(Jackson3Util.checkStatusCodeConsistency(400,
+                JsonNodeFactory.instance.objectNode().put("status", 999), new BadRequestProblem())).isFalse();
+        assertThat(Jackson3Util.checkStatusCodeConsistency(400,
+                JsonNodeFactory.instance.objectNode().put("status", 400), new TooManyRequestsProblem())).isFalse();
+        assertThat(Jackson3Util.checkStatusCodeConsistency(null,
+                JsonNodeFactory.instance.objectNode().put("status", 400), new BadRequestProblem())).isFalse();
+        assertThat(Jackson3Util.checkStatusCodeConsistency(400,
+                JsonNodeFactory.instance.objectNode(), new BadRequestProblem())).isFalse();
+        assertThat(Jackson3Util.checkStatusCodeConsistency(400,
+                JsonNodeFactory.instance.objectNode().put("status", "DOWN"), new BadRequestProblem())).isFalse();
     }
 
     enum Size {

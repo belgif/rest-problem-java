@@ -1,6 +1,8 @@
 package io.github.belgif.rest.problem.spring.boot.client;
 
+import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
 import org.springframework.boot.web.client.RestClientCustomizer;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
 import io.github.belgif.rest.problem.spring.client.ProblemResponseErrorHandler;
@@ -20,5 +22,7 @@ public class ProblemRestClientCustomizer implements RestClientCustomizer {
 
     public void customize(RestClient.Builder restClientBuilder) {
         restClientBuilder.defaultStatusHandler(errorHandler);
+        restClientBuilder.requestFactory(
+                new BufferingClientHttpRequestFactory(ClientHttpRequestFactoryBuilder.detect().build()));
     }
 }

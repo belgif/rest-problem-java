@@ -196,6 +196,24 @@ abstract class AbstractJacksonSerializationTest {
     }
 
     @Test
+    void titleAndStatusOverride() throws IOException {
+        String json = "{\n"
+                + "   \"type\": \"urn:problem-type:belgif:badRequest\",\n"
+                + "   \"href\": \"https://www.test.be\",\n"
+                + "   \"title\": \"TEST\",\n"
+                + "   \"status\": 401,\n"
+                + "   \"detail\": \"Test\"\n"
+                + "}";
+        Problem problem = readProblem(json);
+        assertThat(problem).isInstanceOf(BadRequestProblem.class);
+        BadRequestProblem badRequestProblem = (BadRequestProblem) problem;
+        assertThat(badRequestProblem.getType()).isEqualTo(BadRequestProblem.TYPE_URI);
+        assertThat(badRequestProblem.getHref()).isEqualTo(URI.create("https://www.test.be"));
+        assertThat(badRequestProblem.getStatus()).isEqualTo(BadRequestProblem.STATUS);
+        assertThat(badRequestProblem.getTitle()).isEqualTo(BadRequestProblem.TITLE);
+    }
+
+    @Test
     void unknownProblemWithMessage() throws IOException {
         String json = "{\n"
                 + "  \"id\" : \"08eb8aa6-d4a5-44fc-b25d-007b9f6a272a\",\n"

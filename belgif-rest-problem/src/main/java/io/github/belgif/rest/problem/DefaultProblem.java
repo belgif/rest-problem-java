@@ -22,8 +22,10 @@ public class DefaultProblem extends Problem implements FluentProblem<DefaultProb
     private static final long serialVersionUID = 1L;
 
     @JsonCreator
-    public DefaultProblem(@JsonProperty("type") URI type, @JsonProperty("href") URI href,
-            @JsonProperty("title") String title, @JsonProperty("status") Integer status) {
+    public DefaultProblem(@JsonProperty(value = "type", access = JsonProperty.Access.READ_WRITE) URI type,
+            @JsonProperty(value = "href", access = JsonProperty.Access.READ_WRITE) URI href,
+            @JsonProperty(value = "title", access = JsonProperty.Access.READ_WRITE) String title,
+            @JsonProperty(value = "status", access = JsonProperty.Access.READ_WRITE) Integer status) {
         // fallback to 0 if status is absent, see https://github.com/belgif/rest-problem-java/issues/246
         super(type, href, title, status == null ? 0 : status);
     }
