@@ -13,7 +13,6 @@ import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeFunction;
-import org.springframework.web.reactive.function.client.ExchangeStrategies;
 
 import io.github.belgif.rest.problem.api.Problem;
 import io.github.belgif.rest.problem.spring.ProblemMediaType;
@@ -58,11 +57,13 @@ public class ProblemExchangeFilterFunction implements ExchangeFilterFunction {
                             return Mono.error(problem);
                         }
                         ClientResponse rebuilt = ClientResponse
-                                .create(response.statusCode(), ExchangeStrategies.withDefaults())
+                                .create(response.statusCode())
+                                // not using putAll() for headers because it results in IncompatibleClassChangeError:
+                                // Class org.springframework.http.ReadOnlyHttpHeaders does not implement
+                                // the requested interface java.util.Map
                                 .headers(headers -> response.headers().asHttpHeaders()
                                         .forEach((name, values) -> values.forEach(value -> headers.add(name, value))))
-                                .cookies(cookies -> response.cookies()
-                                        .forEach((name, values) -> values.forEach(value -> cookies.add(name, value))))
+                                .cookies(cookies -> cookies.putAll(response.cookies()))
                                 .body(Flux.just(new DefaultDataBufferFactory().wrap(bytes)))
                                 .build();
                         return Mono.just(rebuilt);

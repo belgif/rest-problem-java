@@ -323,7 +323,6 @@ public class FrontendImpl implements Frontend {
             }
         } catch (WebApplicationException e) {
             if (e.getResponse().getStatus() == Response.Status.SERVICE_UNAVAILABLE.getStatusCode()) {
-                e.printStackTrace();
                 LOGGER.info("Caught WebApplicationException with status 503");
                 return e.getResponse();
             }

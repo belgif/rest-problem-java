@@ -26,7 +26,7 @@ import io.github.belgif.rest.problem.spring.client.ProblemResponseErrorHandler;
 @ExtendWith(MockitoExtension.class)
 abstract class AbstractProblemResponseErrorHandlerTest {
 
-    private ProblemResponseErrorHandler handler;
+    private final ProblemResponseErrorHandler handler;
 
     @Mock
     private ClientHttpResponse response;

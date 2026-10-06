@@ -87,7 +87,8 @@ public class Jackson2Util {
      * @return true when the provided status codes are consistent, false when inconsistent
      */
     public static boolean checkStatusCodeConsistency(Integer httpStatusCode, JsonNode payload, Problem problem) {
-        Integer payloadStatusCode = payload.has("status") ? payload.get("status").asInt() : null;
+        Integer payloadStatusCode =
+                (payload.has("status") && payload.get("status").isInt()) ? payload.get("status").asInt() : null;
         Integer problemStatusCode = problem.getStatus();
         if (Stream.of(httpStatusCode, payloadStatusCode, problemStatusCode).collect(Collectors.toSet()).size() > 1) {
             LOGGER.warn("Detected inconsistency in problem status code: HTTP={}, JSON={}, Problem={}",

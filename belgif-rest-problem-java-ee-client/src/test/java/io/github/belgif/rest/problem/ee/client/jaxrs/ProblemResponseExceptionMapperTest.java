@@ -91,7 +91,7 @@ class ProblemResponseExceptionMapperTest {
     void healthDownResponse() {
         when(response.getMediaType()).thenReturn(ProblemMediaType.APPLICATION_JSON_TYPE);
         when(response.getStatus()).thenReturn(503);
-        when(response.getStatusInfo()).thenReturn(Response.Status.INTERNAL_SERVER_ERROR);
+        when(response.getStatusInfo()).thenReturn(Response.Status.SERVICE_UNAVAILABLE);
         JsonNode payload = JsonNodeFactory.instance.objectNode().put("status", "DOWN");
         when(response.readEntity(JsonNode.class)).thenReturn(payload);
         WebApplicationException exception = (WebApplicationException) mapper.toThrowable(response);
