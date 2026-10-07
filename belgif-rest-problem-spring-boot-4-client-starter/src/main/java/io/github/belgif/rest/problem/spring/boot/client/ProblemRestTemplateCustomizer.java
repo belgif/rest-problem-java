@@ -21,6 +21,7 @@ public class ProblemRestTemplateCustomizer implements RestTemplateCustomizer {
 
     public void customize(RestTemplate restTemplate) {
         restTemplate.setErrorHandler(problemResponseErrorHandler);
+        restTemplate.setBufferingPredicate((uri, httpMethod) -> true);
     }
 
 }

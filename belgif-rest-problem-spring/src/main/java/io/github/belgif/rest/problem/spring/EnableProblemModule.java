@@ -51,8 +51,8 @@ public @interface EnableProblemModule {
      * Creates support beans for REST clients.
      * Requires:
      * - setting ProblemResponseErrorHandler as defaultStatusHandler on the client
-     * - or for {@link org.springframework.web.reactive.function.client.WebClient}, setting PROBLEM_FILTER from
-     * {@link io.github.belgif.rest.problem.spring.client.WebClientFilter}
+     * - or for {@link org.springframework.web.reactive.function.client.WebClient}, setting
+     * {@link io.github.belgif.rest.problem.spring.client.ProblemExchangeFilterFunction}
      */
     boolean client() default true;
 

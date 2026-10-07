@@ -1,6 +1,8 @@
 package io.github.belgif.rest.problem;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.core.MediaType;
@@ -9,6 +11,7 @@ import jakarta.ws.rs.core.Response;
 import com.acme.custom.CustomProblem;
 
 import io.github.belgif.rest.problem.api.Problem;
+import io.github.belgif.rest.problem.it.ProblemPayloads;
 import io.github.belgif.rest.problem.it.model.JacksonModel;
 
 @RequestScoped
@@ -54,6 +57,24 @@ public class BackendImpl implements Backend {
         JacksonModel model = new JacksonModel(null);
         model.setDescription("description");
         return Response.ok(model, MediaType.APPLICATION_JSON_TYPE).build();
+    }
+
+    @Override
+    public Response inconsistentProblemStatus() {
+        return Response.status(402) // -> HTTP status code 402 instead of 400
+                .type("application/problem+json")
+                .entity(ProblemPayloads.INCONSISTENT_STATUS_CODE) // -> problem status code 401 instead of 400
+                .build();
+    }
+
+    @Override
+    public Response healthDown() {
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "DOWN");
+        return Response.status(Response.Status.SERVICE_UNAVAILABLE)
+                .type(MediaType.APPLICATION_JSON_TYPE)
+                .entity(response)
+                .build();
     }
 
 }

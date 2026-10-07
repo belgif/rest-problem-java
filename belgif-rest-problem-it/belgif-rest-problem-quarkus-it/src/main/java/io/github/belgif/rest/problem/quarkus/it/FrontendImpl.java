@@ -15,11 +15,14 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.acme.custom.CustomProblem;
 
@@ -41,6 +44,8 @@ import io.vertx.core.http.HttpServerRequest;
 @RequestScoped
 @Path("/frontend")
 public class FrontendImpl implements Frontend {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FrontendImpl.class);
 
     @Context
     private HttpServerRequest serverRequest;
@@ -268,6 +273,67 @@ public class FrontendImpl implements Frontend {
             } catch (ExecutionException e) {
                 throw new RuntimeException(e);
             }
+        }
+        throw new IllegalStateException("Unsupported client " + client);
+    }
+
+    @Override
+    public Response inconsistentProblemStatusFromBackend(Client client) {
+        try {
+            if (client == null || client == Client.MICROPROFILE) {
+                return microprofileClient.inconsistentProblemStatus();
+            } else if (client == Client.REGISTER_REST_CLIENT) {
+                return restClientBuilderClient.inconsistentProblemStatus();
+            } else if (client == Client.QUARKUS_REST_CLIENT_BUILDER) {
+                return quarkusRestClientBuilderClient.inconsistentProblemStatus();
+            } else if (client == Client.JAXRS) {
+                return jaxRsClient.target(baseUri).path("backend/inconsistentProblemStatus").request().get();
+            } else if (client == Client.JAXRS_ASYNC) {
+                try {
+                    return jaxRsClient.target(baseUri).path("backend/inconsistentProblemStatus").request().async()
+                            .get().get();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            throw new IllegalStateException("Unsupported client " + client);
+        } catch (BadRequestProblem e) {
+            e.setDetail(e.getDetail() + " (caught successfully by frontend)");
+            throw e;
+        }
+    }
+
+    @Override
+    public Response healthDown(@QueryParam("client") Client client) {
+        try {
+            if (client == null || client == Client.MICROPROFILE) {
+                return microprofileClient.healthDown();
+            } else if (client == Client.REGISTER_REST_CLIENT) {
+                return restClientBuilderClient.healthDown();
+            } else if (client == Client.QUARKUS_REST_CLIENT_BUILDER) {
+                return quarkusRestClientBuilderClient.healthDown();
+            } else if (client == Client.JAXRS) {
+                return jaxRsClient.target(baseUri).path("backend/healthDown").request().get();
+            } else if (client == Client.JAXRS_ASYNC) {
+                try {
+                    return jaxRsClient.target(baseUri).path("backend/healthDown").request().async()
+                            .get().get();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        } catch (WebApplicationException e) {
+            if (e.getResponse().getStatus() == Response.Status.SERVICE_UNAVAILABLE.getStatusCode()) {
+                LOGGER.info("Caught WebApplicationException with status 503");
+                return e.getResponse();
+            }
+            throw e;
         }
         throw new IllegalStateException("Unsupported client " + client);
     }

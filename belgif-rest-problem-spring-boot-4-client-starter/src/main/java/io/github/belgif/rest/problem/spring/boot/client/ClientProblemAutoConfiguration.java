@@ -12,6 +12,7 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import io.github.belgif.rest.problem.spring.client.ProblemExchangeFilterFunction;
 import io.github.belgif.rest.problem.spring.client.ProblemResponseErrorHandler;
 import io.github.belgif.rest.problem.spring.client.ProblemResponseJackson3ErrorHandler;
 import tools.jackson.databind.ObjectMapper;
@@ -49,8 +50,9 @@ public class ClientProblemAutoConfiguration {
     @ConditionalOnClass({ WebClient.class, WebClientCustomizer.class })
     public static class WebClientProblemConfiguration {
         @Bean
-        public ProblemWebClientCustomizer problemWebClientCustomizer() {
-            return new ProblemWebClientCustomizer();
+        public ProblemWebClientCustomizer problemWebClientCustomizer(
+                ProblemResponseErrorHandler problemResponseErrorHandler) {
+            return new ProblemWebClientCustomizer(new ProblemExchangeFilterFunction(problemResponseErrorHandler));
         }
     }
 

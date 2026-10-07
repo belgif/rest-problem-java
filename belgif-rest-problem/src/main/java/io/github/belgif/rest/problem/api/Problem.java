@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
@@ -48,9 +49,12 @@ public abstract class Problem extends RuntimeException {
     private static final long serialVersionUID = 1L;
     private static final Set<String> READ_ONLY_PROPERTIES = new HashSet<>(Arrays.asList("type", "status", "title"));
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private final URI type;
     private URI href;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private final String title;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private final int status;
     private String detail;
     private URI instance;

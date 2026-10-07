@@ -1,15 +1,19 @@
 package io.github.belgif.rest.problem.it;
 
 import java.net.URI;
+import java.util.Map;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import com.acme.custom.CustomProblem;
 
@@ -42,6 +47,8 @@ import io.github.belgif.rest.problem.validation.RequestValidator;
 @RequestMapping("/frontend")
 @Validated
 public class FrontendController implements ControllerInterface {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FrontendController.class);
 
     private static final String DETAIL_MESSAGE_SUFFIX = " (caught successfully by frontend)";
     private static final String ILLEGAL_STATE_MESSAGE_PREFIX = "Unsupported client ";
@@ -207,6 +214,44 @@ public class FrontendController implements ControllerInterface {
             restClient.get().uri("/jacksonMismatchedInput").retrieve().toEntity(JacksonModel.class);
         }
         throw new IllegalStateException(ILLEGAL_STATE_MESSAGE_PREFIX + client);
+    }
+
+    @GetMapping("/inconsistentProblemStatusFromBackend")
+    public void inconsistentProblemStatusFromBackend(@RequestParam("client") Client client) {
+        try {
+            if (client == Client.REST_TEMPLATE) {
+                restTemplate.getForObject("/inconsistentProblemStatus", String.class);
+            } else if (client == Client.WEB_CLIENT) {
+                webClient.get().uri("/inconsistentProblemStatus").retrieve().toEntity(String.class).block();
+            } else if (client == Client.REST_CLIENT) {
+                restClient.get().uri("/inconsistentProblemStatus").retrieve().toEntity(String.class);
+            }
+            throw new IllegalStateException(ILLEGAL_STATE_MESSAGE_PREFIX + client);
+        } catch (BadRequestProblem e) {
+            e.setDetail(e.getDetail() + DETAIL_MESSAGE_SUFFIX);
+            throw e;
+        }
+    }
+
+    @GetMapping(value = "/healthDown", produces = "application/json")
+    public ResponseEntity<Map<String, String>> healthDown(@RequestParam("client") Client client) {
+        Map<String, String> result = null;
+        if (client == Client.REST_TEMPLATE) {
+            result = restTemplate.getForObject("/healthDown", Map.class);
+        } else if (client == Client.WEB_CLIENT) {
+            try {
+                result = webClient.get().uri("/healthDown").retrieve().toEntity(Map.class).block().getBody();
+            } catch (WebClientResponseException.ServiceUnavailable e) {
+                LOGGER.info("Caught WebClientResponseException.ServiceUnavailable");
+                result = e.getResponseBodyAs(Map.class);
+            }
+        } else if (client == Client.REST_CLIENT) {
+            result = restClient.get().uri("/healthDown").retrieve().toEntity(Map.class).getBody();
+        }
+        return ResponseEntity
+                .status(503)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(result);
     }
 
     @GetMapping("/beanValidation/queryParameter")

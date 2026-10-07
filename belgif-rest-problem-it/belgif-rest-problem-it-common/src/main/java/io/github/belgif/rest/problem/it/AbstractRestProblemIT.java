@@ -133,6 +133,18 @@ public abstract class AbstractRestProblemIT {
                 .body("type", equalTo("urn:problem-type:belgif:internalServerError"));
     }
 
+    @ParameterizedTest
+    @MethodSource("getClients")
+    public void inconsistentProblemStatusFromBackend(String client) {
+        getSpec().when().queryParam("client", client)
+                .get("/inconsistentProblemStatusFromBackend").then().assertThat()
+                .statusCode(400)
+                .body("type", equalTo("urn:problem-type:belgif:badRequest"))
+                .body("detail", equalTo("Bad Request with inconsistent problem status code"
+                        + " (caught successfully by frontend)"))
+                .body("status", equalTo(400));
+    }
+
     @Test
     public void notFound() {
         getSpec().when().get("/not/found").then().assertThat()
@@ -560,6 +572,15 @@ public abstract class AbstractRestProblemIT {
                 .body("issues[0].in", equalTo("body"))
                 .body("issues[0].name", equalTo("/age"))
                 .body("issues[0].value", equalTo("twenty-two"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getClients")
+    public void healthDown(String client) {
+        getSpec().when().queryParam("client", client)
+                .get("/healthDown").then().assertThat()
+                .statusCode(503)
+                .body("status", equalTo("DOWN"));
     }
 
 }
