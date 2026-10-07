@@ -92,12 +92,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code>org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper&lt;<a href="../../../api/Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a>&gt;</code></dd>
+<dd><code>org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;</code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ProblemResponseExceptionMapper</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper&lt;<a href="../../../api/Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a>&gt;</span></div>
+implements org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;</span></div>
 <div class="block">Client-side problem mapper for MicroProfile REST Client.</div>
 <dl class="notes">
 <dt>See Also:</dt>
@@ -144,9 +144,12 @@ implements org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper&lt;<
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../api/Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toThrowable(javax.ws.rs.core.Response)" class="member-name-link">toThrowable</a><wbr>(javax.ws.rs.core.Response&nbsp;response)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#init()" class="member-name-link">init</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toThrowable(javax.ws.rs.core.Response)" class="member-name-link">toThrowable</a><wbr>(javax.ws.rs.core.Response&nbsp;response)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -182,9 +185,16 @@ implements org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper&lt;<
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="init()">
+<h3>init</h3>
+<div class="member-signature"><span class="annotations">@PostConstruct
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">init</span>()</div>
+</section>
+</li>
+<li>
 <section class="detail" id="toThrowable(javax.ws.rs.core.Response)">
 <h3>toThrowable</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../api/Problem.html" title="class in io.github.belgif.rest.problem.api">Problem</a></span>&nbsp;<span class="element-name">toThrowable</span><wbr><span class="parameters">(javax.ws.rs.core.Response&nbsp;response)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></span>&nbsp;<span class="element-name">toThrowable</span><wbr><span class="parameters">(javax.ws.rs.core.Response&nbsp;response)</span></div>
 </section>
 </li>
 </ul>
