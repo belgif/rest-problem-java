@@ -60,7 +60,7 @@
       <groupId>org.jboss.resteasy.microprofile</groupId>
       <artifactId>microprofile-rest-client</artifactId>
       <scope>provided</scope>
-      <version>3.0.1.Final</version>
+      <version>3.0.2.Final</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
